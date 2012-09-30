@@ -8,11 +8,11 @@ git checkout nikolas
 git pull
 git merge master
 git push
-git checkout mike-a 
+git checkout michael-a 
 git pull
 git merge master
 git push
-git checkout mike-t 
+git checkout michael-t 
 git pull
 git merge master
 git push
