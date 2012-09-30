@@ -1,7 +1,9 @@
-﻿<Window x:Class="KarateGeek.guis.Window1"
+﻿<Window x:Class="KarateGeek.guis.LogIn"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="karate geek log in" >
+        Title="karate geek log in" 
+        Width="450" Height="300"
+        ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="50"/>
@@ -17,7 +19,7 @@
             <ColumnDefinition MinWidth="50"/>
             <ColumnDefinition MinWidth="150"/>
             <ColumnDefinition MinWidth="150"/>
-            <ColumnDefinition MinWidth="50"/>
+            <ColumnDefinition MinWidth="100"/>
             
         </Grid.ColumnDefinitions>
         

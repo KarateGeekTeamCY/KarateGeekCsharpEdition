@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace KarateGeek.guis
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for LogIn.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class LogIn : Window
     {
-        public Window1()
+        public LogIn()
         {
             InitializeComponent();
         }
