@@ -14,20 +14,13 @@ using System.Windows.Shapes;
 namespace KarateGeek.guis
 {
     /// <summary>
-    /// Interaction logic for LogIn.xaml
+    /// Interaction logic for MainMenu.xaml
     /// </summary>
-    public partial class LogIn : Window
+    public partial class MainMenu : Window
     {
-        public LogIn()
+        public MainMenu()
         {
             InitializeComponent();
-        }
-
-        private void login_Click(object sender, RoutedEventArgs e)
-        {
-            MainMenu menu = new MainMenu();
-            menu.Activate();
-            menu.Show();
         }
     }
 }

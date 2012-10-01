@@ -62,7 +62,7 @@
                 Content="Log in"
                 Grid.Row="4"
                 Grid.Column="2"
-                Margin="15,10,15,10"/>        
+                Margin="15,10,15,10" Click="login_Click" />        
         
         
         
