@@ -35,7 +35,8 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -57,7 +58,7 @@
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="AthleteFirstName" 
+                        <TextBox Name="athleteFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
                                VerticalAlignment="Center"/>
@@ -65,7 +66,7 @@
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="AthleteLastName" 
+                        <TextBox Name="athleteLastName" 
                                Grid.Row="2"
                                Grid.Column="2"
                                VerticalAlignment="Center"/>
@@ -73,7 +74,7 @@
                                Grid.Row="3"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="AthleteFatherName" 
+                        <TextBox Name="athleteFatherName" 
                                Grid.Row="3"
                                Grid.Column="2"
                                VerticalAlignment="Center"/>
@@ -93,58 +94,68 @@
                                          Grid.Column="0"
                                          VerticalAlignment="Center"
                                          Margin="5"/>
-                            <RadioButton Content="male" 
+                            <RadioButton Content="female" 
                                          Grid.Column="1"
                                          VerticalAlignment="Center"
                                          Margin="5"/>
                         </Grid>
 
-                        <Label Content="Phone num."
+                        <Label Content="Date of birth"
+                               Grid.Column="1"
                                Grid.Row="5"
+                               VerticalAlignment="Center"/>
+                        <DatePicker Name="athleteDateOfBirth" 
+                                Grid.Column="2"
+                                Grid.Row="5"
+                                    VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+
+                        <Label Content="Phone num."
+                               Grid.Row="6"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="AthleteFirstPhone" 
-                               Grid.Row="5"
+                        <TextBox Name="athleteFirstPhone" 
+                               Grid.Row="6"
                                Grid.Column="2"
                                VerticalAlignment="Center"/>
 
                         <Label Content="Secondary phone num."
-                               Grid.Row="6"
+                               Grid.Row="7"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="AthleteSecondPhone" 
-                               Grid.Row="6"
+                        <TextBox Name="athleteSecondPhone" 
+                               Grid.Row="7"
                                Grid.Column="2"
                                VerticalAlignment="Center"/>
 
                         <Label Content="Address"
-                               Grid.Row="7"
+                               Grid.Row="8"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                         <Grid Grid.Column="2"
-                              Grid.Row="7">
+                              Grid.Row="8">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Name="AthleteStreetName"
+                            <TextBox Name="athleteStreetName"
                                      Grid.Column="0"/>
                             <Label Content="Num." 
                                    Grid.Column="1"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
-                            <TextBox Name="AthleteAddressNum" 
+                            <TextBox Name="athleteAddressNum" 
                                      Grid.Column="2"/>                      
                         </Grid>
 
                         <Label Content="City"
-                               Grid.Row="8"
+                               Grid.Row="9"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbCityChooses"
-                                  Grid.Row="8"
+                        <ComboBox Name="cmbACityChooses"
+                                  Grid.Row="9"
                                   Grid.Column="2"
                                   Margin="0,3,0,3">
                             <ComboBoxItem Content="Nicosia"
@@ -152,11 +163,11 @@
                         </ComboBox>
 
                         <Label Content="Country"
-                               Grid.Row="9"
+                               Grid.Row="10"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbCountryChooses"
-                                  Grid.Row="9"
+                        <ComboBox Name="cmbACountryChooses"
+                                  Grid.Row="10"
                                   Grid.Column="2"
                                   Margin="0,3,0,3">
                             <ComboBoxItem Content="Cyprus"
@@ -164,23 +175,23 @@
                         </ComboBox>
 
                         <Label Content="Rank"
-                               Grid.Row="10"
+                               Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbRankChooses"
-                                  Grid.Row="10"
+                        <ComboBox Name="cmbARankChooses"
+                                  Grid.Row="11"
                                   Grid.Column="2"
                                   Margin="0,3,0,3">
                             <ComboBoxItem Content="White"
                                           IsSelected="True"/>
                         </ComboBox>
 
-                        <Label Content="Rank"
-                               Grid.Row="11"
+                        <Label Content="Club"
+                               Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbClubChooses"
-                                  Grid.Row="11"
+                        <ComboBox Name="cmbAClubChooses"
+                                  Grid.Row="12"
                                   Grid.Column="2"
                                   Margin="0,3,0,3">
                             <ComboBoxItem Content="Pro Kata Club (P.K.C.)"
@@ -202,19 +213,19 @@
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Name="btnBack"
+                        <Button Name="btnABack"
                                 Content="Back"
                                 Grid.Column="1"
                                 Margin="10"/>
-                        <Button Name="btnSave"
+                        <Button Name="btnASave"
                                 Content="Save"
                                 Grid.Column="2"
                                 Margin="10"/>
-                        <Button Name="btnSaveNew"
+                        <Button Name="btnASaveNew"
                                 Content="Save as new"
                                 Grid.Column="3"
                                 Margin="10"/>
-                        <Button Name="btnDelete"
+                        <Button Name="btnADelete"
                                 Content="Delete"
                                 Grid.Column="4"
                                 Margin="10"/>
@@ -230,10 +241,218 @@
 
             </TabItem>
 
-            <TabItem Name="JudgeTap" Header="Judge management">
-            
+            <TabItem Name="judgeTap" Header="Judge management">
 
-            </TabItem>
+                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                                <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="First name"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <TextBox Name="judgeFirstName" 
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"/>
+                            <Label Content="Last name"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <TextBox Name="judgeteLastName" 
+                               Grid.Row="2"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"/>
+                           
+                            <Label Content="Sex"
+                               Grid.Row="3"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <Grid Grid.Column="2"
+                              Grid.Row="3">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <RadioButton Content="male" 
+                                         Grid.Column="0"
+                                         VerticalAlignment="Center"
+                                         Margin="5"/>
+                                <RadioButton Content="female" 
+                                         Grid.Column="1"
+                                         VerticalAlignment="Center"
+                                         Margin="5"/>
+                            </Grid>
+
+                        <Label Content="Date of birth"
+                               Grid.Column="1"
+                               Grid.Row="4"
+                               VerticalAlignment="Center"/>
+                        <DatePicker Name="judgeDateOfBirth" 
+                                Grid.Column="2"
+                                Grid.Row="4"
+                                    VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"/>
+
+                        <Label Content="Phone num."
+                               Grid.Row="5"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <TextBox Name="judgeFirstPhone" 
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"/>
+
+                            <Label Content="Secondary phone num."
+                               Grid.Row="6"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <TextBox Name="judgeSecondPhone" 
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"/>
+
+                            <Label Content="Address"
+                               Grid.Row="7"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <Grid Grid.Column="2"
+                              Grid.Row="7">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Name="judgeStreetName"
+                                     Grid.Column="0"/>
+                                <Label Content="Num." 
+                                   Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                                <TextBox Name="judgeAddressNum" 
+                                     Grid.Column="2"/>
+                            </Grid>
+
+                            <Label Content="City"
+                               Grid.Row="8"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <ComboBox Name="cmbJCityChooses"
+                                  Grid.Row="8"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3">
+                                <ComboBoxItem Content="Nicosia"
+                                          IsSelected="True"/>
+                            </ComboBox>
+
+                            <Label Content="Country"
+                               Grid.Row="9"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <ComboBox Name="cmbJCountryChooses"
+                                  Grid.Row="9"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3">
+                                <ComboBoxItem Content="Cyprus"
+                                          IsSelected="True"/>
+                            </ComboBox>
+
+                            <Label Content="Rank"
+                               Grid.Row="10"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <ComboBox Name="cmbJRankChooses"
+                                  Grid.Row="10"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3">
+                                <ComboBoxItem Content="White"
+                                          IsSelected="True"/>
+                            </ComboBox>
+
+                            <Label Content="class"
+                               Grid.Row="11"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <ComboBox Name="cmbJClubChooses"
+                                  Grid.Row="11"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3">
+                                <ComboBoxItem Content="sensei A"
+                                          IsSelected="True"/>
+                            </ComboBox>
+
+
+
+
+
+
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Name="btnJBack"
+                                Content="Back"
+                                Grid.Column="1"
+                                Margin="10"/>
+                            <Button Name="btnJSave"
+                                Content="Save"
+                                Grid.Column="2"
+                                Margin="10"/>
+                            <Button Name="btnJSaveNew"
+                                Content="Save as new"
+                                Grid.Column="3"
+                                Margin="10"/>
+                            <Button Name="btnJDelete"
+                                Content="Delete"
+                                Grid.Column="4"
+                                Margin="10"/>
+
+
+
+
+                        </Grid>
+
+                    </Grid>
+
+
+
+
+                </TabItem>
         
         
         </TabControl>
