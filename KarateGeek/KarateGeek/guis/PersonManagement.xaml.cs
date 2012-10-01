@@ -14,21 +14,13 @@ using System.Windows.Shapes;
 namespace KarateGeek.guis
 {
     /// <summary>
-    /// Interaction logic for MainMenu.xaml
+    /// Interaction logic for PersonManagement.xaml
     /// </summary>
-    public partial class MainMenu : Window
+    public partial class PersonManagement : Window
     {
-        public MainMenu()
+        public PersonManagement()
         {
             InitializeComponent();
-        }
-
-        private void btnPersonManagement_Click(object sender, RoutedEventArgs e)
-        {
-            PersonManagement pm = new PersonManagement();
-            pm.Activate();
-            pm.Show();
-            this.Hide();
         }
     }
 }
