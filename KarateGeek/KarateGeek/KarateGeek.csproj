@@ -76,6 +76,15 @@
     <Compile Include="guis\Reports.xaml.cs">
       <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\FlagSystemForm.xaml.cs">
+      <DependentUpon>FlagSystemForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="guis\KataSystemForm.xaml.cs">
+      <DependentUpon>KataSystemForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="guis\KumiteSystemForm.xaml.cs">
+      <DependentUpon>KumiteSystemForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -121,6 +130,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\PersonManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\FlagSystemForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\KataSystemForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\KumiteSystemForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
