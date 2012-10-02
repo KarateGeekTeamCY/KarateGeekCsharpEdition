@@ -73,6 +73,9 @@
     <Compile Include="guis\PersonManagement.xaml.cs">
       <DependentUpon>PersonManagement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\Reports.xaml.cs">
+      <DependentUpon>Reports.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -98,6 +101,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="guis\EventTournamentManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\Reports.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
