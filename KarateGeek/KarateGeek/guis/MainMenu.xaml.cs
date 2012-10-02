@@ -30,5 +30,12 @@ namespace KarateGeek.guis
             pm.Show();
             this.Hide();
         }
+
+        private void btnEventmanagement_Click(object sender, RoutedEventArgs e)
+        {
+            EventTournamentManagement et = new EventTournamentManagement();
+            et.Activate();
+            et.Show();
+        }
     }
 }

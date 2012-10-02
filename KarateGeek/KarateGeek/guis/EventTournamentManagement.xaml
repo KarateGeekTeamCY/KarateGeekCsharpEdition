@@ -1,0 +1,243 @@
+﻿<Window x:Class="KarateGeek.guis.EventTournamentManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Event and tournament management"
+        Width="1000"
+        Height="800"
+        ResizeMode="NoResize">
+    <Grid Width="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Name="lblEventTurnamentMenuInfo" 
+               Content="Info" 
+               FontSize="20" 
+               VerticalAlignment="Center" 
+               HorizontalContentAlignment="Center"
+               Width="Auto"/>
+
+        <TabControl Grid.Row="1">
+
+
+
+            <TabItem Name="eventTab" 
+                     Header="Event management">
+                
+                    
+                    <Grid Name="upperAndLowerGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height=" Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid Name="buttonsinfogrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="150"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Name="informationGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="6*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Label Content="Name" 
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"/>
+                                <TextBox Name="eventName"
+                                         Grid.Row="1"
+                                         Grid.Column="2"
+                                         Grid.ColumnSpan="2"
+                                         Margin="0,3,0,3"/>
+                                         
+     
+                                <Label Content="Date" 
+                                       Grid.Row="2"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"/>
+                                <TextBox Name="eventDate"
+                                         Grid.Row="2"
+                                         Grid.Column="2"
+                                         Margin="0,3,5,3"/>
+                                <DatePicker Name="eventDatePicker"
+                                            Grid.Row="2"
+                                            Grid.Column="3"
+                                            Margin="0,3,0,3"/>
+
+                                <Label Content="Location" 
+                                       Grid.Row="3"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"/>
+                                <TextBox Name="eventLocation"
+                                         Grid.Row="3"
+                                         Grid.Column="2"
+                                         Margin="0,3,5,3"/>
+                                <ComboBox Name="eventLocationPicker"
+                                            Grid.Row="3"
+                                            Grid.Column="3"
+                                            Margin="0,3,0,3">
+                                    <ComboBoxItem Name="Nicosia" 
+                                                  Content="Nicosia"
+                                                  IsSelected="True"/>
+                                </ComboBox>
+                            </Grid>
+                            
+                            <Grid Name="buttons"
+                                  Margin="0,10,0,0"
+                                  Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="20"/>
+                            </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Name="btneBack" 
+                                        Grid.Column="1"
+                                        Grid.Row="0"
+                                        Content="Back"
+                                        Margin="3"/>
+                                <Button Name="btneSave" 
+                                        Grid.Column="2"
+                                        Content="Save"
+                                        Margin="3"/>
+                                <Button Name="btneSaveNew" 
+                                        Grid.Column="3"
+                                        Content="Save as new"
+                                        Margin="3"/>
+                                <Button Name="btneClear" 
+                                        Grid.Column="4"
+                                        Content="Clear"
+                                        Margin="3"/>
+                            </Grid>
+                            
+                        </Grid>
+                    
+                    
+                    <ListBox Grid.Row="1" 
+                             Height="450">
+                        <ListBoxItem Name="test"
+                                     Content="Tournoua onex"/>
+                    </ListBox>
+                </Grid>
+
+
+
+            </TabItem>
+
+            <TabItem Name="tournamentTap" Header="Tournament management">
+
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Name="upper">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Grid Name="tournamentList">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid >
+                                <Grid.ColumnDefinitions >
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Event"
+                                       VerticalAlignment="Center"
+                                       Margin="5"/>
+                                <ComboBox Name="EventPicker"
+                                          Grid.Column="1"
+                                          Margin="5"/>
+                            </Grid>
+                            
+                            
+                            <ListBox Grid.Row="1" 
+                                     Height="Auto"
+                                     Margin="5"
+                                     BorderThickness="1"/>
+                            
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+
+                                <Grid  Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                                    
+                                    
+
+                        </Grid>
+
+
+                    </Grid>
+
+
+
+
+
+                    </Grid>
+                    <Grid Grid.Row="1" Name="lower">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        
+                        
+                        
+                    </Grid>
+
+
+
+                </Grid>
+
+
+
+
+            </TabItem>
+
+
+        </TabControl>
+
+    </Grid>
+</Window>
+
