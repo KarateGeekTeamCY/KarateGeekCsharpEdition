@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="karate geek log in" 
         Width="450" Height="300"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="50"/>
@@ -23,11 +23,11 @@
             
         </Grid.ColumnDefinitions>
         
-        <Label Content="user name" 
+        <Label Content="  Username" 
                Grid.Column="1" 
                Grid.Row="1" 
                VerticalAlignment="Center" 
-               HorizontalAlignment="Center" 
+               HorizontalAlignment="Left" 
                FontSize="17"/>
         <TextBox Name="ueserName" 
                  Grid.Row="1" 
@@ -38,11 +38,11 @@
                  FontSize="17"
                  BorderThickness="2"/>
         
-        <Label Content="user name" 
+        <Label Content="  Password" 
                Grid.Column="1" 
                Grid.Row="3" 
                VerticalAlignment="Center" 
-               HorizontalAlignment="Center" 
+               HorizontalAlignment="Left" 
                FontSize="17"/>
         <TextBox Name="password" 
                  Grid.Row="3" 
@@ -57,12 +57,13 @@
                 Content="Exit"
                 Grid.Row="4"
                 Grid.Column="1"
-                Margin="15,10,15,10"/>
+                Margin="0,10,15,10"/>
         <Button Name="login"
                 Content="Log in"
                 Grid.Row="4"
                 Grid.Column="2"
-                Margin="15,10,15,10" Click="login_Click" />        
+                Margin="15,10,0,10" 
+                Click="login_Click" />        
         
         
         
