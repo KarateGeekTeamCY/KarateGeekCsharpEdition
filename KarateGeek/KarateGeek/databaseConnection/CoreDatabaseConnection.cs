@@ -29,10 +29,6 @@ namespace KarateGeek.databaseConnection
         }
 
 
-
-
-
-
         protected Boolean Disconnect()
         {
             this.conn.Clone();
