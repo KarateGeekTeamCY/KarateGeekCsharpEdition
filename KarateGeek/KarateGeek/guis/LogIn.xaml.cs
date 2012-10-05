@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using KarateGeek.databaseConnection;
 
 namespace KarateGeek.guis
 {
@@ -25,6 +26,10 @@ namespace KarateGeek.guis
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
+            DatabaseInitializer init = new   DatabaseInitializer();
+
+            init.foo();
+
             MainMenu menu = new MainMenu();
             menu.Activate();
             menu.Show();

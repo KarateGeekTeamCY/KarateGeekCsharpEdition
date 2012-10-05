@@ -9,30 +9,25 @@ namespace KarateGeek.databaseConnection
 {
     class CoreDatabaseConnection
     {
-        public NpgsqlConnection conn
-        {
-            get
-            {
-                if (conn != null || conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                    conn = new NpgsqlConnection("Server=localhost;Port=5432;User Id=postgress;Password=admin;Database=karateGeek;");
+        public NpgsqlConnection conn { get; set; }
 
-                conn.Open();
-                return conn;
-            }
-            set
-            {
-                conn = value;
-            }
+
+        protected Boolean Connect()
+        {
+            conn = new NpgsqlConnection("Server=127.0.0.1; Port=5432; User Id=postgres; Password=admin; Database=karategeek;");
+            conn.Open();
+            return true;
         }
 
 
-        protected Boolean Close()
+
+        protected Boolean Disconnect()
         {
             this.conn.Clone();
             return true;
         }
 
-        protected Boolean NonQuire(string sql)
+        protected Boolean NonQuery(string sql)
         {
             NpgsqlCommand comm = this.conn.CreateCommand();
             comm.CommandText = sql;
@@ -40,7 +35,7 @@ namespace KarateGeek.databaseConnection
             return true;
         }
 
-        protected NpgsqlDataReader Quire(string sql)
+        protected NpgsqlDataReader Query(string sql)
         {
             NpgsqlCommand comm = this.conn.CreateCommand();
             comm.CommandText = sql;
