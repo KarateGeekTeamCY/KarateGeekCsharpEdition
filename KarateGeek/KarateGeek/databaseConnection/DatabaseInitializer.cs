@@ -9,13 +9,11 @@ namespace KarateGeek.databaseConnection
     {
         public void foo()
         {
-            this.Connect();
-            this.NonQuery("create table nikolas (id int, primary key(id))");
+            this.NonQuery("drop table nikolas ;");
+            this.NonQuery("create table nikolas (id int, primary key(id)) ;");
             this.Disconnect();
 
-        
         }
         
-
     }
 }
