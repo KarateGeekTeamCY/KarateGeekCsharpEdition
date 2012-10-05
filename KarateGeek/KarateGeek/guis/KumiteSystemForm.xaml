@@ -71,20 +71,20 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Grid.Row="0" Content="ippon" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="1" Grid.Row="1" Content="waja-ari" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="1" Grid.Row="2" Content="jyo-gai" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="1" Grid.Row="3" Content="chui" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="1" Grid.Row="4" Content="kei-koku" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="1" Grid.Row="5" Content="ten-to" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="1" Grid.Row="6" Content="doctor-stop" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="0" Content="ippon" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="1" Content="waja-ari" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="2" Content="jyo-gai" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="3" Content="chui" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="4" Content="kei-koku" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="5" Content="ten-to" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="6" Content="doctor-stop" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
+            <Button Grid.Column="1" Grid.Row="0" Content="ippon" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="1" Grid.Row="1" Content="waja-ari" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="1" Grid.Row="2" Content="jyo-gai" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="1" Grid.Row="3" Content="chui" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="1" Grid.Row="4" Content="kei-koku" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="1" Grid.Row="5" Content="ten-to" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="1" Grid.Row="6" Content="doctor-stop" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="0" Content="ippon" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="1" Content="waja-ari" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="2" Content="jyo-gai" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="3" Content="chui" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="4" Content="kei-koku" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="5" Content="ten-to" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="6" Content="doctor-stop" VerticalAlignment="Center" Margin="10,0,10,0"  />
             <TextBox Name="history"
                 Text="history"
                      TextAlignment="Center"
@@ -104,10 +104,10 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Grid.Row="0" Content="start" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="2" Grid.Row="0" Content="pause" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="3" Grid.Row="0" Content="end" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
-            <Button Grid.Column="4" Grid.Row="0" Content="save" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
+            <Button Grid.Column="1" Grid.Row="0" Content="start" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="2" Grid.Row="0" Content="pause" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="3" Grid.Row="0" Content="end" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="4" Grid.Row="0" Content="save" VerticalAlignment="Center" Margin="10,0,10,0"  />
         </Grid>
         
     </Grid>

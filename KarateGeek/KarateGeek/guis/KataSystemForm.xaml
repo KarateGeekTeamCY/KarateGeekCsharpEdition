@@ -71,40 +71,35 @@
                 Grid.Row="2"
                 Grid.Column="1"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0"
-                />
+                    Margin="10,0,5,0" TextChanged="scoreA_TextChanged" />
             <TextBox Name="scoreB"
                 Text="score b"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="2"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0"
-                />
+                    Margin="10,0,5,0" TextChanged="scoreB_TextChanged" />
             <TextBox Name="scoreC"
                 Text="score c"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="3"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0"
-                />
+                    Margin="10,0,5,0" TextChanged="scoreC_TextChanged" />
             <TextBox Name="scoreD"
                 Text="score d"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="4"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0"
-                />
+                    Margin="10,0,5,0" TextChanged="scoreD_TextChanged" />
             <TextBox Name="scoreE"
                 Text="score e"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="5"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0"
-                />
+                    Margin="10,0,5,0" TextChanged="scoreE_TextChanged" />
         </Grid>
 
         <Grid Grid.Row="2" >
@@ -151,10 +146,10 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="commit" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" />
-            <Button Grid.Column="2" Content="clear" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" HorizontalAlignment="Stretch" />
-            <Button Grid.Column="3" Content="save" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" />
-            <Button Grid.Column="4" Content="back" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" />
+            <Button Grid.Column="1" Content="commit" VerticalAlignment="Center" Margin="20,0,20,0"  />
+            <Button Grid.Column="2" Content="clear" VerticalAlignment="Center" Margin="20,0,20,0" />
+            <Button Grid.Column="3" Content="save" VerticalAlignment="Center" Margin="20,0,20,0" />
+            <Button Grid.Column="4" Content="back" VerticalAlignment="Center" Margin="20,0,20,0" />
         </Grid>
     </Grid>
 </Window>

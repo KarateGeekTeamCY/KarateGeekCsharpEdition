@@ -19,7 +19,10 @@ namespace KarateGeek.databaseConnection
                 conn.Open();
                 return conn;
             }
-            set;
+            set
+            {
+                conn = value;
+            }
         }
 
 

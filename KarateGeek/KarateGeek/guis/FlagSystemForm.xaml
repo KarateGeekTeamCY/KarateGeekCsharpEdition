@@ -185,10 +185,10 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="commit" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" />
-            <Button Grid.Column="2" Content="clear" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" HorizontalAlignment="Stretch" />
-            <Button Grid.Column="3" Content="save" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" />
-            <Button Grid.Column="4" Content="back" VerticalAlignment="Center" Margin="20,0,20,0" Click="Button_Click" />
+            <Button Grid.Column="1" Content="commit" VerticalAlignment="Center" Margin="20,0,20,0"  />
+            <Button Grid.Column="2" Content="clear" VerticalAlignment="Center" Margin="20,0,20,0"  HorizontalAlignment="Stretch" />
+            <Button Grid.Column="3" Content="save" VerticalAlignment="Center" Margin="20,0,20,0"  />
+            <Button Grid.Column="4" Content="back" VerticalAlignment="Center" Margin="20,0,20,0"  />
         </Grid>
     </Grid>
 </Window>
