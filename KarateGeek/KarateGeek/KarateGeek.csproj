@@ -65,9 +65,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="databaseConnection\AthletsManagement.cs" />
+    <Compile Include="databaseConnection\AthleteConnection.cs" />
     <Compile Include="databaseConnection\CoreDatabaseConnection.cs" />
     <Compile Include="databaseConnection\DatabaseInitializer.cs" />
+    <Compile Include="databaseConnection\JudgeConnection.cs" />
     <Compile Include="guis\EventTournamentManagement.xaml.cs">
       <DependentUpon>EventTournamentManagement.xaml</DependentUpon>
     </Compile>
@@ -83,14 +84,14 @@
     <Compile Include="guis\Reports.xaml.cs">
       <DependentUpon>Reports.xaml</DependentUpon>
     </Compile>
-    <Compile Include="guis\FlagSystemForm.xaml.cs">
-      <DependentUpon>FlagSystemForm.xaml</DependentUpon>
+    <Compile Include="guis\FlagSystem.xaml.cs">
+      <DependentUpon>FlagSystem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="guis\KataSystemForm.xaml.cs">
-      <DependentUpon>KataSystemForm.xaml</DependentUpon>
+    <Compile Include="guis\KataSystem.xaml.cs">
+      <DependentUpon>KataSystem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="guis\KumiteSystemForm.xaml.cs">
-      <DependentUpon>KumiteSystemForm.xaml</DependentUpon>
+    <Compile Include="guis\KumiteSystem.xaml.cs">
+      <DependentUpon>KumiteSystem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -140,15 +141,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="guis\FlagSystemForm.xaml">
+    <Page Include="guis\FlagSystem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="guis\KataSystemForm.xaml">
+    <Page Include="guis\KataSystem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="guis\KumiteSystemForm.xaml">
+    <Page Include="guis\KumiteSystem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
