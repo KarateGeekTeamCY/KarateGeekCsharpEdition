@@ -61,13 +61,10 @@
                         <TextBox Name="athleteFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center" TextChanged="athleteFirstName_TextChanged" />
 
 
-                        <ListBox Name="availablePersonsList" 
-                                 Grid.Row="2"
-                                 Grid.Column="2"
-                                 Grid.RowSpan="5"/>
+                        
                     
                     
                         <Label Content="Last name"
@@ -205,6 +202,12 @@
                             <ComboBoxItem Content="Pro Kata Club (P.K.C.)"
                                           IsSelected="True"/>
                         </ComboBox>
+
+                        <ListBox Name="availablePersonsList" 
+                                 Grid.Row="2"
+                                 Grid.Column="2"
+                                 Grid.RowSpan="5"
+                                 Visibility="Hidden" SelectionChanged="availablePersonsList_SelectionChanged" />
 
 
 

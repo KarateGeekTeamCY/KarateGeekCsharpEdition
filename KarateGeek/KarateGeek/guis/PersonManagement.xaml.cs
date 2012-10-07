@@ -23,5 +23,30 @@ namespace KarateGeek.guis
         {
             InitializeComponent();
         }
+
+
+        //
+        // this will show the available persons in athlete management tab
+        //
+        private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+        
+            List<string> items = new List<string>();
+
+            items.Add("athlete one");
+            items.Add("athlete two");
+
+            this.availablePersonsList.Visibility = System.Windows.Visibility.Visible;
+            this.availablePersonsList.ItemsSource = items;
+
+        }
+
+        private void availablePersonsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            Object[] selected = (Object[])e.AddedItems;
+
+            this.availablePersonsList.Visibility = System.Windows.Visibility.Hidden;
+        }
     }
 }
