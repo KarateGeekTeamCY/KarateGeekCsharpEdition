@@ -196,6 +196,16 @@ namespace KarateGeek.databaseConnection
 
 
 
+        public IObservable<string> findSimilar(string filter)
+        {
+            IObservable<string> items = (IObservable<string>)new LinkedList<string>();
+
+
+
+            return items;
+
+        }
+
 
 
 

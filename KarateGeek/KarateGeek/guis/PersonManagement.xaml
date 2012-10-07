@@ -62,6 +62,14 @@
                                Grid.Row="1"
                                Grid.Column="2"
                                VerticalAlignment="Center"/>
+
+
+                        <ListBox Name="availablePersonsList" 
+                                 Grid.Row="2"
+                                 Grid.Column="2"
+                                 Grid.RowSpan="5"/>
+                    
+                    
                         <Label Content="Last name"
                                Grid.Row="2"
                                Grid.Column="1"
