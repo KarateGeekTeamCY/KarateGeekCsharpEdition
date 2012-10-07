@@ -31,7 +31,7 @@ namespace KarateGeek.databaseConnection
 
         public Boolean Disconnect()
         {
-            this.conn.Clone();
+            this.conn.Close();
             this.conn = null;
             return true;
         }

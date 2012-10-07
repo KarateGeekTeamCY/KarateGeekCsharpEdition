@@ -203,11 +203,14 @@
                                           IsSelected="True"/>
                         </ComboBox>
 
+                    
+                    
                         <ListBox Name="availablePersonsList" 
                                  Grid.Row="2"
                                  Grid.Column="2"
                                  Grid.RowSpan="5"
-                                 Visibility="Hidden" SelectionChanged="availablePersonsList_SelectionChanged" />
+                                 Visibility="Hidden" 
+                                 SelectionChanged="availablePersonsList_SelectionChanged" />
 
 
 
