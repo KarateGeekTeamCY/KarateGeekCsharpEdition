@@ -29,14 +29,14 @@
                VerticalAlignment="Center" 
                HorizontalAlignment="Left" 
                FontSize="17"/>
-        <TextBox Name="ueserName" 
+        <TextBox Name="userNameTB" 
                  Grid.Row="1" 
                  Grid.Column="2" 
                  MinWidth="150"
                  VerticalAlignment="Center" 
                  HorizontalAlignment="Center" 
                  FontSize="17"
-                 BorderThickness="2"/>
+                 BorderThickness="2" Text="" />
         
         <Label Content="  Password" 
                Grid.Column="1" 
@@ -44,20 +44,22 @@
                VerticalAlignment="Center" 
                HorizontalAlignment="Left" 
                FontSize="17"/>
-        <TextBox Name="password" 
+        <PasswordBox Name="passwordTB" 
                  Grid.Row="3" 
                  Grid.Column="2" 
                  MinWidth="150"
                  VerticalAlignment="Center" 
                  HorizontalAlignment="Center" 
                  FontSize="17"
-                 BorderThickness="2"/>
+                 Password=""
+                 BorderThickness="2"  />
         
         <Button Name="exit"
                 Content="Exit"
                 Grid.Row="4"
                 Grid.Column="1"
-                Margin="0,10,15,10"/>
+                Margin="0,10,15,10"
+                Click="exit_Click"/>
         <Button Name="login"
                 Content="Log in"
                 Grid.Row="4"

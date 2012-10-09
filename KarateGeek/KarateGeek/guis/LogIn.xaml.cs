@@ -19,6 +19,10 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class LogIn : Window
     {
+        private string username; 
+        private string password;
+        private Boolean loginCheck;
+
         public LogIn()
         {
             InitializeComponent();
@@ -26,18 +30,31 @@ namespace KarateGeek.guis
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            DatabaseInitializer init = new   DatabaseInitializer();
+            LoginConnection lgConn = new LoginConnection();
+            username=userNameTB.Text;
+            password=passwordTB.Password;
 
-            init.foo();
+            loginCheck = lgConn.compare(username, password);
+            if (loginCheck)
+            {
+                MainMenu menu = new MainMenu();
+                menu.Activate();
+                menu.Show();
+            }
+            else
+            {
+                MessageBox.Show("Username or password wrong!");
+            }
+        }
 
-            MainMenu menu = new MainMenu();
-            menu.Activate();
-            menu.Show();
+        private void exit_Click(object sender, RoutedEventArgs e)
+        {
+          
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }
