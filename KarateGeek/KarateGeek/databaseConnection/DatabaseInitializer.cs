@@ -8,7 +8,7 @@ namespace KarateGeek.databaseConnection
 {
     class DatabaseInitializer : CoreDatabaseConnection
     {
-<<<<<<< HEAD
+
         public DatabaseInitializer()
         {
             dropAll();
@@ -158,14 +158,10 @@ namespace KarateGeek.databaseConnection
 
     
 
-=======
 
         private Cryptography cr = new Cryptography();
-        private Boolean dropAll()
-        {
-            this.NonQuery("drop schema_v1 cascade;");
-            return true;
-        }
+        
+
 
         private Boolean createCountryTable()
         {
@@ -203,6 +199,6 @@ namespace KarateGeek.databaseConnection
             return true;
         }
 
->>>>>>> 391c17720bc6a45ca67d25c9dffd423fd671f54d
+
     }
 }

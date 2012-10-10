@@ -11,7 +11,6 @@ namespace KarateGeek.databaseConnection
     {
         private string sql = null;
         private NpgsqlDataReader dr;
-<<<<<<< HEAD
         private Cryptography cr = new Cryptography();
 
         public LoginConnection()
@@ -24,7 +23,7 @@ namespace KarateGeek.databaseConnection
             password = cr.cryptography(password);
             //tha allaxthei auto me to kanoniko otan dimiourgithei i vasi
             sql = "select * from users where username ='" + username + "' and password ='" + password + "';";
-=======
+
         private UserConnection uConn = new UserConnection();
         private Cryptography cr = new Cryptography();
         
@@ -32,7 +31,7 @@ namespace KarateGeek.databaseConnection
 
             password = cr.cryptography(password);
             sql ="select * from users where username ='" + username + "' and password ='" + password + "';";
->>>>>>> 391c17720bc6a45ca67d25c9dffd423fd671f54d
+
             dr = this.Query(sql);
 
             if (dr.HasRows == true)
