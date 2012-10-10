@@ -3,32 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
-using Npgsql;
 
 namespace KarateGeek.databaseConnection
 {
-    class LoginConnection : CoreDatabaseConnection
+    class UserConnection : CoreDatabaseConnection
     {
-        private string sql=null;
-        private NpgsqlDataReader dr;
-        private UserConnection uConn = new UserConnection();
+        private string username = "root";
+        private string password = "root";
+        private string sql = null;
 
-        public LoginConnection()
+        public void insertNewUser()
         {
-            uConn.insertNewUser();
-        }
-        
-        public Boolean compare(string username , string password) {
-
             password = cryptography(password);
-            sql ="select * from users where username ='" + username + "' and password ='" + password + "';";
-            dr = this.Query(sql);
+            sql = "insert into users ( username, password) values ( '"
+                + username + "', '"
+                + password + "' );";
 
-            if(dr.HasRows == true){
-                return true;
-            }else{
-                return false;
-            }
+            this.NonQuery(sql);
+
         }
 
         public string cryptography(string pass)
@@ -39,7 +31,7 @@ namespace KarateGeek.databaseConnection
             string md5pass = null;
 
             pass = salt + pass;
-            sha1pass= sha1Encrypt(pass);
+            sha1pass = sha1Encrypt(pass);
             md5pass = md5Encrypt(sha1pass);
             password = md5pass;
 

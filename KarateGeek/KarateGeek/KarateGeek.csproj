@@ -74,6 +74,7 @@
     <Compile Include="databaseConnection\DatabaseInitializer.cs" />
     <Compile Include="databaseConnection\JudgeConnection.cs" />
     <Compile Include="databaseConnection\LoginConnection.cs" />
+    <Compile Include="databaseConnection\UserConnection.cs" />
     <Compile Include="guis\EventTournamentManagement.xaml.cs">
       <DependentUpon>EventTournamentManagement.xaml</DependentUpon>
     </Compile>
