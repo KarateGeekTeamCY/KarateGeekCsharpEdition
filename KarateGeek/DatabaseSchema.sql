@@ -118,95 +118,55 @@ CREATE TABLE sch1.countries (
 	name            varchar(80)     NOT NULL
 );
 
-
-CREATE TABLE sch1.events (
-	id              SERIAL          PRIMARY KEY,
-	name            varchar(80)     NOT NULL,
-	official        boolean         NOT NULL DEFAULT true, -- default true according to specs
-	day             timestamp       NOT NULL -- has both date and time info, μsec precision
-	description     varchar(255)
-	location        integer         REFERENCES sch1.locations
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+--dikes mou allages
+CREATE TABLE event (
+	id              integer			NOT NULL,
+	name            character varying(80)     NOT NULL,
+	official        boolean         NOT NULL DEFAULT true, 
+	day             timestamp       NOT NULL, 
+	description     character varying(255),
+	location        integer         ,
+	CONSTRAINT event_pkey PRIMARY KEY (id),
+	CONSTRAINT event_location_fkey FOREIGN KEY (location)
+      REFERENCES locations (id)
 );
 
 
-CREATE TABLE sch1.tournaments ( -- we need to discuss this one!
-	id              SERIAL PRIMARY KEY,
-	rank_start      varchar(50)     NOT NULL, -- from this belt color...
-	rank_end        varchar(50),              -- ...to this one, if different (nullable value)
-    age_start       smallint        NOT NULL, -- from this age...
-	age_end         smallint,                 -- ...to this one, if different (nullable value)
-	event_id        integer         REFERENCES sch1.events
-	-- category was replaced by age (?)
+CREATE TABLE tournament ( 
+	id              integer,
+	level           character varying(50)   	NOT NULL, 
+	category        character varying(50),            
+    event_id        integer,
+	CONSTRAINT tournament_pkey PRIMARY KEY (id),
+	CONSTRAINT tournament_event_id_fkey FOREIGN KEY (event_id)
+      REFERENCES events (id)
 );
 
-
-CREATE TABLE sch1.game_types ( --
-	id              int PRIMARY KEY,
+CREATE TABLE game_type ( 
+	id                integer,
+	name      		  character varying(50)   	NOT NULL, 
+	description       character varying(50) 	NOT NULL,              
+	CONSTRAINT game_type_pkey PRIMARY KEY (id)
 );
 
-
-CREATE TABLE sch1.games ( --
-	id              int PRIMARY KEY,
+CREATE TABLE game(
+	id                integer,
+	phase      		  character varying(10)   	NOT NULL, 
+	position          character varying(10) 	NOT NULL,              
+	CONSTRAINT game_pkey PRIMARY KEY (id)
 );
 
-
-CREATE TABLE sch1.tour_participations ( --
-	id              int PRIMARY KEY,
+CREATE TABLE game_participation(
+	athlete_person_id integer,
+	game_id integer,
+	CONSTRAINT game_participation_athlete_person_id_fkey FOREIGN KEY (athlete_person_id)
+      REFERENCES  athletes (id),
+	CONSTRAINT game_participation_game_id_fkey FOREIGN KEY (game_id)
+      REFERENCES  game (id)  
 );
 
-
-CREATE TABLE sch1.game_participations ( --
-	id              int PRIMARY KEY,
-);
-
-
-CREATE TABLE sch1.game_scores ( --
-	id              int PRIMARY KEY,
-);
-
-
-CREATE TABLE sch1.technical_points ( --
-	id              int PRIMARY KEY,
-);
-
-
-CREATE TABLE sch1.participation_teams ( --
-	id              int PRIMARY KEY,
-);
-
-
-CREATE TABLE sch1.clubs ( --             -- also aliased as "local_associations" using a VIEW
-	id              int PRIMARY KEY,
-);
-
-
-CREATE TABLE sch1.app_users (
-	username        varchar(50)     PRIMARY KEY,
-	password        char(32)        NOT NULL,
-	person_mngment  boolean         NOT NULL DEFAULT false,
-	event_mngment   boolean         NOT NULL DEFAULT false,
-	lottery         boolean         NOT NULL DEFAULT false,
-	game_support    boolean         NOT NULL DEFAULT false,
-	reports         boolean         NOT NULL DEFAULT false,
-	settings        boolean         NOT NULL DEFAULT false
-);
-
-
-CREATE TABLE sch1.app_setup (
-	id              boolean         PRIMARY KEY, -- only one entry, if any?
-	salt            char(50)
-);
-
-
-CREATE VIEW sch1.local_associations
-SELECT * FROM sch1.clubs;
-
-------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------
-
-
--- rollback transaction (useful for checking syntax):
-ROLLBACK;
 
 -- commit transaction (will destroy all existing tables and data):
 --COMMIT;
