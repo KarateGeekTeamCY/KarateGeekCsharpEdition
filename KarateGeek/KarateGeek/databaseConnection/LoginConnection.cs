@@ -12,24 +12,11 @@ namespace KarateGeek.databaseConnection
         private string sql = null;
         private NpgsqlDataReader dr;
         private Cryptography cr = new Cryptography();
-
-        public LoginConnection()
-        {
-            DatabaseInitializer db = new DatabaseInitializer();
-        }
-        public Boolean compare(string username, string password)
-        {
-
-            password = cr.cryptography(password);
-            //tha allaxthei auto me to kanoniko otan dimiourgithei i vasi
-            sql = "select * from users where username ='" + username + "' and password ='" + password + "';";
-
-        private UserConnection uConn = new UserConnection();
-        private Cryptography cr = new Cryptography();
         
         public Boolean compare(string username , string password) {
 
             password = cr.cryptography(password);
+            //auto tha allaksei me to kainourgio erwtima otan ginei i vasi
             sql ="select * from users where username ='" + username + "' and password ='" + password + "';";
 
             dr = this.Query(sql);
