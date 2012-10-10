@@ -11,6 +11,7 @@ namespace KarateGeek.databaseConnection
         private string username = "root";
         private string password = "root";
         private string sql = null;
+        private Cryptography cr = new Cryptography();
 
         public void insertNewUser()
         {
