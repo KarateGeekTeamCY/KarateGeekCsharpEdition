@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="databaseConnection\AthleteConnection.cs" />
     <Compile Include="databaseConnection\CoreDatabaseConnection.cs" />
+    <Compile Include="databaseConnection\Cryptography.cs" />
     <Compile Include="databaseConnection\DatabaseInitializer.cs" />
     <Compile Include="databaseConnection\JudgeConnection.cs" />
     <Compile Include="databaseConnection\LoginConnection.cs" />
