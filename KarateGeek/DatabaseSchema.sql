@@ -52,41 +52,50 @@
 ------------------------------------------------------------------------------------------------
 
 -- begin transaction:
-BEGIN;
+
+-- table drops
 
 
-drop schema IF EXISTS sch1 CASCADE;      -- WARNING: This also deletes all tables!
+
+drop table countries cascade;
+drop table addresses cascade;
+drop table locations cascade;
+drop table clubs cascade;
+drop table persons cascade;
+drop table athletes cascade;
+drop table judges cascade;
+drop table users cascade;
+
 
 
 -- table creation:
 
 
-CREATE TABLE persons (
-    id              SERIAL,  				-- "SERIAL" as a data type means an auto-incr. integer
-    first_name      varchar(50)     NOT NULL,
-    middle_name     varchar(50)     NOT NULL,
-    last_name       varchar(50)     NOT NULL,
-    date_of_birth   date,
-    phone           char(15)        NOT NULL,    	-- E.164 standard
-    secondary_phone char(15),
-    email           varchar(50),
-    address_id      integer         NOT NULL REFERENCES addresses( id ),
-    primary key(id)
+CREATE TABLE countries (
+	code            char(2)         PRIMARY KEY,
+	name            varchar(80)     NOT NULL
 );
 
 
-CREATE TABLE athletes (
-	id              int REFERENCES persons(id) ON DELETE NO ACTION, 	-- not CASCADE!
-	rank            varchar(50)     NOT NULL,  -- char or int?
-	club_id         integer         NOT NULL REFERENCES clubs(id),
+
+CREATE TABLE addresses (
+	id              SERIAL,
+	street          varchar(50)     NOT NULL,
+	number          varchar(12)     NOT NULL,
+	city            varchar(50)     NOT NULL,
+	postal_code     varchar(12)     NOT NULL,
+	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
 	primary key(id)
 );
 
 
-CREATE TABLE judges (
-	id              int REFERENCES persons(id) ON DELETE NO ACTION,
-	rank            varchar(50)     NOT NULL,  				-- char or int?
-	class           character(1)    NOT NULL
+
+CREATE TABLE locations (
+	id              SERIAL       REFERENCES addresses(id),
+	name            varchar(80),
+	phone           char(15),    		-- E.164 standard
+	description     varchar(255),
+	primary key(id)
 );
 
 
@@ -103,31 +112,54 @@ create table clubs (
 );
 
 
-CREATE TABLE addresses (
-	id              SERIAL,
-	street          varchar(50)     NOT NULL,
-	number          varchar(12)     NOT NULL,
-	city            varchar(50)     NOT NULL,
-	postal_code     varchar(12)     NOT NULL,
-	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
+
+CREATE TABLE persons (
+    id              SERIAL,  				-- "SERIAL" as a data type means an auto-incr. integer
+    first_name      varchar(50)     	NOT NULL,
+    middle_name     varchar(50),
+    last_name       varchar(50)     	NOT NULL,
+    date_of_birth   date,
+    phone           char(15)        	NOT NULL,    	-- E.164 standard
+    secondary_phone char(15),
+    email           varchar(50),
+    address_id      integer      	REFERENCES addresses( id ),
+    primary key(id)
+);
+
+
+
+
+CREATE TABLE athletes (
+	id              int REFERENCES persons(id) ON DELETE NO ACTION, 	-- not CASCADE!
+	rank            varchar(50)     NOT NULL,  -- char or int?
+	club_id         integer         NOT NULL REFERENCES clubs(id),
 	primary key(id)
 );
 
 
-CREATE TABLE locations (
-	id              SERIAL       REFERENCES addresses(id),
-	name            varchar(80),
-	phone           char(15),    		-- E.164 standard
-	description     varchar(255),
-	primary key(id)
-	-- event_id of the ERD is useless and was omitted
+
+CREATE TABLE judges (
+	id              int REFERENCES persons(id) ON DELETE NO ACTION,
+	rank            varchar(50)     NOT NULL,  				-- char or int?
+	class           character(1)    NOT NULL
 );
 
 
-CREATE TABLE countries (
-	code            char(2)         PRIMARY KEY,
-	name            varchar(80)     NOT NULL
+
+create table users (
+	id              	int REFERENCES persons(id) ON DELETE NO ACTION,
+	password		varchar(255) not null,
+	person_management	boolean not null default  false,
+	event_management	boolean not null default  false,
+	lottery			boolean not null default  false,
+	game_support		boolean not null default  false,
+	reports			boolean not null default  false,	
+	settings		boolean not null default  false,
+	primary key (id)
 );
+
+
+
 
 
 
