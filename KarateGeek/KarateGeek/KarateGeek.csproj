@@ -76,6 +76,9 @@
     <Compile Include="databaseConnection\JudgeConnection.cs" />
     <Compile Include="databaseConnection\LoginConnection.cs" />
     <Compile Include="databaseConnection\UserConnection.cs" />
+    <Compile Include="guis\athina.xaml.cs">
+      <DependentUpon>athina.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\EventTournamentManagement.xaml.cs">
       <DependentUpon>EventTournamentManagement.xaml</DependentUpon>
     </Compile>
@@ -124,6 +127,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="guis\athina.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="guis\EventTournamentManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

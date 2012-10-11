@@ -11,6 +11,7 @@ namespace KarateGeek.databaseConnection
     {
         private NpgsqlConnection _conn = null;
 
+
         public NpgsqlConnection conn
         {
             get
@@ -27,6 +28,7 @@ namespace KarateGeek.databaseConnection
                 _conn = value;
             }
         }
+
 
 
         public Boolean Disconnect()
@@ -50,5 +52,7 @@ namespace KarateGeek.databaseConnection
             comm.CommandText = sql;
             return comm.ExecuteReader();
         }
+
+        
     }
 }

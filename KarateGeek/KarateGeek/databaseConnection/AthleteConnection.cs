@@ -116,6 +116,8 @@ namespace KarateGeek.databaseConnection
             dr.Read();
             int addressId = dr.GetInt32(0);
 
+            dr.GetString(3);
+
 
 
             sql = "update addresses set " +
