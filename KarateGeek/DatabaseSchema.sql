@@ -129,55 +129,75 @@ CREATE TABLE countries (
 	name            varchar(80)     NOT NULL
 );
 
+
+
+
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 --dikes mou allages
-CREATE TABLE event (
-	id              integer			NOT NULL,
-	name            character varying(80)     NOT NULL,
-	official        boolean         NOT NULL DEFAULT true, 
-	day             timestamp       NOT NULL, 
-	description     character varying(255),
-	location        integer         ,
-	CONSTRAINT event_pkey PRIMARY KEY (id),
-	CONSTRAINT event_location_fkey FOREIGN KEY (location)
-      REFERENCES locations (id)
+
+
+
+CREATE TABLE events (
+	id              SERIAL,
+	name            varchar(80)     NOT NULL,
+	day             date       	NOT NULL,
+	official        boolean         NOT NULL DEFAULT false, 
+	game_type_id 	int references game_types(id),
+	location        integer  	references locations(id),
+	primary key (id)
 );
 
 
-CREATE TABLE tournament ( 
-	id              integer,
+CREATE TABLE tournaments ( 
+	id              SERIAL,
 	level           character varying(50)   	NOT NULL, 
 	category        character varying(50),            
-    event_id        integer,
-	CONSTRAINT tournament_pkey PRIMARY KEY (id),
-	CONSTRAINT tournament_event_id_fkey FOREIGN KEY (event_id)
-      REFERENCES events (id)
+	event_id        integer references events(id),
+	primary key(id)
+	
 );
 
-CREATE TABLE game_type ( 
-	id                integer,
-	name      		  character varying(50)   	NOT NULL, 
-	description       character varying(50) 	NOT NULL,              
-	CONSTRAINT game_type_pkey PRIMARY KEY (id)
+
+CREATE TABLE game_types ( 
+	id            	SERIAL,
+	name      	character varying(50)  	NOT NULL, 
+	description    	character varying(255) 	NOT NULL,              
+	PRIMARY KEY (id)
 );
 
-CREATE TABLE game(
-	id                integer,
-	phase      		  character varying(10)   	NOT NULL, 
-	position          character varying(10) 	NOT NULL,              
-	CONSTRAINT game_pkey PRIMARY KEY (id)
+
+CREATE TABLE games (
+	id            	SERIAL,
+	phase      	varchar(10)   	NOT NULL, 
+	position       	character varying(10) 	NOT NULL,    
+	tournament_id 	integer references tournament(id),
+	game_type_id 	integer references game_types(id),  
+	primary key(id)
 );
 
-CREATE TABLE game_participation(
-	athlete_person_id integer,
-	game_id integer,
-	PRIMARY KEY (athlete_person_id,game_id),
-	CONSTRAINT game_participation_athlete_person_id_fkey FOREIGN KEY (athlete_person_id)
-      REFERENCES  athletes (id),
-	CONSTRAINT game_participation_game_id_fkey FOREIGN KEY (game_id)
-      REFERENCES  game (id)  
+
+
+CREATE TABLE tournament_participations (
+	athlete_id	integer		references athletes(id),
+	tournament_id	integer 	references tournaments(id), 
+	rank_at_time 	varchar(50),
+	position	integer,
+	team_participation_id	integer	references team_tournament_participations(id),
+	PRIMARY KEY (athlete_id, tournament_id)
 );
+
+
+
+create table team_tournament_participations (
+	id 		serial,
+	descreption	varchar(255),
+	club_id		integer		references clubs(id),
+	tournament_id 	integer		references tournaments(id),
+	primary key (id)
+);
+
+
 
 CREATE TABLE game_score(--diorthwse ta ama mporeis giati den thimame pws ginetai akrivws auto me ta kleidai
 	game_id integer,
@@ -204,5 +224,4 @@ CREATE TABLE game_score(--diorthwse ta ama mporeis giati den thimame pws ginetai
 	FOREIGN KEY (judge4) REFERENCES judges(person_id)
 );
 
--- commit transaction (will destroy all existing tables and data):
---COMMIT;
+
