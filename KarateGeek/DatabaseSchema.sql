@@ -161,12 +161,37 @@ CREATE TABLE game(
 CREATE TABLE game_participation(
 	athlete_person_id integer,
 	game_id integer,
+	PRIMARY KEY (athlete_person_id,game_id),
 	CONSTRAINT game_participation_athlete_person_id_fkey FOREIGN KEY (athlete_person_id)
       REFERENCES  athletes (id),
 	CONSTRAINT game_participation_game_id_fkey FOREIGN KEY (game_id)
       REFERENCES  game (id)  
 );
 
+CREATE TABLE game_score(--diorthwse ta ama mporeis giati den thimame pws ginetai akrivws auto me ta kleidai
+	game_id integer,
+	athlete_person_id integer,
+	technical_points_id integer,
+	head_score integer,
+	score1 integer 	NOT NULL,
+	score2 integer NOT NULL,
+	score3 integer NOT NULL,
+	score4 integer NOT NULL,
+	head_judge_id integer,
+	judge1 integer,
+	judge2 integer,
+	judge3 integer,
+	judge4 integer,
+	PRIMARY KEY (game_id,athletes_person_id),
+	FOREIGN KEY (game_id) REFERENCES game(id),
+	FOREIGN KEY (athlete_person_id) REFERENCES athletes(person_id),
+	FOREIGN KEY (head_judge) REFERENCES judges(person_id),
+	FOREIGN KEY (technical_points_id) REFERENCES athlets(person_id),--auto den kserw pou paei
+	FOREIGN KEY (judge1) REFERENCES judges(person_id),
+	FOREIGN KEY (judge2) REFERENCES judges(person_id),
+	FOREIGN KEY (judge3) REFERENCES judges(person_id),
+	FOREIGN KEY (judge4) REFERENCES judges(person_id)
+);
 
 -- commit transaction (will destroy all existing tables and data):
 --COMMIT;
