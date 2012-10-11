@@ -58,62 +58,73 @@ BEGIN;
 drop schema IF EXISTS sch1 CASCADE;      -- WARNING: This also deletes all tables!
 
 
-create schema sch1;
-
-
 -- table creation:
 
 
-CREATE TABLE sch1.persons (
-	id              SERIAL PRIMARY KEY,  -- "SERIAL" as a data type means an auto-incr. integer
+CREATE TABLE persons (
+    id              SERIAL,  				-- "SERIAL" as a data type means an auto-incr. integer
     first_name      varchar(50)     NOT NULL,
     middle_name     varchar(50)     NOT NULL,
     last_name       varchar(50)     NOT NULL,
     date_of_birth   date,
-    phone           char(15)        NOT NULL,    -- E.164 standard
+    phone           char(15)        NOT NULL,    	-- E.164 standard
     secondary_phone char(15),
     email           varchar(50),
-    address_id      integer         NOT NULL REFERENCES sch1.addresses,
-
-    CHECK (email ~* '^[_a-zA-Z0-9-+]+(.[_a-zA-Z0-9-+]+)*@[a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)*.([a-zA-Z]{2,6})$')
-                                         -- regex probably not good enough!
+    address_id      integer         NOT NULL REFERENCES addresses( id ),
+    primary key(id)
 );
 
 
-CREATE TABLE sch1.athletes (
-	id              int REFERENCES sch1.persons ON DELETE NO ACTION, -- not CASCADE!
+CREATE TABLE athletes (
+	id              int REFERENCES persons(id) ON DELETE NO ACTION, 	-- not CASCADE!
 	rank            varchar(50)     NOT NULL,  -- char or int?
-	club_id         integer         NOT NULL REFERENCES sch1.clubs
+	club_id         integer         NOT NULL REFERENCES clubs(id),
+	primary key(id)
 );
 
 
-CREATE TABLE sch1.judges (
-	id              int REFERENCES sch1.persons ON DELETE NO ACTION,
-	rank            varchar(50)     NOT NULL,  -- char or int?
-    class           character(1)    NOT NULL
+CREATE TABLE judges (
+	id              int REFERENCES persons(id) ON DELETE NO ACTION,
+	rank            varchar(50)     NOT NULL,  				-- char or int?
+	class           character(1)    NOT NULL
 );
 
 
-CREATE TABLE sch1.addresses (
-	id              SERIAL PRIMARY KEY,
+
+create table clubs (
+	id	SERIAL,
+	name	varchar(50) 	not null,
+	phone	char(50),
+	email	varchar(50),
+	logo 	bytea,
+	address_id      integer		REFERENCES addresses( id ),
+	country_code    char(2)         DEFAULT 'CY'	REFERENCES countries(code),
+	primary key (id)
+);
+
+
+CREATE TABLE addresses (
+	id              SERIAL,
 	street          varchar(50)     NOT NULL,
 	number          varchar(12)     NOT NULL,
 	city            varchar(50)     NOT NULL,
 	postal_code     varchar(12)     NOT NULL,
-	country_code    char(2)         DEFAULT 'CY' REFERENCES sch1.countries
+	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
+	primary key(id)
 );
 
 
-CREATE TABLE sch1.locations (
-	id              integer          REFERENCES sch1.addresses,
+CREATE TABLE locations (
+	id              SERIAL       REFERENCES addresses(id),
 	name            varchar(80),
-	phone           char(15),    -- E.164 standard
-	description     varchar(255)
+	phone           char(15),    		-- E.164 standard
+	description     varchar(255),
+	primary key(id)
 	-- event_id of the ERD is useless and was omitted
 );
 
 
-CREATE TABLE sch1.countries (
+CREATE TABLE countries (
 	code            char(2)         PRIMARY KEY,
 	name            varchar(80)     NOT NULL
 );
