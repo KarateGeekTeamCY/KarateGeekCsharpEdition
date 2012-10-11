@@ -12,6 +12,13 @@ namespace KarateGeek.databaseConnection
         private string sql = null;
         private NpgsqlDataReader dr;
         private Cryptography cr = new Cryptography();
+
+        //na valete ton constructor se sxolio meta tin prwti fora ektelesis
+        public LoginConnection()
+        {
+            UserConnection us = new UserConnection();
+            us.insertNewUser();
+        }
         
         public Boolean compare(string username , string password) {
 

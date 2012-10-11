@@ -158,6 +158,7 @@ CREATE TABLE judges (
 
 create table users (
 	id              	int REFERENCES persons(id) ON DELETE NO ACTION,
+	username 		varchar(255) not null,
 	password		varchar(255) not null,
 	person_management	boolean not null default  false,
 	event_management	boolean not null default  false,
