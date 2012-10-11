@@ -73,7 +73,7 @@ drop table users cascade;
 
 CREATE TABLE countries (
 	code            char(2),
-	name            varchar(80)     NOT NULL
+	name            varchar(80)     NOT NULL,
 	primary key (code)
 );
 
@@ -232,6 +232,13 @@ CREATE TABLE tournament_participations (
 	position	integer,
 	team_participation_id	integer	references team_tournament_participations(id),
 	PRIMARY KEY (athlete_id, tournament_id)
+);
+
+
+create table game_participation (
+	athlete_id 	integer references athletes (id),
+	game_id 	integer references games (id),
+	primary key (athlete_id, game_id)
 );
 
 
