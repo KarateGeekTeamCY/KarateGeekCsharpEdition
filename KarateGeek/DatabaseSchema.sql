@@ -65,7 +65,15 @@ drop table persons cascade;
 drop table athletes cascade;
 drop table judges cascade;
 drop table users cascade;
-
+drop table game_types cascade;
+drop table events cascade;
+drop table tournaments cascade;
+drop table games cascade;
+drop table team_tournament_participations cascade;
+drop table tournament_participations cascade;
+drop table game_participation cascade;
+drop table technical_points cascade;
+drop table game_score cascade;
 
 
 -- table creation:
@@ -150,6 +158,7 @@ CREATE TABLE judges (
 
 create table users (
 	id              	int REFERENCES persons(id) ON DELETE NO ACTION,
+	username 		varchar(255) not null,
 	password		varchar(255) not null,
 	person_management	boolean not null default  false,
 	event_management	boolean not null default  false,
@@ -170,6 +179,12 @@ create table users (
 ----------------------------------------------------------------------------------------------------
 --dikes mou allages
 
+create table game_types (
+	id 		serial,
+	name		varchar(50),
+	description	varchar(255),
+	primary key(id)
+);
 
 
 create table events (
@@ -192,14 +207,6 @@ CREATE TABLE tournaments (
 	
 );
 
-
-
-create table game_types (
-	id 		serial,
-	name		varchar(50),
-	description	varchar(255),
-	primary key(id)
-);
 
 
 
