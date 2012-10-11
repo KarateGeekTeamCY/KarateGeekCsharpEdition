@@ -72,8 +72,9 @@ drop table users cascade;
 
 
 CREATE TABLE countries (
-	code            char(2)         PRIMARY KEY,
+	code            char(2),
 	name            varchar(80)     NOT NULL
+	primary key (code)
 );
 
 
@@ -114,16 +115,16 @@ create table clubs (
 
 
 CREATE TABLE persons (
-    id              SERIAL,  				-- "SERIAL" as a data type means an auto-incr. integer
-    first_name      varchar(50)     	NOT NULL,
-    middle_name     varchar(50),
-    last_name       varchar(50)     	NOT NULL,
-    date_of_birth   date,
-    phone           char(15)        	NOT NULL,    	-- E.164 standard
-    secondary_phone char(15),
-    email           varchar(50),
-    address_id      integer      	REFERENCES addresses( id ),
-    primary key(id)
+	id              SERIAL,  				-- "SERIAL" as a data type means an auto-incr. integer
+	first_name      varchar(50)     	NOT NULL,
+	middle_name     varchar(50),
+	last_name       varchar(50)     	NOT NULL,
+	date_of_birth   date,
+	phone           char(15)        	NOT NULL,    	-- E.164 standard
+	secondary_phone char(15),
+	email           varchar(50),
+	address_id      integer      	REFERENCES addresses( id ),
+	primary key(id)
 );
 
 
@@ -141,7 +142,8 @@ CREATE TABLE athletes (
 CREATE TABLE judges (
 	id              int REFERENCES persons(id) ON DELETE NO ACTION,
 	rank            varchar(50)     NOT NULL,  				-- char or int?
-	class           character(1)    NOT NULL
+	class           character(1)    NOT NULL,
+	primary key(id)
 );
 
 
@@ -170,12 +172,12 @@ create table users (
 
 
 
-CREATE TABLE events (
+create table events (
 	id              SERIAL,
 	name            varchar(80)     NOT NULL,
-	day             date       	NOT NULL,
-	official        boolean         NOT NULL DEFAULT false, 
-	game_type_id 	int references game_types(id),
+	day             date,
+	official        boolean      	DEFAULT false, 
+	game_type_id 	int 		references game_types(id),
 	location        integer  	references locations(id),
 	primary key (id)
 );
@@ -191,32 +193,23 @@ CREATE TABLE tournaments (
 );
 
 
-CREATE TABLE game_types ( 
-	id            	SERIAL,
-	name      	character varying(50)  	NOT NULL, 
-	description    	character varying(255) 	NOT NULL,              
-	PRIMARY KEY (id)
+
+create table game_types (
+	id 		serial,
+	name		varchar(50),
+	description	varchar(255),
+	primary key(id)
 );
+
 
 
 CREATE TABLE games (
 	id            	SERIAL,
 	phase      	varchar(10)   	NOT NULL, 
 	position       	character varying(10) 	NOT NULL,    
-	tournament_id 	integer references tournament(id),
+	tournament_id 	integer references tournaments(id),
 	game_type_id 	integer references game_types(id),  
 	primary key(id)
-);
-
-
-
-CREATE TABLE tournament_participations (
-	athlete_id	integer		references athletes(id),
-	tournament_id	integer 	references tournaments(id), 
-	rank_at_time 	varchar(50),
-	position	integer,
-	team_participation_id	integer	references team_tournament_participations(id),
-	PRIMARY KEY (athlete_id, tournament_id)
 );
 
 
@@ -231,29 +224,68 @@ create table team_tournament_participations (
 
 
 
-CREATE TABLE game_score(--diorthwse ta ama mporeis giati den thimame pws ginetai akrivws auto me ta kleidai
-	game_id integer,
-	athlete_person_id integer,
-	technical_points_id integer,
-	head_score integer,
-	score1 integer 	NOT NULL,
-	score2 integer NOT NULL,
-	score3 integer NOT NULL,
-	score4 integer NOT NULL,
-	head_judge_id integer,
-	judge1 integer,
-	judge2 integer,
-	judge3 integer,
-	judge4 integer,
-	PRIMARY KEY (game_id,athletes_person_id),
-	FOREIGN KEY (game_id) REFERENCES game(id),
-	FOREIGN KEY (athlete_person_id) REFERENCES athletes(person_id),
-	FOREIGN KEY (head_judge) REFERENCES judges(person_id),
-	FOREIGN KEY (technical_points_id) REFERENCES athlets(person_id),--auto den kserw pou paei
-	FOREIGN KEY (judge1) REFERENCES judges(person_id),
-	FOREIGN KEY (judge2) REFERENCES judges(person_id),
-	FOREIGN KEY (judge3) REFERENCES judges(person_id),
-	FOREIGN KEY (judge4) REFERENCES judges(person_id)
+
+CREATE TABLE tournament_participations (
+	athlete_id	integer		references athletes(id),
+	tournament_id	integer 	references tournaments(id), 
+	rank_at_time 	varchar(50),
+	position	integer,
+	team_participation_id	integer	references team_tournament_participations(id),
+	PRIMARY KEY (athlete_id, tournament_id)
 );
+
+
+
+create table technical_points(
+	id 		serial,
+	name 		varchar(25),
+	points 		integer,
+	description	varchar(255),
+	primary key(id)
+);
+
+
+
+CREATE TABLE game_score(
+
+	game_id serial,
+	athlete_id 	integer references athletes(id),
+	
+	technical_points_id	integer 	references technical_points(id),
+	
+	head_score	integer,
+	score1 		integer,
+	score2 		integer,
+	score3 		integer,
+	score4 		integer,
+	
+	head_judge_id	integer 	references judges(id),
+	judge1		integer		references judges(id),
+	judge2	 	integer  	references judges(id),
+	judge3 		integer  	references judges(id),
+	judge4 		integer  	references judges(id),
+	
+	PRIMARY KEY (game_id, athlete_id)
+
+	);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
