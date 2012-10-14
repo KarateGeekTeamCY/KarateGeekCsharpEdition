@@ -16,8 +16,12 @@ namespace KarateGeek.databaseConnection
         //na valete ton constructor se sxolio meta tin prwti fora ektelesis
         public LoginConnection()
         {
-            UserConnection us = new UserConnection();
-            us.insertNewUser();
+            //
+            // uncoment both next lines if rooning for the first time
+            //
+            //UserConnection us = new UserConnection();
+            //us.insertNewUser();
+            //
         }
         
         public Boolean compare(string username , string password) {

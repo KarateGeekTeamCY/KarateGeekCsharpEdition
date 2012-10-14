@@ -7,77 +7,30 @@ using Npgsql;
 
 namespace KarateGeek.databaseConnection
 {
-    class AthleteConnection : CoreDatabaseConnection
+    class AthleteConnection : PersonConnection
     {
         DataTable athlets = new DataTable();
 
-        public Boolean InserrtNewAthlete(string firstName, string middleName, string lastName,
+        public string InserrtNewAthlete(string firstName, string middleName, string lastName,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
            string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
            string rank, string localClubId)
         {
-            string sql = "";
-            NpgsqlDataReader dr = null;
+            AddressConnection addConn = new AddressConnection();
+            string addressId = addConn.InsertNewAddress(countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
 
-            // getting the next person id
-            sql = "select nextval('seq_persons_id'); ";
-            dr = this.Query(sql);
-            dr.Read();
-            int personId = dr.GetInt32(0);
+            string personId = this.insertNewPerson(firstName, middleName, lastName, dateOfBirth,
+            primaryPhoneNo, secondaryPhoneNo, email, "" + addressId);
 
-            // getting the next address id
-            sql = "select nextval('seq_address_id'); ";
-            dr = this.Query(sql);
-            dr.Read();
-            int addressId = dr.GetInt32(0);
+            this._InsertAthlete(personId, rank, localClubId);
 
-
-
-            sql = "insert into table Persons ( id, first_name, middle_name, last_name, " +
-                "date_of_birth, primary_phone_number, secondary_phone_number, email, " +
-                "address_id) values ( '"
-                + personId + "', '"
-                + firstName + "', '"
-                + middleName + "', '"
-                + lastName + "', '"
-                + dateOfBirth.ToShortDateString() + "', '"
-                + primaryPhoneNo + "', '"
-                + secondaryPhoneNo + "', '"
-                + email + "', '"
-                + addressId + "' );";
-
-            this.NonQuery(sql);
-
-
-
-            sql = "insert into table athlets ( person_id, rank, local_association_id) values ( '"
-                + personId + "', '"
-                + rank + "', '"
-                + localClubId + "' );";
-
-            this.NonQuery(sql);
-
-
-
-            sql = "insert into table addresses ( id, city, street_name, street_number, " +
-                "street_postal_code, country_code ) values ( '"
-                + addressId + "', '"
-                + City + "', '"
-                + addressStreetName + "', '"
-                + addressStreetNumber + "', '"
-                + addressPostalCode + "', '"
-                + countryCode + "' );";
-
-            this.NonQuery(sql);
-
-
-            return true;
+            return personId;
         }
 
 
 
-        public Boolean InserrtNewAthleteFromOther(string id, string firstName, string middleName, string lastName,
+        public string InserrtNewAthleteFromOther(string id, string firstName, string middleName, string lastName,
           DateTime dateOfBirth,
           string primaryPhoneNo, string secondaryPhoneNo, string email,
           string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
@@ -87,56 +40,31 @@ namespace KarateGeek.databaseConnection
             NpgsqlDataReader dr = null;
 
 
-
-            sql = "update Persons set " +
-
-                "middle_name = '" + middleName + "', " +
-                "last_name = '" + lastName + "', " +
-                "date_of_birth = '" + dateOfBirth.ToShortDateString() + "', " +
-                "primary_phone_number = '" + primaryPhoneNo + "', " +
-                "secondary_phone_number = '" + secondaryPhoneNo + "', " +
-                "email = '" + email + "' where id = '" + id + "' ;";
-
-            this.NonQuery(sql);
+            this.updatePerson(id, firstName, middleName, lastName,
+            dateOfBirth,
+            primaryPhoneNo, secondaryPhoneNo, email);
 
 
+            this._InsertAthlete(id, rank, localClubId);
 
-            sql = "insert into table athlets ( person_id, rank, local_association_id) values ( '"
-                + id + "', '"
-                + rank + "', '"
-                + localClubId + "' );";
-
-            this.NonQuery(sql);
-
-
-
+            
             // getting the address id
             sql = "select address_id from persons where id = '" + id + "'; ";
             dr = this.Query(sql);
             dr.Read();
             int addressId = dr.GetInt32(0);
 
-            dr.GetString(3);
+          
+            AddressConnection addConn = new AddressConnection();
+            addConn.UpdateAddress("" + addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
 
 
-
-            sql = "update addresses set " +
-
-                "city = '" + City + "', " +
-                "street_name = '" + addressStreetName + "', " +
-                "street_number = '" + addressStreetNumber + "', " +
-                "street_postal_code = '" + addressPostalCode + "', " +
-                "country_code = '" + countryCode + "' where id = '" + addressId + "' ;";
-
-            this.NonQuery(sql);
-
-
-            return true;
+            return "";
         }
 
 
 
-        public Boolean UpdateAthlete(string id, string firstName, string middleName, string lastName,
+        public string UpdateAthlete(string id, string firstName, string middleName, string lastName,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
            string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
@@ -145,35 +73,15 @@ namespace KarateGeek.databaseConnection
             string sql = "";
             NpgsqlDataReader dr = null;
 
-            //note
-            //
-            //UPDATE table_name
-            //SET column1=value, column2=value2,...
-            //WHERE some_column=some_value
+
+            this._UpdatetAthlete(id, rank, localClubId);
 
 
+            this.updatePerson(id, firstName, middleName, lastName,
+            dateOfBirth,
+            primaryPhoneNo, secondaryPhoneNo, email);
 
-            sql = "update Persons set " +
-
-                "middle_name = '" + middleName + "', " +
-                "last_name = '" + lastName + "', " +
-                "date_of_birth = '" + dateOfBirth.ToShortDateString() + "', " +
-                "primary_phone_number = '" + primaryPhoneNo + "', " +
-                "secondary_phone_number = '" + secondaryPhoneNo + "', " +
-                "email = '" + email + "' where id = '" + id + "' ;";
-
-            this.NonQuery(sql);
-
-
-
-            sql = "update athlets set " +
-
-                "rank = '" + rank + "', " +
-                "local_association_id = '" + localClubId + "' where id = '" + id + "' ;";
-
-            this.NonQuery(sql);
-
-
+           
             // getting the address id
             sql = "select address_id from persons where id = '" + id + "'; ";
             dr = this.Query(sql);
@@ -181,26 +89,17 @@ namespace KarateGeek.databaseConnection
             int addressId = dr.GetInt32(0);
 
 
+            AddressConnection addConn = new AddressConnection();
+            addConn.UpdateAddress("" + addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
 
-            sql = "update addresses set " +
-
-                "city = '" + City + "', " +
-                "street_name = '" + addressStreetName + "', " +
-                "street_number = '" + addressStreetNumber + "', " +
-                "street_postal_code = '" + addressPostalCode + "', " +
-                "country_code = '" + countryCode + "' where id = '" + addressId + "' ;";
-
-            this.NonQuery(sql);
-
-
-            return true;
+            return "";
         }
 
 
 
-        public IObservable<string> findSimilar(string filter)
+        public LinkedList<string> findSimilar(string filter)
         {
-            IObservable<string> items = (IObservable<string>)new LinkedList<string>();
+            LinkedList<string> items = new LinkedList<string>();
 
 
 
@@ -209,7 +108,32 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        private string _InsertAthlete(string PersonId, string rank, string localClubId)
+        {
+
+            string sql = "insert into table athlets ( person_id, rank, local_association_id) values ( '"
+                + PersonId + "', '"
+                + rank + "', '"
+                + localClubId + "' );";
+
+            this.NonQuery(sql);
 
 
+            return "";
+        }
+
+
+
+        private string _UpdatetAthlete(string PersonId, string rank, string localClubId)
+        {
+            string sql = "update athlets set " +
+
+                "rank = '" + rank + "', " +
+                "local_association_id = '" + localClubId + "' where id = '" + PersonId + "' ;";
+
+            this.NonQuery(sql);
+
+            return "";
+        }
     }
 }
