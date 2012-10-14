@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using KarateGeek.databaseConnection;
 
 namespace KarateGeek.guis
 {
@@ -19,34 +19,152 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class PersonManagement : Window
     {
+        private AthleteConnection athleteConn;
+        private string first_name = null;
+        private string last_name = null;
+        private string fathers_name = null;
+        private string sex = null;
+        private DateTime date;
+        private string first_phone = null;
+        private string second_phone = null;
+        private string email = null;
+        private string address = null;
+        private string address_num = null;
+        private string city = null;
+        private string country = null;
+        private string country_code = null;
+        private string rank = null;
+        private string club = null;
+
         public PersonManagement()
         {
+            athleteConn = new AthleteConnection();
             InitializeComponent();
+            //prostetoume cities oses theloume
+            cmbACityChooses.Items.Add("Nicosia");
+            cmbACityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+            cmbACityChooses.Items.Add("Limassol");
+            //prosthetoume xwres
+            cmbACountryChooses.Items.Add("Cyprus");
+            cmbACountryChooses.SelectedIndex = 0;
+            cmbACountryChooses.Items.Add("Greece");
+            //prosthetoume rank
+            cmbARankChooses.Items.Add("White");
+            cmbARankChooses.SelectedIndex = 0;
+            cmbARankChooses.Items.Add("Yellow");
+            //prosthetoume clubs
+            cmbAClubChooses.Items.Add("Pro Kata Club (P.K.C.)");
+            cmbAClubChooses.SelectedIndex = 0;
+            cmbAClubChooses.Items.Add("Allo Club");
         }
 
-
-        //
-        // this will show the available persons in athlete management tab
-        //
         private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
-        
-            List<string> items = new List<string>();
 
-            items.Add("athlete one");
-            items.Add("athlete two");
+            first_name = athleteFirstName.Text;
+        }
 
-            this.availablePersonsList.Visibility = System.Windows.Visibility.Visible;
-            this.availablePersonsList.ItemsSource = items;
+        private void athleteLastName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            last_name = athleteLastName.Text;
 
         }
 
-        private void availablePersonsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void athleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            fathers_name = athleteFatherName.Text;
+
+        }
+
+        private void athleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            date = athleteDateOfBirth.SelectedDate.Value;
+        }
+        
+        private void athleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            first_phone = athleteFirstPhone.Text;
+        }
+
+        private void athleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            second_phone = athleteSecondPhone.Text;
+        }
+
+        private void athleteEmail_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            email = athleteEmail.Text;
+        }
+
+        private void athleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            address = athleteStreetName.Text;
+        }
+
+        private void athleteAddressNum_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            address_num = athleteAddressNum.Text;
+        }
+
+        private void cmbACityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbACityChooses.SelectedIndex;
+            city = cmbACityChooses.Items[index].ToString();
+        }
+
+        private void cmbACountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbACountryChooses.SelectedIndex;
+            country = cmbACountryChooses.Items[index].ToString();
+            setCountryCode(country);
+        }
+
+        private void cmbARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbARankChooses.SelectedIndex;
+            rank = cmbARankChooses.Items[index].ToString();
+        }
+
+        private void cmbAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbAClubChooses.SelectedIndex;
+            club = cmbAClubChooses.Items[index].ToString();
+        }
+
+        private void rdButton1_Checked(object sender, RoutedEventArgs e)
+        {
+            sex = "male";
+        }
+
+        private void rdButton2_Checked(object sender, RoutedEventArgs e)
+        {
+            sex = "female";
+        }
+
+        private void btnASave_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("sex: " + sex);
+        }
+
+        private void btnASaveNew_Click(object sender, RoutedEventArgs e)
+        {
+            athleteConn.InserrtNewAthlete(first_name, last_name, fathers_name, date, first_phone, second_phone, email, country_code, city, address, address_num, "3025", rank, club);
+        }
+
+        private void btnADelete_Click(object sender, RoutedEventArgs e)
         {
 
-            Object[] selected = (Object[])e.AddedItems;
-
-            this.availablePersonsList.Visibility = System.Windows.Visibility.Hidden;
         }
+
+
+        private void setCountryCode(string country){
+            if(country.Equals("Cyprus")){
+                country_code = "CY";
+            }else if(country.Equals("Greece")){
+                country_code = "GR";
+            }
+        }
+       
+
     }
 }

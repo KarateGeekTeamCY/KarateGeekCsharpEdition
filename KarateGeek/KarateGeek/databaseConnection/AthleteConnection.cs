@@ -11,7 +11,7 @@ namespace KarateGeek.databaseConnection
     {
         DataTable athlets = new DataTable();
 
-        public string InserrtNewAthlete(string firstName, string middleName, string lastName,
+        public string InserrtNewAthlete(string firstName, string lastName, string fathersName,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
            string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
@@ -20,7 +20,7 @@ namespace KarateGeek.databaseConnection
             AddressConnection addConn = new AddressConnection();
             string addressId = addConn.InsertNewAddress(countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
 
-            string personId = this.insertNewPerson(firstName, middleName, lastName, dateOfBirth,
+            string personId = this.insertNewPerson(firstName, lastName, fathersName, dateOfBirth,
             primaryPhoneNo, secondaryPhoneNo, email, "" + addressId);
 
             this._InsertAthlete(personId, rank, localClubId);

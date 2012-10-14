@@ -62,10 +62,6 @@
                                Grid.Row="1"
                                Grid.Column="2"
                                VerticalAlignment="Center" TextChanged="athleteFirstName_TextChanged" />
-
-
-                        
-                    
                     
                         <Label Content="Last name"
                                Grid.Row="2"
@@ -74,7 +70,7 @@
                         <TextBox Name="athleteLastName" 
                                Grid.Row="2"
                                Grid.Column="2"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center" TextChanged="athleteLastName_TextChanged"/>
                         <Label Content="Fathers name"
                                Grid.Row="3"
                                Grid.Column="1"
@@ -82,7 +78,7 @@
                         <TextBox Name="athleteFatherName" 
                                Grid.Row="3"
                                Grid.Column="2"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center" TextChanged="athleteFathersName_TextChanged"/>
 
                         <Label Content="Sex"
                                Grid.Row="4"
@@ -95,14 +91,17 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <RadioButton Content="male" 
+                            
+                            <RadioButton Name="rdButton1"
+                                         Content="male" 
                                          Grid.Column="0"
                                          VerticalAlignment="Center"
-                                         Margin="5"/>
-                            <RadioButton Content="female" 
+                                         Margin="5" Checked="rdButton1_Checked" />
+                            <RadioButton Name="rdButton2"
+                                         Content="female" 
                                          Grid.Column="1"
                                          VerticalAlignment="Center"
-                                         Margin="5"/>
+                                         Margin="5" Checked="rdButton2_Checked" />
                         </Grid>
 
                         <Label Content="Date of birth"
@@ -113,7 +112,7 @@
                                 Grid.Column="2"
                                 Grid.Row="5"
                                     VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"/>
+                                    VerticalContentAlignment="Center" SelectedDateChanged="athleteDateOfBirth_SelectedDateChanged" />
 
                         <Label Content="Phone num."
                                Grid.Row="6"
@@ -122,7 +121,7 @@
                         <TextBox Name="athleteFirstPhone" 
                                Grid.Row="6"
                                Grid.Column="2"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center" TextChanged="athleteFirstPhone_TextChanged" />
 
                         <Label Content="Secondary phone num."
                                Grid.Row="7"
@@ -131,14 +130,22 @@
                         <TextBox Name="athleteSecondPhone" 
                                Grid.Row="7"
                                Grid.Column="2"
-                               VerticalAlignment="Center"/>
-
-                        <Label Content="Address"
+                               VerticalAlignment="Center" TextChanged="athleteSecondPhone_TextChanged" />
+                        <Label Content="Email"
                                Grid.Row="8"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
+                        <TextBox Name="athleteEmail" 
+                               Grid.Row="8"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" TextChanged="athleteEmail_TextChanged" />
+
+                        <Label Content="Address"
+                               Grid.Row="9"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
                         <Grid Grid.Column="2"
-                              Grid.Row="8">
+                              Grid.Row="9">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -146,72 +153,59 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Name="athleteStreetName"
-                                     Grid.Column="0"/>
+                                     Grid.Column="0" TextChanged="athleteStreetName_TextChanged" />
                             <Label Content="Num." 
                                    Grid.Column="1"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
                             <TextBox Name="athleteAddressNum" 
-                                     Grid.Column="2"/>                      
+                                     Grid.Column="2" TextChanged="athleteAddressNum_TextChanged" />                      
                         </Grid>
 
                         <Label Content="City"
-                               Grid.Row="9"
-                               Grid.Column="1"
-                               VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbACityChooses"
-                                  Grid.Row="9"
-                                  Grid.Column="2"
-                                  Margin="0,3,0,3">
-                            <ComboBoxItem Content="Nicosia"
-                                          IsSelected="True"/>
-                        </ComboBox>
-
-                        <Label Content="Country"
                                Grid.Row="10"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbACountryChooses"
+                        <ComboBox Name="cmbACityChooses"
                                   Grid.Row="10"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3">
-                            <ComboBoxItem Content="Cyprus"
-                                          IsSelected="True"/>
+                                  Margin="0,3,0,3" SelectionChanged="cmbACityChooses_SelectionChanged">
+                           
                         </ComboBox>
 
-                        <Label Content="Rank"
+                        <Label Content="Country"
                                Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbARankChooses"
+                        <ComboBox Name="cmbACountryChooses"
                                   Grid.Row="11"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3">
-                            <ComboBoxItem Content="White"
-                                          IsSelected="True"/>
+                                  Margin="0,3,0,3" SelectionChanged="cmbACountryChooses_SelectionChanged">
+                           
                         </ComboBox>
 
-                        <Label Content="Club"
+                        <Label Content="Rank"
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbAClubChooses"
+                        <ComboBox Name="cmbARankChooses"
                                   Grid.Row="12"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3">
-                            <ComboBoxItem Content="Pro Kata Club (P.K.C.)"
-                                          IsSelected="True"/>
+                                  Margin="0,3,0,3" SelectionChanged="cmbARankChooses_SelectionChanged">
+                            
+                        </ComboBox>
+
+                        <Label Content="Club"
+                               Grid.Row="13"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbAClubChooses"
+                                  Grid.Row="13"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" SelectionChanged="cmbAClubChooses_SelectionChanged">
                         </ComboBox>
 
                     
-                    
-                        <ListBox Name="availablePersonsList" 
-                                 Grid.Row="2"
-                                 Grid.Column="2"
-                                 Grid.RowSpan="5"
-                                 Visibility="Hidden" 
-                                 SelectionChanged="availablePersonsList_SelectionChanged" />
-
 
 
 
@@ -234,15 +228,15 @@
                         <Button Name="btnASave"
                                 Content="Save"
                                 Grid.Column="2"
-                                Margin="10"/>
+                                Margin="10" Click="btnASave_Click" />
                         <Button Name="btnASaveNew"
                                 Content="Save as new"
                                 Grid.Column="3"
-                                Margin="10"/>
+                                Margin="10" Click="btnASaveNew_Click" />
                         <Button Name="btnADelete"
                                 Content="Delete"
                                 Grid.Column="4"
-                                Margin="10"/>
+                                Margin="10" Click="btnADelete_Click" />
 
 
 
