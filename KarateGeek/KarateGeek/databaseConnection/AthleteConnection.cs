@@ -111,7 +111,7 @@ namespace KarateGeek.databaseConnection
         private string _InsertAthlete(string PersonId, string rank, string localClubId)
         {
 
-            string sql = "insert into table athlets ( person_id, rank, local_association_id) values ( '"
+            string sql = "insert into athlets ( person_id, rank, local_association_id) values ( '"
                 + PersonId + "', '"
                 + rank + "', '"
                 + localClubId + "' );";
