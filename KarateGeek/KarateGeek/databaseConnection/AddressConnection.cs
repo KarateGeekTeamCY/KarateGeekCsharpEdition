@@ -17,9 +17,9 @@ namespace KarateGeek.databaseConnection
                 "postal_code, country_code ) values ( '"
                 + addressStreetName + "', '"
                 + addressStreetNumber + "', '"
-                + City + "', '" 
-               + addressPostalCode + "','"
- + countryCode + "' );";
+                + City + "', '"
+                + addressPostalCode + "','"
+                + countryCode + "' );";
 
 
             this.NonQuery(sql);
@@ -28,6 +28,7 @@ namespace KarateGeek.databaseConnection
             dr = this.Query(sql);
             dr.Read();
             long addressId = dr.GetInt64(0);
+            dr.Close();
 
             return "" + addressId;
 

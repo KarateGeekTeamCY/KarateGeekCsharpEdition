@@ -32,10 +32,12 @@ namespace KarateGeek.databaseConnection
 
             if (dr.HasRows == true)
             {
+                dr.Close();
                 return true;
             }
             else
             {
+                dr.Close();
                 return false;
             }
         }
