@@ -13,8 +13,8 @@ namespace KarateGeek.databaseConnection
             string sql;
             NpgsqlDataReader dr = null;
 
-            sql = "insert into table addresses (city, street_name, street_number, " +
-                "street_postal_code, country_code ) values ( '"
+            sql = "insert into addresses (city, street, number, " +
+                "postal_code, country_code ) values ( '"
                 + City + "', '"
                 + addressStreetName + "', '"
                 + addressStreetNumber + "', '"
