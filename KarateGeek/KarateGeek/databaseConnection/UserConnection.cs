@@ -8,8 +8,8 @@ namespace KarateGeek.databaseConnection
 {
     class UserConnection : CoreDatabaseConnection
     {
-        private string username = "root";
-        private string password = "root";
+        private string username = "admin";
+        private string password = "admin";
         private string sql = null;
         private Cryptography cr = new Cryptography();
 
