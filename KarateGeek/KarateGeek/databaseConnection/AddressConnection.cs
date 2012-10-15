@@ -29,10 +29,8 @@ namespace KarateGeek.databaseConnection
             dr.Read();
             long addressId = dr.GetInt64(0);
             dr.Close();
-<<<<<<< HEAD
-=======
 
->>>>>>> 47beb633c1b82e682f42e4a7fe7fac071920edce
+
             return "" + addressId;
 
         }

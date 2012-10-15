@@ -14,7 +14,7 @@ namespace KarateGeek.databaseConnection
         private Cryptography cr = new Cryptography();
 
         //na valete ton constructor se sxolio meta tin prwti fora ektelesis
-<<<<<<< HEAD
+
         public LoginConnection()
         {
             //
@@ -24,7 +24,7 @@ namespace KarateGeek.databaseConnection
             //us.insertNewUser();
             
         }
-=======
+
         //public LoginConnection()
         //{
 
@@ -32,7 +32,7 @@ namespace KarateGeek.databaseConnection
         //    us.insertNewUser();
 
         //}
->>>>>>> 47beb633c1b82e682f42e4a7fe7fac071920edce
+
         
         public Boolean compare(string username , string password) {
 
