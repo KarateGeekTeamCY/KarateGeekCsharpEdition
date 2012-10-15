@@ -33,8 +33,8 @@ namespace KarateGeek.databaseConnection
 
         public Boolean Disconnect()
         {
-            this.conn.Close();
-            this.conn = null;
+            _conn.Close();
+            _conn = null;
             return true;
         }
 

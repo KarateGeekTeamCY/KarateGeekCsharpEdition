@@ -9,7 +9,7 @@ namespace KarateGeek.databaseConnection
 {
     class AthleteConnection : PersonConnection
     {
-        DataTable athlets = new DataTable();
+        DataTable athletes = new DataTable();
 
         public string InserrtNewAthlete(string firstName, string lastName, string fathersName,
            DateTime dateOfBirth,
@@ -111,10 +111,10 @@ namespace KarateGeek.databaseConnection
         private string _InsertAthlete(string PersonId, string rank, string localClubId)
         {
 
-            string sql = "insert into table athlets ( person_id, rank, local_association_id) values ( '"
+            string sql = "insert into athletes ( id, rank, club_id) values ( '"
                 + PersonId + "', '"
                 + rank + "', '"
-                + localClubId + "' );";
+                + 1 + "' );"; //edw egine allagi gia na fanei oti xreiazetai to id apo to club pou tha einai eidi perasmeno
 
             this.NonQuery(sql);
 

@@ -16,8 +16,8 @@ namespace KarateGeek.databaseConnection
             string sql;
             NpgsqlDataReader dr = null;
 
-            sql = "insert into table Persons (first_name, middle_name, last_name, " +
-                "date_of_birth, primary_phone_number, secondary_phone_number, email, " +
+            sql = "insert into Persons (first_name, middle_name, last_name, " +
+                "date_of_birth, phone, secondary_phone, email, " +
                 "address_id) values ( '"
                 + firstName + "', '"
                 + middleName + "', '"
@@ -34,7 +34,7 @@ namespace KarateGeek.databaseConnection
             dr = this.Query(sql);
             dr.Read();
             long personId = dr.GetInt64(0);
-
+            dr.Close();
             return "" + personId;
         }
 

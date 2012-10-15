@@ -27,7 +27,7 @@ namespace KarateGeek.databaseConnection
             dr = this.Query(sql);
             dr.Read();
             long addressId = dr.GetInt64(0);
-
+            dr.Close();
             return "" + addressId;
 
         }

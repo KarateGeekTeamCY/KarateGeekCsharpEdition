@@ -18,10 +18,10 @@ namespace KarateGeek.databaseConnection
         {
             //
             // uncoment both next lines if rooning for the first time
-            //
+
             //UserConnection us = new UserConnection();
             //us.insertNewUser();
-            //
+            
         }
         
         public Boolean compare(string username , string password) {
