@@ -8,18 +8,19 @@ namespace KarateGeek.databaseConnection
 {
     class AddressConnection : CoreDatabaseConnection
     {
-        public string InsertNewAddress(string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode)
+        public string InsertNewAddress(string addressStreetName, string addressStreetNumber, string City, string addressPostalCode, string countryCode)
         {
             string sql;
             NpgsqlDataReader dr = null;
 
-            sql = "insert into addresses (city, street, number, " +
+            sql = "insert into addresses (street, number, city," +
                 "postal_code, country_code ) values ( '"
-                + City + "', '"
                 + addressStreetName + "', '"
                 + addressStreetNumber + "', '"
-                + addressPostalCode + "', '"
-                + countryCode + "' );";
+                + City + "', '" 
+               + addressPostalCode + "','"
+ + countryCode + "' );";
+
 
             this.NonQuery(sql);
 
