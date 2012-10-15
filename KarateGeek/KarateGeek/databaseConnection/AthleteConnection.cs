@@ -53,6 +53,7 @@ namespace KarateGeek.databaseConnection
             dr = this.Query(sql);
             dr.Read();
             int addressId = dr.GetInt32(0);
+            dr.Close();
 
           
             AddressConnection addConn = new AddressConnection();
@@ -87,6 +88,7 @@ namespace KarateGeek.databaseConnection
             dr = this.Query(sql);
             dr.Read();
             int addressId = dr.GetInt32(0);
+            dr.Close();
 
 
             AddressConnection addConn = new AddressConnection();
@@ -126,10 +128,10 @@ namespace KarateGeek.databaseConnection
 
         private string _UpdatetAthlete(string PersonId, string rank, string localClubId)
         {
-            string sql = "update athlets set " +
+            string sql = "update athletes set " +
 
                 "rank = '" + rank + "', " +
-                "local_association_id = '" + localClubId + "' where id = '" + PersonId + "' ;";
+                "club_id = '" + localClubId + "' where id = '" + PersonId + "' ;";
 
             this.NonQuery(sql);
 

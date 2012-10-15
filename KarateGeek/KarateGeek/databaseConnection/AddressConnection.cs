@@ -8,7 +8,7 @@ namespace KarateGeek.databaseConnection
 {
     class AddressConnection : CoreDatabaseConnection
     {
-        public string InsertNewAddress(string addressStreetName,string addressStreetNumber,string City,string addressPostalCode,string countryCode)
+        public string InsertNewAddress(string addressStreetName, string addressStreetNumber, string City, string addressPostalCode, string countryCode)
         {
             string sql;
             NpgsqlDataReader dr = null;
@@ -17,9 +17,10 @@ namespace KarateGeek.databaseConnection
                 "postal_code, country_code ) values ( '"
                 + addressStreetName + "', '"
                 + addressStreetNumber + "', '"
-                + City + "', '" 
+                + City + "', '"
                 + addressPostalCode + "','"
                 + countryCode + "' );";
+
 
             this.NonQuery(sql);
 
@@ -28,6 +29,10 @@ namespace KarateGeek.databaseConnection
             dr.Read();
             long addressId = dr.GetInt64(0);
             dr.Close();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 47beb633c1b82e682f42e4a7fe7fac071920edce
             return "" + addressId;
 
         }

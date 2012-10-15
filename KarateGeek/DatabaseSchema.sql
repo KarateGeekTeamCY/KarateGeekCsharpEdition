@@ -88,7 +88,7 @@ CREATE TABLE countries (
 
 
 CREATE TABLE addresses (
-	id              SERIAL,
+	id              BIGSERIAL,
 	street          varchar(50)     NOT NULL,
 	number          varchar(12)     NOT NULL,
 	city            varchar(50)     NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE addresses (
 
 
 CREATE TABLE locations (
-	id              SERIAL       REFERENCES addresses(id),
+	id              BIGSERIAL       REFERENCES addresses(id),
 	name            varchar(80),
 	phone           char(15),    		-- E.164 standard
 	description     varchar(255),
@@ -110,7 +110,7 @@ CREATE TABLE locations (
 
 
 create table clubs (
-	id	SERIAL,
+	id	BIGSERIAL,
 	name	varchar(50) 	not null,
 	phone	char(50),
 	email	varchar(50),
@@ -123,7 +123,7 @@ create table clubs (
 
 
 CREATE TABLE persons (
-	id              SERIAL,  				-- "SERIAL" as a data type means an auto-incr. integer
+	id              BIGSERIAL,  				-- "BIGSERIAL" as a data type means an auto-incr. integer
 	first_name      varchar(50)     	NOT NULL,
 	middle_name     varchar(50),
 	last_name       varchar(50)     	NOT NULL,
@@ -180,7 +180,7 @@ create table users (
 --dikes mou allages
 
 create table game_types (
-	id 		serial,
+	id 		BIGSERIAL,
 	name		varchar(50),
 	description	varchar(255),
 	primary key(id)
@@ -188,7 +188,7 @@ create table game_types (
 
 
 create table events (
-	id              SERIAL,
+	id              BIGSERIAL,
 	name            varchar(80)     NOT NULL,
 	day             date,
 	official        boolean      	DEFAULT false, 
@@ -199,7 +199,7 @@ create table events (
 
 
 CREATE TABLE tournaments ( 
-	id              SERIAL,
+	id              BIGSERIAL,
 	level           character varying(50)   	NOT NULL, 
 	category        character varying(50),            
 	event_id        integer references events(id),
@@ -211,7 +211,7 @@ CREATE TABLE tournaments (
 
 
 CREATE TABLE games (
-	id            	SERIAL,
+	id            	BIGSERIAL,
 	phase      	varchar(10)   	NOT NULL, 
 	position       	character varying(10) 	NOT NULL,    
 	tournament_id 	integer references tournaments(id),
@@ -222,7 +222,7 @@ CREATE TABLE games (
 
 
 create table team_tournament_participations (
-	id 		serial,
+	id 		BIGSERIAL,
 	descreption	varchar(255),
 	club_id		integer		references clubs(id),
 	tournament_id 	integer		references tournaments(id),
@@ -251,7 +251,7 @@ create table game_participation (
 
 
 create table technical_points(
-	id 		serial,
+	id 		BIGSERIAL,
 	name 		varchar(25),
 	points 		integer,
 	description	varchar(255),
@@ -262,7 +262,7 @@ create table technical_points(
 
 CREATE TABLE game_score(
 
-	game_id serial,
+	game_id BIGSERIAL,
 	athlete_id 	integer references athletes(id),
 	
 	technical_points_id	integer 	references technical_points(id),
