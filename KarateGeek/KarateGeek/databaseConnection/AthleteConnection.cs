@@ -18,7 +18,7 @@ namespace KarateGeek.databaseConnection
            string rank, string localClubId)
         {
             AddressConnection addConn = new AddressConnection();
-            string addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City,  addressPostalCode, countryCode);
+            string addressId = addConn.InsertNewAddress(countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
 
             string personId = this.insertNewPerson(firstName, lastName, fathersName, dateOfBirth,
             primaryPhoneNo, secondaryPhoneNo, email, "" + addressId);
