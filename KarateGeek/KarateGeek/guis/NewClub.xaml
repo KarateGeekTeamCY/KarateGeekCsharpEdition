@@ -139,7 +139,30 @@
         </Grid>
 
         <!-- buttons here -->
-        
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+            
+            <Button Name="btnSave" 
+                    Content="Save"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Margin="10"/>
+
+            <Button Name="btnBack" 
+                    Content="BAck"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Margin="10"/>
+
+
+
+        </Grid>
         
     </Grid>
 </Window>
