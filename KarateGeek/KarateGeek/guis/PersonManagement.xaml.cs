@@ -36,8 +36,14 @@ namespace KarateGeek.guis
         private string rank = null;
         private string club = null;
 
+
+
+
         public PersonManagement()
         {
+            //here should be the loading of the locations and clubs and countries
+
+
             athleteConn = new AthleteConnection();
             InitializeComponent();
             //prostetoume cities oses theloume
