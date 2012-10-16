@@ -36,11 +36,6 @@ namespace KarateGeek.databaseConnection
             dr = this.Query(sql);
             long personId = long.Parse( dr.Tables[0].Rows[0][0].ToString() ); 
 
-
-            //dr.Read();
-            //long personId = dr.GetInt64(0);
-            //dr.Close();
-
             return "" + personId;
         }
 

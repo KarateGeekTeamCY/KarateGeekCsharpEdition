@@ -18,23 +18,13 @@ namespace KarateGeek.databaseConnection
 
         public LoginConnection()
         {
-            //
-            // uncoment both next lines if rooning for the first time
-
+           
             //UserConnection us = new UserConnection();
             //us.insertNewUser();
             
         }
 
-        //public LoginConnection()
-        //{
-
-        //    UserConnection us = new UserConnection();
-        //    us.insertNewUser();
-
-        //}
-
-        
+      
         public Boolean compare(string username , string password) {
 
             password = cr.cryptography(password);
@@ -46,12 +36,10 @@ namespace KarateGeek.databaseConnection
 
             if (dr.Tables[0].Rows.Count != 0)
             {
-                //dr.Close();
                 return true;
             }
             else
             {
-                //dr.Close();
                 return false;
             }
         }

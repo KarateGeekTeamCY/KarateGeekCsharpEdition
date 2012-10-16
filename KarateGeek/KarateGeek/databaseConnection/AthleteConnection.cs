@@ -39,32 +39,19 @@ namespace KarateGeek.databaseConnection
             string sql = "";
             DataSet dr = null;
 
-
             this.updatePerson(id, firstName, middleName, lastName,
             dateOfBirth,
             primaryPhoneNo, secondaryPhoneNo, email);
 
-
             this._InsertAthlete(id, rank, localClubId);
 
-            
             // getting the address id
-
-
             sql = "select address_id from persons where id = '" + id + "'; ";
             dr = this.Query(sql);
             long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
 
-
-            //dr = this.Query(sql);
-            //dr.Read();
-            //int addressId = dr.GetInt32(0);
-            //dr.Close();
-
-          
             AddressConnection addConn = new AddressConnection();
             addConn.UpdateAddress("" + addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
-
 
             return "";
         }
@@ -80,9 +67,7 @@ namespace KarateGeek.databaseConnection
             string sql = "";
             DataSet dr = null;
 
-
             this._UpdatetAthlete(id, rank, localClubId);
-
 
             this.updatePerson(id, firstName, middleName, lastName,
             dateOfBirth,
@@ -94,13 +79,6 @@ namespace KarateGeek.databaseConnection
             
             dr = this.Query(sql);
             long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
-
-
-            //dr = this.Query(sql);
-            //dr.Read();
-            //int addressId = dr.GetInt32(0);
-            //dr.Close();
-
 
             AddressConnection addConn = new AddressConnection();
             addConn.UpdateAddress("" + addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
@@ -114,10 +92,7 @@ namespace KarateGeek.databaseConnection
         {
             LinkedList<string> items = new LinkedList<string>();
 
-
-
             return items;
-
         }
 
 

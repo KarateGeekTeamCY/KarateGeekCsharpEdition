@@ -22,22 +22,11 @@ namespace KarateGeek.databaseConnection
                 + addressPostalCode + "','"
                 + countryCode + "' );";
 
-
             this.NonQuery(sql);
 
             sql = "select currval('addresses_id_seq');";
-
-
-            sql = "select currval('persons_id_seq');";
             dr = this.Query(sql);
             long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
-
-
-            //dr = this.Query(sql);
-            //dr.Read();
-            //long addressId = dr.GetInt64(0);
-            //dr.Close();
-
 
             return "" + addressId;
 
