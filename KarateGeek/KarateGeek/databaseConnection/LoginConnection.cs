@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
-using System.Data;
 using Npgsql;
 
 namespace KarateGeek.databaseConnection
@@ -11,7 +10,7 @@ namespace KarateGeek.databaseConnection
     class LoginConnection : CoreDatabaseConnection
     {
         private string sql = null;
-        private DataSet dr;
+        private NpgsqlDataReader dr;
         private Cryptography cr = new Cryptography();
 
         //na valete ton constructor se sxolio meta tin prwti fora ektelesis
@@ -43,15 +42,14 @@ namespace KarateGeek.databaseConnection
 
             dr = this.Query(sql);
 
-
-            if (dr.Tables[0].Rows.Count != 0)
+            if (dr.HasRows == true)
             {
-                //dr.Close();
+                dr.Close();
                 return true;
             }
             else
             {
-                //dr.Close();
+                dr.Close();
                 return false;
             }
         }

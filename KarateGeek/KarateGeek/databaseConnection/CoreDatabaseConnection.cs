@@ -46,23 +46,13 @@ namespace KarateGeek.databaseConnection
             return true;
         }
 
-        protected DataSet Query(string sql)
+        protected NpgsqlDataReader Query(string sql)
         {
-            //NpgsqlCommand comm = this.conn.CreateCommand();
-            //comm.CommandText = sql;
-
-            //string queryString = "SELECT CustomerID, CompanyName FROM dbo.Customers";
-            NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
-
-            DataSet results = new DataSet();
-
-            adapter.Fill(results, "Customers");
-
-            this.Disconnect();
-
-            return results;
+            NpgsqlCommand comm = this.conn.CreateCommand();
+            comm.CommandText = sql;
+            return comm.ExecuteReader();
         }
 
-
+        
     }
 }

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data;
 using Npgsql;
-
 
 namespace KarateGeek.databaseConnection
 {
@@ -16,7 +14,7 @@ namespace KarateGeek.databaseConnection
            string primaryPhoneNo, string secondaryPhoneNo, string email, string addressId)
         {
             string sql;
-            DataSet dr = null;
+            NpgsqlDataReader dr = null;
 
             sql = "insert into Persons (first_name, middle_name, last_name, " +
                 "date_of_birth, phone, secondary_phone, email, " +
@@ -34,12 +32,9 @@ namespace KarateGeek.databaseConnection
 
             sql = "select currval('persons_id_seq');";
             dr = this.Query(sql);
-            long personId = long.Parse( dr.Tables[0].Rows[0][0].ToString() ); 
-
-
-            //dr.Read();
-            //long personId = dr.GetInt64(0);
-            //dr.Close();
+            dr.Read();
+            long personId = dr.GetInt64(0);
+            dr.Close();
 
             return "" + personId;
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data;
 using Npgsql;
 
 namespace KarateGeek.databaseConnection
@@ -12,7 +11,7 @@ namespace KarateGeek.databaseConnection
         public string InsertNewAddress(string addressStreetName, string addressStreetNumber, string City, string addressPostalCode, string countryCode)
         {
             string sql;
-            DataSet dr = null;
+            NpgsqlDataReader dr = null;
 
             sql = "insert into addresses (street, number, city," +
                 "postal_code, country_code ) values ( '"
@@ -26,17 +25,10 @@ namespace KarateGeek.databaseConnection
             this.NonQuery(sql);
 
             sql = "select currval('addresses_id_seq');";
-
-
-            sql = "select currval('persons_id_seq');";
             dr = this.Query(sql);
-            long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
-
-
-            //dr = this.Query(sql);
-            //dr.Read();
-            //long addressId = dr.GetInt64(0);
-            //dr.Close();
+            dr.Read();
+            long addressId = dr.GetInt64(0);
+            dr.Close();
 
 
             return "" + addressId;

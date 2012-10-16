@@ -37,7 +37,7 @@ namespace KarateGeek.databaseConnection
           string rank, string localClubId)
         {
             string sql = "";
-            DataSet dr = null;
+            NpgsqlDataReader dr = null;
 
 
             this.updatePerson(id, firstName, middleName, lastName,
@@ -49,17 +49,11 @@ namespace KarateGeek.databaseConnection
 
             
             // getting the address id
-
-
             sql = "select address_id from persons where id = '" + id + "'; ";
             dr = this.Query(sql);
-            long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
-
-
-            //dr = this.Query(sql);
-            //dr.Read();
-            //int addressId = dr.GetInt32(0);
-            //dr.Close();
+            dr.Read();
+            int addressId = dr.GetInt32(0);
+            dr.Close();
 
           
             AddressConnection addConn = new AddressConnection();
@@ -78,7 +72,7 @@ namespace KarateGeek.databaseConnection
            string rank, string localClubId)
         {
             string sql = "";
-            DataSet dr = null;
+            NpgsqlDataReader dr = null;
 
 
             this._UpdatetAthlete(id, rank, localClubId);
@@ -91,15 +85,10 @@ namespace KarateGeek.databaseConnection
            
             // getting the address id
             sql = "select address_id from persons where id = '" + id + "'; ";
-            
             dr = this.Query(sql);
-            long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
-
-
-            //dr = this.Query(sql);
-            //dr.Read();
-            //int addressId = dr.GetInt32(0);
-            //dr.Close();
+            dr.Read();
+            int addressId = dr.GetInt32(0);
+            dr.Close();
 
 
             AddressConnection addConn = new AddressConnection();

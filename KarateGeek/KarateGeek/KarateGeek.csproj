@@ -71,15 +71,11 @@
   <ItemGroup>
     <Compile Include="databaseConnection\AddressConnection.cs" />
     <Compile Include="databaseConnection\AthleteConnection.cs" />
-    <Compile Include="databaseConnection\CityConnection.cs" />
-    <Compile Include="databaseConnection\ClubConnection.cs" />
     <Compile Include="databaseConnection\CoreDatabaseConnection.cs" />
-    <Compile Include="databaseConnection\CountryConnection.cs" />
     <Compile Include="databaseConnection\Cryptography.cs" />
     <Compile Include="databaseConnection\JudgeConnection.cs" />
     <Compile Include="databaseConnection\LoginConnection.cs" />
     <Compile Include="databaseConnection\PersonConnection.cs" />
-    <Compile Include="databaseConnection\RankConnection.cs" />
     <Compile Include="databaseConnection\UserConnection.cs" />
     <Compile Include="guis\EventTournamentManagement.xaml.cs">
       <DependentUpon>EventTournamentManagement.xaml</DependentUpon>
