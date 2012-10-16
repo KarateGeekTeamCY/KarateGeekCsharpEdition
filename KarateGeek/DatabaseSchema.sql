@@ -58,6 +58,7 @@
 
 
 drop table countries cascade;
+drop table cities cascade;
 drop table addresses cascade;
 drop table locations cascade;
 drop table clubs cascade;
@@ -86,12 +87,19 @@ CREATE TABLE countries (
 );
 
 
+create table cities (
+  id    BIGSERIAL,
+  name  varchar(80)               not null,
+  primary key(id)
+);
+
+
 
 CREATE TABLE addresses (
 	id              BIGSERIAL,
 	street          varchar(50)     NOT NULL,
 	number          varchar(12)     NOT NULL,
-	city            varchar(50)     NOT NULL,
+	city            integer 	references cities(id),
 	postal_code     varchar(12)     NOT NULL,
 	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
 	primary key(id)

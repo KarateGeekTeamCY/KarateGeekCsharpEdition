@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -90,6 +91,12 @@
     <Compile Include="guis\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\NewCity.xaml.cs">
+      <DependentUpon>NewCity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="guis\NewClub.xaml.cs">
+      <DependentUpon>NewClub.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\PersonManagement.xaml.cs">
       <DependentUpon>PersonManagement.xaml</DependentUpon>
     </Compile>
@@ -105,6 +112,7 @@
     <Compile Include="guis\KumiteSystem.xaml.cs">
       <DependentUpon>KumiteSystem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="helpers\ImageConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -130,6 +138,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="guis\EventTournamentManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\NewCity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\NewClub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
