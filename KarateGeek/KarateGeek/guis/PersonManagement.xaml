@@ -169,7 +169,8 @@
                         <ComboBox Name="cmbACityChooses"
                                   Grid.Row="10"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbACityChooses_SelectionChanged">
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbACityChooses_SelectionChanged">
                            
                         </ComboBox>
 
@@ -180,7 +181,8 @@
                         <ComboBox Name="cmbACountryChooses"
                                   Grid.Row="11"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbACountryChooses_SelectionChanged">
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbACountryChooses_SelectionChanged">
                            
                         </ComboBox>
 
@@ -191,7 +193,8 @@
                         <ComboBox Name="cmbARankChooses"
                                   Grid.Row="12"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbARankChooses_SelectionChanged">
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbARankChooses_SelectionChanged">
                             
                         </ComboBox>
 
@@ -202,7 +205,8 @@
                         <ComboBox Name="cmbAClubChooses"
                                   Grid.Row="13"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbAClubChooses_SelectionChanged">
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbAClubChooses_SelectionChanged">
                         </ComboBox>
 
                     

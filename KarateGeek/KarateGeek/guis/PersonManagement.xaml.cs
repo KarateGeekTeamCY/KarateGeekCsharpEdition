@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using KarateGeek.databaseConnection;
+using System.Data;
 
 namespace KarateGeek.guis
 {
@@ -25,6 +26,7 @@ namespace KarateGeek.guis
         private string fathers_name = null;
         private string sex = null;
         private DateTime date;
+        private DataSet ds;
         private string first_phone = null;
         private string second_phone = null;
         private string email = null;
@@ -42,15 +44,28 @@ namespace KarateGeek.guis
         public PersonManagement()
         {
             //here should be the loading of the locations and clubs and countries
-
-
-            athleteConn = new AthleteConnection();
             InitializeComponent();
+
+            CityConnection cities = new CityConnection();
+            ds = cities.GetCities();
+            athleteConn = new AthleteConnection();
+
+
             //prostetoume cities oses theloume
-            cmbACityChooses.Items.Add("Nicosia");
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                cmbACityChooses.Items.Add(dr[1].ToString() ); 
+            }
+
+
+
+
+            //cmbACityChooses.Items.Add("Nicosia");
             cmbACityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
-            cmbACityChooses.Items.Add("Limassol");
+            //cmbACityChooses.Items.Add("Limassol");
             //prosthetoume xwres
+
+
             cmbACountryChooses.Items.Add("Cyprus");
             cmbACountryChooses.SelectedIndex = 0;
             cmbACountryChooses.Items.Add("Greece");
