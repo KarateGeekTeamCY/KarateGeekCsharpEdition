@@ -11,9 +11,9 @@ namespace KarateGeek.databaseConnection
     {
         private string  sql = "";
 
-        public string InsertNewCity(string name)
+        public string InsertNewCity(string countryCode, string name)
         {
-            sql = "insert into cities (name) values ('" + name + "');" ;
+            sql = "insert into cities (name, country_code) values ('" + name + "', '" + countryCode + "');" ;
             this.NonQuery(sql);
             
             return "";
@@ -26,9 +26,9 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
-        public DataSet GetCities()
+        public DataSet GetCities(string countryId)
         {
-            sql = "select * from cities";
+            sql = "select * from cities where country_code = '" + countryId + "' ";
             return this.Query(sql);
         }
     }

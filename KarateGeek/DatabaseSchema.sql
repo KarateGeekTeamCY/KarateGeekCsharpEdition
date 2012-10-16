@@ -88,8 +88,9 @@ CREATE TABLE countries (
 
 
 create table cities (
-  id    BIGSERIAL,
-  name  varchar(80)               not null,
+  id    	BIGSERIAL,
+  name  	varchar(80)	not null,
+  country_code	varchar(2)	references countries(code),
   primary key(id)
 );
 
@@ -99,7 +100,7 @@ CREATE TABLE addresses (
 	id              BIGSERIAL,
 	street          varchar(50)     NOT NULL,
 	number          varchar(12)     NOT NULL,
-	city            integer 	references cities(id),
+	city_id            integer 	references cities(id),
 	postal_code     varchar(12)     NOT NULL,
 	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
 	primary key(id)

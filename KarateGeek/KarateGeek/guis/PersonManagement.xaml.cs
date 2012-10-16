@@ -25,8 +25,6 @@ namespace KarateGeek.guis
         private string last_name = null;
         private string fathers_name = null;
         private string sex = null;
-        private DateTime date;
-        private DataSet ds;
         private string first_phone = null;
         private string second_phone = null;
         private string email = null;
@@ -40,40 +38,67 @@ namespace KarateGeek.guis
 
 
 
+        private DateTime date;
+        private DataSet cities;
+        private DataSet countries;
+
+
+
 
         public PersonManagement()
         {
             //here should be the loading of the locations and clubs and countries
             InitializeComponent();
-
-            CityConnection cities = new CityConnection();
-            ds = cities.GetCities();
             athleteConn = new AthleteConnection();
 
-
             //prostetoume cities oses theloume
-            foreach (DataRow dr in ds.Tables[0].Rows)
+
+
+
+            CountryConnection countryconn = new CountryConnection();
+            this.countries = countryconn.GetCountries();
+
+            foreach (DataRow dr in countries.Tables[0].Rows)
             {
-                cmbACityChooses.Items.Add(dr[1].ToString() ); 
+                cmbACountryChooses.Items.Add(dr[1].ToString());
             }
-
-
-
-
-            //cmbACityChooses.Items.Add("Nicosia");
-            cmbACityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
-            //cmbACityChooses.Items.Add("Limassol");
-            //prosthetoume xwres
-
-
-            cmbACountryChooses.Items.Add("Cyprus");
             cmbACountryChooses.SelectedIndex = 0;
-            cmbACountryChooses.Items.Add("Greece");
+
+            this._updateCities("CY");
+
+            //9th dan - 10th dan- Wide Red optional as Sensei Ilija Yorga himself wore a Black Belt, Master's title
+            //6th dan - 8th dan - White and Red, Master's title
+            //1st dan - 5th dan - Black
+            //1st kyu - Brown (at least 25 Month of traning or more)
+            //2nd kyu - Blue (at least 18 Month of traning or more)
+            //3rd kyu - Green (at least 15 Month of traning or more)
+            //4th kyu - Orange (at least 9 Month of traning or more)
+            //5th kyu - Yellow (at least 7 Month of traning or more)
+            //6th kyu - White (at least 5 Month of traning or more)
+
             //prosthetoume rank
-            cmbARankChooses.Items.Add("White");
+            cmbARankChooses.Items.Add("White        - 6th kyu");
+            cmbARankChooses.Items.Add("Yellow       - 5th kyu");
+            cmbARankChooses.Items.Add("Orange       - 4th kyu");
+            cmbARankChooses.Items.Add("Green        - 3th kyu");
+            cmbARankChooses.Items.Add("Blue         - 2nd kyu");
+            cmbARankChooses.Items.Add("Brown        - 1st kyu");
+            cmbARankChooses.Items.Add("Black        - 1st dan");
+            cmbARankChooses.Items.Add("Black        - 2nd dan");
+            cmbARankChooses.Items.Add("Black        - 3th dan");
+            cmbARankChooses.Items.Add("Black        - 4th dan");
+            cmbARankChooses.Items.Add("Black        - 5th dan");
+            cmbARankChooses.Items.Add("White/Red    - 6th dan");
+            cmbARankChooses.Items.Add("White/Red    - 7th dan");
+            cmbARankChooses.Items.Add("White/Red    - 8th dan");
+            cmbARankChooses.Items.Add("Red          - 9th dan");
+            cmbARankChooses.Items.Add("Red          - 10th dan");
             cmbARankChooses.SelectedIndex = 0;
-            cmbARankChooses.Items.Add("Yellow");
+
+
             //prosthetoume clubs
+
+
             cmbAClubChooses.Items.Add("Pro Kata Club (P.K.C.)");
             cmbAClubChooses.SelectedIndex = 0;
             cmbAClubChooses.Items.Add("Allo Club");
@@ -101,7 +126,7 @@ namespace KarateGeek.guis
         {
             date = athleteDateOfBirth.SelectedDate.Value;
         }
-        
+
         private void athleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
             first_phone = athleteFirstPhone.Text;
@@ -130,14 +155,43 @@ namespace KarateGeek.guis
         private void cmbACityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbACityChooses.SelectedIndex;
-            city = cmbACityChooses.Items[index].ToString();
+            if (index < cmbACityChooses.Items.Count && index != -1)
+                city = cmbACityChooses.Items[index].ToString();
         }
 
         private void cmbACountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbACountryChooses.SelectedIndex;
-            country = cmbACountryChooses.Items[index].ToString();
-            setCountryCode(country);
+            //country = cmbACountryChooses.Items[index].ToString();
+            country_code = countries.Tables[0].Rows[index][0].ToString();
+            //setCountryCode(country);
+            this._updateCities(country_code);
+        }
+
+        private void _updateCities(string countryCode)
+        {
+            CityConnection citiesconn = new CityConnection();
+            this.cities = citiesconn.GetCities(countryCode);
+
+            //cmbACityChooses = new ComboBox();
+
+            int count = cmbACityChooses.Items.Count;
+            for (int i = 0; i < count; i++)
+            {
+                cmbACityChooses.Items.RemoveAt(0);
+            }
+
+            foreach (DataRow dr in cities.Tables[0].Rows)
+            {
+                cmbACityChooses.Items.Add(dr[1].ToString());
+            }
+            cmbACityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+
+            cmbACityChooses.Items.Refresh();
+
+
+
+
         }
 
         private void cmbARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -178,14 +232,18 @@ namespace KarateGeek.guis
         }
 
 
-        private void setCountryCode(string country){
-            if(country.Equals("Cyprus")){
+        private void setCountryCode(string country)
+        {
+            if (country.Equals("Cyprus"))
+            {
                 country_code = "CY";
-            }else if(country.Equals("Greece")){
+            }
+            else if (country.Equals("Greece"))
+            {
                 country_code = "GR";
             }
         }
-       
+
 
     }
 }
