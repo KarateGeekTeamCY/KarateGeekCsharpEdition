@@ -39,8 +39,10 @@ namespace KarateGeek.guis
             {
                 MainMenu menu = new MainMenu();
                 menu.Activate();
+                this.Close();
                 menu.Show();
-                this.Hide();
+                
+
             }
             else
             {
@@ -50,7 +52,7 @@ namespace KarateGeek.guis
 
         private void exit_Click(object sender, RoutedEventArgs e)
         {
-          
+            this.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
