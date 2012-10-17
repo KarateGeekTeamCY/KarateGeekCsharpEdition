@@ -18,7 +18,7 @@ namespace KarateGeek.databaseConnection
             password = cr.cryptography(password);
 
             sql = "insert into users(id , username ,password, person_management, event_management , lottery , game_support , reports , settings)"
-                    + "values('1', '" + username + "' , '" + password + "' , '1' , '1' , '1' , '1' , '1' , '1');";
+                    + "values('0', '" + username + "' , '" + password + "' , '1' , '1' , '1' , '1' , '1' , '1');";
 
             this.NonQuery(sql);
 

@@ -9,12 +9,12 @@ insert into cities (name, country_code) values ('Amochostos', 'CY');
 insert into cities (name, country_code) values ('Thessaloniki', 'GR');
 
   
-insert into addresses (id , street, "number", city_id , postal_code , country_code ) values ('1' , 'kapou' , '3' , 1 , '3025' , 	'CY'); 
+insert into addresses (id , street, "number", city_id , postal_code , country_code ) values ('0' , 'teapk' , '10' , 1 , '3025' , 'CY'); 
 
 
-insert into clubs (name, address_id, country_code) values ('power fight club', 1, 'CY');
+insert into clubs (name, address_id, country_code) values ('power fight club', 0, 'CY');
 
 
 insert into persons(id , first_name, middle_name, last_name, date_of_birth, phone, secondary_phone, email, address_id) 
-values ('1' , 'dimitris' , null , 'apostolou', '02-10-1990' , '99123144' , null , 'email@gmail.com' , '1');
+values ('0' , 'administrator' , null , 'administrator', '02-10-1990' , '99123144' , null , 'email@gmail.com' , '0');
 

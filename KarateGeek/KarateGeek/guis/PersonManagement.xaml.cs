@@ -224,6 +224,11 @@ namespace KarateGeek.guis
         private void btnASaveNew_Click(object sender, RoutedEventArgs e)
         {
             athleteConn.InserrtNewAthlete(first_name, last_name, fathers_name, date, first_phone, second_phone, email, country_code, city, address, address_num, "3025", rank, club);
+            MessageBox.Show("Succesfully saved!");
+            PersonManagement pm = new PersonManagement();
+            pm.Activate();
+            pm.Show();
+            this.Hide();
         }
 
         private void btnADelete_Click(object sender, RoutedEventArgs e)

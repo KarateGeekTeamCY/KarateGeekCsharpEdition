@@ -40,6 +40,7 @@ namespace KarateGeek.guis
                 MainMenu menu = new MainMenu();
                 menu.Activate();
                 menu.Show();
+                this.Hide();
             }
             else
             {

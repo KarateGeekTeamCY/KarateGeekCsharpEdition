@@ -14,15 +14,20 @@ namespace KarateGeek.databaseConnection
             string sql;
             DataSet dr = null;
 
-            sql = "insert into addresses (street, number, city," +
+            sql = "select id from cities where name = '" + City + "'; ";
+            dr = this.Query(sql);
+            long cityId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
+            
+            sql = "insert into addresses (street, number, city_id," +
                 "postal_code, country_code ) values ( '"
                 + addressStreetName + "', '"
                 + addressStreetNumber + "', '"
-                + City + "', '"
+                + cityId + "', '"
                 + addressPostalCode + "','"
                 + countryCode + "' );";
 
             this.NonQuery(sql);
+
 
             sql = "select currval('addresses_id_seq');";
             dr = this.Query(sql);
