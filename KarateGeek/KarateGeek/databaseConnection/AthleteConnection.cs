@@ -88,11 +88,12 @@ namespace KarateGeek.databaseConnection
 
 
 
-        public LinkedList<string> findSimilar(string filter)
+        public DataSet findSimilar(string filter)
         {
-            LinkedList<string> items = new LinkedList<string>();
+            //select * from persons JOIN athletes on persons.id = athletes.id where persons.first_name like 'd%';
 
-            return items;
+            string sql = "select * from persons JOIN athletes on persons.id = athletes.id where first_name like '" + filter + "%';";
+            return this.Query(sql);
         }
 
 

@@ -41,6 +41,7 @@ namespace KarateGeek.guis
         private DateTime date;
         private DataSet cities;
         private DataSet countries;
+        private DataSet filteredAthlets;
 
 
 
@@ -104,11 +105,52 @@ namespace KarateGeek.guis
             cmbAClubChooses.Items.Add("Allo Club");
         }
 
+        private Boolean nameflag = true;
+
         private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
-
             first_name = athleteFirstName.Text;
+
+            if (nameflag == true)
+                this.filterNames();
         }
+
+
+        private void filterNames()
+        {
+            AthleteConnection conn = new AthleteConnection();
+            this.filteredAthlets = conn.findSimilar(this.first_name);
+
+            List<string> list = new List<string>();
+            foreach (DataRow dr in filteredAthlets.Tables[0].Rows)
+            {
+                list.Add(dr[1].ToString());
+            }
+
+            this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
+            this.sugestionList.ItemsSource = list;
+        }
+
+
+        private void sugestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = sugestionList.SelectedIndex;
+            if (index != -1)
+            {
+                nameflag = false;
+                this.athleteFirstName.Text = filteredAthlets.Tables[0].Rows[index][1].ToString();
+                nameflag = true;
+                this.athleteFatherName.Text = filteredAthlets.Tables[0].Rows[index][2].ToString();
+                this.athleteLastName.Text = filteredAthlets.Tables[0].Rows[index][3].ToString();
+                string dateofb = filteredAthlets.Tables[0].Rows[index][4].ToString();
+                string kati = "";
+
+
+            }
+            this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+
 
         private void athleteLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -248,6 +290,8 @@ namespace KarateGeek.guis
                 country_code = "GR";
             }
         }
+
+
 
 
     }

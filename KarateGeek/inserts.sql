@@ -18,3 +18,5 @@ insert into clubs (name, address_id, country_code) values ('power fight club', 0
 insert into persons(id , first_name, middle_name, last_name, date_of_birth, phone, secondary_phone, email, address_id) 
 values ('0' , 'administrator' , null , 'administrator', '02-10-1990' , '99123144' , null , 'email@gmail.com' , '0');
 
+insert into athletes (id, rank, club_id ) values (1, 'black', 1  );
+

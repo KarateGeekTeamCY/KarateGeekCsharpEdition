@@ -28,8 +28,10 @@ namespace KarateGeek.guis
         {
             PersonManagement pm = new PersonManagement();
             pm.Activate();
+
+            this.Close();
             pm.Show();
-            this.Hide();
+            
         }
 
         private void btnEventmanagement_Click(object sender, RoutedEventArgs e)

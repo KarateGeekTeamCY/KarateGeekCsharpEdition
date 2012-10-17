@@ -209,7 +209,13 @@
                                   SelectionChanged="cmbAClubChooses_SelectionChanged">
                         </ComboBox>
 
-                    
+                        <ScrollViewer Grid.Row="2"
+                                      Grid.Column="2"
+                                      Grid.RowSpan="6"
+                                      Name="sugestioListScroler"
+                                      Visibility="Hidden">
+                            <ListBox Name="sugestionList" SelectionChanged="sugestionList_SelectionChanged" />                       
+                        </ScrollViewer >
 
 
 
