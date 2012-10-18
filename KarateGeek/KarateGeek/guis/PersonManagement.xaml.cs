@@ -117,7 +117,7 @@ namespace KarateGeek.guis
 
         private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string typedString = athleteFirstName.Text;
+            first_name = athleteFirstName.Text;
             List<string> autoList = new List<string>();
             autoList.Clear();
 
@@ -127,7 +127,7 @@ namespace KarateGeek.guis
             {
                 if (!string.IsNullOrEmpty(athleteFirstName.Text))
                 {
-                    if (item.StartsWith(typedString))
+                    if (item.StartsWith(first_name))
                     {
                         autoList.Add(item);
                     }
