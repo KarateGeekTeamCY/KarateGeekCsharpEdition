@@ -113,13 +113,15 @@ namespace KarateGeek.guis
             cmbAClubChooses.Items.Add("Allo Club");
         }
 
-        private Boolean nameflag = true;
+        //private Boolean nameflag = true;
 
         private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string typedString = athleteFirstName.Text;
             List<string> autoList = new List<string>();
             autoList.Clear();
+
+            nameList = this.filterNames();
 
             foreach (string item in nameList)
             {
@@ -150,20 +152,20 @@ namespace KarateGeek.guis
         }
 
 
-        //private void filterNames()
-        //{
-        //    AthleteConnection conn = new AthleteConnection();
-        //    this.filteredAthlets = conn.findSimilar(this.first_name);
+        private List<string> filterNames()
+        {
+            AthleteConnection conn = new AthleteConnection();
+            this.filteredAthlets = conn.findSimilar(this.athleteFirstName.Text);
 
-        //    List<string> list = new List<string>();
-        //    foreach (DataRow dr in filteredAthlets.Tables[0].Rows)
-        //    {
-        //        list.Add(dr[1].ToString());
-        //    }
-
-        //    this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-        //    this.sugestionList.ItemsSource = list;
-        //}
+            List<string> list = new List<string>();
+            foreach (DataRow dr in filteredAthlets.Tables[0].Rows)
+            {
+                list.Add(dr[1].ToString());
+            }
+            return list;
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
+            //this.sugestionList.ItemsSource = list;
+        }
 
 
         private void suggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -172,9 +174,17 @@ namespace KarateGeek.guis
             {
                 suggestionList.Visibility = System.Windows.Visibility.Collapsed;
                 athleteFirstName.TextChanged -= new TextChangedEventHandler(athleteFirstName_TextChanged);
+
+                int index = suggestionList.SelectedIndex;
                 if (suggestionList.SelectedIndex != -1)
                 {
                     athleteFirstName.Text = suggestionList.SelectedItem.ToString();
+
+                    this.athleteFatherName.Text = filteredAthlets.Tables[0].Rows[index][2].ToString();
+                    this.athleteLastName.Text = filteredAthlets.Tables[0].Rows[index][3].ToString();
+                    string dateofb = filteredAthlets.Tables[0].Rows[index][4].ToString();
+                    string kati = "";
+
                 }
                 athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
             }
