@@ -134,8 +134,9 @@ create table clubs (
 CREATE TABLE persons (
 	id              BIGSERIAL,  				-- "BIGSERIAL" as a data type means an auto-incr. integer
 	first_name      varchar(50)     	NOT NULL,
-	middle_name     varchar(50),
-	last_name       varchar(50)     	NOT NULL,
+	last_name       varchar(50),
+	fathers_name    varchar(50)     	NOT NULL,
+	sex 		varchar(10)		NOT NULL,
 	date_of_birth   date,
 	phone           char(15)        	NOT NULL,    	-- E.164 standard
 	secondary_phone char(15),

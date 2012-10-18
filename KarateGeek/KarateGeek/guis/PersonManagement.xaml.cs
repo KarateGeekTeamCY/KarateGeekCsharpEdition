@@ -42,7 +42,7 @@ namespace KarateGeek.guis
         private DataSet cities;
         private DataSet countries;
         private DataSet filteredAthlets;
-
+        private AddressConnection addConn;
 
         List<string> nameList;
 
@@ -51,14 +51,6 @@ namespace KarateGeek.guis
             //here should be the loading of the locations and clubs and countries
             InitializeComponent();
             athleteConn = new AthleteConnection();
-            nameList = new List<string> 
-            {
-                "A0-Word","B0-Word","C0-Word",
-                "A1-Word","B1-Word","C1-Word",
-                "B2-Word","C2-Word",
-                "C3-Word",
-            };
-
             athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
             //prostetoume cities oses theloume
 
@@ -154,13 +146,15 @@ namespace KarateGeek.guis
 
         private List<string> filterNames()
         {
+            string suggestion = null;
             AthleteConnection conn = new AthleteConnection();
             this.filteredAthlets = conn.findSimilar(this.athleteFirstName.Text);
 
             List<string> list = new List<string>();
             foreach (DataRow dr in filteredAthlets.Tables[0].Rows)
             {
-                list.Add(dr[1].ToString());
+                suggestion = dr[1].ToString() + " " + dr[2].ToString();
+                list.Add(suggestion);
             }
             return list;
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
@@ -170,6 +164,14 @@ namespace KarateGeek.guis
 
         private void suggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string name = null;
+            string sex = null;
+            string rank = null;
+            int rank_position = 0;
+            int address_id;
+            addConn = new AddressConnection();
+            DataSet ds;
+
             if (suggestionList.ItemsSource != null)
             {
                 suggestionList.Visibility = System.Windows.Visibility.Collapsed;
@@ -178,12 +180,36 @@ namespace KarateGeek.guis
                 int index = suggestionList.SelectedIndex;
                 if (suggestionList.SelectedIndex != -1)
                 {
-                    athleteFirstName.Text = suggestionList.SelectedItem.ToString();
+                    name = suggestionList.SelectedItem.ToString();
+                    sex = filteredAthlets.Tables[0].Rows[index][4].ToString();
+                    rank = filteredAthlets.Tables[0].Rows[index][11].ToString();
+                    address_id = int.Parse(filteredAthlets.Tables[0].Rows[index][9].ToString());
 
-                    this.athleteFatherName.Text = filteredAthlets.Tables[0].Rows[index][2].ToString();
-                    this.athleteLastName.Text = filteredAthlets.Tables[0].Rows[index][3].ToString();
-                    string dateofb = filteredAthlets.Tables[0].Rows[index][4].ToString();
-                    string kati = "";
+                    this.athleteFirstName.Text = name.Substring(0, name.IndexOf(" "));
+                    this.athleteLastName.Text = filteredAthlets.Tables[0].Rows[index][2].ToString();
+                    this.athleteFatherName.Text = filteredAthlets.Tables[0].Rows[index][3].ToString();
+                    if(sex.Equals("male")){
+                        this.rdButton1.IsChecked = true;
+                    }else{
+                        this.rdButton2.IsChecked = true;
+                    }
+                    this.athleteDateOfBirth.SelectedDate = (DateTime)filteredAthlets.Tables[0].Rows[index][5];
+                    this.athleteFirstPhone.Text = filteredAthlets.Tables[0].Rows[index][6].ToString();
+                    this.athleteSecondPhone.Text = filteredAthlets.Tables[0].Rows[index][7].ToString();
+                    this.athleteEmail.Text = filteredAthlets.Tables[0].Rows[index][8].ToString();
+                    //vriskei tin zwni pou exei o kathenas se poia thesi einai
+                    
+                    ds = addConn.getAddress(address_id);
+
+                    this.athleteStreetName.Text = ds.Tables[0].Rows[index][0].ToString();
+                    this.athleteAddressNum.Text = ds.Tables[0].Rows[index][1].ToString();
+                    for(int i=0; i<cmbARankChooses.Items.Count;i++){
+                        if(rank.Equals(cmbARankChooses.Items[i])){
+                            rank_position=i;
+                            break;
+                        }
+                    }
+                    this.cmbARankChooses.SelectedIndex = rank_position;
 
                 }
                 athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
@@ -306,7 +332,7 @@ namespace KarateGeek.guis
 
         private void btnASaveNew_Click(object sender, RoutedEventArgs e)
         {
-            athleteConn.InserrtNewAthlete(first_name, last_name, fathers_name, date, first_phone, second_phone, email, country_code, city, address, address_num, "3025", rank, club);
+            athleteConn.InsertNewAthlete(first_name, last_name, fathers_name, sex, date, first_phone, second_phone, email, address, address_num, "3025" ,  country_code, city, rank, club);
             MessageBox.Show("Succesfully saved!");
             PersonManagement pm = new PersonManagement();
             pm.Activate();

@@ -11,19 +11,20 @@ namespace KarateGeek.databaseConnection
     class PersonConnection : CoreDatabaseConnection
     {
 
-        protected string insertNewPerson(string firstName, string middleName, string lastName,
+        protected string insertNewPerson(string firstName, string lastName, string fathersName, string sex,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email, string addressId)
         {
             string sql;
             DataSet dr = null;
 
-            sql = "insert into Persons (first_name, middle_name, last_name, " +
+            sql = "insert into Persons (first_name, last_name, fathers_name, sex," +
                 "date_of_birth, phone, secondary_phone, email, " +
                 "address_id) values ( '"
                 + firstName + "', '"
-                + middleName + "', '"
                 + lastName + "', '"
+                + fathersName + "', '"
+                + sex + "', '"
                 + dateOfBirth.ToShortDateString() + "', '"
                 + primaryPhoneNo + "', '"
                 + secondaryPhoneNo + "', '"
