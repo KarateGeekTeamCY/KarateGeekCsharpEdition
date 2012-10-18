@@ -44,14 +44,22 @@ namespace KarateGeek.guis
         private DataSet filteredAthlets;
 
 
-
+        List<string> nameList;
 
         public PersonManagement()
         {
             //here should be the loading of the locations and clubs and countries
             InitializeComponent();
             athleteConn = new AthleteConnection();
+            nameList = new List<string> 
+            {
+                "A0-Word","B0-Word","C0-Word",
+                "A1-Word","B1-Word","C1-Word",
+                "B2-Word","C2-Word",
+                "C3-Word",
+            };
 
+            athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
             //prostetoume cities oses theloume
 
 
@@ -109,45 +117,68 @@ namespace KarateGeek.guis
 
         private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            first_name = athleteFirstName.Text;
+            string typedString = athleteFirstName.Text;
+            List<string> autoList = new List<string>();
+            autoList.Clear();
 
-            if (nameflag == true)
-                this.filterNames();
+            foreach (string item in nameList)
+            {
+                if (!string.IsNullOrEmpty(athleteFirstName.Text))
+                {
+                    if (item.StartsWith(typedString))
+                    {
+                        autoList.Add(item);
+                    }
+                }
+            }
+
+            if (autoList.Count > 0)
+            {
+                suggestionList.ItemsSource = autoList;
+                suggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (athleteFirstName.Text.Equals(""))
+            {
+                suggestionList.Visibility = Visibility.Collapsed;
+                suggestionList.ItemsSource = null;
+            }
+            else
+            {
+                suggestionList.Visibility = Visibility.Collapsed;
+                suggestionList.ItemsSource = null;
+            }
         }
 
 
-        private void filterNames()
+        //private void filterNames()
+        //{
+        //    AthleteConnection conn = new AthleteConnection();
+        //    this.filteredAthlets = conn.findSimilar(this.first_name);
+
+        //    List<string> list = new List<string>();
+        //    foreach (DataRow dr in filteredAthlets.Tables[0].Rows)
+        //    {
+        //        list.Add(dr[1].ToString());
+        //    }
+
+        //    this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
+        //    this.sugestionList.ItemsSource = list;
+        //}
+
+
+        private void suggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AthleteConnection conn = new AthleteConnection();
-            this.filteredAthlets = conn.findSimilar(this.first_name);
-
-            List<string> list = new List<string>();
-            foreach (DataRow dr in filteredAthlets.Tables[0].Rows)
+            if (suggestionList.ItemsSource != null)
             {
-                list.Add(dr[1].ToString());
+                suggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                athleteFirstName.TextChanged -= new TextChangedEventHandler(athleteFirstName_TextChanged);
+                if (suggestionList.SelectedIndex != -1)
+                {
+                    athleteFirstName.Text = suggestionList.SelectedItem.ToString();
+                }
+                athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
             }
-
-            this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            this.sugestionList.ItemsSource = list;
-        }
-
-
-        private void sugestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int index = sugestionList.SelectedIndex;
-            if (index != -1)
-            {
-                nameflag = false;
-                this.athleteFirstName.Text = filteredAthlets.Tables[0].Rows[index][1].ToString();
-                nameflag = true;
-                this.athleteFatherName.Text = filteredAthlets.Tables[0].Rows[index][2].ToString();
-                this.athleteLastName.Text = filteredAthlets.Tables[0].Rows[index][3].ToString();
-                string dateofb = filteredAthlets.Tables[0].Rows[index][4].ToString();
-                string kati = "";
-
-
-            }
-            this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
 

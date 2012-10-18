@@ -61,7 +61,7 @@
                         <TextBox Name="athleteFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="athleteFirstName_TextChanged" />
+                               VerticalAlignment="Center"  />
                     
                         <Label Content="Last name"
                                Grid.Row="2"
@@ -209,13 +209,9 @@
                                   SelectionChanged="cmbAClubChooses_SelectionChanged">
                         </ComboBox>
 
-                        <ScrollViewer Grid.Row="2"
-                                      Grid.Column="2"
-                                      Grid.RowSpan="6"
-                                      Name="sugestioListScroler"
-                                      Visibility="Hidden">
-                            <ListBox Name="sugestionList" SelectionChanged="sugestionList_SelectionChanged" />                       
-                        </ScrollViewer >
+                        
+                            <ListBox Name="suggestionList" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top"  SelectionChanged="suggestionList_SelectionChanged" Visibility="Collapsed" />                       
+                    
 
 
 
