@@ -57,7 +57,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet getAddress(int id)
         {
-            string sql = "select street,number,postal_code from addresses where id= '" + id + "';";
+            string sql = "select street,number,postal_code,city_id from addresses where id= '" + id + "';";
             return this.Query(sql);
         }
 

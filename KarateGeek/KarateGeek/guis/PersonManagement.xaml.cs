@@ -201,8 +201,8 @@ namespace KarateGeek.guis
                     
                     ds = addConn.getAddress(address_id);
 
-                    this.athleteStreetName.Text = ds.Tables[0].Rows[index][0].ToString();
-                    this.athleteAddressNum.Text = ds.Tables[0].Rows[index][1].ToString();
+                    this.athleteStreetName.Text = ds.Tables[0].Rows[0][0].ToString();
+                    this.athleteAddressNum.Text = ds.Tables[0].Rows[0][1].ToString();
                     for(int i=0; i<cmbARankChooses.Items.Count;i++){
                         if(rank.Equals(cmbARankChooses.Items[i])){
                             rank_position=i;
