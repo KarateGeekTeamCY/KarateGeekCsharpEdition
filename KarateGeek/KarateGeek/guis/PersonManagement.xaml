@@ -61,7 +61,7 @@
                         <TextBox Name="athleteFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
-                               VerticalAlignment="Center"  />
+                               VerticalAlignment="Center" TextChanged="athleteFirstName_TextChanged" />
                     
                         <Label Content="Last name"
                                Grid.Row="2"

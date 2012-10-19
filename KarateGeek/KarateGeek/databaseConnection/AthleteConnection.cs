@@ -45,7 +45,7 @@ namespace KarateGeek.databaseConnection
 
             this._InsertAthlete(id, rank, localClubId);
 
-            // getting the address id
+            // getting the athlete_address id
             sql = "select address_id from persons where id = '" + id + "'; ";
             dr = this.Query(sql);
             long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
@@ -74,7 +74,7 @@ namespace KarateGeek.databaseConnection
             primaryPhoneNo, secondaryPhoneNo, email);
 
            
-            // getting the address id
+            // getting the athlete_address id
             sql = "select address_id from persons where id = '" + id + "'; ";
             
             dr = this.Query(sql);
@@ -90,7 +90,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet findSimilar(string filter)
         {
-            //select * from persons JOIN athletes on persons.id = athletes.id where persons.first_name like 'd%';
+            //select * from persons JOIN athletes on persons.id = athletes.id where persons.athlete_first_name like 'd%';
 
             string sql = "select * from persons JOIN athletes on persons.id = athletes.id where first_name like '" + filter + "%';";
             return this.Query(sql);
@@ -103,7 +103,7 @@ namespace KarateGeek.databaseConnection
             string sql = "insert into athletes ( id, rank, club_id) values ( '"
                 + PersonId + "', '"
                 + rank + "', '"
-                + 1 + "' );"; //edw egine allagi gia na fanei oti xreiazetai to id apo to club pou tha einai eidi perasmeno
+                + 1 + "' );"; //edw egine allagi gia na fanei oti xreiazetai to id apo to athlete_club pou tha einai eidi perasmeno
 
             this.NonQuery(sql);
 

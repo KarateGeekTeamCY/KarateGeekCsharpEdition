@@ -20,38 +20,79 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class PersonManagement : Window
     {
-        private AthleteConnection athleteConn;
-        private string first_name = null;
-        private string last_name = null;
-        private string fathers_name = null;
-        private string sex = null;
-        private string first_phone = null;
-        private string second_phone = null;
-        private string email = null;
-        private string address = null;
-        private string address_num = null;
-        private string city = null;
-        private string country = null;
-        private string country_code = null;
-        private string rank = null;
-        private string club = null;
-
-
-
-        private DateTime date;
+        //
+        //application specific variables
+        //
         private DataSet cities;
         private DataSet countries;
         private DataSet filteredAthlets;
-        private AddressConnection addConn;
+        private AddressConnection addressConnection;
+        List<string> athleteNameListForAutoComplete;
 
-        List<string> nameList;
+        //
+        //athlete specific variables
+        //
+
+        private AthleteConnection athleteConn;
+        private string athlete_first_name = null;
+        private string athlete_last_name = null;
+        private string athlete_fathers_name = null;
+        private string athlete_sex = null;
+        private string athlete_first_phone = null;
+        private string athlete_second_phone = null;
+        private string athlete_email = null;
+        private string athlete_address = null;
+        private string athlete_address_num = null;
+        private string athlete_city = null;
+        private string athlete_country = null;
+        private string athlete_country_code = null;
+        private string athlete_rank = null;
+        private string athlete_club = null;
+        private DateTime athlete_dateOfBirth;
+
+
+        //
+        //judge specific variables
+        //
+        // afta mpori na allaksoun katalila mixali aplos sta etimasa
+        //
+        private string judge_first_name = null;
+        private string judge_last_name = null;
+        private string judge_fathers_name = null;
+        private string judge_sex = null;
+        private string judge_first_phone = null;
+        private string judge_second_phone = null;
+        private string judge_email = null;
+        private string judge_address = null;
+        private string judge_address_num = null;
+        private string judge_city = null;
+        private string judge_country = null;
+        private string judge_country_code = null;
+        private string judge_rank = null;
+        private string judge_club = null;
+        private DateTime judge_dateOfBirth;
+
+
+        //
+        //mixali min frikaris afto einai gia na grouparis kodika
+        //arxizi me #region <name>
+        //lai telion me #endregion
+        //
+        #region athlete spesific code
 
         public PersonManagement()
         {
             //here should be the loading of the locations and clubs and countries
             InitializeComponent();
+
             athleteConn = new AthleteConnection();
-            athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
+
+            //
+            //NOTE
+            //
+            //mixali listeners vaze katefthian apo to xaml oxi karfota mesa ston kodika
+            //
+            //athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
             //prostetoume cities oses theloume
 
 
@@ -77,7 +118,7 @@ namespace KarateGeek.guis
             //5th kyu - Yellow (at least 7 Month of traning or more)
             //6th kyu - White (at least 5 Month of traning or more)
 
-            //prosthetoume rank
+            //prosthetoume athlete_rank
             cmbARankChooses.Items.Add("White        - 6th kyu");
             cmbARankChooses.Items.Add("Yellow       - 5th kyu");
             cmbARankChooses.Items.Add("Orange       - 4th kyu");
@@ -109,17 +150,17 @@ namespace KarateGeek.guis
 
         private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            first_name = athleteFirstName.Text;
+            athlete_first_name = athleteFirstName.Text;
             List<string> autoList = new List<string>();
             autoList.Clear();
 
-            nameList = this.filterNames();
+            athleteNameListForAutoComplete = this.filterNames();
 
-            foreach (string item in nameList)
+            foreach (string item in athleteNameListForAutoComplete)
             {
                 if (!string.IsNullOrEmpty(athleteFirstName.Text))
                 {
-                    if (item.StartsWith(first_name))
+                    if (item.StartsWith(athlete_first_name))
                     {
                         autoList.Add(item);
                     }
@@ -169,7 +210,8 @@ namespace KarateGeek.guis
             string rank = null;
             int rank_position = 0;
             int address_id;
-            addConn = new AddressConnection();
+            
+            addressConnection = new AddressConnection();
             DataSet ds;
 
             if (suggestionList.ItemsSource != null)
@@ -178,6 +220,7 @@ namespace KarateGeek.guis
                 athleteFirstName.TextChanged -= new TextChangedEventHandler(athleteFirstName_TextChanged);
 
                 int index = suggestionList.SelectedIndex;
+                
                 if (suggestionList.SelectedIndex != -1)
                 {
                     name = suggestionList.SelectedItem.ToString();
@@ -185,27 +228,70 @@ namespace KarateGeek.guis
                     rank = filteredAthlets.Tables[0].Rows[index][11].ToString();
                     address_id = int.Parse(filteredAthlets.Tables[0].Rows[index][9].ToString());
 
-                    this.athleteFirstName.Text = name.Substring(0, name.IndexOf(" "));
+                    //
+                    //giati mazoxizese re mike??
+                    //
+                    //this.athleteFirstName.Text = name.Substring(0, name.IndexOf(" "));
+                    //
+
+                    this.athleteFirstName.Text = filteredAthlets.Tables[0].Rows[index][1].ToString();
+                    this.athlete_first_name = this.athleteFirstName.Text;
+
                     this.athleteLastName.Text = filteredAthlets.Tables[0].Rows[index][2].ToString();
                     this.athleteFatherName.Text = filteredAthlets.Tables[0].Rows[index][3].ToString();
-                    if(sex.Equals("male")){
+                    
+                    if (sex.Equals("male"))
+                    {
                         this.rdButton1.IsChecked = true;
-                    }else{
+                    }
+                    else
+                    {
                         this.rdButton2.IsChecked = true;
                     }
+
                     this.athleteDateOfBirth.SelectedDate = (DateTime)filteredAthlets.Tables[0].Rows[index][5];
                     this.athleteFirstPhone.Text = filteredAthlets.Tables[0].Rows[index][6].ToString();
                     this.athleteSecondPhone.Text = filteredAthlets.Tables[0].Rows[index][7].ToString();
                     this.athleteEmail.Text = filteredAthlets.Tables[0].Rows[index][8].ToString();
-                    //vriskei tin zwni pou exei o kathenas se poia thesi einai
                     
-                    ds = addConn.getAddress(address_id);
+                    ds = addressConnection.getAddress(address_id);
 
-                    this.athleteStreetName.Text = ds.Tables[0].Rows[0][0].ToString();
-                    this.athleteAddressNum.Text = ds.Tables[0].Rows[0][1].ToString();
-                    for(int i=0; i<cmbARankChooses.Items.Count;i++){
-                        if(rank.Equals(cmbARankChooses.Items[i])){
-                            rank_position=i;
+                    this.athleteStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
+                    this.athleteAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
+
+                    string acity = ds.Tables[0].Rows[0][3].ToString();
+                    int ix = ds.Tables[0].Columns.Count;
+                    string acountry = ds.Tables[0].Rows[0][5].ToString();
+
+
+                    for (int i = 0; i < this.cmbACountryChooses.Items.Count; i++)
+                    {
+                        if (acountry.Equals(cmbACountryChooses.Items[i]))
+                        {
+                            rank_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbACountryChooses.SelectedIndex = rank_position;
+
+
+                    for (int i = 0; i < this.cmbACityChooses.Items.Count; i++)
+                    {
+                        if (acountry.Equals(cmbACityChooses.Items[i]))
+                        {
+                            rank_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbACityChooses.SelectedIndex = rank_position;
+
+
+                    //vriskei tin zwni pou exei o kathenas se poia thesi einai
+                    for (int i = 0; i < cmbARankChooses.Items.Count; i++)
+                    {
+                        if (rank.Equals(cmbARankChooses.Items[i]))
+                        {
+                            rank_position = i;
                             break;
                         }
                     }
@@ -221,60 +307,60 @@ namespace KarateGeek.guis
 
         private void athleteLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            last_name = athleteLastName.Text;
+            athlete_last_name = athleteLastName.Text;
 
         }
 
         private void athleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            fathers_name = athleteFatherName.Text;
+            athlete_fathers_name = athleteFatherName.Text;
 
         }
 
         private void athleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            date = athleteDateOfBirth.SelectedDate.Value;
+            athlete_dateOfBirth = athleteDateOfBirth.SelectedDate.Value;
         }
 
         private void athleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
-            first_phone = athleteFirstPhone.Text;
+            athlete_first_phone = athleteFirstPhone.Text;
         }
 
         private void athleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
-            second_phone = athleteSecondPhone.Text;
+            athlete_second_phone = athleteSecondPhone.Text;
         }
 
         private void athleteEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            email = athleteEmail.Text;
+            athlete_email = athleteEmail.Text;
         }
 
         private void athleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            address = athleteStreetName.Text;
+            athlete_address = athleteStreetName.Text;
         }
 
         private void athleteAddressNum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            address_num = athleteAddressNum.Text;
+            athlete_address_num = athleteAddressNum.Text;
         }
 
         private void cmbACityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbACityChooses.SelectedIndex;
             if (index < cmbACityChooses.Items.Count && index != -1)
-                city = cmbACityChooses.Items[index].ToString();
+                athlete_city = cmbACityChooses.Items[index].ToString();
         }
 
         private void cmbACountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbACountryChooses.SelectedIndex;
-            //country = cmbACountryChooses.Items[index].ToString();
-            country_code = countries.Tables[0].Rows[index][0].ToString();
-            //setCountryCode(country);
-            this._updateCities(country_code);
+            //athlete_country = cmbACountryChooses.Items[index].ToString();
+            athlete_country_code = countries.Tables[0].Rows[index][0].ToString();
+            //setCountryCode(athlete_country);
+            this._updateCities(athlete_country_code);
         }
 
         private void _updateCities(string countryCode)
@@ -306,33 +392,33 @@ namespace KarateGeek.guis
         private void cmbARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbARankChooses.SelectedIndex;
-            rank = cmbARankChooses.Items[index].ToString();
+            athlete_rank = cmbARankChooses.Items[index].ToString();
         }
 
         private void cmbAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbAClubChooses.SelectedIndex;
-            club = cmbAClubChooses.Items[index].ToString();
+            athlete_club = cmbAClubChooses.Items[index].ToString();
         }
 
         private void rdButton1_Checked(object sender, RoutedEventArgs e)
         {
-            sex = "male";
+            athlete_sex = "male";
         }
 
         private void rdButton2_Checked(object sender, RoutedEventArgs e)
         {
-            sex = "female";
+            athlete_sex = "female";
         }
 
         private void btnASave_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("sex: " + sex);
+            MessageBox.Show("athlete_sex: " + athlete_sex);
         }
 
         private void btnASaveNew_Click(object sender, RoutedEventArgs e)
         {
-            athleteConn.InsertNewAthlete(first_name, last_name, fathers_name, sex, date, first_phone, second_phone, email, address, address_num, "3025" ,  country_code, city, rank, club);
+            athleteConn.InsertNewAthlete(athlete_first_name, athlete_last_name, athlete_fathers_name, athlete_sex, athlete_dateOfBirth, athlete_first_phone, athlete_second_phone, athlete_email, athlete_address, athlete_address_num, "3025", athlete_country_code, athlete_city, athlete_rank, athlete_club);
             MessageBox.Show("Succesfully saved!");
             PersonManagement pm = new PersonManagement();
             pm.Activate();
@@ -345,20 +431,28 @@ namespace KarateGeek.guis
 
         }
 
+        //
+        // dead code alla asto kalou kakou
+        //
+        //private void setCountryCode(string country)
+        //{
+        //    if (country.Equals("Cyprus"))
+        //    {
+        //        athlete_country_code = "CY";
+        //    }
+        //    else if (country.Equals("Greece"))
+        //    {
+        //        athlete_country_code = "GR";
+        //    }
+        //}
 
-        private void setCountryCode(string country)
-        {
-            if (country.Equals("Cyprus"))
-            {
-                country_code = "CY";
-            }
-            else if (country.Equals("Greece"))
-            {
-                country_code = "GR";
-            }
-        }
 
-
+        //
+        //mixali min frikaris afto einai gia na grouparis kodika
+        //arxizi me #region <name>
+        //lai telion me #endregion
+        //
+        #endregion
 
 
     }
