@@ -86,7 +86,10 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
-
+        public DataSet deleteAthlete(int id){
+            string sql = "delete from athletes where id='" + id + "';";
+            return this.Query(sql);
+        }
 
         public DataSet findSimilar(string filter)
         {
