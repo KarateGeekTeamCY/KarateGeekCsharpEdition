@@ -300,10 +300,10 @@
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <TextBox Name="judgeteLastName" 
+                            <TextBox Name="judgeLastName" 
                                Grid.Row="2"
                                Grid.Column="2"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center" TextChanged="judgeteLastName_TextChanged" />
                         <Label Content="Fathers name"
                                Grid.Row="3"
                                Grid.Column="1"

@@ -591,6 +591,11 @@ namespace KarateGeek.guis
 
         }
 
+        private void judgeteLastName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
        
 
         //
