@@ -30,6 +30,7 @@ namespace KarateGeek.guis
         private AddressConnection addressConnection;
         private ClubConnection clubConnection = new ClubConnection();
         List<string> athleteNameListForAutoComplete;
+        List<string> judgeNameListForAutoComplete;
 
         //
         //athlete specific variables
@@ -179,21 +180,56 @@ namespace KarateGeek.guis
 
             if (autoList.Count > 0)
             {
-                suggestionList.ItemsSource = autoList;
-                suggestionList.Visibility = System.Windows.Visibility.Visible;
+                aSuggestionList.ItemsSource = autoList;
+                aSuggestionList.Visibility = System.Windows.Visibility.Visible;
             }
             else if (athleteFirstName.Text.Equals(""))
             {
-                suggestionList.Visibility = Visibility.Collapsed;
-                suggestionList.ItemsSource = null;
+                aSuggestionList.Visibility = Visibility.Collapsed;
+                aSuggestionList.ItemsSource = null;
             }
             else
             {
-                suggestionList.Visibility = Visibility.Collapsed;
-                suggestionList.ItemsSource = null;
+                aSuggestionList.Visibility = Visibility.Collapsed;
+                aSuggestionList.ItemsSource = null;
             }
         }
 
+        private void judgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            judge_first_name = judgeFirstName.Text;
+            List<string> autoList = new List<string>();
+            autoList.Clear();
+
+            judgeNameListForAutoComplete = this.filterNames();
+
+            foreach (string item in judgeNameListForAutoComplete)
+            {
+                if (!string.IsNullOrEmpty(judgeFirstName.Text))
+                {
+                    if (item.StartsWith(judge_first_name))
+                    {
+                        autoList.Add(item);
+                    }
+                }
+            }
+
+            if (autoList.Count > 0)
+            {
+                jSuggestionList.ItemsSource = autoList;
+                jSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (judgeFirstName.Text.Equals(""))
+            {
+                jSuggestionList.Visibility = Visibility.Collapsed;
+                jSuggestionList.ItemsSource = null;
+            }
+            else
+            {
+                jSuggestionList.Visibility = Visibility.Collapsed;
+                jSuggestionList.ItemsSource = null;
+            }
+        }
 
         private List<string> filterNames()
         {
@@ -213,7 +249,7 @@ namespace KarateGeek.guis
         }
 
 
-        private void suggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void aSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string name = null;
             string sex = null;
@@ -228,16 +264,16 @@ namespace KarateGeek.guis
             addressConnection = new AddressConnection();
             DataSet ds;
 
-            if (suggestionList.ItemsSource != null)
+            if (aSuggestionList.ItemsSource != null)
             {
-                suggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                aSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
                 athleteFirstName.TextChanged -= new TextChangedEventHandler(athleteFirstName_TextChanged);
 
-                int index = suggestionList.SelectedIndex;
+                int index = aSuggestionList.SelectedIndex;
                 
-                if (suggestionList.SelectedIndex != -1)
+                if (aSuggestionList.SelectedIndex != -1)
                 {
-                    name = suggestionList.SelectedItem.ToString();
+                    name = aSuggestionList.SelectedItem.ToString();
                     sex = filteredAthlets.Tables[0].Rows[index][4].ToString();
                     rank = filteredAthlets.Tables[0].Rows[index][11].ToString();
                     address_id = int.Parse(filteredAthlets.Tables[0].Rows[index][9].ToString());
@@ -322,6 +358,106 @@ namespace KarateGeek.guis
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
+
+        private void jSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string name = null;
+            string sex = null;
+            string rank = null;
+            int rank_position = 0;
+            int address_id;
+
+            addressConnection = new AddressConnection();
+            DataSet ds;
+
+            if (jSuggestionList.ItemsSource != null)
+            {
+                jSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                athleteFirstName.TextChanged -= new TextChangedEventHandler(athleteFirstName_TextChanged);
+
+                int index = jSuggestionList.SelectedIndex;
+
+                if (jSuggestionList.SelectedIndex != -1)
+                {
+                    name = jSuggestionList.SelectedItem.ToString();
+                    sex = filteredAthlets.Tables[0].Rows[index][4].ToString();
+                    rank = filteredAthlets.Tables[0].Rows[index][11].ToString();
+                    address_id = int.Parse(filteredAthlets.Tables[0].Rows[index][9].ToString());
+
+                    //
+                    //giati mazoxizese re mike??
+                    //
+                    //this.athleteFirstName.Text = name.Substring(0, name.IndexOf(" "));
+                    //
+
+                    this.judgeFirstName.Text = filteredAthlets.Tables[0].Rows[index][1].ToString();
+                    this.judge_first_name = this.athleteFirstName.Text;
+
+                    this.judgeLastName.Text = filteredAthlets.Tables[0].Rows[index][2].ToString();
+                    this.judgeFatherName.Text = filteredAthlets.Tables[0].Rows[index][3].ToString();
+
+                    if (sex.Equals("male"))
+                    {
+                        this.rdButton1.IsChecked = true;
+                    }
+                    else
+                    {
+                        this.rdButton2.IsChecked = true;
+                    }
+
+                    this.athleteDateOfBirth.SelectedDate = (DateTime)filteredAthlets.Tables[0].Rows[index][5];
+                    this.athleteFirstPhone.Text = filteredAthlets.Tables[0].Rows[index][6].ToString();
+                    this.athleteSecondPhone.Text = filteredAthlets.Tables[0].Rows[index][7].ToString();
+                    this.athleteEmail.Text = filteredAthlets.Tables[0].Rows[index][8].ToString();
+
+                    ds = addressConnection.getAddress(address_id);
+
+                    this.athleteStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
+                    this.athleteAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
+
+                    string acity = ds.Tables[0].Rows[0][3].ToString();
+                    int ix = ds.Tables[0].Columns.Count;
+                    string acountry = ds.Tables[0].Rows[0][5].ToString();
+
+
+                    for (int i = 0; i < this.cmbACountryChooses.Items.Count; i++)
+                    {
+                        if (acountry.Equals(cmbACountryChooses.Items[i]))
+                        {
+                            rank_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbACountryChooses.SelectedIndex = rank_position;
+
+
+                    for (int i = 0; i < this.cmbACityChooses.Items.Count; i++)
+                    {
+                        if (acountry.Equals(cmbACityChooses.Items[i]))
+                        {
+                            rank_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbACityChooses.SelectedIndex = rank_position;
+
+
+                    //vriskei tin zwni pou exei o kathenas se poia thesi einai
+                    for (int i = 0; i < cmbARankChooses.Items.Count; i++)
+                    {
+                        if (rank.Equals(cmbARankChooses.Items[i]))
+                        {
+                            rank_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbARankChooses.SelectedIndex = rank_position;
+
+                }
+                athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
+            }
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
+        }
 
 
         private void athleteLastName_TextChanged(object sender, TextChangedEventArgs e)
@@ -454,6 +590,8 @@ namespace KarateGeek.guis
         {
 
         }
+
+       
 
         //
         // dead code alla asto kalou kakou
