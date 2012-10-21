@@ -26,7 +26,9 @@ namespace KarateGeek.guis
         private DataSet cities;
         private DataSet countries;
         private DataSet filteredAthlets;
+        private DataSet clubs;
         private AddressConnection addressConnection;
+        private ClubConnection clubConnection = new ClubConnection();
         List<string> athleteNameListForAutoComplete;
 
         //
@@ -47,7 +49,7 @@ namespace KarateGeek.guis
         private string athlete_country = null;
         private string athlete_country_code = null;
         private string athlete_rank = null;
-        private string athlete_club = null;
+        private string athlete_club_id = null;
         private DateTime athlete_dateOfBirth;
 
 
@@ -140,10 +142,18 @@ namespace KarateGeek.guis
 
             //prosthetoume clubs
 
+            this.clubs = clubConnection.GetClubs();
 
-            cmbAClubChooses.Items.Add("Pro Kata Club (P.K.C.)");
+            foreach (DataRow dr in clubs.Tables[0].Rows)
+            {
+                cmbAClubChooses.Items.Add(dr[1]);
+            
+            
+            }
             cmbAClubChooses.SelectedIndex = 0;
-            cmbAClubChooses.Items.Add("Allo Club");
+            //cmbAClubChooses.Items.Add("Pro Kata Club (P.K.C.)");
+            
+            //cmbAClubChooses.Items.Add("Allo Club");
         }
 
         //private Boolean nameflag = true;
@@ -208,7 +218,11 @@ namespace KarateGeek.guis
             string name = null;
             string sex = null;
             string rank = null;
+
             int rank_position = 0;
+            int country_position = 0;
+            int city_position = 0;
+
             int address_id;
             
             addressConnection = new AddressConnection();
@@ -268,22 +282,27 @@ namespace KarateGeek.guis
                     {
                         if (acountry.Equals(cmbACountryChooses.Items[i]))
                         {
-                            rank_position = i;
+                            country_position = i;
                             break;
                         }
                     }
-                    this.cmbACountryChooses.SelectedIndex = rank_position;
+
+                    //
+                    //vasika mike to provlima einai oti 
+                    //exoume asinenoisia GR kai Greece
+                    //diladi psaxni gia GR eno psaxni me greece
+                    this.cmbACountryChooses.SelectedIndex = country_position;
 
 
                     for (int i = 0; i < this.cmbACityChooses.Items.Count; i++)
                     {
                         if (acountry.Equals(cmbACityChooses.Items[i]))
                         {
-                            rank_position = i;
+                            city_position = i;
                             break;
                         }
                     }
-                    this.cmbACityChooses.SelectedIndex = rank_position;
+                    this.cmbACityChooses.SelectedIndex = city_position;
 
 
                     //vriskei tin zwni pou exei o kathenas se poia thesi einai
@@ -398,7 +417,7 @@ namespace KarateGeek.guis
         private void cmbAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbAClubChooses.SelectedIndex;
-            athlete_club = cmbAClubChooses.Items[index].ToString();
+            athlete_club_id = clubs.Tables[0].Rows[index][0].ToString();
         }
 
         private void rdButton1_Checked(object sender, RoutedEventArgs e)
@@ -413,12 +432,17 @@ namespace KarateGeek.guis
 
         private void btnASave_Click(object sender, RoutedEventArgs e)
         {
+            //
+            //what the fuck is this
+            //
+            //hmm???
+            //
             MessageBox.Show("athlete_sex: " + athlete_sex);
         }
 
         private void btnASaveNew_Click(object sender, RoutedEventArgs e)
         {
-            athleteConn.InsertNewAthlete(athlete_first_name, athlete_last_name, athlete_fathers_name, athlete_sex, athlete_dateOfBirth, athlete_first_phone, athlete_second_phone, athlete_email, athlete_address, athlete_address_num, "3025", athlete_country_code, athlete_city, athlete_rank, athlete_club);
+            athleteConn.InsertNewAthlete(athlete_first_name, athlete_last_name, athlete_fathers_name, athlete_sex, athlete_dateOfBirth, athlete_first_phone, athlete_second_phone, athlete_email, athlete_address, athlete_address_num, "3025", athlete_country_code, athlete_city, athlete_rank, athlete_club_id);
             MessageBox.Show("Succesfully saved!");
             PersonManagement pm = new PersonManagement();
             pm.Activate();
