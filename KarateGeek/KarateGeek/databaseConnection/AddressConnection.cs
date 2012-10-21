@@ -39,15 +39,21 @@ namespace KarateGeek.databaseConnection
 
 
 
-        public string UpdateAddress(string id, string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode)
+        public string UpdateAddress(int id, string addressStreetName, string addressStreetNumber, string City, string addressPostalCode, string countryCode)
         {
+            string sql;
+            DataSet dr = null;
 
-            string sql = "update addresses set " +
+            sql = "select id from cities where name = '" + City + "'; ";
+            dr = this.Query(sql);
+            long cityId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
 
-                "city = '" + City + "', " +
-                "street_name = '" + addressStreetName + "', " +
-                "street_number = '" + addressStreetNumber + "', " +
-                "street_postal_code = '" + addressPostalCode + "', " +
+            sql = "update addresses set " +
+
+                "street = '" + addressStreetName + "', " +
+                "number = '" + addressStreetNumber + "', " +
+                "city_id = '" + cityId + "', " +
+                "postal_code = '" + addressPostalCode + "', " +
                 "country_code = '" + countryCode + "' where id = '" + id + "' ;";
 
             this.NonQuery(sql);

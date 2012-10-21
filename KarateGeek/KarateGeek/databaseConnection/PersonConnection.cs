@@ -41,20 +41,21 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        protected string updatePerson(string id, string firstName, string middleName, string lastName,
+        protected string updatePerson(int id, string firstName, string lastName, string fathersName, string sex,
            DateTime dateOfBirth,
-           string primaryPhoneNo, string secondaryPhoneNo, string email)
+           string primaryPhoneNo, string secondaryPhoneNo, string email, int addressId)
         {
             string sql;
         
         sql = "update Persons set " +
-
-                "middle_name = '" + middleName + "', " +
+                "first_name = '" + firstName + "', " +
                 "last_name = '" + lastName + "', " +
+                "fathers_name = '" + fathersName + "', " +
+                "sex = '" + sex + "', " +
                 "date_of_birth = '" + dateOfBirth.ToShortDateString() + "', " +
-                "primary_phone_number = '" + primaryPhoneNo + "', " +
-                "secondary_phone_number = '" + secondaryPhoneNo + "', " +
-                "email = '" + email + "' where id = '" + id + "' ;";
+                "phone = '" + primaryPhoneNo + "', " +
+                "secondary_phone = '" + secondaryPhoneNo + "', " +
+                "email = '" + email + "'," + "address_id = '" + addressId + "' where id = '" + id + "' ;";
 
             this.NonQuery(sql);
 

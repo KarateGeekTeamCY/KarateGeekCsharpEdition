@@ -231,7 +231,7 @@
                         <Button Name="btnABack"
                                 Content="Back"
                                 Grid.Column="1"
-                                Margin="10"/>
+                                Margin="10" Click="btnABack_Click" />
                         <Button Name="btnASave"
                                 Content="Save"
                                 Grid.Column="2"
@@ -463,11 +463,11 @@
                             <Button Name="btnJBack"
                                 Content="Back"
                                 Grid.Column="1"
-                                Margin="10"/>
+                                Margin="10" Click="btnJBack_Click" />
                             <Button Name="btnJSave"
                                 Content="Save"
                                 Grid.Column="2"
-                                Margin="10"/>
+                                Margin="10" Click="btnJSave_Click" />
                             <Button Name="btnJSaveNew"
                                 Content="Save as new"
                                 Grid.Column="3"

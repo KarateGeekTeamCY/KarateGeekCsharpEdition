@@ -88,6 +88,7 @@ namespace KarateGeek.guis
 
         public PersonManagement()
         {
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             //here should be the loading of the locations and clubs and countries
             InitializeComponent();
 
@@ -285,7 +286,7 @@ namespace KarateGeek.guis
             this.filteredJudges = conn.findSimilar(this.judgeFirstName.Text);
             if(this.filteredJudges.Tables[0].Rows.Count >0)
             {
-               int person_id = int.Parse(filteredJudges.Tables[0].Rows[0][0].ToString());
+               person_id = int.Parse(filteredJudges.Tables[0].Rows[0][0].ToString());
             }
             List<string> list = new List<string>();
             foreach (DataRow dr in filteredJudges.Tables[0].Rows)
@@ -727,12 +728,8 @@ namespace KarateGeek.guis
 
         private void btnASave_Click(object sender, RoutedEventArgs e)
         {
-            //
-            //what the fuck is this
-            //
-            //hmm???
-            //
-            MessageBox.Show("athlete_sex: " + athlete_sex);
+            athleteConn.UpdateAthlete(person_id, athlete_first_name, athlete_last_name, athlete_fathers_name, athlete_sex, athlete_dateOfBirth, athlete_first_phone, athlete_second_phone, athlete_email, athlete_address, athlete_address_num, "3025", athlete_country_code, athlete_city, athlete_rank, athlete_club_id);
+            MessageBox.Show("Succesfully saved!");
         }
 
         private void btnASaveNew_Click(object sender, RoutedEventArgs e)
@@ -782,6 +779,7 @@ namespace KarateGeek.guis
 
         private void btnJDelete_Click(object sender, RoutedEventArgs e)
         {
+            judgeConn = new JudgeConnection();
             judgeConn.deleteJudge(person_id);
             MessageBox.Show("Succesfully deleted!");
             PersonManagement pm = new PersonManagement();
@@ -790,8 +788,31 @@ namespace KarateGeek.guis
             this.Hide();
         }
 
+        private void btnABack_Click(object sender, RoutedEventArgs e)
+        {
+            MainMenu menu = new MainMenu();
+            menu.Activate();
+            this.Close();
+            menu.Show();
+        }
+
+        private void btnJBack_Click(object sender, RoutedEventArgs e)
+        {
+            MainMenu menu = new MainMenu();
+            menu.Activate();
+            this.Close();
+            menu.Show();
+        }
+
+        private void btnJSave_Click(object sender, RoutedEventArgs e)
+        {
+            judgeConn = new JudgeConnection();
+            judgeConn.UpdateJudge(person_id, judge_first_name, judge_last_name, judge_fathers_name, judge_sex, judge_dateOfBirth, judge_first_phone, judge_second_phone, judge_email, judge_address, judge_address_num, "3025", judge_country_code, judge_city, judge_rank, judge_class);
+            MessageBox.Show("Succesfully saved!");
+        }
+
       
-       
+        
         
 
         

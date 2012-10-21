@@ -30,38 +30,38 @@ namespace KarateGeek.databaseConnection
 
 
 
-        public string InserrtNewAthleteFromOther(string id, string firstName, string middleName, string lastName,
-          DateTime dateOfBirth,
-          string primaryPhoneNo, string secondaryPhoneNo, string email,
-          string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
-          string rank, string localClubId)
-        {
-            string sql = "";
-            DataSet dr = null;
+        //public string InserrtNewAthleteFromOther(string id, string firstName, string middleName, string lastName,
+        //  DateTime dateOfBirth,
+        //  string primaryPhoneNo, string secondaryPhoneNo, string email,
+        //  string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
+        //  string rank, string localClubId)
+        //{
+        //    string sql = "";
+        //    DataSet dr = null;
 
-            this.updatePerson(id, firstName, middleName, lastName,
-            dateOfBirth,
-            primaryPhoneNo, secondaryPhoneNo, email);
+        //    //this.updatePerson(id, firstName, middleName, lastName,
+        //    //dateOfBirth,
+        //    //primaryPhoneNo, secondaryPhoneNo, email);
 
-            this._InsertAthlete(id, rank, localClubId);
+        //    this._InsertAthlete(id, rank, localClubId);
 
-            // getting the athlete_address id
-            sql = "select address_id from persons where id = '" + id + "'; ";
-            dr = this.Query(sql);
-            long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
+        //    // getting the athlete_address id
+        //    sql = "select address_id from persons where id = '" + id + "'; ";
+        //    dr = this.Query(sql);
+        //    int addressId = int.Parse(dr.Tables[0].Rows[0][0].ToString()); 
 
-            AddressConnection addConn = new AddressConnection();
-            addConn.UpdateAddress("" + addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
+        //    AddressConnection addConn = new AddressConnection();
+        //    addConn.UpdateAddress(addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
 
-            return "";
-        }
+        //    return "";
+        //}
 
 
 
-        public string UpdateAthlete(string id, string firstName, string middleName, string lastName,
+        public string UpdateAthlete(int id, string firstName, string lastName, string fathersName, string sex,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
-           string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
+           string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
            string rank, string localClubId)
         {
             string sql = "";
@@ -69,19 +69,17 @@ namespace KarateGeek.databaseConnection
 
             this._UpdatetAthlete(id, rank, localClubId);
 
-            this.updatePerson(id, firstName, middleName, lastName,
-            dateOfBirth,
-            primaryPhoneNo, secondaryPhoneNo, email);
-
-           
             // getting the athlete_address id
             sql = "select address_id from persons where id = '" + id + "'; ";
-            
+
             dr = this.Query(sql);
-            long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString()); 
+            int addressId = int.Parse(dr.Tables[0].Rows[0][0].ToString()); 
+
+            this.updatePerson(id, firstName, lastName, fathersName, sex, dateOfBirth,
+            primaryPhoneNo, secondaryPhoneNo, email, addressId);
 
             AddressConnection addConn = new AddressConnection();
-            addConn.UpdateAddress("" + addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
+            addConn.UpdateAddress(addressId, addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
 
             return "";
         }
@@ -116,7 +114,7 @@ namespace KarateGeek.databaseConnection
 
 
 
-        private string _UpdatetAthlete(string PersonId, string rank, string localClubId)
+        private string _UpdatetAthlete(int PersonId, string rank, string localClubId)
         {
             string sql = "update athletes set " +
 

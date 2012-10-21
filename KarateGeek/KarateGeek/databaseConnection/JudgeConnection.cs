@@ -43,6 +43,33 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
+         public string UpdateJudge(int id, string firstName, string lastName, string fathersName, string sex,
+           DateTime dateOfBirth,
+           string primaryPhoneNo, string secondaryPhoneNo, string email,
+           string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
+           string rank, string judge_class)
+         {
+             string sql = "";
+             DataSet dr = null;
+
+             this._UpdateJudge(id, rank, judge_class);
+
+             // getting the athlete_address id
+             sql = "select address_id from persons where id = '" + id + "'; ";
+
+             dr = this.Query(sql);
+             int addressId = int.Parse(dr.Tables[0].Rows[0][0].ToString());
+
+             this.updatePerson(id, firstName, lastName, fathersName, sex, dateOfBirth,
+             primaryPhoneNo, secondaryPhoneNo, email, addressId);
+
+             AddressConnection addConn = new AddressConnection();
+             addConn.UpdateAddress(addressId, addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
+
+             return "";
+         }
+
+
          public DataSet findSimilar(string filter)
          {
              string sql = "select * from persons JOIN judges on persons.id = judges.id where first_name like '" + filter + "%';";
@@ -55,6 +82,17 @@ namespace KarateGeek.databaseConnection
              return this.Query(sql);
          }
 
+         private string _UpdateJudge(int JudgeId, string rank, string judge_class)
+         {
+             string sql = "update judges set " +
+
+                 "rank = '" + rank + "', " +
+                 "class = '" + judge_class + "' where id = '" + JudgeId + "' ;";
+
+             this.NonQuery(sql);
+
+             return "";
+         }
 
     }
 }
