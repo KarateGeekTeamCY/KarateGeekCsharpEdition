@@ -128,42 +128,42 @@ namespace KarateGeek.guis
             //6th kyu - White (at least 5 Month of traning or more)
 
             //prosthetoume athlete_rank
-            cmbARankChooses.Items.Add("White        - 6th kyu");
-            cmbARankChooses.Items.Add("Yellow       - 5th kyu");
-            cmbARankChooses.Items.Add("Orange       - 4th kyu");
-            cmbARankChooses.Items.Add("Green        - 3th kyu");
-            cmbARankChooses.Items.Add("Blue         - 2nd kyu");
-            cmbARankChooses.Items.Add("Brown        - 1st kyu");
-            cmbARankChooses.Items.Add("Black        - 1st dan");
-            cmbARankChooses.Items.Add("Black        - 2nd dan");
-            cmbARankChooses.Items.Add("Black        - 3th dan");
-            cmbARankChooses.Items.Add("Black        - 4th dan");
-            cmbARankChooses.Items.Add("Black        - 5th dan");
-            cmbARankChooses.Items.Add("White/Red    - 6th dan");
-            cmbARankChooses.Items.Add("White/Red    - 7th dan");
-            cmbARankChooses.Items.Add("White/Red    - 8th dan");
-            cmbARankChooses.Items.Add("Red          - 9th dan");
-            cmbARankChooses.Items.Add("Red          - 10th dan");
-            cmbARankChooses.SelectedIndex = 0;
+            cmbAthleteRankChooses.Items.Add("White        - 6th kyu");
+            cmbAthleteRankChooses.Items.Add("Yellow       - 5th kyu");
+            cmbAthleteRankChooses.Items.Add("Orange       - 4th kyu");
+            cmbAthleteRankChooses.Items.Add("Green        - 3th kyu");
+            cmbAthleteRankChooses.Items.Add("Blue         - 2nd kyu");
+            cmbAthleteRankChooses.Items.Add("Brown        - 1st kyu");
+            cmbAthleteRankChooses.Items.Add("Black        - 1st dan");
+            cmbAthleteRankChooses.Items.Add("Black        - 2nd dan");
+            cmbAthleteRankChooses.Items.Add("Black        - 3th dan");
+            cmbAthleteRankChooses.Items.Add("Black        - 4th dan");
+            cmbAthleteRankChooses.Items.Add("Black        - 5th dan");
+            cmbAthleteRankChooses.Items.Add("White/Red    - 6th dan");
+            cmbAthleteRankChooses.Items.Add("White/Red    - 7th dan");
+            cmbAthleteRankChooses.Items.Add("White/Red    - 8th dan");
+            cmbAthleteRankChooses.Items.Add("Red          - 9th dan");
+            cmbAthleteRankChooses.Items.Add("Red          - 10th dan");
+            cmbAthleteRankChooses.SelectedIndex = 0;
 
             //prosthetoume judge class
-            cmbJRankChooses.Items.Add("White        - 6th kyu");
-            cmbJRankChooses.Items.Add("Yellow       - 5th kyu");
-            cmbJRankChooses.Items.Add("Orange       - 4th kyu");
-            cmbJRankChooses.Items.Add("Green        - 3th kyu");
-            cmbJRankChooses.Items.Add("Blue         - 2nd kyu");
-            cmbJRankChooses.Items.Add("Brown        - 1st kyu");
-            cmbJRankChooses.Items.Add("Black        - 1st dan");
-            cmbJRankChooses.Items.Add("Black        - 2nd dan");
-            cmbJRankChooses.Items.Add("Black        - 3th dan");
-            cmbJRankChooses.Items.Add("Black        - 4th dan");
-            cmbJRankChooses.Items.Add("Black        - 5th dan");
-            cmbJRankChooses.Items.Add("White/Red    - 6th dan");
-            cmbJRankChooses.Items.Add("White/Red    - 7th dan");
-            cmbJRankChooses.Items.Add("White/Red    - 8th dan");
-            cmbJRankChooses.Items.Add("Red          - 9th dan");
-            cmbJRankChooses.Items.Add("Red          - 10th dan");
-            cmbJRankChooses.SelectedIndex = 0;
+            cmbJudgeRankChooses.Items.Add("White        - 6th kyu");
+            cmbJudgeRankChooses.Items.Add("Yellow       - 5th kyu");
+            cmbJudgeRankChooses.Items.Add("Orange       - 4th kyu");
+            cmbJudgeRankChooses.Items.Add("Green        - 3th kyu");
+            cmbJudgeRankChooses.Items.Add("Blue         - 2nd kyu");
+            cmbJudgeRankChooses.Items.Add("Brown        - 1st kyu");
+            cmbJudgeRankChooses.Items.Add("Black        - 1st dan");
+            cmbJudgeRankChooses.Items.Add("Black        - 2nd dan");
+            cmbJudgeRankChooses.Items.Add("Black        - 3th dan");
+            cmbJudgeRankChooses.Items.Add("Black        - 4th dan");
+            cmbJudgeRankChooses.Items.Add("Black        - 5th dan");
+            cmbJudgeRankChooses.Items.Add("White/Red    - 6th dan");
+            cmbJudgeRankChooses.Items.Add("White/Red    - 7th dan");
+            cmbJudgeRankChooses.Items.Add("White/Red    - 8th dan");
+            cmbJudgeRankChooses.Items.Add("Red          - 9th dan");
+            cmbJudgeRankChooses.Items.Add("Red          - 10th dan");
+            cmbJudgeRankChooses.SelectedIndex = 0;
             
             //prosthetoume clubs
             this.clubs = clubConnection.GetClubs();
@@ -392,15 +392,15 @@ namespace KarateGeek.guis
 
 
                     //vriskei tin zwni pou exei o kathenas se poia thesi einai
-                    for (int i = 0; i < cmbARankChooses.Items.Count; i++)
+                    for (int i = 0; i < cmbAthleteRankChooses.Items.Count; i++)
                     {
-                        if (rank.Equals(cmbARankChooses.Items[i]))
+                        if (rank.Equals(cmbAthleteRankChooses.Items[i]))
                         {
                             rank_position = i;
                             break;
                         }
                     }
-                    this.cmbARankChooses.SelectedIndex = rank_position;
+                    this.cmbAthleteRankChooses.SelectedIndex = rank_position;
 
                 }
                 athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
@@ -496,15 +496,15 @@ namespace KarateGeek.guis
 
 
                     //vriskei tin zwni pou exei o kathenas se poia thesi einai
-                    for (int i = 0; i < cmbJRankChooses.Items.Count; i++)
+                    for (int i = 0; i < cmbJudgeRankChooses.Items.Count; i++)
                     {
-                        if (rank.Equals(cmbJRankChooses.Items[i]))
+                        if (rank.Equals(cmbJudgeRankChooses.Items[i]))
                         {
                             rank_position = i;
                             break;
                         }
                     }
-                    this.cmbJRankChooses.SelectedIndex = rank_position;
+                    this.cmbJudgeRankChooses.SelectedIndex = rank_position;
 
                     for (int i = 0; i < cmbJClassChooses.Items.Count; i++)
                     {
@@ -696,8 +696,8 @@ namespace KarateGeek.guis
 
         private void cmbARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbARankChooses.SelectedIndex;
-            athlete_rank = cmbARankChooses.Items[index].ToString();
+            int index = cmbAthleteRankChooses.SelectedIndex;
+            athlete_rank = cmbAthleteRankChooses.Items[index].ToString();
         }
 
         private void cmbAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -754,8 +754,8 @@ namespace KarateGeek.guis
 
         private void cmbJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbJRankChooses.SelectedIndex;
-            judge_rank = cmbARankChooses.Items[index].ToString();
+            int index = cmbJudgeRankChooses.SelectedIndex;
+            judge_rank = cmbAthleteRankChooses.Items[index].ToString();
         }
 
         private void cmbJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)

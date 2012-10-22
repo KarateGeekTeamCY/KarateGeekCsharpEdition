@@ -191,7 +191,7 @@
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbARankChooses"
+                        <ComboBox Name="cmbAthleteRankChooses"
                                   Grid.Row="12"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
@@ -427,7 +427,7 @@
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <ComboBox Name="cmbJRankChooses"
+                            <ComboBox Name="cmbJudgeRankChooses"
                                   Grid.Row="12"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" SelectionChanged="cmbJRankChooses_SelectionChanged">
