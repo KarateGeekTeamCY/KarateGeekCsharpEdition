@@ -33,5 +33,16 @@ namespace KarateGeek.databaseConnection
             return this.Query(sql);
         }
 
+
+        public DataSet getCountryNameByCode(string code)
+        {
+            sql = "select name from countries where code = '" + code + "';";
+            return this.Query(sql);
+
+            //return "";
+        }
+
+
+
     }
 }

@@ -32,9 +32,15 @@ namespace KarateGeek.databaseConnection
             return this.Query(sql);
         }
 
-        public DataSet GetCitiesById(int id)
+        public DataSet GetCitiesByCountryId(int id)
         {
             sql = "select * from cities where country_code = '" + id + "' ";
+            return this.Query(sql);
+        }
+
+        public DataSet GetCityNameByCityId(int id)
+        {
+            sql = "select name from cities where id = '" + id + "' ";
             return this.Query(sql);
         }
     }

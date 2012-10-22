@@ -104,7 +104,7 @@ namespace KarateGeek.databaseConnection
             string sql = "insert into athletes ( id, rank, club_id) values ( '"
                 + PersonId + "', '"
                 + rank + "', '"
-                + 1 + "' );"; //edw egine allagi gia na fanei oti xreiazetai to id apo to athlete_club pou tha einai eidi perasmeno
+                + localClubId + "' );"; //edw egine allagi gia na fanei oti xreiazetai to id apo to athlete_club pou tha einai eidi perasmeno
 
             this.NonQuery(sql);
 
