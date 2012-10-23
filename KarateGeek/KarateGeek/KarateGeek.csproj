@@ -83,6 +83,9 @@
     <Compile Include="databaseConnection\PersonConnection.cs" />
     <Compile Include="databaseConnection\RankConnection.cs" />
     <Compile Include="databaseConnection\UserConnection.cs" />
+    <Compile Include="guis\ClubManagement.xaml.cs">
+      <DependentUpon>ClubManagement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\EventTournamentManagement.xaml.cs">
       <DependentUpon>EventTournamentManagement.xaml</DependentUpon>
     </Compile>
@@ -138,6 +141,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="guis\ClubManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="guis\EventTournamentManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -185,6 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="reports\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\280px-Limassol_sea.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

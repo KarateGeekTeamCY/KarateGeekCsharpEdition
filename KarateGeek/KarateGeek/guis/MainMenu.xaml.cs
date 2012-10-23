@@ -42,6 +42,15 @@ namespace KarateGeek.guis
             et.Show();
         }
 
+        private void btnClubmanagement_Click(object sender, RoutedEventArgs e)
+        {
+            ClubManagement cl = new ClubManagement();
+            cl.Activate();
+
+            this.Close();
+            cl.Show();
+        }
+
         
     }
 }

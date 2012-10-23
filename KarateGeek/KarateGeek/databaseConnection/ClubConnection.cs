@@ -32,6 +32,7 @@ namespace KarateGeek.databaseConnection
                 "'" + addressId + "', " +
                 "'" + countryCode + "' " +
                 ")";
+            this.NonQuery(sql);
 
             return "";
         }

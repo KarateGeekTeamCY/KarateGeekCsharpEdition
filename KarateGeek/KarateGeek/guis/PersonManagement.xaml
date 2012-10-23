@@ -46,6 +46,7 @@
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -147,28 +148,42 @@
                                VerticalAlignment="Center"/>
                         <Grid Grid.Column="2"
                               Grid.Row="9">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
                             <TextBox Name="athleteStreetName"
                                      Grid.Column="0" VerticalAlignment="Center" TextChanged="athleteStreetName_TextChanged" />
-                            <Label Content="Num." 
-                                   Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
-                            <TextBox Name="athleteAddressNum" 
-                                     Grid.Column="2" VerticalAlignment="Center" TextChanged="athleteAddressNum_TextChanged" />                      
+                                          
                         </Grid>
+                        <Grid Grid.Column="2"
+                              Grid.Row="10">
 
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Num."
+                              
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="athleteAddressNum" 
+                                     Grid.Column="1"
+                                         VerticalAlignment="Center" TextChanged="athleteAddressNum_TextChanged" />
+                            <Label Content="T.K."
+                                   Margin="10,0,0,0"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="athleteTK" 
+                                     Grid.Column="3"
+                                     VerticalAlignment="Center" TextChanged="athleteTK_TextChanged" />
+                        </Grid>
                         <Label Content="City"
-                               Grid.Row="10"
+                               Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbAthleteCityChooses"
-                                  Grid.Row="10"
+                                  Grid.Row="11"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbACityChooses_SelectionChanged">
@@ -176,11 +191,11 @@
                         </ComboBox>
 
                         <Label Content="Country"
-                               Grid.Row="11"
+                               Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbACountryChooses"
-                                  Grid.Row="11"
+                                  Grid.Row="12"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbACountryChooses_SelectionChanged">
@@ -188,11 +203,11 @@
                         </ComboBox>
 
                         <Label Content="Rank"
-                               Grid.Row="12"
+                               Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbAthleteRankChooses"
-                                  Grid.Row="12"
+                                  Grid.Row="13"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbARankChooses_SelectionChanged">
@@ -200,11 +215,11 @@
                         </ComboBox>
 
                         <Label Content="Club"
-                               Grid.Row="13"
+                               Grid.Row="14"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbAClubChooses"
-                                  Grid.Row="13"
+                                  Grid.Row="14"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbAClubChooses_SelectionChanged">
@@ -269,6 +284,8 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                             <RowDefinition/>
+                            <RowDefinition/>
+
                             <RowDefinition/>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -383,63 +400,74 @@
                                VerticalAlignment="Center"/>
                             <Grid Grid.Column="2"
                               Grid.Row="9">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
                                 <TextBox Name="judgeStreetName"
-                                     Grid.Column="0"
                                      VerticalAlignment="Center" TextChanged="judgeStreetName_TextChanged" />
-                                <Label Content="Num." 
-                                   Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
-                                <TextBox Name="judgeAddressNum" 
-                                     Grid.Column="2"
-                                         VerticalAlignment="Center" TextChanged="judgeAddressNum_TextChanged" />
                             </Grid>
+                        <Grid Grid.Column="2"
+                              Grid.Row="10">
 
-                            <Label Content="City"
-                               Grid.Row="10"
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Num."
+                              
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="judgeAddressNum" 
+                                     Grid.Column="1"
+                                         VerticalAlignment="Center" TextChanged="judgeAddressNum_TextChanged" />
+                            <Label Content="T.K."
+                                   Margin="10,0,0,0"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="judgeTK" 
+                                     Grid.Column="3"
+                                     VerticalAlignment="Center" TextChanged="judgeTK_TextChanged" />
+                        </Grid>
+                        <Label Content="City"
+                               Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                             <ComboBox Name="cmbJCityChooses"
-                                  Grid.Row="10"
+                                  Grid.Row="11"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" SelectionChanged="cmbJCityChooses_SelectionChanged">
                      
                             </ComboBox>
 
                             <Label Content="Country"
-                               Grid.Row="11"
+                               Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                             <ComboBox Name="cmbJCountryChooses"
-                                  Grid.Row="11"
+                                  Grid.Row="12"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" SelectionChanged="cmbJCountryChooses_SelectionChanged">
                               
                             </ComboBox>
 
                             <Label Content="Rank"
-                               Grid.Row="12"
+                               Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                             <ComboBox Name="cmbJudgeRankChooses"
-                                  Grid.Row="12"
+                                  Grid.Row="13"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" SelectionChanged="cmbJRankChooses_SelectionChanged">
                                
                             </ComboBox>
 
                             <Label Content="Class"
-                               Grid.Row="13"
+                               Grid.Row="14"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
                             <ComboBox Name="cmbJClassChooses"
-                                  Grid.Row="13"
+                                  Grid.Row="14"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" SelectionChanged="cmbJClassChooses_SelectionChanged">
                                
