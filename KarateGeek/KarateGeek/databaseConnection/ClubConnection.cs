@@ -28,7 +28,7 @@ namespace KarateGeek.databaseConnection
                 "'" + name + "', " +
                 "'" + phone + "', " +
                 "'" + email + "', " +
-                "" + ic.ToByteTable(logosource) + " , " +
+                "'" + ic.ToByteTable(logosource) + "' , " +
                 "'" + addressId + "', " +
                 "'" + countryCode + "' " +
                 ")";

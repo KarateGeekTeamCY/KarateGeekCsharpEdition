@@ -37,15 +37,26 @@ namespace KarateGeek.guis
 
         }
 
-        Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog(); 
+       
+        
         private void btCBrowse_Click(object sender, RoutedEventArgs e)
         {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "Image files (*.gif,*.jpg,*.jpeg,*.bmp,*.png)|*.gif;*.jpg;*.jpeg;*.bmp;*.png";
+            dlg.InitialDirectory = "C:\\Users\\Public\\Pictures";
+            dlg.Title = "Select image for logo";
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {
                 // Open document
                 string filename = dlg.FileName;
                 clubLogoPath.Text = filename;
+                
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(filename, UriKind.Absolute);
+                bitmap.EndInit();
+                clubLogo.Source = bitmap;
             }
         }
 
@@ -88,5 +99,7 @@ namespace KarateGeek.guis
         {
             clubConnection.InsertNewCLub(_clubName , _clubPhone , _clubEmail , _clubLogoSource , "1" , "CY");
         }
+
+        
     }
 }

@@ -130,11 +130,11 @@
                                  >
 
             </ComboBox>
-            <Image
+            <Image Name="clubLogo"
                 Grid.Row="0"
                 Grid.Column="3"
                 
-                Grid.RowSpan="4" Source="/KarateGeek;component/Images/280px-Limassol_sea.jpg" HorizontalAlignment="Center" Margin="10">
+                Grid.RowSpan="4" Source="/KarateGeek;component/Images/280px-Limassol_sea.jpg" HorizontalAlignment="Center" Margin="10" >
                 
             </Image>
         </Grid>
