@@ -16,14 +16,16 @@ namespace KarateGeek.databaseConnection
         private string sql = "";
 
 
-        public string InsertNewCLub(string name, string phone, string email, string logosource, string addressId, string countryCode)
+        public string InsertNewCLub(string name, string phone, string email, string logosource, string addressStreetName, string addressStreetNumber, string addressPostalCode , string countryCode, string City)
         {
             //FileStream fs = new FileStream(logosource, FileMode.Open, FileAccess.Read);
             //BinaryReader binr = new BinaryReader(new BufferedStream(fs));
             //byte[] logoinbites = binr.ReadBytes(Convert.ToInt32(fs.Length));
 
             ImageConverter ic = new ImageConverter();
-            
+            AddressConnection addConn = new AddressConnection();
+            string addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
+
             sql = "insert into Clubs (name, phone, email, logo, address_id, country_code) values ("+
                 "'" + name + "', " +
                 "'" + phone + "', " +
@@ -37,6 +39,11 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
+        public DataSet findSimilar(string filter)
+        {
+            string sql = "select * from clubs where name like '" + filter + "%';";
+            return this.Query(sql);
+        }
 
         public string UpdateClub()
         {
