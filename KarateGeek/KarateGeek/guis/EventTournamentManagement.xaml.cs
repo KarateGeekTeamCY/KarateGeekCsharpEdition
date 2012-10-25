@@ -24,5 +24,7 @@ namespace KarateGeek.guis
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
+
+       
     }
 }
