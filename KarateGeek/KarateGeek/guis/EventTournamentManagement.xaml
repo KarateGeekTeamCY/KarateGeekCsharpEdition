@@ -65,17 +65,17 @@
                                          Grid.Row="1"
                                          Grid.Column="2"
                                     
-                                         Margin="0,3,0,3"/>
+                                         Margin="0,3,0,3" TextChanged="eventName_TextChanged" />
                            
                             <Label Content="Date" 
                                        Grid.Row="2"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
                                
-                                <DatePicker Name="eventDatePicker"
+                                <DatePicker Name="eventDate"
                                             Grid.Row="2"
                                             Grid.Column="2"
-                                            Margin="0,3,0,3"/>
+                                            Margin="0,3,0,3" SelectedDateChanged="eventDatePicker_SelectedDateChanged" />
                             <Label Content="Location" 
                                        Grid.Row="3"
                                        Grid.Column="1"
@@ -85,7 +85,7 @@
                                          Grid.Row="3"
                                          Grid.Column="2"
                                          
-                                         Margin="0,3,0,3"/>
+                                         Margin="0,3,0,3" TextChanged="eventLocation_TextChanged" />
                             <Label Content="City"
                                Grid.Row="4"
                                Grid.Column="3"
@@ -94,7 +94,7 @@
                             <ComboBox Name="cmbECityChooses"
                                             Grid.Row="4"
                                             Grid.Column="4"
-                                            Margin="0,3,0,3">
+                                            Margin="0,3,0,3" SelectionChanged="cmbECityChooses_SelectionChanged">
                                     <ComboBoxItem Name="Nicosia" 
                                                   Content="Nicosia"
                                                   IsSelected="True"/>
@@ -107,7 +107,7 @@
                             <ComboBox Name="cmbECountryChooses"
                                             Grid.Row="3"
                                             Grid.Column="4"
-                                            Margin="0,3,0,3">
+                                            Margin="0,3,0,3" SelectionChanged="cmbECountryChooses_SelectionChanged">
                                 
                             </ComboBox>
                             <Label Content="Phone num."
@@ -117,7 +117,7 @@
                             <TextBox Name="eventPhone" 
                                Grid.Row="4"
                                Grid.Column="2"
-                               VerticalAlignment="Center"  />
+                               VerticalAlignment="Center" TextChanged="eventPhone_TextChanged" />
 
                            
                             <Label Content="Email"
@@ -127,7 +127,7 @@
                             <TextBox Name="eventEmail" 
                                Grid.Row="5"
                                Grid.Column="2"
-                               VerticalAlignment="Center"  />
+                               VerticalAlignment="Center" TextChanged="eventEmail_TextChanged" />
 
                             <Label Content="Address"
                                Grid.Row="1"
@@ -137,8 +137,8 @@
                                Margin="15,0,0,0"/>
                             <Grid Grid.Column="4"
                               Grid.Row="1">
-                                <TextBox Name="eventStreetName"
-                                     Grid.Column="0" VerticalAlignment="Center"  />
+                                <TextBox Name="eventAddress"
+                                     Grid.Column="0" VerticalAlignment="Center" TextChanged="eventAddress_TextChanged" />
 
                             </Grid>
                             <Grid Grid.Column="4"
@@ -157,7 +157,7 @@
                                    HorizontalAlignment="Left"/>
                                 <TextBox Name="eventAddressNum" 
                                      Grid.Column="1"
-                                         VerticalAlignment="Center" />
+                                         VerticalAlignment="Center" TextChanged="eventAddressNum_TextChanged" />
                                 <Label Content="T.K."
                                    Margin="10,0,0,0"
                                    Grid.Column="2"
@@ -165,8 +165,17 @@
                                    HorizontalAlignment="Left"/>
                                 <TextBox Name="eventTK" 
                                      Grid.Column="3"
-                                     VerticalAlignment="Center"  />
+                                     VerticalAlignment="Center" TextChanged="eventTK_TextChanged" />
                             </Grid>
+                            <Label Content="Official"
+                               Grid.Row="5"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                               Margin="15,0,0,0"    />
+                            <CheckBox Name="eventOfficial"
+                                      Grid.Row="5"
+                                      Grid.Column="4"
+                                      VerticalAlignment="Center" IsChecked="True" Checked="eventOfficial_Checked" />
                         </Grid>
                             
                             <Grid Name="buttons"
@@ -442,26 +451,26 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Name="back"
+            <Button Name="btnEBack"
                                         Content="Back"
                                         Grid.Column="1"
                                         Margin="5"
-                                        VerticalAlignment="Center"/>
-            <Button Name="save"
+                                        VerticalAlignment="Center" Click="btnEBack_Click" />
+            <Button Name="btnESave"
                                         Content="Save"
                                         Grid.Column="2"
                                         Margin="5"
-                                        VerticalAlignment="Center"/>
-            <Button Name="saveNew"
+                                        VerticalAlignment="Center" Click="btnESave_Click" />
+            <Button Name="btnESaveNew"
                                         Content="Save as new"
                                         Grid.Column="3"
                                         Margin="5"
-                                        VerticalAlignment="Center"/>
-            <Button Name="clear"
+                                        VerticalAlignment="Center" Click="btnESaveNew_Click" />
+            <Button Name="btnSClear"
                                         Content="Clear"
                                         Grid.Column="4"
                                         Margin="5"
-                                        VerticalAlignment="Center"/>
+                                        VerticalAlignment="Center" Click="btnSClear_Click" />
 
 
         </Grid>
