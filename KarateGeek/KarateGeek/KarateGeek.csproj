@@ -73,12 +73,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="databaseConnection\ScoreConnection.cs" />
-    <Compile Include="reports\test.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>test.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="databaseConnection\AddressConnection.cs" />
