@@ -39,6 +39,7 @@ namespace KarateGeek.guis
         {
             EventTournamentManagement et = new EventTournamentManagement();
             et.Activate();
+            this.Close();
             et.Show();
         }
 

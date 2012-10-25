@@ -21,6 +21,7 @@ namespace KarateGeek.guis
     {
         public EventTournamentManagement()
         {
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
         }
     }
