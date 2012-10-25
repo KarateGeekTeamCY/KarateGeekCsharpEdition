@@ -100,7 +100,7 @@ CREATE TABLE addresses (
 	id              BIGSERIAL,
 	street          varchar(50)     NOT NULL,
 	number          varchar(12)     NOT NULL,
-	city_id         integer 	references cities(id),
+	city_id         integer 		references cities(id),
 	postal_code     varchar(12)     NOT NULL,
 	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
 	primary key(id)
@@ -109,10 +109,11 @@ CREATE TABLE addresses (
 
 
 CREATE TABLE locations (
-	id              BIGSERIAL       REFERENCES addresses(id),
+	id              BIGSERIAL,
 	name            varchar(80),
 	phone           char(15),    		-- E.164 standard
-	description     varchar(255),
+	email	        varchar(50),
+	address_id 		integer 		REFERENCES addresses(id),
 	primary key(id)
 );
 
@@ -200,10 +201,9 @@ create table game_types (
 create table events (
 	id              BIGSERIAL,
 	name            varchar(80)     NOT NULL,
-	day             date,
+	date            date,
 	official        boolean      	DEFAULT false, 
-	game_type_id 	int 		references game_types(id),
-	location        integer  	references locations(id),
+	location_id     integer  		references locations(id),
 	primary key (id)
 );
 

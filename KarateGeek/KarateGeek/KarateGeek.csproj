@@ -78,6 +78,7 @@
     <Compile Include="databaseConnection\CoreDatabaseConnection.cs" />
     <Compile Include="databaseConnection\CountryConnection.cs" />
     <Compile Include="databaseConnection\Cryptography.cs" />
+    <Compile Include="databaseConnection\EventConnection.cs" />
     <Compile Include="databaseConnection\JudgeConnection.cs" />
     <Compile Include="databaseConnection\LoginConnection.cs" />
     <Compile Include="databaseConnection\PersonConnection.cs" />
