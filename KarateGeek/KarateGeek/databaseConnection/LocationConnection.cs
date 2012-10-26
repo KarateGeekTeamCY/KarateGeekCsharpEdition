@@ -30,5 +30,28 @@ namespace KarateGeek.databaseConnection
             return "" + locationId;
 
         }
+
+        public string UpdateLocation(int id, string location , string phone , string email, int addressId)
+        {
+            string sql;
+            DataSet dr = null;
+
+            sql = "update locations set " +
+
+                "name = '" + location + "', " +
+                "phone = '" + phone + "', " +
+                "email = '" + email + "', " +
+                "address_id = '" + addressId + "'where id = '" + id + "' ;";
+
+            this.NonQuery(sql);
+
+            return "";
+        }
+
+        public DataSet getLocation(int id)
+        {
+            string sql = "select * from locations where id= '" + id + "';";
+            return this.Query(sql);
+        }
     }
 }
