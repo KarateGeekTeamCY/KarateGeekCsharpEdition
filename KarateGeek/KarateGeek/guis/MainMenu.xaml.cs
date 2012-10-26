@@ -52,6 +52,18 @@ namespace KarateGeek.guis
             cl.Show();
         }
 
+       
+
+        private void mainCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DateTime selectedDate = mainCalendar.SelectedDate.Value;
+
+            EventTournamentManagement et = new EventTournamentManagement(selectedDate);
+            et.Activate();
+            this.Close();
+            et.Show();
+        }
+
         
     }
 }

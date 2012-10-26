@@ -10,7 +10,7 @@ insert into cities (name, country_code) values ('Thessaloniki', 'GR');
 
 
   
-insert into addresses (id , street, "number", city_id , postal_code , country_code ) values ('0' , 'teapk' , '1' , '7' , '3025' , 'CY'); 
+insert into addresses (id , street, "number", city_id , postal_code , country_code ) values ('0' , 'tepak' , '1' , '1' , '3025' , 'CY'); 
 
 
 insert into clubs (name, address_id, country_code) values ('power fight club', 0, 'CY');

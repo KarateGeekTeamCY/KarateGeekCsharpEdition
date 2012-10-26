@@ -83,6 +83,7 @@
     <Compile Include="databaseConnection\Cryptography.cs" />
     <Compile Include="databaseConnection\EventConnection.cs" />
     <Compile Include="databaseConnection\JudgeConnection.cs" />
+    <Compile Include="databaseConnection\LocationConnection.cs" />
     <Compile Include="databaseConnection\LoginConnection.cs" />
     <Compile Include="databaseConnection\PersonConnection.cs" />
     <Compile Include="databaseConnection\RankConnection.cs" />

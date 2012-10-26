@@ -28,7 +28,7 @@ namespace KarateGeek.guis
         private DataSet countries;
         private DataSet filteredEvents;
         private AddressConnection addressConnection;
-        CountryConnection countryConnection;
+        private CountryConnection countryConnection;
         List<string> eventNameListForAutoComplete;
 
         //
@@ -67,6 +67,26 @@ namespace KarateGeek.guis
             cmbECountryChooses.SelectedIndex = 0;
             
             this.eventUpdateCities("CY");
+        }
+        //constructor pou pernei san orisma tin imerominia pou tou exei perastei apo to main
+        public EventTournamentManagement(DateTime dateSelection)
+        {
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            InitializeComponent();
+
+
+            countryConnection = new CountryConnection();
+            this.countries = countryConnection.GetCountries();
+
+            foreach (DataRow dr in countries.Tables[0].Rows)
+            {
+                cmbECountryChooses.Items.Add(dr[1].ToString());
+
+            }
+            cmbECountryChooses.SelectedIndex = 0;
+
+            this.eventUpdateCities("CY");
+            this.eventDate.SelectedDate = dateSelection;
         }
 
         private void eventName_TextChanged(object sender, TextChangedEventArgs e)
@@ -180,11 +200,12 @@ namespace KarateGeek.guis
 
         private void btnESaveNew_Click(object sender, RoutedEventArgs e)
         {
-            eventConnection.InsertNewAthlete(_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
+            eventConnection = new EventConnection();
+            eventConnection.InsertNewEvent(_eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
             MessageBox.Show("Succesfully saved!");
             EventTournamentManagement etm = new EventTournamentManagement();
-            pm.Activate();
-            pm.Show();
+            etm.Activate();
+            etm.Show();
             this.Close();
         }
 
