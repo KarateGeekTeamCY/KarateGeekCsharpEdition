@@ -67,15 +67,15 @@ namespace KarateGeek.databaseConnection
                 + name + "', '"
                 + eventdate.ToShortDateString() + "', '"
                 + official + "', '"
-                + locationId + "' );"; //edw egine allagi gia na fanei oti xreiazetai to id apo to athlete_club pou tha einai eidi perasmeno
+                + locationId + "' );"; 
 
             this.NonQuery(sql);
 
             sql = "select currval('events_id_seq');";
             dr = this.Query(sql);
-            long addressId = long.Parse(dr.Tables[0].Rows[0][0].ToString());
+            long eventId = long.Parse(dr.Tables[0].Rows[0][0].ToString());
 
-            return "" + addressId;
+            return "" + eventId;
         }
 
         private string _UpdateEvent(int eventId, string name, DateTime eventdate, Boolean official, int locationId)
@@ -90,6 +90,18 @@ namespace KarateGeek.databaseConnection
             this.NonQuery(sql);
 
             return "";
+        }
+
+        public DataSet getEvents()
+        {
+            string sql = "select * from events;";
+            return this.Query(sql);
+        }
+
+        public DataSet getEventsByName(string name)
+        {
+            string sql = "select * from events where name = '" + name + "';";
+            return this.Query(sql);
         }
     }
 }

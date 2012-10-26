@@ -26,8 +26,10 @@ namespace KarateGeek.guis
         //
         private DataSet cities;
         private DataSet countries;
+        private DataSet events;
         private DataSet filteredEvents;
         private AddressConnection addressConnection;
+        private CityConnection cityConnection;
         private CountryConnection countryConnection;
         private LocationConnection locationConnection;
         List<string> eventNameListForAutoComplete;
@@ -52,31 +54,50 @@ namespace KarateGeek.guis
         private DateTime _eventDate;
 
 
+        //
+        //tournament specific variables
+        //
+        private TournamentConnection tournamentConnection;
+
+        private int    _tournamentEventId;
+        private string _tournamentEvent;
+        private string _tournamentName = null;
+        private string _tournamentSex = null;
+        private int    _tournamentAgeFrom = 0;
+        private int    _tournamentAgeTo = 0;
+        private string _tournamentLevelFrom = null;
+        private string _tournamentLevelTo = null;
+        private string _tounamentGameType = null;
+        private string _tournamentGame = null;
+        private string _eventInfo = null;
+
         public EventTournamentManagement()
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
-
             eventConnection = new EventConnection();
-            countryConnection = new CountryConnection();
-            this.countries = countryConnection.GetCountries();
+            tournamentConnection = new TournamentConnection();
 
-            foreach (DataRow dr in countries.Tables[0].Rows)
-            {
-                cmbECountryChooses.Items.Add(dr[1].ToString());
-                
-            }
-            cmbECountryChooses.SelectedIndex = 0;
+            initialize();
             
-            this.eventUpdateCities("CY");
         }
         //constructor pou pernei san orisma tin imerominia pou tou exei perastei apo to main
         public EventTournamentManagement(DateTime dateSelection)
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
+            eventConnection = new EventConnection();
+            tournamentConnection = new TournamentConnection();
+            initialize();
+   
+            this.eventDate.SelectedDate = dateSelection;
+        }
 
-
+        private void initialize() {
+            addressConnection = new AddressConnection();
+            locationConnection = new LocationConnection();
+            //cities kai countries
+            cityConnection = new CityConnection();
             countryConnection = new CountryConnection();
             this.countries = countryConnection.GetCountries();
 
@@ -88,8 +109,59 @@ namespace KarateGeek.guis
             cmbECountryChooses.SelectedIndex = 0;
 
             this.eventUpdateCities("CY");
-            this.eventDate.SelectedDate = dateSelection;
+
+
+            //events
+            eventConnection = new EventConnection();
+            this.events = eventConnection.getEvents();
+            cmbTEventChooser.Items.Add("Select Event");
+
+            foreach (DataRow dr in events.Tables[0].Rows)
+            {
+                cmbTEventChooser.Items.Add(dr[1].ToString());
+
+            }
+            cmbTEventChooser.SelectedIndex = 0;
+
+            //ages
+            cmbTAgeFrom.Items.Add("From");
+            cmbTAgeTo.Items.Add("To");
+            for (int i = 5; i <= 60; i++)
+            {
+                cmbTAgeFrom.Items.Add(i.ToString());
+                cmbTAgeTo.Items.Add(i.ToString());
+            }
+            cmbTAgeFrom.SelectedIndex = 0;
+            cmbTAgeTo.SelectedIndex = 0;
+
+            //levels
+            cmbTLevelFrom.Items.Add("From");
+            cmbTLevelFrom.Items.Add("A");
+            cmbTLevelFrom.Items.Add("B");
+            cmbTLevelFrom.Items.Add("C");
+            cmbTLevelFrom.Items.Add("D");
+
+            cmbTLevelTo.Items.Add("To");
+            cmbTLevelTo.Items.Add("A");
+            cmbTLevelTo.Items.Add("B");
+            cmbTLevelTo.Items.Add("C");
+            cmbTLevelTo.Items.Add("D");
+
+            cmbTLevelFrom.SelectedIndex = 0;
+            cmbTLevelTo.SelectedIndex = 0;
+
+
+            //games
+            cmbTGame.Items.Add("Select game type");
+            cmbTGame.Items.Add("Game A");
+            cmbTGame.Items.Add("Game B");
+            cmbTGame.Items.Add("Game C");
+            cmbTGame.Items.Add("Game D");
+            cmbTGame.Items.Add("Game E");
+
+            cmbTGame.SelectedIndex = 0;
         }
+        #region event
 
         private void eventName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -349,13 +421,163 @@ namespace KarateGeek.guis
             this.Close();
         }
 
-        private void btnSClear_Click(object sender, RoutedEventArgs e)
+        private void btnEClear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+
+        private void cmbTEventChooser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbTEventChooser.SelectedIndex;
+            if (index != 0)
+            {
+                if (index < cmbTEventChooser.Items.Count && index != -1)
+                    _tournamentEvent = cmbTEventChooser.Items[index].ToString();
+                autocomplete(_tournamentEvent);
+            }    
+        }
+
+        private void autocomplete(string eventName)
+        {
+            DataSet dsE = null; 
+            DataSet dsL = null;
+            DataSet dsA = null;
+            DataSet dsC = null;
+            int locationId;
+            int addressId;
+            int cityId;
+
+            dsE = eventConnection.getEventsByName(eventName);
+            _tournamentEventId = int.Parse(dsE.Tables[0].Rows[0][0].ToString());
+            locationId = int.Parse(dsE.Tables[0].Rows[0][4].ToString());
+            dsL = locationConnection.getLocation(locationId);
+            addressId = int.Parse(dsL.Tables[0].Rows[0][4].ToString());
+            dsA = addressConnection.getAddress(addressId);
+            cityId = int.Parse(dsA.Tables[0].Rows[0][3].ToString());
+            dsC = cityConnection.GetCityNameByCityId(cityId);
+
+            _eventInfo = "Name: " + dsE.Tables[0].Rows[0][1].ToString() + "\n";
+            _eventInfo += "Date: " + dsE.Tables[0].Rows[0][2].ToString() + "\n";
+            _eventInfo += "City: " + dsC.Tables[0].Rows[0][0].ToString() + "\n";
+            _eventInfo += "Address: " + dsA.Tables[0].Rows[0][1].ToString() + "\n";
+            _eventInfo += "Num: " + dsA.Tables[0].Rows[0][2].ToString() + "    Postal Code:" + dsA.Tables[0].Rows[0][4].ToString() + "\n";
+            _eventInfo += "Location: " + dsL.Tables[0].Rows[0][1].ToString() + "\n";
+            _eventInfo += "Phone: " + dsL.Tables[0].Rows[0][2].ToString() + "\n";
+            _eventInfo += "Email: " + dsL.Tables[0].Rows[0][3].ToString();
+           
+            eventInfo.Text = _eventInfo;
+        }
+
+        private void tbTName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _tournamentName = tbTName.Text;
+        }
+
+        private void TrdButtonMale_Checked(object sender, RoutedEventArgs e)
+        {
+            _tournamentSex = "male";
+        }
+
+        private void TrdButtonFemale_Checked(object sender, RoutedEventArgs e)
+        {
+            _tournamentSex = "female";
+        }
+
+        private void cmbTAgeFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbTAgeFrom.SelectedIndex;
+            if (index != 0)
+            {
+                if (index < cmbTAgeFrom.Items.Count && index != -1)
+                    _tournamentAgeFrom = int.Parse(cmbTAgeFrom.Items[index].ToString());
+            }  
+        }
+
+        private void cmbTAgeTo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbTAgeTo.SelectedIndex;
+            if (index != 0)
+            {
+                if (index < cmbTAgeTo.Items.Count && index != -1)
+                    _tournamentAgeTo = int.Parse(cmbTAgeTo.Items[index].ToString());
+            }    
+        }
+
+        private void cmbTLevelFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbTLevelFrom.SelectedIndex;
+            if (index != 0)
+            {
+                if (index < cmbTLevelFrom.Items.Count && index != -1)
+                    _tournamentLevelFrom = cmbTAgeFrom.Items[index].ToString();
+            }    
+        }
+
+        private void cmbTLevelTo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbTLevelTo.SelectedIndex;
+            if (index != 0)
+            {
+                if (index < cmbTLevelTo.Items.Count && index != -1)
+                    _tournamentLevelTo = cmbTAgeTo.Items[index].ToString();
+            }    
+        }
+
+        private void TrdButtonIndiv_Checked(object sender, RoutedEventArgs e)
+        {
+            _tounamentGameType = "individual";
+        }
+
+        private void TrdButtonTeam_Checked(object sender, RoutedEventArgs e)
+        {
+            _tounamentGameType = "team";
+        }
+
+        private void cmbTGame_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbTGame.SelectedIndex;
+            if (index != 0)
+            {
+                if (index < cmbTGame.Items.Count && index != -1)
+                    _tournamentGame = cmbTGame.Items[index].ToString();
+            }    
+        }
+
+        private void btnTBack_Click(object sender, RoutedEventArgs e)
+        {
+            MainMenu menu = new MainMenu();
+            menu.Activate();
+            this.Close();
+            menu.Show();
+        }
+
+        private void btnTSave_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        
+        private void btnTSaveNew_Click(object sender, RoutedEventArgs e)
+        {
+            tournamentConnection.InsertNewTournament(_tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tounamentGameType, _tournamentGame, _tournamentEventId);
+            MessageBox.Show("Succesfully saved!");
+            EventTournamentManagement etm = new EventTournamentManagement();
+            etm.Activate();
+            etm.Show();
+            this.Close();
+        }
 
-        
+        private void btnTClear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+       
+
+        #region tournament
+
+
+        #endregion
     }
+        
 }

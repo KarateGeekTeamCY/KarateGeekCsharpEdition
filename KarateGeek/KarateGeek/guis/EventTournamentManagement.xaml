@@ -9,7 +9,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            
         </Grid.RowDefinitions>
 
         <Label Name="lblEventTurnamentMenuInfo" 
@@ -25,54 +25,51 @@
 
             <TabItem Name="eventTab" 
                      Header="Event management">
-                
-                    
-                    <Grid Name="upperAndLowerGrid">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height=" Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid Name="buttonsinfogrid">
+
+
+                <Grid Name="upperAndLowerGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Name="infogrid">
+
+                        <Grid Name="informationGrid">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="200"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Grid Name="informationGrid">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                               
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <Label Content="Name" 
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="Name" 
                                        Grid.Row="1"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
-                                <TextBox Name="eventName"
+                            <TextBox Name="eventName"
                                          Grid.Row="1"
                                          Grid.Column="2"
                                     
                                          Margin="0,3,0,3" TextChanged="eventName_TextChanged" />
-                           
+
                             <Label Content="Date" 
                                        Grid.Row="2"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
-                               
-                                <DatePicker Name="eventDate"
+
+                            <DatePicker Name="eventDate"
                                             Grid.Row="2"
                                             Grid.Column="2"
                                             Margin="0,3,0,3" SelectedDateChanged="eventDatePicker_SelectedDateChanged" />
@@ -95,10 +92,10 @@
                                             Grid.Row="4"
                                             Grid.Column="4"
                                             Margin="0,3,0,3" SelectionChanged="cmbECityChooses_SelectionChanged">
-                                    <ComboBoxItem Name="Nicosia" 
+                                <ComboBoxItem Name="Nicosia" 
                                                   Content="Nicosia"
                                                   IsSelected="True"/>
-                                </ComboBox>
+                            </ComboBox>
                             <Label Content="Country"
                                Grid.Row="3"
                                Grid.Column="3"
@@ -108,7 +105,7 @@
                                             Grid.Row="3"
                                             Grid.Column="4"
                                             Margin="0,3,0,3" SelectionChanged="cmbECountryChooses_SelectionChanged">
-                                
+
                             </ComboBox>
                             <Label Content="Phone num."
                                Grid.Row="4"
@@ -119,7 +116,7 @@
                                Grid.Column="2"
                                VerticalAlignment="Center" TextChanged="eventPhone_TextChanged" />
 
-                           
+
                             <Label Content="Email"
                                Grid.Row="5"
                                Grid.Column="1"
@@ -178,54 +175,57 @@
                                       VerticalAlignment="Center" IsChecked="True" Checked="eventOfficial_Checked" Unchecked="eventOfficial_Unchecked"/>
                             <ListBox Name="eSuggestionList" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top"  Visibility="Collapsed" SelectionChanged="eSuggestionList_SelectionChanged"/>
                         </Grid>
-                        
 
 
-                        <Grid Name="buttons"
-                                  Margin="0,10,0,0"
-                                  Grid.Row="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition Height="20"/>
-                            </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Button Name="btneBack" 
-                                        Grid.Column="1"
-                                        Grid.Row="0"
+
+
+
+                    </Grid>
+
+
+                    <Grid Name="Lower" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <TextBox Name="tournamentsInfo"
+                                 BorderThickness="1"
+                                 />
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Name="btnEBack"
                                         Content="Back"
-                                        Margin="3"/>
-                                <Button Name="btneSave" 
-                                        Grid.Column="2"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnEBack_Click" />
+                            <Button Name="btnESave"
                                         Content="Save"
-                                        Margin="3"/>
-                                <Button Name="btneSaveNew" 
-                                        Grid.Column="3"
+                                        Grid.Column="2"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnESave_Click" />
+                            <Button Name="btnESaveNew"
                                         Content="Save as new"
-                                        Margin="3"/>
-                                <Button Name="btneClear" 
-                                        Grid.Column="4"
+                                        Grid.Column="3"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnESaveNew_Click" />
+                            <Button Name="btnEClear"
                                         Content="Clear"
-                                        Margin="3"/>
-                            </Grid>
-                            
+                                        Grid.Column="4"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnEClear_Click" />
                         </Grid>
-                    
-                    
-                    <ListBox Grid.Row="1" 
-                             Height="300">
-                        <ListBoxItem Name="test"
-                                     Content="Tournoua onex"/>
-                    </ListBox>
+
+                    </Grid>
+
                 </Grid>
-
-
 
             </TabItem>
 
@@ -257,17 +257,17 @@
                                 <Label Content="Event"
                                        VerticalAlignment="Center"
                                        Margin="5"/>
-                                <ComboBox Name="EventPicker"
+                                <ComboBox Name="cmbTEventChooser"
                                           Grid.Column="1"
                                           Margin="5"
-                                          VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center" SelectionChanged="cmbTEventChooser_SelectionChanged" />
                             </Grid>
                             
                             
-                            <ListBox Grid.Row="1" 
+                            <TextBox Name="eventInfo"
+                                     Grid.Row="1" 
                                      Height="Auto"
-                                     Margin="5"
-                                     BorderThickness="1"/>
+                                     Margin="5" IsEnabled="True" IsReadOnly="True" />
                             
                         </Grid>
                         <Grid Grid.Column="1">
@@ -295,53 +295,51 @@
                                        Grid.Row="0"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
-                                <TextBox Name="turnamentName"
+                                <TextBox Name="tbTName"
                                          Grid.Row="0"
                                          Grid.Column="2"
                                          Margin="0,5,0,5"
                                          VerticalAlignment="Center"
-                                         Grid.ColumnSpan="2"/>
+                                         Grid.ColumnSpan="2" TextChanged="tbTName_TextChanged" />
 
                                 <Label Content="Sex"
                                        Grid.Column="1"
                                        Grid.Row="1"
                                        VerticalAlignment="Center"/>
-                                <RadioButton Content="Male"
+                                <RadioButton Name="TrdButtonMale"
+                                             Content="Male"
                                              Grid.Column="2"
                                              Grid.Row="1"
                                              VerticalAlignment="Center"
-                                             Margin="5"/>
-                                <RadioButton Content="Female"
+                                             Margin="5" Checked="TrdButtonMale_Checked" />
+                                <RadioButton Name="TrdButtonFemale"
+                                             Content="Female"
                                              Grid.Column="3"
                                              Grid.Row="1"
                                              VerticalAlignment="Center"
-                                             Margin="5"  />
+                                             Margin="5" Checked="TrdButtonFemale_Checked" />
 
                                 <Label Content="Age"
                                        Grid.Column="1"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"/>
 
-                                <ComboBox Name="tournamentAgeFrom"
+                                <ComboBox Name="cmbTAgeFrom"
                                           
                                            Grid.Column="2"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"
-                                       Margin="5,0,5,0" >
-                                    <ComboBoxItem Name="AgeFrom" 
-                                                  Content="From"
-                                                  IsSelected="True"/>
+                                       Margin="5,0,5,0" SelectionChanged="cmbTAgeFrom_SelectionChanged" MaxDropDownHeight="128">
+                                   
                                 </ComboBox>
 
-                                <ComboBox Name="tournamentAgeTo"
+                                <ComboBox Name="cmbTAgeTo"
                                           
                                            Grid.Column="3"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"
-                                       Margin="5,0,5,0" >
-                                    <ComboBoxItem Name="AgeTo" 
-                                                  Content="To"
-                                                  IsSelected="True"/>
+                                       Margin="5,0,5,0" SelectionChanged="cmbTAgeTo_SelectionChanged" MaxDropDownHeight="128">
+                                    
                                 </ComboBox>
 
 
@@ -353,26 +351,22 @@
                                        Grid.Row="3"
                                        VerticalAlignment="Center"/>
 
-                                <ComboBox Name="tournamentLevelFrom"
+                                <ComboBox Name="cmbTLevelFrom"
                                           
                                            Grid.Column="2"
                                        Grid.Row="3"
                                        VerticalAlignment="Center"
-                                       Margin="5,0,5,0" >
-                                    <ComboBoxItem Name="LevelFrom" 
-                                                  Content="From"
-                                                  IsSelected="True"/>
+                                       Margin="5,0,5,0" SelectionChanged="cmbTLevelFrom_SelectionChanged" MaxDropDownHeight="128">
+                                    
                                 </ComboBox>
 
-                                <ComboBox Name="tournamentLevelTo"
+                                <ComboBox Name="cmbTLevelTo"
                                           
                                            Grid.Column="3"
                                        Grid.Row="3"
                                        VerticalAlignment="Center"
-                                       Margin="5,0,5,0" >
-                                    <ComboBoxItem Name="LevelTo" 
-                                                  Content="To"
-                                                  IsSelected="True"/>
+                                       Margin="5,0,5,0" SelectionChanged="cmbTLevelTo_SelectionChanged" MaxDropDownHeight="128">
+                                    
                                 </ComboBox>
 
 
@@ -382,27 +376,30 @@
                                        Grid.Column="1"
                                        Grid.Row="4"
                                        VerticalAlignment="Center"/>
-                                <RadioButton Content="Individual"
+                                <RadioButton Name="TrdButtonIndiv"
+                                    Content="Individual"
                                              Grid.Column="2"
                                              Grid.Row="4"
                                              VerticalAlignment="Center"
-                                             Margin="5"/>
-                                <RadioButton Content="Team"
+                                             Margin="5" Checked="TrdButtonIndiv_Checked" />
+                                <RadioButton Name="TrdButtonTeam"
+                                    Content="Team"
                                              Grid.Column="3"
                                              Grid.Row="4"
                                              VerticalAlignment="Center"
-                                             Margin="5"  />
-                                <Label Content="Game"
+                                             Margin="5" Checked="TrdButtonTeam_Checked" />
+                                <Label 
+                                    Content="Game"
                                        Grid.Column="1"
                                        Grid.Row="5"
                                        VerticalAlignment="Center"/>
 
-                                <ComboBox Name="turnamentJudgeSystem"
+                                <ComboBox Name="cmbTGame"
                                            Grid.Column="2"
                                        Grid.Row="5"
                                        VerticalAlignment="Center"
                                        Margin="5,0,5,0"
-                                          Grid.ColumnSpan="2"/>
+                                          Grid.ColumnSpan="2" SelectionChanged="cmbTGame_SelectionChanged" />
 
 
 
@@ -422,15 +419,46 @@
 
 
                     </Grid>
-                    <Grid Grid.Row="1" Name="lower">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        
-                        
-                        
+                    <Grid Grid.Row="1" Name="lowerT">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                       
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Name="btnTBack"
+                                        Content="Back"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnTBack_Click" />
+                            <Button Name="btnTSave"
+                                        Content="Save"
+                                        Grid.Column="2"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnTSave_Click" />
+                            <Button Name="btnTSaveNew"
+                                        Content="Save as new"
+                                        Grid.Column="3"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnTSaveNew_Click" />
+                            <Button Name="btnTClear"
+                                        Content="Clear"
+                                        Grid.Column="4"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnTClear_Click" />
+
+
+                        </Grid>
+
                     </Grid>
 
                     
@@ -445,38 +473,7 @@
 
 
         </TabControl>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button Name="btnEBack"
-                                        Content="Back"
-                                        Grid.Column="1"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnEBack_Click" />
-            <Button Name="btnESave"
-                                        Content="Save"
-                                        Grid.Column="2"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnESave_Click" />
-            <Button Name="btnESaveNew"
-                                        Content="Save as new"
-                                        Grid.Column="3"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnESaveNew_Click" />
-            <Button Name="btnSClear"
-                                        Content="Clear"
-                                        Grid.Column="4"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnSClear_Click" />
-
-
-        </Grid>
+        
     </Grid>
 </Window>
 

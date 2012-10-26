@@ -210,8 +210,14 @@ create table events (
 
 CREATE TABLE tournaments ( 
 	id              BIGSERIAL,
-	level           character varying(50)   	NOT NULL, 
-	category        character varying(50),            
+	name 		varchar(80) 	NOT NULL,
+	sex		varchar(10)	NOT NULL,
+	age_from	integer		NOT NULL,
+	age_to		integer 	NOT NULL,
+	level_from      character varying(50)   	NOT NULL, 
+	level_to        character varying(50)   	NOT NULL, 
+	game_type       character varying(50)		NOT NULL,  
+	game		character varying(50)		NOT NULL,          
 	event_id        integer references events(id),
 	primary key(id)
 	
