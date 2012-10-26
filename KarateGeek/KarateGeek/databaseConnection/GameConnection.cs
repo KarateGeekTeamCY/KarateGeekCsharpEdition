@@ -11,11 +11,14 @@ namespace KarateGeek.databaseConnection
         private string sql;
 
 
-        public string InsertNewGame()
+        public string InsertNewGame(string tournamentId, string phase, string position, string gameType)
         {
-
-
-
+            sql = "insert into gamse (tournament_id, phase, position, game_type) values ( '" + tournamentId + "'. '" +
+                tournamentId + "'. '" +
+                phase + "', '" +
+                position + "', '" +
+                gameType + "' );";
+            this.NonQuery(sql);
             return "";
         }
 
@@ -23,28 +26,25 @@ namespace KarateGeek.databaseConnection
 
         public DataSet GetGamesByTurnament( string turnamentId )
         {
-            sql = "";
-
-
-
+            sql = "select * from games where tournament_id = '" + turnamentId + "';";
             return this.Query(sql);
-            
         }
+
 
         public DataSet GetGamesByTurnamentPhase( string turnamentId, string phase)
         {
-            sql = "";
-
-
-
+            sql = "select * from games where turnament_id = '" + turnamentId + "' and phase = '" + phase + "';" ;
             return this.Query(sql);
-
         }
+
 
         public DataSet GetGameById(string gameId)
         {
-            sql = "select * from games where id = '" + gameId + "' ;";
+            sql = "select * from games where id = '" + gameId + "' ;" ;
             return this.Query(sql);
         }
+
+
+
     }
 }

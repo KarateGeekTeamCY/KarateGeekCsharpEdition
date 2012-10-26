@@ -19,7 +19,13 @@ insert into clubs (name, address_id, country_code) values ('power fight club', 0
 insert into persons(id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id) 
 values ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
 
-insert into athletes (id, rank, club_id ) values ('0', 'black', '2'  );
+<<<<<<< HEAD
+=======
+insert into users( id , username , password, person_management, event_management , lottery , game_support , reports , settings) values ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
+
+
+>>>>>>> a7c942ecf4612043d3147398b5e0deda134c4500
+insert into athletes (id, rank, club_id ) values ('0', 'black', '1'  );
 
 
 

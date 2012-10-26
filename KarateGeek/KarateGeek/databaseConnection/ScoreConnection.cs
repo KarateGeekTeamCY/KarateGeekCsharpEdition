@@ -11,20 +11,25 @@ namespace KarateGeek.databaseConnection
         private string sql;
 
 
-        public string InsertNewScore(string gameId, string athleteId, string technical)
+
+
+
+        public string InsertNewScore(string gameId, string athleteId, string technical, string technicalDesc)
         {
-            sql = "insert into gane_scores (game_id, athlete_id, technical_score) values ('" + gameId + "', '" + athleteId + "', '" + technical + "');";
+            sql = "insert into gane_scores (game_id, athlete_id, technical_score, technical_score_desc) values ('"
+                + gameId + "', '" + athleteId + "', '" + technical + "', '" + technicalDesc + "');";
             this.NonQuery(sql);
             return "";
         }
 
+
         public string InsertNewScore(string gameId, string athleteId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id, 
-            string score1, string score2, string score3, string score4, string score5)
+            string isPoints, string score1, string score2, string score3, string score4, string score5)
         {
             sql = "insert into gane_scores (game_id, athlete_id, head_judge_id, judge1, judge2, judge3, judge4, "+
-                "head_score, score1, score2, score3, score4) values ('" + 
-                gameId + "', '" + athleteId + "', '" + 
-                judge1Id + "', '" + judge2Id + "', '" + judge3Id + "', '" + judge4Id + "', '" + judge5Id + "', '" + 
+                "is_points, head_score, score1, score2, score3, score4) values ('" + 
+                gameId + "', '" + athleteId + "', '" +
+                judge1Id + "', '" + judge2Id + "', '" + judge3Id + "', '" + judge4Id + "', '" + judge5Id + "', '" + isPoints +"', '" + 
                 score1 + "', '" + score2 + "' ,'" + score3 + "' ,'" + score4 + "' ,'" + score5 + "');";
 
             this.NonQuery(sql);
