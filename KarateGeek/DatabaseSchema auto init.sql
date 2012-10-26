@@ -73,7 +73,6 @@ drop table games cascade;
 drop table team_tournament_participations cascade;
 drop table tournament_participations cascade;
 drop table game_participation cascade;
-drop table technical_points cascade;
 drop table game_score cascade;
 
 
@@ -100,7 +99,7 @@ CREATE TABLE addresses (
 	id              BIGSERIAL,
 	street          varchar(50)     NOT NULL,
 	number          varchar(12)     NOT NULL,
-	city_id         integer 	references cities(id),
+	city_id         integer 		references cities(id),
 	postal_code     varchar(12)     NOT NULL,
 	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
 	primary key(id)
@@ -109,10 +108,11 @@ CREATE TABLE addresses (
 
 
 CREATE TABLE locations (
-	id              BIGSERIAL       REFERENCES addresses(id),
+	id              BIGSERIAL,
 	name            varchar(80),
 	phone           char(15),    		-- E.164 standard
-	description     varchar(255),
+	email	        varchar(50),
+	address_id 		integer 		REFERENCES addresses(id),
 	primary key(id)
 );
 
@@ -200,10 +200,9 @@ create table game_types (
 create table events (
 	id              BIGSERIAL,
 	name            varchar(80)     NOT NULL,
-	day             date,
+	date            date,
 	official        boolean      	DEFAULT false, 
-	game_type_id 	int 		references game_types(id),
-	location        integer  	references locations(id),
+	location_id     integer  		references locations(id),
 	primary key (id)
 );
 
@@ -260,13 +259,7 @@ create table game_participation (
 
 
 
-create table technical_points(
-	id 		BIGSERIAL,
-	name 		varchar(25),
-	points 		integer,
-	description	varchar(255),
-	primary key(id)
-);
+
 
 
 
@@ -275,8 +268,13 @@ CREATE TABLE game_score(
 	game_id BIGSERIAL,
 	athlete_id 	integer references athletes(id),
 	
-	technical_points_id	integer 	references technical_points(id),
-	
+	technical_point	integer,
+	technical_point_desc	varchar(50),
+
+	is_points	boolean,	-- afto tha ksexorizi to kata poso i ponti einai points diladi apo 1-10
+					-- alios tha simeni oti einai flag system kai ta values tha einai 0-1
+					-- opou 0 -> red 
+					-- 	1 -> white
 	head_score	integer,
 	score1 		integer,
 	score2 		integer,
@@ -295,10 +293,36 @@ CREATE TABLE game_score(
 
 
 
+--
+--	initialiazetion
+--
 
 
+insert into countries (code , name) values('CY', 'Cyprus');
+insert into countries (code , name) values('GR', 'Greece');
+
+insert into cities (name, country_code) values ('Limassol', 'CY');
+insert into cities (name, country_code) values ('Nicosia', 'CY');
+insert into cities (name, country_code) values ('Paphos', 'CY');
+insert into cities (name, country_code) values ('Larnaca', 'CY');
+insert into cities (name, country_code) values ('Amochostos', 'CY');
+insert into cities (name, country_code) values ('Thessaloniki', 'GR');
 
 
+  
+insert into addresses (id , street, "number", city_id , postal_code , country_code ) values ('0' , 'tepak' , '1' , '1' , '3025' , 'CY'); 
+
+
+insert into clubs (name, address_id, country_code) values ('power fight club', 0, 'CY');
+
+
+insert into persons(id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id) 
+values ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
+
+insert into users( id , username , password, person_management, event_management , lottery , game_support , reports , settings) values ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
+
+
+insert into athletes (id, rank, club_id ) values ('0', 'black', '1'  );
 
 
 

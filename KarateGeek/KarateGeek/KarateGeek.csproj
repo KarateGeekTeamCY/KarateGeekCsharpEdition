@@ -78,6 +78,9 @@
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Npgsql2.0.12.0\Mono.Security.dll</HintPath>
@@ -118,6 +121,8 @@
     <Compile Include="reports\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="databaseConnection\GameConnection.cs" />
+    <Compile Include="databaseConnection\ScoreConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="databaseConnection\AddressConnection.cs" />
@@ -126,8 +131,10 @@
     <Compile Include="databaseConnection\ClubConnection.cs" />
     <Compile Include="databaseConnection\CoreDatabaseConnection.cs" />
     <Compile Include="databaseConnection\CountryConnection.cs" />
-    <Compile Include="databaseConnection\Cryptography.cs" />
+    <Compile Include="helpers\Cryptography.cs" />
+    <Compile Include="databaseConnection\EventConnection.cs" />
     <Compile Include="databaseConnection\JudgeConnection.cs" />
+    <Compile Include="databaseConnection\LocationConnection.cs" />
     <Compile Include="databaseConnection\LoginConnection.cs" />
     <Compile Include="databaseConnection\PersonConnection.cs" />
     <Compile Include="databaseConnection\RankConnection.cs" />
@@ -212,10 +219,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\Reports.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="guis\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -446,6 +449,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\280px-Limassol_sea.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

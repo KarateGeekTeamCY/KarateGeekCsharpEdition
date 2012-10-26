@@ -5,6 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Data;
 using Npgsql;
+using KarateGeek.helpers;
 
 namespace KarateGeek.databaseConnection
 {
