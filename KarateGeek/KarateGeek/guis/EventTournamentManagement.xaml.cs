@@ -29,6 +29,7 @@ namespace KarateGeek.guis
         private DataSet filteredEvents;
         private AddressConnection addressConnection;
         private CountryConnection countryConnection;
+        private LocationConnection locationConnection;
         List<string> eventNameListForAutoComplete;
 
         //
@@ -46,6 +47,7 @@ namespace KarateGeek.guis
         private string _eventTK = null;
         private string _eventCity = null;
         private string _eventCountryCode = null;
+        private int _eventId;
         private Boolean _eventOfficial;
         private DateTime _eventDate;
 
@@ -55,7 +57,7 @@ namespace KarateGeek.guis
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
 
-
+            eventConnection = new EventConnection();
             countryConnection = new CountryConnection();
             this.countries = countryConnection.GetCountries();
 
@@ -92,6 +94,146 @@ namespace KarateGeek.guis
         private void eventName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _eventName = eventName.Text;
+            List<string> autoList = new List<string>();
+            autoList.Clear();
+
+            eventNameListForAutoComplete = this.EventsfilterNames();
+
+            foreach (string item in eventNameListForAutoComplete)
+            {
+                if (!string.IsNullOrEmpty(eventName.Text))
+                {
+                    if (item.StartsWith(_eventName))
+                    {
+                        autoList.Add(item);
+                    }
+                }
+            }
+
+            if (autoList.Count > 0)
+            {
+                eSuggestionList.ItemsSource = autoList;
+                eSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (eventName.Text.Equals(""))
+            {
+                eSuggestionList.Visibility = Visibility.Collapsed;
+                eSuggestionList.ItemsSource = null;
+            }
+            else
+            {
+                eSuggestionList.Visibility = Visibility.Collapsed;
+                eSuggestionList.ItemsSource = null;
+            }
+        }
+
+        private List<string> EventsfilterNames()
+        {
+            List<string> list = new List<string>();
+            string suggestion = null;
+
+            this.filteredEvents = eventConnection.findSimilar(this.eventName.Text);
+
+            if (this.filteredEvents.Tables[0].Rows.Count > 0)
+            {
+                _eventId = int.Parse(filteredEvents.Tables[0].Rows[0][0].ToString());
+            }
+
+            foreach (DataRow dr in filteredEvents.Tables[0].Rows)
+            {
+                suggestion = dr[1].ToString();
+                list.Add(suggestion);
+            }
+            return list;
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
+            //this.sugestionList.ItemsSource = list;
+        }
+
+        private void eSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int country_position = 0;
+            int city_position = 0;
+            int index;
+            int location_id;
+            int address_id;
+            addressConnection = new AddressConnection();
+            locationConnection = new LocationConnection();
+            DataSet dsA;
+            DataSet dsL;
+
+            if (eSuggestionList.ItemsSource != null)
+            {
+                eSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                eventName.TextChanged -= new TextChangedEventHandler(eventName_TextChanged);
+
+                index = eSuggestionList.SelectedIndex;
+
+                if (eSuggestionList.SelectedIndex != -1)
+                {
+                    _eventName = eSuggestionList.SelectedItem.ToString();
+                    location_id = int.Parse(filteredEvents.Tables[0].Rows[index][4].ToString());
+
+                    this.eventName.Text = filteredEvents.Tables[0].Rows[index][1].ToString();
+                    this.eventDate.SelectedDate = (DateTime)filteredEvents.Tables[0].Rows[index][2];
+                    this.eventOfficial.IsChecked = (Boolean)filteredEvents.Tables[0].Rows[index][3];
+
+                    dsL = locationConnection.getLocation(location_id);
+
+                    this.eventLocation.Text = dsL.Tables[0].Rows[0][1].ToString();
+                    this.eventPhone.Text = dsL.Tables[0].Rows[0][2].ToString();
+                    this.eventEmail.Text = dsL.Tables[0].Rows[0][3].ToString();
+                    address_id = int.Parse(dsL.Tables[0].Rows[0][4].ToString());
+
+                    dsA = addressConnection.getAddress(address_id);
+
+                    this.eventAddress.Text = dsA.Tables[0].Rows[0][1].ToString();
+                    this.eventAddressNum.Text = dsA.Tables[0].Rows[0][2].ToString();
+                    this.eventTK.Text = dsA.Tables[0].Rows[0][4].ToString();
+
+                    string eventCity = dsA.Tables[0].Rows[0][3].ToString();
+                    int ix = dsA.Tables[0].Columns.Count;
+                    string eventCountry = dsA.Tables[0].Rows[0][5].ToString();
+
+
+                    //
+                    //the fix for the country selection error
+                    //
+                    CountryConnection countryconn = new CountryConnection();
+                    DataSet countriname = countryconn.getCountryNameByCode(eventCountry);
+                    eventCountry = countriname.Tables[0].Rows[0][0].ToString();
+
+
+
+
+                    for (int i = 0; i < this.cmbECountryChooses.Items.Count; i++)
+                    {
+                        if (eventCountry.Equals(cmbECountryChooses.Items[i].ToString()))
+                        {
+                            country_position = i;
+                            break;
+                        }
+                    }
+
+
+                    this.cmbECountryChooses.SelectedIndex = country_position;
+
+
+                    CityConnection cityConnection = new CityConnection();
+                    DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(eventCity));
+                    eventCity = cityNa.Tables[0].Rows[0][0].ToString();
+
+                    for (int i = 0; i < this.cmbECityChooses.Items.Count; i++)
+                    {
+                        if (eventCity.Equals(cmbECityChooses.Items[i].ToString()))
+                        {
+                            city_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbECityChooses.SelectedIndex = city_position;
+                }
+                eventName.TextChanged += new TextChangedEventHandler(eventName_TextChanged);
+            }
         }
 
         private void eventDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -174,14 +316,12 @@ namespace KarateGeek.guis
 
         private void eventOfficial_Checked(object sender, RoutedEventArgs e)
         {
-            if ((bool)eventOfficial.IsChecked)
-            {
                 _eventOfficial = true;
-            }
-            else
-            {
+          
+        }
+        private void eventOfficial_Unchecked(object sender, RoutedEventArgs e)
+        {
                 _eventOfficial = false;
-            }
         }
         
 
@@ -195,12 +335,12 @@ namespace KarateGeek.guis
 
         private void btnESave_Click(object sender, RoutedEventArgs e)
         {
-
+            eventConnection.UpdateEvent(_eventId, _eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial); 
+            MessageBox.Show("Succesfully saved!");
         }
 
         private void btnESaveNew_Click(object sender, RoutedEventArgs e)
         {
-            eventConnection = new EventConnection();
             eventConnection.InsertNewEvent(_eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
             MessageBox.Show("Succesfully saved!");
             EventTournamentManagement etm = new EventTournamentManagement();
@@ -213,6 +353,8 @@ namespace KarateGeek.guis
         {
 
         }
+
+        
 
         
     }
