@@ -260,13 +260,7 @@ create table game_participation (
 
 
 
-create table technical_points(
-	id 		BIGSERIAL,
-	name 		varchar(25),
-	points 		integer,
-	description	varchar(255),
-	primary key(id)
-);
+
 
 
 
@@ -275,7 +269,8 @@ CREATE TABLE game_score(
 	game_id BIGSERIAL,
 	athlete_id 	integer references athletes(id),
 	
-	technical_points_id	integer 	references technical_points(id),
+	technical_point	integer,
+	technical_point_desc	varchar(50),
 	
 	head_score	integer,
 	score1 		integer,
