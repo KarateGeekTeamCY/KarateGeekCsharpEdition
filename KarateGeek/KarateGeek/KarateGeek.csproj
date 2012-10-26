@@ -198,8 +198,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="reports\Cryst.mht" />
-    <None Include="reports\CrystalReport1.mht" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="guis\ClubManagement.xaml">
