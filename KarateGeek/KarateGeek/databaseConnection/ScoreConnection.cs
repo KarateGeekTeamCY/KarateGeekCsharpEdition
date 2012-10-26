@@ -11,9 +11,13 @@ namespace KarateGeek.databaseConnection
         private string sql;
 
 
-        public string InsertNewScore(string gameId, string athleteId, string technical)
+
+
+
+        public string InsertNewScore(string gameId, string athleteId, string technical, string technicalDesc)
         {
-            sql = "insert into gane_scores (game_id, athlete_id, technical_score) values ('" + gameId + "', '" + athleteId + "', '" + technical + "');";
+            sql = "insert into gane_scores (game_id, athlete_id, technical_score, technical_score_desc) values ('"
+                + gameId + "', '" + athleteId + "', '" + technical + "', '" + technicalDesc + "');";
             this.NonQuery(sql);
             return "";
         }
