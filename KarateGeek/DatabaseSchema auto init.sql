@@ -271,7 +271,10 @@ CREATE TABLE game_score(
 	technical_point	integer,
 	technical_point_desc	varchar(50),
 
-	is_points	boolean,
+	is_points	boolean,	-- afto tha ksexorizi to kata poso i ponti einai points diladi apo 1-10
+					-- alios tha simeni oti einai flag system kai ta values tha einai 0-1
+					-- opou 0 -> red 
+					-- 	1 -> white
 	head_score	integer,
 	score1 		integer,
 	score2 		integer,
