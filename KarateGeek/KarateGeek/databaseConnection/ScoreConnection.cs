@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace KarateGeek.databaseConnection
 {
@@ -31,7 +32,11 @@ namespace KarateGeek.databaseConnection
         }
 
 
-
+        public DataSet GetScoreById(string gameId, string athleteId)
+        {
+            sql = "select * from scores where game_id = '" + gameId + "' and athlete_id = '" + athleteId + "' ;";
+            return this.Query(sql);
+        }
 
 
     }
