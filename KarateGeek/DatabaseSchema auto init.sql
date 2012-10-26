@@ -181,20 +181,13 @@ create table users (
 
 
 
+--create table game_types (
+--	id 		BIGSERIAL,
+--	name		varchar(50),
+--	description	varchar(255),
+--	primary key(id)
+--);
 
-
-
-
-----------------------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------------------
---dikes mou allages
-
-create table game_types (
-	id 		BIGSERIAL,
-	name		varchar(50),
-	description	varchar(255),
-	primary key(id)
-);
 
 
 create table events (
@@ -221,10 +214,10 @@ CREATE TABLE tournaments (
 
 CREATE TABLE games (
 	id            	BIGSERIAL,
-	phase      	varchar(10)   	NOT NULL, 
+	phase      	varchar(10)   		NOT NULL, 
 	position       	character varying(10) 	NOT NULL,    
-	tournament_id 	integer references tournaments(id),
-	game_type_id 	integer references game_types(id),  
+	tournament_id 	integer 		references tournaments(id),
+	game_type 	varchar(50)		not null,  
 	primary key(id)
 );
 
