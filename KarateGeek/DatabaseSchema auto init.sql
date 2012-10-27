@@ -88,7 +88,7 @@ CREATE TABLE countries (
 
 create table cities (
   id    	BIGSERIAL,
-  name  	varchar(80)	not null,
+  name  	varchar(80)	not null UNIQUE,
   country_code	varchar(2)	references countries(code),
   primary key(id)
 );
@@ -174,7 +174,7 @@ create table users (
 	event_management	boolean not null default  false,
 	lottery			boolean not null default  false,
 	game_support		boolean not null default  false,
-	reports			boolean not null default  false,	
+	reports			boolean not null default  false,
 	settings		boolean not null default  false,
 	primary key (id)
 );
@@ -194,13 +194,13 @@ create table events (
 	id              BIGSERIAL,
 	name            varchar(80)     NOT NULL,
 	date            date,
-	official        boolean      	DEFAULT false, 
+	official        boolean      	DEFAULT false,
 	location_id     integer  		references locations(id),
 	primary key (id)
 );
 
 
-CREATE TABLE tournaments ( 
+CREATE TABLE tournaments (
 	id              BIGSERIAL,
 	name 		varchar(80) 	NOT NULL,
 	sex		varchar(10)	NOT NULL,
@@ -210,9 +210,11 @@ CREATE TABLE tournaments (
 	level_to        character varying(50)   	NOT NULL, 
 	game_type       character varying(50)		NOT NULL,  
 	game		character varying(50)		NOT NULL,          
+	level           character varying(50)   	NOT NULL,
+	category        character varying(50),
 	event_id        integer references events(id),
 	primary key(id)
-	
+
 );
 
 
@@ -220,10 +222,10 @@ CREATE TABLE tournaments (
 
 CREATE TABLE games (
 	id            	BIGSERIAL,
-	phase      	varchar(10)   		NOT NULL, 
-	position       	character varying(10) 	NOT NULL,    
+	phase      	varchar(10)   		NOT NULL,
+	position       	character varying(10) 	NOT NULL,
 	tournament_id 	integer 		references tournaments(id),
-	game_type 	varchar(50)		not null,  
+	game_type 	varchar(50)		not null,
 	primary key(id)
 );
 
@@ -242,7 +244,7 @@ create table team_tournament_participations (
 
 CREATE TABLE tournament_participations (
 	athlete_id	integer		references athletes(id),
-	tournament_id	integer 	references tournaments(id), 
+	tournament_id	integer 	references tournaments(id),
 	rank_at_time 	varchar(50),
 	position	integer,
 	team_participation_id	integer	references team_tournament_participations(id),
@@ -266,26 +268,26 @@ CREATE TABLE game_score(
 
 	game_id BIGSERIAL,
 	athlete_id 	integer references athletes(id),
-	
+
 	technical_point	integer,
 	technical_point_desc	varchar(50),
 
 	is_points	boolean,	-- afto tha ksexorizi to kata poso i ponti einai points diladi apo 1-10
 					-- alios tha simeni oti einai flag system kai ta values tha einai 0-1
-					-- opou 0 -> red 
+					-- opou 0 -> red
 					-- 	1 -> white
 	head_score	integer,
 	score1 		integer,
 	score2 		integer,
 	score3 		integer,
 	score4 		integer,
-	
+
 	head_judge_id	integer 	references judges(id),
 	judge1		integer		references judges(id),
 	judge2	 	integer  	references judges(id),
 	judge3 		integer  	references judges(id),
 	judge4 		integer  	references judges(id),
-	
+
 	PRIMARY KEY (game_id, athlete_id)
 
 	);
@@ -308,14 +310,14 @@ insert into cities (name, country_code) values ('Amochostos', 'CY');
 insert into cities (name, country_code) values ('Thessaloniki', 'GR');
 
 
-  
-insert into addresses (id , street, "number", city_id , postal_code , country_code ) values ('0' , 'tepak' , '1' , '1' , '3025' , 'CY'); 
+
+insert into addresses (id , street, "number", city_id , postal_code , country_code ) values ('0' , 'tepak' , '1' , '1' , '3025' , 'CY');
 
 
 insert into clubs (name, address_id, country_code) values ('power fight club', 0, 'CY');
 
 
-insert into persons(id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id) 
+insert into persons(id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 values ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
 
 insert into users( id , username , password, person_management, event_management , lottery , game_support , reports , settings) values ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
