@@ -125,5 +125,16 @@ namespace KarateGeek.databaseConnection
 
             return "";
         }
+
+
+
+        public DataTable GetAthletes()
+        {
+            string sql = "select * from athletes join persons on persons.id = athletes.id;";
+
+            DataSet temp = Query(sql);
+            return temp.Tables[0];
+        
+        }
     }
 }

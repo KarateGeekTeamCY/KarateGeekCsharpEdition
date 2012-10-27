@@ -31,6 +31,11 @@ namespace KarateGeek.guis
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
+
+
+
+
+
             LoginConnection lgConn = new LoginConnection();
             username=userNameTB.Text;
             password=passwordTB.Password;
@@ -53,7 +58,8 @@ namespace KarateGeek.guis
 
         private void exit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            KarateGeek.reports.Form3 f = new reports.Form3();
+            f.Show();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
