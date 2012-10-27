@@ -136,6 +136,7 @@
     <Compile Include="databaseConnection\ClubConnection.cs" />
     <Compile Include="databaseConnection\CoreDatabaseConnection.cs" />
     <Compile Include="databaseConnection\CountryConnection.cs" />
+    <Compile Include="databaseConnection\TournamentConnection.cs" />
     <Compile Include="helpers\Cryptography.cs" />
     <Compile Include="databaseConnection\EventConnection.cs" />
     <Compile Include="databaseConnection\JudgeConnection.cs" />
