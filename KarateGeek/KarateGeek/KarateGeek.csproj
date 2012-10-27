@@ -84,41 +84,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>karategeekDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="reports\CrystalReport3.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport3.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="reports\CrystalReport4.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport4.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="reports\CrystalReport5.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport5.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="reports\CrystalReport6.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport6.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="reports\CrystalReport7.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CrystalReport7.rpt</DependentUpon>
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="reports\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\ScoreConnection.cs" />
@@ -196,28 +166,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="reports\CrystalReport3.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport3.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\CrystalReport4.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport4.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\CrystalReport5.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport5.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\CrystalReport6.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport6.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="reports\CrystalReport7.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CrystalReport7.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="reports\Form3.resx">
       <DependentUpon>Form3.cs</DependentUpon>
