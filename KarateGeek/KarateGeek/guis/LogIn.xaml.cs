@@ -58,8 +58,7 @@ namespace KarateGeek.guis
 
         private void exit_Click(object sender, RoutedEventArgs e)
         {
-            KarateGeek.reports.Form3 f = new reports.Form3();
-            f.Show();
+            this.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
