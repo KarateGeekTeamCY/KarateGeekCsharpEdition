@@ -84,20 +84,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>karategeekDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="reports\CrystalReport7.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport7.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\ScoreConnection.cs" />
-    <Compile Include="reports\Form3.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\Form3.Designer.cs">
-      <DependentUpon>Form3.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="databaseConnection\AddressConnection.cs" />
@@ -165,13 +153,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\CrystalReport7.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport7.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\Form3.resx">
-      <DependentUpon>Form3.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="karategeekDataSet.xsc">
@@ -325,6 +306,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="reports\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
