@@ -66,7 +66,6 @@ drop table persons cascade;
 drop table athletes cascade;
 drop table judges cascade;
 drop table users cascade;
-drop table game_types cascade;
 drop table events cascade;
 drop table tournaments cascade;
 drop table games cascade;
@@ -119,11 +118,11 @@ CREATE TABLE locations (
 
 
 create table clubs (
-	id	BIGSERIAL,
-	name	varchar(50) 	not null,
-	phone	char(50),
-	email	varchar(50),
-	logo 	bytea,
+	id		BIGSERIAL,
+	name		varchar(50) 	not null,
+	phone		char(50),
+	email		varchar(50),
+	logo 		bytea,
 	address_id      integer		REFERENCES addresses( id ),
 	country_code    char(2)         DEFAULT 'CY'	REFERENCES countries(code),
 	primary key (id)
@@ -141,7 +140,7 @@ CREATE TABLE persons (
 	phone           char(15)        	NOT NULL,    	-- E.164 standard
 	secondary_phone char(15),
 	email           varchar(50),
-	address_id      integer      	REFERENCES addresses( id ),
+	address_id      integer      		REFERENCES addresses( id ),
 	primary key(id)
 );
 
@@ -149,33 +148,33 @@ CREATE TABLE persons (
 
 
 CREATE TABLE athletes (
-	id              int REFERENCES persons(id) ON DELETE NO ACTION, 	-- not CASCADE!
-	rank            varchar(50)     NOT NULL,  -- char or int?
-	club_id         integer         NOT NULL REFERENCES clubs(id),
+	id              int REFERENCES persons(id) 	ON DELETE NO ACTION, 	-- not CASCADE!
+	rank            varchar(50)     		NOT NULL,  -- char or int?
+	club_id         integer         		NOT NULL REFERENCES clubs(id),
 	primary key(id)
 );
 
 
 
 CREATE TABLE judges (
-	id              int REFERENCES persons(id) ON DELETE NO ACTION,
-	rank            varchar(50)     NOT NULL,  				-- char or int?
-	class           character(1)    NOT NULL,
+	id              int REFERENCES persons(id) 	ON DELETE NO ACTION,
+	rank            varchar(50)     		NOT NULL,  				-- char or int?
+	class           character(1)    		NOT NULL,
 	primary key(id)
 );
 
 
 
 create table users (
-	id              	int REFERENCES persons(id) ON DELETE NO ACTION,
-	username 		varchar(255) not null,
-	password		varchar(255) not null,
-	person_management	boolean not null default  false,
-	event_management	boolean not null default  false,
-	lottery			boolean not null default  false,
-	game_support		boolean not null default  false,
-	reports			boolean not null default  false,
-	settings		boolean not null default  false,
+	id              	int REFERENCES persons(id) 	ON DELETE NO ACTION,
+	username 		varchar(255) 			NOT NULL,
+	password		varchar(255) 			NOT NULL,
+	person_management	boolean 			NOT NULL DEFAULT FALSE,
+	event_management	boolean 			NOT NULL DEFAULT FALSE,
+	lottery			boolean 			NOT NULL DEFAULT FALSE,
+	game_support		boolean 			NOT NULL DEFAULT FALSE,
+	reports			boolean 			NOT NULL DEFAULT FALSE,
+	settings		boolean 			NOT NULL DEFAULT FALSE,
 	primary key (id)
 );
 
@@ -202,17 +201,17 @@ create table events (
 
 CREATE TABLE tournaments (
 	id              BIGSERIAL,
-	name 		varchar(80) 	NOT NULL,
-	sex		varchar(10)	NOT NULL,
-	age_from	integer		NOT NULL,
-	age_to		integer 	NOT NULL,
+	name 		varchar(80) 			NOT NULL,
+	sex		varchar(10)			NOT NULL,
+	age_from	integer				NOT NULL,
+	age_to		integer 			NOT NULL,
 	level_from      character varying(50)   	NOT NULL, 
 	level_to        character varying(50)   	NOT NULL, 
 	game_type       character varying(50)		NOT NULL,  
 	game		character varying(50)		NOT NULL,          
 	level           character varying(50)   	NOT NULL,
 	category        character varying(50),
-	event_id        integer references events(id),
+	event_id        integer 			references events(id),
 	primary key(id)
 
 );
@@ -243,11 +242,12 @@ create table team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
-	athlete_id	integer		references athletes(id),
-	tournament_id	integer 	references tournaments(id),
-	rank_at_time 	varchar(50),
-	position	integer,
-	team_participation_id	integer	references team_tournament_participations(id),
+	athlete_id		integer		references athletes(id),
+	tournament_id		integer 	references tournaments(id),
+	rank_at_time 		varchar(50),
+	position		integer,
+	team_participation_id	integer		references team_tournament_participations(id),
+	
 	PRIMARY KEY (athlete_id, tournament_id)
 );
 
