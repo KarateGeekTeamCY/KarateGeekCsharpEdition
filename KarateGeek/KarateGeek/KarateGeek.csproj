@@ -115,6 +115,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="reports\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
