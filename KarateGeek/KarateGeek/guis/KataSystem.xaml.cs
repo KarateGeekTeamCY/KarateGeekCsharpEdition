@@ -40,16 +40,17 @@ namespace KarateGeek.guis
 
 
 
-        public KataSystem(string gameId, string participationId, bool isIndividual)
+        public KataSystem(string gameId, string participationId)
         {
             InitializeComponent();
             this._gameId = gameId;
             this._ParticipationId = participationId;
-            this._isIndividual = isIndividual;
 
             GameConnection gameconn = new GameConnection();
             this._game = gameconn.GetGameById(gameId).Tables[0];
 
+
+            this._game.Rows[0][]
             if (isIndividual)
             {
                 
