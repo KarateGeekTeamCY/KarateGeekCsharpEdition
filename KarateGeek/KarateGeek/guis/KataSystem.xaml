@@ -10,9 +10,12 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
-            <TextBox Text="kata competitor and match info"
-                     TextAlignment="Center"
-                     VerticalAlignment="Center" FontSize="16" />
+            <Label Name="lblInfo" 
+                     Content="kata competitor and match info"
+                     VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"
+                     FontSize="16" 
+                   />
         </Grid>
         <Grid Grid.Row="1" >
             <Grid.RowDefinitions>

@@ -79,11 +79,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="karategeekDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>karategeekDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\ScoreConnection.cs" />
@@ -138,6 +133,11 @@
       <DependentUpon>KumiteSystem.xaml</DependentUpon>
     </Compile>
     <Compile Include="helpers\ImageConverter.cs" />
+    <Compile Include="karategeekDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>karategeekDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -56,7 +56,6 @@
 -- table drops
 
 
-
 drop table countries cascade;
 drop table cities cascade;
 drop table addresses cascade;
@@ -73,6 +72,7 @@ drop table team_tournament_participations cascade;
 drop table tournament_participations cascade;
 drop table game_participation cascade;
 drop table game_score cascade;
+
 
 
 -- table creation:
@@ -180,12 +180,7 @@ create table users (
 
 
 
---create table game_types (
---	id 		BIGSERIAL,
---	name		varchar(50),
---	description	varchar(255),
---	primary key(id)
---);
+
 
 
 
@@ -231,6 +226,7 @@ CREATE TABLE games (
 create table team_tournament_participations (
 	id 		BIGSERIAL,
 	descreption	varchar(255),
+	position	integer,
 	club_id		integer		references clubs(id),
 	tournament_id 	integer		references tournaments(id),
 	primary key (id)
