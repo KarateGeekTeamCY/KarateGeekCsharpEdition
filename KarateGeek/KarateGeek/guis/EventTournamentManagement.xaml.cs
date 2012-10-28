@@ -74,6 +74,10 @@ namespace KarateGeek.guis
         private string _eventInfo = null;
         private int _tournamentId;
 
+        //
+        //participants specific variables
+        //
+
         public EventTournamentManagement()
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
@@ -435,6 +439,8 @@ namespace KarateGeek.guis
         }
         #endregion
 
+        #region tournament
+
         private void cmbTEventChooser_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbTEventChooser.SelectedIndex;
@@ -765,10 +771,12 @@ namespace KarateGeek.guis
 
        
 
-        #region tournament
+     
 
 
         #endregion
+
+
     }
         
 }
