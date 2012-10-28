@@ -137,7 +137,11 @@
              Text="smallest score"
                 TextAlignment="Center"
                      Margin="10,0,10,0"
+<<<<<<< HEAD
                 VerticalAlignment="Center"  />
+=======
+                VerticalAlignment="Center"/>
+>>>>>>> c19d8c5... tournaments participants
             <TextBox Name="txtHighestScore"
                 Grid.Column="2"
                 BorderThickness="2"
@@ -153,7 +157,11 @@
                 BorderBrush="Coral"
              Text="trimmed mean score"
                 TextAlignment="Center"
+<<<<<<< HEAD
                 VerticalAlignment="Center" />
+=======
+                VerticalAlignment="Center"  />
+>>>>>>> c19d8c5... tournaments participants
         </Grid>
         <Grid Grid.Row="3" Margin="30,5">
 
