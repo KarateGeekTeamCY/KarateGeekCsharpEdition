@@ -16,6 +16,9 @@ namespace KarateGeek.databaseConnection
         private string sql = "";
 
 
+
+
+
         public string InsertNewCLub(string name, string phone, string email, string logosource, string addressStreetName, string addressStreetNumber, string addressPostalCode , string countryCode, string City)
         {
             //FileStream fs = new FileStream(logosource, FileMode.Open, FileAccess.Read);
