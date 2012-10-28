@@ -340,4 +340,10 @@ insert into athletes (id, rank, club_id ) values ('1', 'black', '1'  );
 insert into athletes (id, rank, club_id ) values ('2', 'black', NULL );
 
 
-
+-- A NULL "position" means that the lottery isn't yet ready
+insert into tournament_participations (	athlete_id , tournament_id , rank_at_time , position , team_participation_id)
+values (0, 1, 'black', NULL, NULL );
+insert into tournament_participations (	athlete_id , tournament_id , rank_at_time , position , team_participation_id)
+values (1, 1, 'black', NULL, NULL );
+insert into tournament_participations (	athlete_id , tournament_id , rank_at_time , position , team_participation_id)
+values (2, 1, 'black', NULL, NULL );

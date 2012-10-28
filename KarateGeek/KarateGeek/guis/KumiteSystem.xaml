@@ -71,7 +71,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Grid.Row="0" Content="ippon" VerticalAlignment="Center" Margin="10,0,10,0"  />
+            <Button Grid.Column="1" Grid.Row="0" Content="ippon" VerticalAlignment="Center" Margin="10,0,10,0" Click="Button_Click" />
             <Button Grid.Column="1" Grid.Row="1" Content="waja-ari" VerticalAlignment="Center" Margin="10,0,10,0"  />
             <Button Grid.Column="1" Grid.Row="2" Content="jyo-gai" VerticalAlignment="Center" Margin="10,0,10,0"  />
             <Button Grid.Column="1" Grid.Row="3" Content="chui" VerticalAlignment="Center" Margin="10,0,10,0"  />

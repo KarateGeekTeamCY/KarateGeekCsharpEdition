@@ -54,6 +54,30 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
+        public void deleteEvent(int id)
+        {
+            DataSet dsE = null;
+            DataSet dsL = null;
+            int location_id;
+            int address_id;
+
+            string sql = "select location_id from events where  id= '" + id + "';";
+            dsE =  this.Query(sql);
+            location_id = int.Parse(dsE.Tables[0].Rows[0][0].ToString());
+
+            sql = "select address_id from locations where  id= '" + location_id + "';";
+            dsL = this.Query(sql);
+            address_id = int.Parse(dsL.Tables[0].Rows[0][0].ToString());
+
+            //delete events and tournaments on cascade
+            sql = "delete from events where id='" + id + "';";
+            this.Query(sql);
+
+            //delete addresses and locations cascade
+            sql = "delete from addresses where id='" + address_id + "';";
+            this.Query(sql);
+        }
+
         public DataSet findSimilar(string filter)
         {
             string sql = "select * from events where name like '" + filter + "%';";

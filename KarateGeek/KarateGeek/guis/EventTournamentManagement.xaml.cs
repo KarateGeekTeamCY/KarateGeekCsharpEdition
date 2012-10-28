@@ -28,12 +28,14 @@ namespace KarateGeek.guis
         private DataSet countries;
         private DataSet events;
         private DataSet filteredEvents;
+        private DataSet filteredTournaments;
         private AddressConnection addressConnection;
         private CityConnection cityConnection;
         private CountryConnection countryConnection;
         private LocationConnection locationConnection;
-        List<string> eventNameListForAutoComplete;
-
+        List<ListData> eventNameListForAutoComplete;
+        List<ListData> tournamentNameListForAutoComplete;
+        
         //
         //event specific variables
         //
@@ -70,6 +72,7 @@ namespace KarateGeek.guis
         private string _tounamentGameType = null;
         private string _tournamentGame = null;
         private string _eventInfo = null;
+        private int _tournamentId;
 
         public EventTournamentManagement()
         {
@@ -161,21 +164,22 @@ namespace KarateGeek.guis
 
             cmbTGame.SelectedIndex = 0;
         }
+
         #region event
 
         private void eventName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _eventName = eventName.Text;
-            List<string> autoList = new List<string>();
+            List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
             eventNameListForAutoComplete = this.EventsfilterNames();
 
-            foreach (string item in eventNameListForAutoComplete)
+            foreach (ListData item in eventNameListForAutoComplete)
             {
                 if (!string.IsNullOrEmpty(eventName.Text))
                 {
-                    if (item.StartsWith(_eventName))
+                    if (item.name.StartsWith(_eventName))
                     {
                         autoList.Add(item);
                     }
@@ -184,36 +188,34 @@ namespace KarateGeek.guis
 
             if (autoList.Count > 0)
             {
-                eSuggestionList.ItemsSource = autoList;
+                eSuggestionList.DataContext = autoList;
                 eSuggestionList.Visibility = System.Windows.Visibility.Visible;
             }
             else if (eventName.Text.Equals(""))
             {
                 eSuggestionList.Visibility = Visibility.Collapsed;
-                eSuggestionList.ItemsSource = null;
+                eSuggestionList.DataContext = null;
             }
             else
             {
                 eSuggestionList.Visibility = Visibility.Collapsed;
-                eSuggestionList.ItemsSource = null;
+                eSuggestionList.DataContext = null;
             }
         }
 
-        private List<string> EventsfilterNames()
+        private List<ListData> EventsfilterNames()
         {
-            List<string> list = new List<string>();
-            string suggestion = null;
+            List<ListData> list = new List<ListData>();
+            
 
             this.filteredEvents = eventConnection.findSimilar(this.eventName.Text);
 
-            if (this.filteredEvents.Tables[0].Rows.Count > 0)
-            {
-                _eventId = int.Parse(filteredEvents.Tables[0].Rows[0][0].ToString());
-            }
-
+       
             foreach (DataRow dr in filteredEvents.Tables[0].Rows)
             {
-                suggestion = dr[1].ToString();
+                ListData suggestion = new ListData();
+                suggestion.id = int.Parse(dr[0].ToString());
+                suggestion.name = dr[1].ToString();
                 list.Add(suggestion);
             }
             return list;
@@ -242,7 +244,8 @@ namespace KarateGeek.guis
 
                 if (eSuggestionList.SelectedIndex != -1)
                 {
-                    _eventName = eSuggestionList.SelectedItem.ToString();
+                    ListData item = (ListData)eSuggestionList.SelectedItem;
+                    _eventId = item.id;
                     location_id = int.Parse(filteredEvents.Tables[0].Rows[index][4].ToString());
 
                     this.eventName.Text = filteredEvents.Tables[0].Rows[index][1].ToString();
@@ -421,9 +424,14 @@ namespace KarateGeek.guis
             this.Close();
         }
 
-        private void btnEClear_Click(object sender, RoutedEventArgs e)
+        private void btnEDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            eventConnection.deleteEvent(_eventId);
+            MessageBox.Show("Succesfully deleted!");
+            EventTournamentManagement etm = new EventTournamentManagement();
+            etm.Activate();
+            etm.Show();
+            this.Close();
         }
         #endregion
 
@@ -472,6 +480,164 @@ namespace KarateGeek.guis
         private void tbTName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _tournamentName = tbTName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            tournamentNameListForAutoComplete = this.tournamentsfilterNames();
+
+            foreach (ListData item in tournamentNameListForAutoComplete)
+            {
+                if (!string.IsNullOrEmpty(tbTName.Text))
+                {
+                    if (item.name.StartsWith(_tournamentName))
+                    {
+                        autoList.Add(item);
+                    }
+                }
+            }
+
+            if (autoList.Count > 0)
+            {
+                tSuggestionList.DataContext = autoList;
+                tSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (tbTName.Text.Equals(""))
+            {
+                tSuggestionList.Visibility = Visibility.Collapsed;
+                tSuggestionList.DataContext = null;
+            }
+            else
+            {
+                tSuggestionList.Visibility = Visibility.Collapsed;
+                tSuggestionList.DataContext = null;
+            }
+        }
+
+
+        private List<ListData> tournamentsfilterNames()
+        {
+            List<ListData> list = new List<ListData>();
+            
+
+            this.filteredTournaments = tournamentConnection.findSimilar(this.tbTName.Text, _tournamentEventId);
+
+            foreach (DataRow dr in filteredTournaments.Tables[0].Rows)
+            {
+                ListData suggestion = new ListData();
+                suggestion.id = int.Parse(dr[0].ToString());
+                suggestion.name = dr[1].ToString();
+                list.Add(suggestion);
+            }
+            return list;
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
+            //this.sugestionList.ItemsSource = list;
+        }
+
+        private void tSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string sex = null;
+            string ageFrom = null;
+            string ageTo = null;
+            string levelFrom = null;
+            string levelTo = null;
+            string gameType = null;
+            string game = null;
+            int agePosition = 0;
+            int levelPosition = 0;
+            int gamePosition = 0;
+            int index;
+            
+
+            if (tSuggestionList.ItemsSource != null)
+            {
+                tSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                tbTName.TextChanged -= new TextChangedEventHandler(tbTName_TextChanged);
+
+                index = tSuggestionList.SelectedIndex;
+
+                if (tSuggestionList.SelectedIndex != -1)
+                {
+                    _tournamentName = tSuggestionList.SelectedItem.ToString();
+                    ListData item = (ListData)tSuggestionList.SelectedItem;
+                    _tournamentId = item.id;
+
+                    this.tbTName.Text = filteredTournaments.Tables[0].Rows[index][1].ToString();
+                    sex = filteredTournaments.Tables[0].Rows[index][2].ToString();
+                    ageFrom =  filteredTournaments.Tables[0].Rows[index][3].ToString();
+                    ageTo =  filteredTournaments.Tables[0].Rows[index][4].ToString();
+                    levelFrom = filteredTournaments.Tables[0].Rows[index][5].ToString();
+                    levelTo = filteredTournaments.Tables[0].Rows[index][6].ToString();
+                    gameType = filteredTournaments.Tables[0].Rows[index][7].ToString();
+                    game = filteredTournaments.Tables[0].Rows[index][8].ToString();
+
+                    if (sex.Equals("male"))
+                    {
+                        this.TrdButtonMale.IsChecked = true;
+                    }
+                    else
+                    {
+                        this.TrdButtonFemale.IsChecked = true;
+                    }
+
+                    for (int i = 0; i < this.cmbTAgeFrom.Items.Count; i++)
+                    {
+                        if (ageFrom.Equals(cmbTAgeFrom.Items[i].ToString()))
+                        {
+                            agePosition = i;
+                            break;
+                        }
+                    }
+                    this.cmbTAgeFrom.SelectedIndex = agePosition;
+
+                    for (int i = 0; i < this.cmbTAgeTo.Items.Count; i++)
+                    {
+                        if (ageTo.Equals(cmbTAgeTo.Items[i].ToString()))
+                        {
+                            agePosition = i;
+                            break;
+                        }
+                    }
+                    this.cmbTAgeTo.SelectedIndex = agePosition;
+
+                    for (int i = 0; i < this.cmbTLevelFrom.Items.Count; i++)
+                    {
+                        if (levelFrom.Equals(cmbTLevelFrom.Items[i].ToString()))
+                        {
+                            levelPosition = i;
+                            break;
+                        }
+                    }
+                    this.cmbTLevelFrom.SelectedIndex = levelPosition;
+
+                    for (int i = 0; i < this.cmbTLevelTo.Items.Count; i++)
+                    {
+                        if (levelTo.Equals(cmbTLevelTo.Items[i].ToString()))
+                        {
+                            levelPosition = i;
+                            break;
+                        }
+                    }
+                    this.cmbTLevelTo.SelectedIndex = levelPosition;
+
+                    if(gameType.Equals("individual")){
+                        this.TrdButtonIndiv.IsChecked = true;
+                    }else{
+                        this.TrdButtonTeam.IsChecked = true;
+                    }
+
+                     for (int i = 0; i < this.cmbTGame.Items.Count; i++)
+                    {
+                        if (game.Equals(cmbTGame.Items[i].ToString()))
+                        {
+                            gamePosition = i;
+                            break;
+                        }
+                    }
+                    this.cmbTGame.SelectedIndex = gamePosition;
+
+                }
+                tbTName.TextChanged += new TextChangedEventHandler(tbTName_TextChanged);
+            }
         }
 
         private void TrdButtonMale_Checked(object sender, RoutedEventArgs e)
@@ -510,7 +676,7 @@ namespace KarateGeek.guis
             if (index != 0)
             {
                 if (index < cmbTLevelFrom.Items.Count && index != -1)
-                    _tournamentLevelFrom = cmbTAgeFrom.Items[index].ToString();
+                    _tournamentLevelFrom = cmbTLevelFrom.Items[index].ToString();
             }    
         }
 
@@ -520,7 +686,7 @@ namespace KarateGeek.guis
             if (index != 0)
             {
                 if (index < cmbTLevelTo.Items.Count && index != -1)
-                    _tournamentLevelTo = cmbTAgeTo.Items[index].ToString();
+                    _tournamentLevelTo = cmbTLevelTo.Items[index].ToString();
             }    
         }
 
@@ -554,22 +720,47 @@ namespace KarateGeek.guis
 
         private void btnTSave_Click(object sender, RoutedEventArgs e)
         {
-
+            if (cmbTEventChooser.SelectedIndex == 0)
+            {
+                MessageBox.Show("Please select one event!");
+            }
+            else
+            {
+                tournamentConnection.UpdateTournament(_tournamentId, _tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tounamentGameType, _tournamentGame, _tournamentEventId);
+                MessageBox.Show("Succesfully saved!");
+                EventTournamentManagement etm = new EventTournamentManagement();
+                etm.Activate();
+                etm.Show();
+                this.Close();
+            }
         }
 
         private void btnTSaveNew_Click(object sender, RoutedEventArgs e)
         {
-            tournamentConnection.InsertNewTournament(_tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tounamentGameType, _tournamentGame, _tournamentEventId);
-            MessageBox.Show("Succesfully saved!");
+            //elegxei an exei epilegei kapoio event 
+            if (cmbTEventChooser.SelectedIndex == 0)
+            {
+                MessageBox.Show("Please select one event!");
+            }
+            else
+            {
+                tournamentConnection.InsertNewTournament(_tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tounamentGameType, _tournamentGame, _tournamentEventId);
+                MessageBox.Show("Succesfully saved!");
+                EventTournamentManagement etm = new EventTournamentManagement();
+                etm.Activate();
+                etm.Show();
+                this.Close();
+            }
+        }
+
+        private void btnTDelete_Click(object sender, RoutedEventArgs e)
+        {
+            tournamentConnection.deleteTournament(_tournamentId);
+            MessageBox.Show("Succesfully deleted!");
             EventTournamentManagement etm = new EventTournamentManagement();
             etm.Activate();
             etm.Show();
             this.Close();
-        }
-
-        private void btnTClear_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
        
