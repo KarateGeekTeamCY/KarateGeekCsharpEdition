@@ -203,7 +203,7 @@ CREATE TABLE tournaments (
 	level_from      character varying(50)   	NOT NULL, 
 	level_to        character varying(50)   	NOT NULL, 
 	game_type       character varying(50)		NOT NULL,  
-	game		character varying(50)		NOT NULL,          
+	judging_type	character varying(50)		NOT NULL,          
 	event_id        integer 			references events(id) ON DELETE CASCADE,
 	primary key(id)
 
