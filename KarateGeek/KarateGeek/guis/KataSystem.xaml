@@ -137,8 +137,7 @@
              Text="smallest score"
                 TextAlignment="Center"
                      Margin="10,0,10,0"
-                VerticalAlignment="Center" 
-                     TextChanged="TextBox_TextChanged" />
+                VerticalAlignment="Center"  />
             <TextBox Name="txtHighestScore"
                 Grid.Column="2"
                 BorderThickness="2"
@@ -146,8 +145,7 @@
              Text="smallest score"
                      Margin="10,0,10,0"
                 TextAlignment="Center"
-                VerticalAlignment="Center" 
-                     TextChanged="TextBox_TextChanged" />
+                VerticalAlignment="Center" />
             <TextBox Name="txtTrimmedMeanScore"
                 Grid.Column="3"
                 BorderThickness="2"
@@ -155,8 +153,7 @@
                 BorderBrush="Coral"
              Text="trimmed mean score"
                 TextAlignment="Center"
-                VerticalAlignment="Center" 
-                     TextChanged="TextBox_TextChanged" />
+                VerticalAlignment="Center" />
         </Grid>
         <Grid Grid.Row="3" Margin="30,5">
 
