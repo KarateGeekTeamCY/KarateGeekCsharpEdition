@@ -79,6 +79,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="databaseConnection\LotteryGenConnection.cs" />
+    <Compile Include="helpers\LotteryGenerator.cs" />
     <Compile Include="karategeekDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

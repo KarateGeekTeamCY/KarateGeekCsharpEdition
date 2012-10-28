@@ -119,7 +119,7 @@ CREATE TABLE locations (
 
 create table clubs (
 	id		BIGSERIAL,
-	name		varchar(50) 	not null,
+	name		varchar(50) 	not null UNIQUE,
 	phone		char(50),
 	email		varchar(50),
 	logo 		bytea,
@@ -150,7 +150,8 @@ CREATE TABLE persons (
 CREATE TABLE athletes (
 	id              int REFERENCES persons(id) 	ON DELETE NO ACTION, 	-- not CASCADE!
 	rank            varchar(50)     		NOT NULL,  -- char or int?
-	club_id         integer         		NOT NULL REFERENCES clubs(id),
+	-- club_id      integer         		NOT NULL REFERENCES clubs(id),
+	club_id         integer         		REFERENCES clubs(id),
 	primary key(id)
 );
 
@@ -205,10 +206,10 @@ CREATE TABLE tournaments (
 	sex		varchar(10)			NOT NULL,
 	age_from	integer				NOT NULL,
 	age_to		integer 			NOT NULL,
-	level_from      character varying(50)   	NOT NULL, 
-	level_to        character varying(50)   	NOT NULL, 
-	game_type       character varying(50)		NOT NULL,  
-	game		character varying(50)		NOT NULL,          
+	level_from      character varying(50)   	NOT NULL,
+	level_to        character varying(50)   	NOT NULL,
+	game_type       character varying(50)		NOT NULL,
+	game		character varying(50)		NOT NULL,
 	level           character varying(50)   	NOT NULL,
 	category        character varying(50),
 	event_id        integer 			references events(id),
@@ -247,7 +248,7 @@ CREATE TABLE tournament_participations (
 	rank_at_time 		varchar(50),
 	position		integer,
 	team_participation_id	integer		references team_tournament_participations(id),
-	
+
 	PRIMARY KEY (athlete_id, tournament_id)
 );
 
@@ -295,7 +296,7 @@ CREATE TABLE game_score(
 
 
 --
---	initialiazetion
+--	initialisation
 --
 
 
@@ -317,24 +318,26 @@ insert into addresses (id , street, "number", city_id , postal_code , country_co
 insert into clubs (name, address_id, country_code) values ('power fight club', 0, 'CY');
 
 
-insert into persons(id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+insert into persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 values ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
 
-insert into users( id , username , password, person_management, event_management , lottery , game_support , reports , settings) values ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
+insert into persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+values ('1' , 'athl1' , 'athl1father' , 'athl1last', '02-10-1991' , 'male', '99123145' , null , 'athl1@gmail.com' , '0');
+
+insert into persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+values ('2' , 'athl2' , 'athl2father' , 'athl2last', '02-10-1992' , 'male', '99123146' , null , 'athl2@gmail.com' , '0');
+
+-- not an athlete, to check if auto-increment (bigserial) works: Right now it doesn't! Why?!
+insert into persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+values ('NotAnAthll' , 'NotAnAthllfather' , 'NotAnAthlllast', '02-10-1992' , 'male', '99123146' , null , 'NotAnAthll@gmail.com' , '0');
+
+-- adding user: "admin" pass: "admin" (will be removed in the final releases!)
+insert into users (id , username , password, person_management, event_management , lottery , game_support , reports , settings) values ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
 
 
 insert into athletes (id, rank, club_id ) values ('0', 'black', '1'  );
-
-
-
-
-
-
-
-
-
-
-
+insert into athletes (id, rank, club_id ) values ('1', 'black', '1'  );
+insert into athletes (id, rank, club_id ) values ('2', 'black', NULL );
 
 
 
