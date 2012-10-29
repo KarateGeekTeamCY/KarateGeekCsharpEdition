@@ -180,21 +180,24 @@
                     VerticalAlignment="Center"
                     Margin="20,0,20,0"  />
             
-            <Button Grid.Column="2" 
+            <Button Name="btnClear" 
+                    Grid.Column="2" 
                     Content="clear" 
                     VerticalAlignment="Center" 
                     Margin="20,0,20,0" 
                     Click="btnClear_Click" />
             
-            <Button Grid.Column="3"
+            <Button Name ="btnSave" 
+                    Grid.Column="3"
                     Content="save" 
                     VerticalAlignment="Center" 
-                    Margin="20,0,20,0" />
+                    Margin="20,0,20,0" Click="btnSave_Click" />
             
-            <Button Grid.Column="4" 
+            <Button Name="btnBack" 
+                    Grid.Column="4" 
                     Content="back" 
                     VerticalAlignment="Center" 
-                    Margin="20,0,20,0" />
+                    Margin="20,0,20,0" Click="btnBack_Click" />
         
         
         </Grid>

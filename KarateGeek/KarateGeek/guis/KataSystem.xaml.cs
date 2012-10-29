@@ -208,6 +208,8 @@ namespace KarateGeek.guis
 
         #endregion
 
+
+
         #region buttons functionality
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
@@ -224,10 +226,22 @@ namespace KarateGeek.guis
 
         }
 
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            ScoreConnection scoreconn = new ScoreConnection()
+            scoreconn.InsertNewScore();
 
 
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         #endregion
+
+        
 
 
     }

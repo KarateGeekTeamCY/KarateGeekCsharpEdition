@@ -241,11 +241,10 @@ create table team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
-
-	athlete_id		integer		references athletes(id),
-	tournament_id		integer 	references tournaments(id),
 	rank_at_time 		varchar(50)	not null,
 	position		integer,
+	athlete_id		integer		references athletes(id),
+	tournament_id		integer 	references tournaments(id),
 	team_participation_id	integer		references team_tournament_participations(id),
 	
 	PRIMARY KEY (athlete_id, tournament_id)
@@ -265,35 +264,72 @@ create table game_participation (	-- gia atomika
 
 
 
+create table game_point(
+
+	id 		BIGSERIAL,
+	game_id 	integer references games(id),
+	athlete_id 	integer references athletes(id),
+	team_id		integer references team_tournament_participations(id),
+
+
+	technical_point		integer,
+	technical_point_desc	varchar(50),
+
+	PRIMARY KEY (id)
+)
 
 
 
 CREATE TABLE game_score(
 
-	game_id BIGSERIAL,
+	id 		BIGSERIAL,
+	game_id 	integer references games(id),
 	athlete_id 	integer references athletes(id),
+	team_id		integer references team_tournament_participations(id),
 
-	technical_point	integer,
-	technical_point_desc	varchar(50),
-
-	is_points	boolean,	-- afto tha ksexorizi to kata poso i ponti einai points diladi apo 1-10
-					-- alios tha simeni oti einai flag system kai ta values tha einai 0-1
-					-- opou 0 -> red
-					-- 	1 -> white
-	head_score	integer,
+	
 	score1 		integer,
 	score2 		integer,
 	score3 		integer,
 	score4 		integer,
+	score5 		integer,
 
-	head_judge_id	integer 	references judges(id),
 	judge1		integer		references judges(id),
 	judge2	 	integer  	references judges(id),
 	judge3 		integer  	references judges(id),
 	judge4 		integer  	references judges(id),
+	judge5 		integer  	references judges(id),
 
-	PRIMARY KEY (game_id, athlete_id)
+	PRIMARY KEY (id)
 	);
+
+
+
+
+
+
+create table game_flag(
+
+	id 		BIGSERIAL,
+	game_id 	integer references games(id),
+	athlete_id 	integer references athletes(id),
+	team_id		integer references team_tournament_participations(id),
+	
+	
+	flag1 		boolean,
+	flag2 		boolean,
+	flag3 		boolean,
+	flag4 		boolean,
+	flag5		boolean,
+
+	judge1		integer		references judges(id),
+	judge2	 	integer  	references judges(id),
+	judge3 		integer  	references judges(id),
+	judge4 		integer  	references judges(id),
+	judge5 		integer  	references judges(id),
+
+	PRIMARY KEY (id)
+)
 
 
 
