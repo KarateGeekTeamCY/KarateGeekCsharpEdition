@@ -222,7 +222,7 @@ CREATE TABLE games (
 
 create table team_tournament_participations (
     id              SERIAL,
-    position        INTEGER,
+    ranking         INTEGER,
     --club_id       INTEGER         REFERENCES clubs(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
     PRIMARY KEY (id)
