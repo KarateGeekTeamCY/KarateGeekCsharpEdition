@@ -98,7 +98,7 @@ CREATE TABLE addresses (
 	id              BIGSERIAL,
 	street          varchar(50)     NOT NULL,
 	number          varchar(12)     NOT NULL,
-	city_id         integer 		references cities(id),
+	city_id         integer 	references cities(id),
 	postal_code     varchar(12)     NOT NULL,
 	country_code    char(2)         DEFAULT 'CY' REFERENCES countries(code),
 	primary key(id)
@@ -107,11 +107,10 @@ CREATE TABLE addresses (
 
 
 CREATE TABLE locations (
-	id              BIGSERIAL,
-	name            varchar(80),
+	id 		integer 	REFERENCES addresses(id),
+	name           	varchar(80),
 	phone           char(15),    		-- E.164 standard
 	email	        varchar(50),
-	address_id 		integer 		REFERENCES addresses(id),
 	primary key(id)
 );
 
@@ -131,12 +130,12 @@ create table clubs (
 
 
 CREATE TABLE persons (
-	id              BIGSERIAL,  				-- "BIGSERIAL" as a data type means an auto-incr. integer
+	id              BIGSERIAL,  		-- "BIGSERIAL" as a data type means an auto-incr. integer
 	first_name      varchar(50)     	NOT NULL,
-	last_name       varchar(50),
-	fathers_name    varchar(50)     	NOT NULL,
+	last_name       varchar(50)		NOT NULL,
+	fathers_name    varchar(50),
 	sex 		varchar(10)		NOT NULL,
-	date_of_birth   date,
+	date_of_birth   date			NOT NULL,
 	phone           char(15)        	NOT NULL,    	-- E.164 standard
 	secondary_phone char(15),
 	email           varchar(50),
@@ -149,8 +148,10 @@ CREATE TABLE persons (
 
 CREATE TABLE athletes (
 	id              int REFERENCES persons(id) 	ON DELETE NO ACTION, 	-- not CASCADE!
-	rank            varchar(50)     		NOT NULL,  -- char or int?
-	club_id         integer         		NOT NULL REFERENCES clubs(id),
+
+	rank            varchar(50)     		NOT NULL,  		-- char or int?
+	club_id         integer         		REFERENCES clubs(id),
+
 	primary key(id)
 );
 
@@ -158,7 +159,7 @@ CREATE TABLE athletes (
 
 CREATE TABLE judges (
 	id              int REFERENCES persons(id) 	ON DELETE NO ACTION,
-	rank            varchar(50)     		NOT NULL,  				-- char or int?
+	rank            varchar(50)     		NOT NULL,  		-- char or int?
 	class           character(1)    		NOT NULL,
 	primary key(id)
 );
@@ -167,7 +168,7 @@ CREATE TABLE judges (
 
 create table users (
 	id              	int REFERENCES persons(id) 	ON DELETE NO ACTION,
-	username 		varchar(255) 			NOT NULL,
+	username 		varchar(255) 			unique NOT NULL,
 	password		varchar(255) 			NOT NULL,
 	person_management	boolean 			NOT NULL DEFAULT FALSE,
 	event_management	boolean 			NOT NULL DEFAULT FALSE,
@@ -189,23 +190,29 @@ create table events (
 	name            varchar(80)     NOT NULL,
 	date            date,
 	official        boolean      	DEFAULT false,
-	location_id     integer  		references locations(id),
+	location_id     integer  	references locations(id),
 	primary key (id)
 );
 
 
+
 CREATE TABLE tournaments (
 	id              BIGSERIAL,
-	name 		varchar(80) 			NOT NULL,
-	sex		varchar(10)			NOT NULL,
-	age_from	integer				NOT NULL,
-	age_to		integer 			NOT NULL,
-	level_from      character varying(50)   	NOT NULL, 
-	level_to        character varying(50)   	NOT NULL, 
-	game_type       character varying(50)		NOT NULL,  
-	judging_type	character varying(50)		NOT NULL,          
-	event_id        integer 			references events(id) ON DELETE CASCADE,
-	primary key(id)
+
+	name 		varchar(80) 	NOT NULL,
+	sex		varchar(10)	NOT NULL,
+	age_from	integer		NOT NULL,
+	age_to		integer 	NOT NULL,
+	level_from      varchar(50)   	NOT NULL,
+	level_to        varchar(50)   	NOT NULL,
+	game_type       varchar(50)	NOT NULL,	--fugu-go
+	scoring_type	varchar(50)	NOT NULL,	--flag|point	gia fugu-go
+							--score		arithmitika
+							--flag		simees
+							--point 	ipon ktl
+	event_id        integer 	references events(id),
+	primary key(id)	
+
 
 );
 
@@ -214,20 +221,18 @@ CREATE TABLE tournaments (
 
 CREATE TABLE games (
 	id            	BIGSERIAL,
-	phase      	varchar(10)   		NOT NULL,
-	position       	character varying(10) 	NOT NULL,
-	tournament_id 	integer 		references tournaments(id),
-	game_type 	varchar(50)		not null,
-	primary key(id)
+	phase      	integer  	NOT NULL,	
+	position       	integer 	NOT NULL,
+	tournament_id 	integer 	references tournaments(id),
+	primary key(id)	
 );
 
 
 
 create table team_tournament_participations (
 	id 		BIGSERIAL,
-	descreption	varchar(255),
 	position	integer,
-	club_id		integer		references clubs(id),
+	--club_id	integer		references clubs(id),
 	tournament_id 	integer		references tournaments(id),
 	primary key (id)
 );
@@ -236,9 +241,10 @@ create table team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
+
 	athlete_id		integer		references athletes(id),
 	tournament_id		integer 	references tournaments(id),
-	rank_at_time 		varchar(50),
+	rank_at_time 		varchar(50)	not null,
 	position		integer,
 	team_participation_id	integer		references team_tournament_participations(id),
 	
@@ -246,7 +252,11 @@ CREATE TABLE tournament_participations (
 );
 
 
-create table game_participation (
+create table game_participation (	-- gia atomika
+					-- tha vazis dio tetia gia versus
+					-- gia atomika parousiasi 1
+					-- gia omadiko vs 6 h 4 anepisima
+					--
 	athlete_id 	integer references athletes (id),
 	game_id 	integer references games (id),
 	primary key (athlete_id, game_id)
@@ -283,7 +293,6 @@ CREATE TABLE game_score(
 	judge4 		integer  	references judges(id),
 
 	PRIMARY KEY (game_id, athlete_id)
-
 	);
 
 
@@ -314,10 +323,18 @@ insert into clubs (name, address_id, country_code) values ('power fight club', 0
 insert into persons(id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 values ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
 
-insert into users( id , username , password, person_management, event_management , lottery , game_support , reports , settings) values ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
+
+
+-- adding user: "admin" pass: "admin" (will be removed in the final releases!)
+insert into users (id , username , password, person_management, event_management , lottery , game_support , reports , settings) 
+values ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
+
+
+
 
 
 insert into athletes (id, rank, club_id ) values ('0', 'black', '1'  );
+
 
 
 
