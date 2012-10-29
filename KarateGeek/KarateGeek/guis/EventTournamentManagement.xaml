@@ -234,8 +234,8 @@
 
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
                         <RowDefinition Height="2*"/>
+                        <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
 
                     <Grid Name="upper">
@@ -276,16 +276,16 @@
                                 <Grid  Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="0.6*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
-                                
+                                    <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
@@ -409,6 +409,18 @@
                                        VerticalAlignment="Center"
                                        Margin="5,0,5,0"
                                           Grid.ColumnSpan="2" SelectionChanged="cmbTGame_SelectionChanged" />
+                                <Label 
+                                    Content="Judging type"
+                                       Grid.Column="1"
+                                       Grid.Row="6"
+                                       VerticalAlignment="Center"/>
+
+                                <ComboBox Name="cmbTJudging"
+                                       Grid.Column="2"
+                                       Grid.Row="6"
+                                       VerticalAlignment="Center"
+                                       Margin="5,0,5,0"
+                                       Grid.ColumnSpan="2" />
                                 <ListBox Name="tSuggestionList" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2" VerticalAlignment="Top"  Visibility="Collapsed" SelectionChanged="tSuggestionList_SelectionChanged" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}"/>
                                 
                             </Grid>
@@ -429,16 +441,8 @@
                         </Grid.RowDefinitions>
                        
                         <Grid Grid.Row="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBox  
-                                    Name="participants"
-                                    Grid.Row="0"     
-                                    Text="Participants"
-                                VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold" IsEnabled="True" IsReadOnly="True" />
-                            <Grid Grid.Row="1">
+                          
+                       
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40"/>
                                     <RowDefinition Height="*"/>
@@ -446,11 +450,12 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="20*"/>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Name="TournamentParticipants"
-                                       Content="Tournament Participants"
+                                <Label Name="ParticipantsSelection"
+                                       Content="Participant Selection"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
                                        Grid.Row="0"
@@ -463,52 +468,72 @@
                                          IsReadOnly="True" VerticalScrollBarVisibility="Auto" />
                                 <Label Name="AddParticipant"
                                        Grid.Row="0"
-                                       Grid.Column="2"
+                                       Grid.Column="3"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
-                                       Content="Participant"
+                                       Content="Edit Participants"
                                         Background="#FFDEDEDE"
                                        />
-                                
-                                <Border BorderBrush="Silver" BorderThickness="1" Grid.Column="2" Grid.Row="1" Name="border1">
-                                    <Grid Grid.Row="1"
-                                      Grid.Column="2">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="2*"/>
-                                            <RowDefinition Height="8*"/>
-                                            <RowDefinition Height="2*"/>
-                                        </Grid.RowDefinitions>
-                                        <Label Content="Name" Height="28" HorizontalAlignment="Left" Margin="26,6,0,0" Name="label1" VerticalAlignment="Top" />
-                                        <TextBox Name="participantName" Height="23" HorizontalAlignment="Left" Margin="108,6,0,0"  VerticalAlignment="Top" Width="201" />
-                                        <TextBox Grid.Row="1"   Name="textBox2" Margin="32,0,6,5" />
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="4*"/>
-                                                <ColumnDefinition Width="4*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Button Name="btTPDelete"
-                                                Grid.Column="1"
-                                                Content="Delete"
-                                                VerticalAlignment="Center"
-                                                Width="70"
-                                                HorizontalAlignment="Center"
-                                                />
-                                            <Button Name="btnTPAdd"
-                                                Grid.Column="2"
-                                                Content="Add"
-                                                VerticalAlignment="Center"
-                                                Width="70"
-                                                HorizontalAlignment="Center"
-                                                />
-                                        </Grid>
-                                        <ListBox HorizontalAlignment="Left" Margin="108,29,0,0" Name="listBox1" VerticalAlignment="Top" Width="201" Visibility="Collapsed" SelectionChanged="tSuggestionList_SelectionChanged" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}" />
-                                    </Grid>
-                                </Border>
+
+                            <Grid Grid.Row="1" Grid.Column="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="2*"/>
+                                    
+                                    <RowDefinition Height="2*"/>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Button Name="btaddParticipant"
+                                        Grid.Row="1"
+                                        Content=">>"
+                                        VerticalAlignment="Bottom"
+                                        Margin="0,0,0,5"
+                                        HorizontalAlignment="Center"
+                                        />
+                                <Button Name="btdeleteParticipant"
+                                        Grid.Row="2"
+                                        Content=">>"
+                                        VerticalAlignment="Top"
+                                        Margin="0,5,0,0"
+                                        HorizontalAlignment="Center"
+                                        />
+
                             </Grid>
-                            
-                                     
+
+                            <Grid Grid.Row="1" Grid.Column="3" Margin="5,0,0,0" IsEnabled="False">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="6*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox Name="cmbTteamsNumber"
+                                          Grid.Column="0"
+                                          VerticalAlignment="Center"
+                                          Margin="5,0,5,0"
+                                          />
+                                <ComboBox Name="cmbTteamSelection"
+                                          Grid.Column="1"
+                                          VerticalAlignment="Center"
+                                          Margin="5,0,2,0"
+                                          />
+                                <TextBox Name="tbT"
+                                         Grid.Row="1"
+                                         Grid.ColumnSpan="2"
+                                         Margin="5,5,2,5"/>
+                            </Grid>
+
+
+                            <Grid Grid.Row="1" Grid.Column="3" Margin="5,0,0,0" IsEnabled="True">
+                               
+                                <TextBox Name="tbTParticipants"
+                                         Grid.Row="1"
+                                        
+                                         Margin="5,0,0,0"/>
+                            </Grid>
+
                         </Grid>
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
