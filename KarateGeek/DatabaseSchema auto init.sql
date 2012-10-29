@@ -233,7 +233,7 @@ CREATE TABLE tournament_participations (
     athlete_id      INTEGER         REFERENCES athletes(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
     rank_at_time    VARCHAR(50)     NOT NULL,
-    position        INTEGER,
+    ranking         INTEGER,
     team_participation_id INTEGER   REFERENCES team_tournament_participations(id),
     PRIMARY KEY (athlete_id, tournament_id)
 );
