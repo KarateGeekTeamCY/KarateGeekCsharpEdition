@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data;
+using System.Data;          // DataSet, DataTable
 using Npgsql;
+
+using System.Diagnostics;   // has Debug.WriteLine()
 
 namespace KarateGeek.databaseConnection
 {
