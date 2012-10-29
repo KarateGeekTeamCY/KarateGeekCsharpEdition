@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using KarateGeek.helpers; // for lottery generator testing; THIS LINE WILL BE REMOVED
 
 namespace KarateGeek.guis
 {
@@ -62,6 +63,12 @@ namespace KarateGeek.guis
             et.Activate();
             this.Close();
             et.Show();
+        }
+
+        /* EXPERIMENTAL and not ready, will crash 'n' burn if clicked:*/
+        private void btnLotery_Click(object sender, RoutedEventArgs e)
+        {
+            LotteryGenerator lg = new LotteryGenerator(1);
         }
 
         

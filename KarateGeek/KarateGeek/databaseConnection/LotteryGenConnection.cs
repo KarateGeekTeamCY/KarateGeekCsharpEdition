@@ -18,9 +18,6 @@ namespace KarateGeek.databaseConnection
             String sql = "SELECT athlete_id FROM tournament_participations WHERE tournament_id = '"
                          + tournamentId + "' ;";
 
-            //Console.WriteLine(sql);
-            Debug.WriteLine(sql); //debug
-
             DataTable dt = this.Query(sql).Tables[0];
 
             if (dt.Rows.Count == 0) throw new System.Exception("No tournament participants found."); //ouch
@@ -30,7 +27,7 @@ namespace KarateGeek.databaseConnection
             for (int index = 0; index < dt.Rows.Count; ++index)
                 L.Add(long.Parse(dt.Rows[index][0].ToString()));
 
-            //Console.Read();
+            Debug.Writeline("Tournament participants in List<long> :");
             foreach(long element in L) //debug
                 Debug.WriteLine(element);
 

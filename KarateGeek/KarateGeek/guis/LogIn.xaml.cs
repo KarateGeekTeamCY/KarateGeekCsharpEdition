@@ -37,8 +37,13 @@ namespace KarateGeek.guis
 
 
             LoginConnection lgConn = new LoginConnection();
-            username=userNameTB.Text;
-            password=passwordTB.Password;
+
+            /* Temporarily disabling the following two lines to make our life easier during testing: */
+            //username=userNameTB.Text;
+            //password=passwordTB.Password;
+            username = "admin";
+            password=  "admin";
+            /* end of modification */
 
             loginCheck = lgConn.compare(username, password);
             if (loginCheck)
