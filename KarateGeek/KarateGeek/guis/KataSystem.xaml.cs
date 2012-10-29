@@ -98,15 +98,49 @@ namespace KarateGeek.guis
             this._judges = judgeconn.GetJudges().Tables[0];
 
 
-
-
-
             return "";
         }
 
 
-        #endregion
+        private void _computeMean(){
+            double smaller = 0, larger = 10; ;
 
+            if (smaller > _scoreA)
+                smaller = _scoreA;
+            if (larger < _scoreA)
+                larger = +_scoreA;
+
+            if (smaller > _scoreB)
+                smaller = _scoreB;
+            if (larger < _scoreB)
+                larger = +_scoreB;
+
+            if (smaller > _scoreC)
+                smaller = _scoreC;
+            if (larger < _scoreC)
+                larger = +_scoreC;
+
+            if (smaller > _scoreD)
+                smaller = _scoreD;
+            if (larger < _scoreD)
+                larger = +_scoreD;
+
+            if (smaller > _scoreE)
+                smaller = _scoreE;
+            if (larger < _scoreE)
+                larger = +_scoreE;
+
+            this.lblSmallestScore.Content = this.lblSmallestScore.Content + " = " + smaller;
+            this.lblLargestScore.Content = this.lblLargestScore.Content + " = " + larger;
+
+            _treamdMean = (_scoreA + _scoreB + _scoreC + _scoreD + _scoreE - smaller - larger) / 3;
+
+            this.lblTrimmedMeanScore.Content = this.lblTrimmedMeanScore.Content + " = " + _treamdMean;
+
+        }
+
+
+        #endregion
 
         #region score listeners
 
@@ -166,11 +200,25 @@ namespace KarateGeek.guis
 
         #endregion
 
+        #region 
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            this.scoreA.Text = "0";
+            this.scoreB.Text = "0";
+            this.scoreC.Text = "0";
+            this.scoreD.Text = "0";
+            this.scoreE.Text = "0";
+
+        }
 
 
 
 
+        #endregion
 
 
     }
 }
+
+

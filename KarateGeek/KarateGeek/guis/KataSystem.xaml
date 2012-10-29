@@ -130,30 +130,26 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Name="txtSmallestScore"
+            <Label Name="lblSmallestScore"
                 Grid.Column="1"
                 BorderThickness="2"
-                BorderBrush="Coral"
-             Text="smallest score"
-                TextAlignment="Center"
-                     Margin="10,0,10,0"
-
-                VerticalAlignment="Center"/>
-            <TextBox Name="txtHighestScore"
+                Content="largest score"
+                VerticalAlignment="Center"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Center"/>
+            <Label Name="lblLargestScore"
                 Grid.Column="2"
                 BorderThickness="2"
-                BorderBrush="Coral"
-             Text="smallest score"
+             Content="smallest score"
                      Margin="10,0,10,0"
-                TextAlignment="Center"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center" />
-            <TextBox Name="txtTrimmedMeanScore"
+            <Label Name="lblTrimmedMeanScore"
                 Grid.Column="3"
                 BorderThickness="2"
                      Margin="10,0,10,0"
-                BorderBrush="Coral"
-             Text="trimmed mean score"
-                TextAlignment="Center"
+             Content="trimmed mean score"
+                HorizontalAlignment="Center"
 
                 VerticalAlignment="Center"  />
         </Grid>
@@ -177,7 +173,8 @@
             <Button Grid.Column="2" 
                     Content="clear" 
                     VerticalAlignment="Center" 
-                    Margin="20,0,20,0" />
+                    Margin="20,0,20,0" 
+                    Click="btnClear_Click" />
             
             <Button Grid.Column="3"
                     Content="save" 

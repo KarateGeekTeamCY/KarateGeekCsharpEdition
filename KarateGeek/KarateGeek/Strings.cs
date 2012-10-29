@@ -7,7 +7,7 @@ namespace KarateGeek
 {
     static class Strings
     {
-        enum {}
+        
 
         //
         // ranking types
