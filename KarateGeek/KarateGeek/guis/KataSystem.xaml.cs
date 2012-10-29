@@ -22,6 +22,14 @@ namespace KarateGeek.guis
     public partial class KataSystem : Window
     {
 
+        #region private declaretions
+
+        private string _judgeAId = "";
+        private string _judgeBId = "";
+        private string _judgeCId = "";
+        private string _judgeDId = "";
+        private string _judgeEId = "";
+
         private double _scoreA = 0;
         private double _scoreB = 0;
         private double _scoreC = 0;
@@ -38,7 +46,7 @@ namespace KarateGeek.guis
         private DataTable _participation;
         private DataTable _game;
 
-
+        #endregion
 
 
 
@@ -48,27 +56,25 @@ namespace KarateGeek.guis
             this._gameId = gameId;
             this._ParticipationId = participationId;
 
-            GameConnection gameconn = new GameConnection();
-            this._game = gameconn.GetGameById(gameId).Tables[0];
 
-            JudgeConnection judgeconn = new JudgeConnection();
-            this._judges = judgeconn.GetJudges().Tables[0];
+            this._loadDataTables();
+
 
             foreach (DataRow dr in _judges.Rows)
-            { 
+            {
                 this.eventJudgePickerA.Items.Add("" + dr[1] + " " + dr[2]);
                 this.eventJudgePickerB.Items.Add("" + dr[1] + " " + dr[2]);
                 this.eventJudgePickerC.Items.Add("" + dr[1] + " " + dr[2]);
                 this.eventJudgePickerD.Items.Add("" + dr[1] + " " + dr[2]);
                 this.eventJudgePickerE.Items.Add("" + dr[1] + " " + dr[2]);
             }
+            //string runka = Strings.rank1;
 
 
-
-            string gametype = this._game.Rows[0][4].ToString() ;
+            string gametype = this._game.Rows[0][4].ToString();
             if (gametype == "")
             {
-                
+
 
             }
             else
@@ -77,7 +83,29 @@ namespace KarateGeek.guis
 
             }
 
+
         }
+
+
+        #region private functions
+
+        private string _loadDataTables()
+        {
+            GameConnection gameconn = new GameConnection();
+            this._game = gameconn.GetGameById(this._gameId).Tables[0];
+
+            JudgeConnection judgeconn = new JudgeConnection();
+            this._judges = judgeconn.GetJudges().Tables[0];
+
+
+
+
+
+            return "";
+        }
+
+
+        #endregion
 
 
         #region score listeners
@@ -109,8 +137,34 @@ namespace KarateGeek.guis
 
         #endregion
 
+        #region judge listeners
 
+        private void eventJudgePickerA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeAId = this._judges.Rows[this.eventJudgePickerA.SelectedIndex][0].ToString() ;
+        }
 
+        private void eventJudgePickerB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeBId = this._judges.Rows[this.eventJudgePickerB.SelectedIndex][0].ToString();
+        }
+
+        private void eventJudgePickerC_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeCId = this._judges.Rows[this.eventJudgePickerC.SelectedIndex][0].ToString();
+        }
+
+        private void eventJudgePickerD_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeDId = this._judges.Rows[this.eventJudgePickerD.SelectedIndex][0].ToString();
+        }
+
+        private void eventJudgePickerE_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeEId = this._judges.Rows[this.eventJudgePickerE.SelectedIndex][0].ToString();
+        }
+
+        #endregion
 
 
 

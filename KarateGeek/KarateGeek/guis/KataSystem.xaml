@@ -36,7 +36,7 @@
             </Grid.ColumnDefinitions>
             <ComboBox Name="eventJudgePickerA" Grid.Column="1" 
                       VerticalAlignment="Center" 
-                      Margin="10" >
+                      Margin="10" SelectionChanged="eventJudgePickerA_SelectionChanged">
                 <ComboBoxItem Name="judjeA" 
                               HorizontalAlignment="Center"
                               Content="judge a"
@@ -45,7 +45,7 @@
 
             <ComboBox Name="eventJudgePickerB" Grid.Column="2"  
                       VerticalAlignment="Center" 
-                      Margin="10">
+                      Margin="10" SelectionChanged="eventJudgePickerB_SelectionChanged">
                 <ComboBoxItem Name="judjeB" 
                               HorizontalAlignment="Center"
                               Content="judge b"
@@ -54,7 +54,7 @@
             <ComboBox Name="eventJudgePickerC" 
                       Grid.Column="3"  
                       VerticalAlignment="Center" 
-                      Margin="10">
+                      Margin="10" SelectionChanged="eventJudgePickerC_SelectionChanged">
                 <ComboBoxItem Name="judjeC" 
                               HorizontalAlignment="Center"
                               Content="judge c"
@@ -63,7 +63,7 @@
             <ComboBox Name="eventJudgePickerD" 
                       Grid.Column="4"   
                       VerticalAlignment="Center" 
-                      Margin="10">
+                      Margin="10" SelectionChanged="eventJudgePickerD_SelectionChanged">
                 <ComboBoxItem Name="judjeD" 
                               HorizontalAlignment="Center"
                               Content="judge d"
@@ -72,7 +72,7 @@
             <ComboBox Name="eventJudgePickerE" 
                       Grid.Column="5"  
                       VerticalAlignment="Center" 
-                      Margin="10">
+                      Margin="10" SelectionChanged="eventJudgePickerE_SelectionChanged">
                 <ComboBoxItem Name="judjeE" 
                               HorizontalAlignment="Center"
                               Content="judge e"

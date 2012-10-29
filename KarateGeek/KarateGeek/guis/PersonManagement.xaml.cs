@@ -119,52 +119,50 @@ namespace KarateGeek.guis
 
             this.athleteUpdateCities("CY");
 
-            //9th dan - 10th dan- Wide Red optional as Sensei Ilija Yorga himself wore a Black Belt, Master's title
-            //6th dan - 8th dan - White and Red, Master's title
-            //1st dan - 5th dan - Black
-            //1st kyu - Brown (at least 25 Month of traning or more)
-            //2nd kyu - Blue (at least 18 Month of traning or more)
-            //3rd kyu - Green (at least 15 Month of traning or more)
-            //4th kyu - Orange (at least 9 Month of traning or more)
-            //5th kyu - Yellow (at least 7 Month of traning or more)
-            //6th kyu - White (at least 5 Month of traning or more)
+            
 
             //prosthetoume athlete_rank
-            cmbAthleteRankChooses.Items.Add("White        - 6th kyu");
-            cmbAthleteRankChooses.Items.Add("Yellow       - 5th kyu");
-            cmbAthleteRankChooses.Items.Add("Orange       - 4th kyu");
-            cmbAthleteRankChooses.Items.Add("Green        - 3th kyu");
-            cmbAthleteRankChooses.Items.Add("Blue         - 2nd kyu");
-            cmbAthleteRankChooses.Items.Add("Brown        - 1st kyu");
-            cmbAthleteRankChooses.Items.Add("Black        - 1st dan");
-            cmbAthleteRankChooses.Items.Add("Black        - 2nd dan");
-            cmbAthleteRankChooses.Items.Add("Black        - 3th dan");
-            cmbAthleteRankChooses.Items.Add("Black        - 4th dan");
-            cmbAthleteRankChooses.Items.Add("Black        - 5th dan");
-            cmbAthleteRankChooses.Items.Add("White/Red    - 6th dan");
-            cmbAthleteRankChooses.Items.Add("White/Red    - 7th dan");
-            cmbAthleteRankChooses.Items.Add("White/Red    - 8th dan");
-            cmbAthleteRankChooses.Items.Add("Red          - 9th dan");
-            cmbAthleteRankChooses.Items.Add("Red          - 10th dan");
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank04);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank05);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank06);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank07);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank08);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank09);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank10);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank11);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank12);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank13);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank14);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank15);
+            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank16);
+            
             cmbAthleteRankChooses.SelectedIndex = 0;
 
+            //string s = Strings.ranks.rank01.ToString(); ;
+
             //prosthetoume judge class
-            cmbJudgeRankChooses.Items.Add("White        - 6th kyu");
-            cmbJudgeRankChooses.Items.Add("Yellow       - 5th kyu");
-            cmbJudgeRankChooses.Items.Add("Orange       - 4th kyu");
-            cmbJudgeRankChooses.Items.Add("Green        - 3th kyu");
-            cmbJudgeRankChooses.Items.Add("Blue         - 2nd kyu");
-            cmbJudgeRankChooses.Items.Add("Brown        - 1st kyu");
-            cmbJudgeRankChooses.Items.Add("Black        - 1st dan");
-            cmbJudgeRankChooses.Items.Add("Black        - 2nd dan");
-            cmbJudgeRankChooses.Items.Add("Black        - 3th dan");
-            cmbJudgeRankChooses.Items.Add("Black        - 4th dan");
-            cmbJudgeRankChooses.Items.Add("Black        - 5th dan");
-            cmbJudgeRankChooses.Items.Add("White/Red    - 6th dan");
-            cmbJudgeRankChooses.Items.Add("White/Red    - 7th dan");
-            cmbJudgeRankChooses.Items.Add("White/Red    - 8th dan");
-            cmbJudgeRankChooses.Items.Add("Red          - 9th dan");
-            cmbJudgeRankChooses.Items.Add("Red          - 10th dan");
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank04);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank05);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank06);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank07);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank08);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank09);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank10);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank11);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank12);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank13);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank14);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank15);
+            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank16);
+            
+
+
             cmbJudgeRankChooses.SelectedIndex = 0;
             
             //prosthetoume clubs
