@@ -253,6 +253,7 @@ CREATE TABLE game_score(
 
     game_id         SERIAL,
     athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
     technical_point INTEGER,
     technical_point_desc VARCHAR(50),
 
