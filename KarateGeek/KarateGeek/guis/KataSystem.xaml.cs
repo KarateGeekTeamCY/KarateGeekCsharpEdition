@@ -101,7 +101,6 @@ namespace KarateGeek.guis
             return "";
         }
 
-
         private void _computeMean(){
             double smaller = 0, larger = 10; ;
 
@@ -139,37 +138,46 @@ namespace KarateGeek.guis
 
         }
 
-
         #endregion
+
+
 
         #region score listeners
 
         private void scoreA_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             this._scoreA = double.Parse(this.scoreA.Text);
+            this._computeMean();
         }
 
         private void scoreB_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             this._scoreB = double.Parse(this.scoreB.Text);
+            this._computeMean();
         }
 
         private void scoreC_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             this._scoreC = double.Parse(this.scoreC.Text);
+            this._computeMean();
         }
 
         private void scoreD_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             this._scoreD = double.Parse(this.scoreD.Text);
+            this._computeMean();
         }
 
         private void scoreE_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             this._scoreE = double.Parse(this.scoreE.Text);
+            this._computeMean();
         }
 
+
         #endregion
+
+
 
         #region judge listeners
 
@@ -200,7 +208,7 @@ namespace KarateGeek.guis
 
         #endregion
 
-        #region 
+        #region buttons functionality
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
@@ -209,6 +217,10 @@ namespace KarateGeek.guis
             this.scoreC.Text = "0";
             this.scoreD.Text = "0";
             this.scoreE.Text = "0";
+
+            this.lblSmallestScore.Content = "smallest score";
+            this.lblLargestScore.Content = "largest score";
+            this.lblTrimmedMeanScore.Content = "treamed mean score";
 
         }
 
