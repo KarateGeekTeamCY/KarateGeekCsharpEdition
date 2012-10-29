@@ -30,7 +30,6 @@ namespace KarateGeek.databaseConnection
         }
 
 
-
         public Boolean Disconnect()
         {
             _conn.Close();
@@ -40,14 +39,20 @@ namespace KarateGeek.databaseConnection
 
         protected Boolean NonQuery(string sql)
         {
+            Debug.WriteLine("Executing SQL NonQuery: " + sql);  // Much faster than Console.WriteLine()
+                                                                // and auto-disabled in release mode.
+
             NpgsqlCommand comm = this.conn.CreateCommand();
             comm.CommandText = sql;
             comm.ExecuteNonQuery();
             return true;
         }
 
+
         protected DataSet Query(string sql)
         {
+            Debug.WriteLine("Executing SQL Query:    " + sql);  // Much faster than Console.WriteLine()
+                                                                // and auto-disabled in release mode.
 
             NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
 

@@ -59,13 +59,13 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Margin="0,10,15,10"
-                Click="exit_Click"/>
+                Click="exit_Click" IsCancel="True" />
         <Button Name="login"
                 Content="Log in"
                 Grid.Row="4"
                 Grid.Column="2"
                 Margin="15,10,0,10" 
-                Click="login_Click" />        
+                Click="login_Click" IsDefault="True" />        
         
         
         

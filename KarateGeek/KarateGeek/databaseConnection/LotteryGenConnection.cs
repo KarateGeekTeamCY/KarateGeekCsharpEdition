@@ -5,7 +5,7 @@ using System.Text;
 using KarateGeek.databaseConnection;
 using Npgsql;
 
-/*This file will be removed and the contents added to AthleteConnection */
+/** This file will be removed and the contents added to AthleteConnection! **/
 using System.Data;          // DataSet, DataTable
 using System.Diagnostics;   // has Debug.WriteLine()
 
@@ -18,12 +18,12 @@ namespace KarateGeek.databaseConnection
             String sql = "SELECT athlete_id FROM tournament_participations WHERE tournament_id = '"
                          + tournamentId + "' ;";
 
-            Console.WriteLine(sql); //debug
-            Debug.WriteLine(sql);
+            //Console.WriteLine(sql);
+            Debug.WriteLine(sql); //debug
 
             DataTable dt = this.Query(sql).Tables[0];
 
-            if (dt.Rows.Count == 0) throw new System.Exception("No tournament participants found.");
+            if (dt.Rows.Count == 0) throw new System.Exception("No tournament participants found."); //ouch
 
             List<long> L = new List<long>();
 
