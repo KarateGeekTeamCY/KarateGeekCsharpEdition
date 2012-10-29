@@ -66,7 +66,7 @@ namespace KarateGeek.guis
         }
 
         /* EXPERIMENTAL and not ready, will crash 'n' burn if clicked:*/
-        private void btnLotery_Click(object sender, RoutedEventArgs e)
+        private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
             LotteryGenerator lg = new LotteryGenerator(1);
         }
