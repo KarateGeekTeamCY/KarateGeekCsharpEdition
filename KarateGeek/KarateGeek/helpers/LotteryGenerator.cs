@@ -8,7 +8,7 @@ using KarateGeek.databaseConnection;
 
 namespace KarateGeek.helpers
 {
-    /** Algorithm described in project specs.
+   /** Algorithm described in project specs.
      * Simplified description (algorithm can be improved):
      * 
      * - Get List of tournament participants, in the form of List<int>,
