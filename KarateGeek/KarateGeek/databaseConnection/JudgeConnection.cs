@@ -82,6 +82,13 @@ namespace KarateGeek.databaseConnection
              return this.Query(sql);
          }
 
+
+         public DataSet GetJudges()
+         {
+             string sql = "select * from persons join judges on persons.id = judges.id;";
+             return this.Query(sql);
+         }
+
          private string _UpdateJudge(int JudgeId, string rank, string judge_class)
          {
              string sql = "update judges set " +

@@ -33,6 +33,8 @@ namespace KarateGeek.guis
         private string _ParticipationId = "";
         private bool _isIndividual = true;
 
+
+        private DataTable _judges;
         private DataTable _participation;
         private DataTable _game;
 
@@ -40,17 +42,31 @@ namespace KarateGeek.guis
 
 
 
-        public KataSystem(string gameId, string participationId, bool isIndividual)
+        public KataSystem(string gameId, string participationId)
         {
             InitializeComponent();
             this._gameId = gameId;
             this._ParticipationId = participationId;
-            this._isIndividual = isIndividual;
 
             GameConnection gameconn = new GameConnection();
             this._game = gameconn.GetGameById(gameId).Tables[0];
 
-            if (isIndividual)
+            JudgeConnection judgeconn = new JudgeConnection();
+            this._judges = judgeconn.GetJudges().Tables[0];
+
+            foreach (DataRow dr in _judges.Rows)
+            { 
+                this.eventJudgePickerA.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerB.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerC.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerD.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerE.Items.Add("" + dr[1] + " " + dr[2]);
+            }
+
+
+
+            string gametype = this._game.Rows[0][4].ToString() ;
+            if (gametype == "")
             {
                 
 

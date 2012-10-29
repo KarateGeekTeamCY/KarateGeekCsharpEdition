@@ -1,23 +1,26 @@
 ﻿<Window x:Class="KarateGeek.guis.KataSystem"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KataSystemForm" Height="350" Width="800">
+        Title="KataSystemForm" 
+        ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
             <Label Name="lblInfo" 
                      Content="kata competitor and match info"
                      VerticalAlignment="Center" 
-                   HorizontalAlignment="Center"
+                     HorizontalAlignment="Center"
                      FontSize="16" 
-                   />
+                     Margin="5"/>
         </Grid>
-        <Grid Grid.Row="1" >
+
+        <Grid Grid.Row="1" 
+              Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
@@ -31,41 +34,49 @@
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ComboBox Name="eventJudgePickerA" Grid.Column="1" VerticalAlignment="Center" Margin="10" >
+            <ComboBox Name="eventJudgePickerA" Grid.Column="1" 
+                      VerticalAlignment="Center" 
+                      Margin="10" >
                 <ComboBoxItem Name="judjeA" 
                               HorizontalAlignment="Center"
-                                                  Content="judge a"
-                              
-                                                  IsSelected="True"/>
+                              Content="judge a"
+                              IsSelected="True"/>
             </ComboBox>
 
-            <ComboBox Name="eventJudgePickerB" Grid.Column="2"  VerticalAlignment="Center" Margin="10">
+            <ComboBox Name="eventJudgePickerB" Grid.Column="2"  
+                      VerticalAlignment="Center" 
+                      Margin="10">
                 <ComboBoxItem Name="judjeB" 
                               HorizontalAlignment="Center"
-                                                  Content="judge b"
-                              
-                                                  IsSelected="True"/>
+                              Content="judge b"
+                              IsSelected="True"/>
             </ComboBox>
-            <ComboBox Name="eventJudgePickerC" Grid.Column="3"  VerticalAlignment="Center" Margin="10">
+            <ComboBox Name="eventJudgePickerC" 
+                      Grid.Column="3"  
+                      VerticalAlignment="Center" 
+                      Margin="10">
                 <ComboBoxItem Name="judjeC" 
                               HorizontalAlignment="Center"
-                                                  Content="judge c"
-                              
-                                                  IsSelected="True"/>
+                              Content="judge c"
+                              IsSelected="True"/>
             </ComboBox>
-            <ComboBox Name="eventJudgePickerD" Grid.Column="4"   VerticalAlignment="Center" Margin="10">
+            <ComboBox Name="eventJudgePickerD" 
+                      Grid.Column="4"   
+                      VerticalAlignment="Center" 
+                      Margin="10">
                 <ComboBoxItem Name="judjeD" 
                               HorizontalAlignment="Center"
-                                                  Content="judge d"
-                              
-                                                  IsSelected="True"/>
+                              Content="judge d"
+                              IsSelected="True"/>
             </ComboBox>
-            <ComboBox Name="eventJudgePickerE" Grid.Column="5"  VerticalAlignment="Center" Margin="10">
+            <ComboBox Name="eventJudgePickerE" 
+                      Grid.Column="5"  
+                      VerticalAlignment="Center" 
+                      Margin="10">
                 <ComboBoxItem Name="judjeE" 
                               HorizontalAlignment="Center"
-                                                  Content="judge e"
-                              
-                                                  IsSelected="True"/>
+                              Content="judge e"
+                              IsSelected="True"/>
             </ComboBox>
 
             <TextBox Name="scoreA"
@@ -74,38 +85,43 @@
                 Grid.Row="2"
                 Grid.Column="1"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0" TextChanged="scoreA_TextChanged" />
+                    Margin="10,0,5,0" 
+                     TextChanged="scoreA_TextChanged" />
             <TextBox Name="scoreB"
                 Text="score b"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="2"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0" TextChanged="scoreB_TextChanged" />
+                    Margin="10,0,5,0" 
+                     TextChanged="scoreB_TextChanged" />
             <TextBox Name="scoreC"
                 Text="score c"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="3"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0" TextChanged="scoreC_TextChanged" />
+                    Margin="10,0,5,0" 
+                     TextChanged="scoreC_TextChanged" />
             <TextBox Name="scoreD"
                 Text="score d"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="4"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0" TextChanged="scoreD_TextChanged" />
+                    Margin="10,0,5,0" 
+                     TextChanged="scoreD_TextChanged" />
             <TextBox Name="scoreE"
                 Text="score e"
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="5"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0" TextChanged="scoreE_TextChanged" />
+                    Margin="10,0,5,0"
+                     TextChanged="scoreE_TextChanged" />
         </Grid>
 
-        <Grid Grid.Row="2" >
+        <Grid Grid.Row="2" Margin="30,15">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -121,7 +137,11 @@
              Text="smallest score"
                 TextAlignment="Center"
                      Margin="10,0,10,0"
-                VerticalAlignment="Center" TextChanged="TextBox_TextChanged" />
+<<<<<<< HEAD
+                VerticalAlignment="Center"  />
+=======
+                VerticalAlignment="Center"/>
+>>>>>>> c19d8c5... tournaments participants
             <TextBox Name="txtHighestScore"
                 Grid.Column="2"
                 BorderThickness="2"
@@ -129,7 +149,7 @@
              Text="smallest score"
                      Margin="10,0,10,0"
                 TextAlignment="Center"
-                VerticalAlignment="Center" TextChanged="TextBox_TextChanged" />
+                VerticalAlignment="Center" />
             <TextBox Name="txtTrimmedMeanScore"
                 Grid.Column="3"
                 BorderThickness="2"
@@ -137,9 +157,13 @@
                 BorderBrush="Coral"
              Text="trimmed mean score"
                 TextAlignment="Center"
-                VerticalAlignment="Center" TextChanged="TextBox_TextChanged" />
+<<<<<<< HEAD
+                VerticalAlignment="Center" />
+=======
+                VerticalAlignment="Center"  />
+>>>>>>> c19d8c5... tournaments participants
         </Grid>
-        <Grid Grid.Row="3" >
+        <Grid Grid.Row="3" Margin="30,5">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -149,10 +173,29 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="commit" VerticalAlignment="Center" Margin="20,0,20,0"  />
-            <Button Grid.Column="2" Content="clear" VerticalAlignment="Center" Margin="20,0,20,0" />
-            <Button Grid.Column="3" Content="save" VerticalAlignment="Center" Margin="20,0,20,0" />
-            <Button Grid.Column="4" Content="back" VerticalAlignment="Center" Margin="20,0,20,0" />
+            
+            
+            <Button Grid.Column="1" 
+                    Content="commit" 
+                    VerticalAlignment="Center"
+                    Margin="20,0,20,0"  />
+            
+            <Button Grid.Column="2" 
+                    Content="clear" 
+                    VerticalAlignment="Center" 
+                    Margin="20,0,20,0" />
+            
+            <Button Grid.Column="3"
+                    Content="save" 
+                    VerticalAlignment="Center" 
+                    Margin="20,0,20,0" />
+            
+            <Button Grid.Column="4" 
+                    Content="back" 
+                    VerticalAlignment="Center" 
+                    Margin="20,0,20,0" />
+        
+        
         </Grid>
     </Grid>
 </Window>
