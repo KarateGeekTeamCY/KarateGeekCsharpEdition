@@ -90,7 +90,7 @@ CREATE TABLE countries (
 
 
 create table cities (
-  id                BIGSERIAL,
+  id                SERIAL,             -- "SERIAL" as a data type means an auto-incr. INTEGER
   name              VARCHAR(80)     NOT NULL UNIQUE,
   country_code      VARCHAR(2)      REFERENCES countries(code),
   PRIMARY KEY(id)
@@ -98,7 +98,7 @@ create table cities (
 
 
 CREATE TABLE addresses (
-    id              BIGSERIAL,
+    id              SERIAL,
     street          VARCHAR(50)     NOT NULL,
     number          VARCHAR(12)     NOT NULL,
     city_id         INTEGER         REFERENCES cities(id),
@@ -118,11 +118,11 @@ CREATE TABLE locations (
 
 
 create table clubs (
-    id              BIGSERIAL,
+    id              SERIAL,
     name            VARCHAR(50)     NOT NULL UNIQUE,
     phone           CHAR(50),
     email           VARCHAR(50),
-    logo            BYTEA,
+    logo            BYTEA,          -- "binary string" data type
     address_id      INTEGER         REFERENCES addresses( id ),
     country_code    CHAR(2)         DEFAULT 'CY'  REFERENCES countries(code),
     PRIMARY KEY (id)
@@ -130,7 +130,7 @@ create table clubs (
 
 
 CREATE TABLE persons (
-    id              BIGSERIAL,      -- "BIGSERIAL" as a data type means an auto-incr. INTEGER
+    id              SERIAL,
     first_name      VARCHAR(50)     NOT NULL,
     last_name       VARCHAR(50)     NOT NULL,
     fathers_name    VARCHAR(50),
@@ -177,7 +177,7 @@ create table users (
 
 
 --create table game_types (
---  id              BIGSERIAL,
+--  id              SERIAL,
 --  name            VARCHAR(50),
 --  description     VARCHAR(255),
 --  PRIMARY KEY(id)
@@ -185,7 +185,7 @@ create table users (
 
 
 create table events (
-    id              BIGSERIAL,
+    id              SERIAL,
     name            VARCHAR(80)     NOT NULL,
     date            DATE,
     official        BOOLEAN         NOT NULL DEFAULT true, -- default true according to specs
@@ -195,7 +195,7 @@ create table events (
 
 
 CREATE TABLE tournaments (
-    id              BIGSERIAL,
+    id              SERIAL,
     name            VARCHAR(80)     NOT NULL,
     sex             VARCHAR(10)     NOT NULL,
     age_from        INTEGER         NOT NULL,
@@ -213,7 +213,7 @@ CREATE TABLE tournaments (
 
 
 CREATE TABLE games (
-    id              BIGSERIAL,
+    id              SERIAL,
     phase           INTEGER         NOT NULL,
     position        INTEGER         NOT NULL,
     tournament_id   INTEGER         REFERENCES tournaments(id),
@@ -221,7 +221,7 @@ CREATE TABLE games (
 );
 
 create table team_tournament_participations (
-    id              BIGSERIAL,
+    id              SERIAL,
     position        INTEGER,
     --club_id       INTEGER         REFERENCES clubs(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
@@ -251,7 +251,7 @@ create table game_participation (       -- gia atomika
 
 CREATE TABLE game_score(
 
-    game_id         BIGSERIAL,
+    game_id         SERIAL,
     athlete_id      INTEGER         REFERENCES athletes(id),
     technical_point INTEGER,
     technical_point_desc VARCHAR(50),
@@ -314,15 +314,16 @@ INSERT INTO clubs (name, address_id, country_code) VALUES ('power fight club', 0
 INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
 
-INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('1' , 'athl1' , 'athl1father' , 'athl1last', '02-10-1991' , 'male', '99123145' , null , 'athl1@gmail.com' , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl1' , 'athl1father' , 'athl1last', '02-10-1991' , 'male', '99123145' , null , 'athl1@gmail.com' , '0');
 
-INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('2' , 'athl2' , 'athl2father' , 'athl2last', '02-10-1992' , 'male', '99123146' , null , 'athl2@gmail.com' , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl2' , 'athl2father' , 'athl2last', '02-10-1992' , 'male', '99123146' , null , 'athl2@gmail.com' , '0');
 
--- not an athlete, to check if auto-increment (BIGSERIAL) works... EDIT: IT DOESN'T FROM THE SCRIPT!
---INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
---VALUES ('NotAnAthll' , 'NotAnAthllfather' , 'NotAnAthlllast', '02-10-1992' , 'male', '99123146' , null , 'NotAnAthll@gmail.com' , '0');
+-- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
+-- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('NotAnAthll' , 'NotAnAthllfather' , 'NotAnAthlllast', '02-10-1992' , 'male', '99123146' , null , 'NotAnAthll@gmail.com' , '0');
 
 
 -- adding user: "admin" pass: "admin" (will be removed in the final releases!)
