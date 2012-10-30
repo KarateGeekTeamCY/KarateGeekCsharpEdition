@@ -83,6 +83,7 @@
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\LotteryGenConnection.cs" />
     <Compile Include="databaseConnection\ScoreConnection.cs" />
+    <Compile Include="Strings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="databaseConnection\AddressConnection.cs" />

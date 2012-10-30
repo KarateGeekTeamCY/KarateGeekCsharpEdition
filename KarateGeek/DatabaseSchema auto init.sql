@@ -1,4 +1,4 @@
---
+﻿--
 --                        karate geek
 --
 --
@@ -36,9 +36,9 @@
 -- **  Using the "CHAR" type only when the field length is absolutely fixed, eg. country codes
 --       (since there is no performance advantage, it's a matter of style)
 --
--- * From the PostgreSQL documentation: "While 'CHARacter(n)' has performance advantages in some
+-- * From the PostgreSQL documentation: "While 'character(n)' has performance advantages in some
 --    other database systems, there is no such advantage in PostgreSQL. [...] In most situations
---    'text' or 'CHARacter varying' should be used instead."
+--    'text' or 'character varying' should be used instead."
 --
 -- * Using 96 columns for this script, unless impossible
 --
@@ -230,6 +230,7 @@ create table team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
+
     athlete_id      INTEGER         REFERENCES athletes(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
     rank_at_time    VARCHAR(50)     NOT NULL,
@@ -249,40 +250,69 @@ create table game_participation (       -- gia atomika
 );
 
 
-CREATE TABLE game_score(
-
-    game_id         SERIAL,
+create table game_point (
+    id              SERIAL,
+    game_id 	    INTEGER         REFERENCES games(id)
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
+
     technical_point INTEGER,
     technical_point_desc VARCHAR(50),
 
-    is_points       BOOLEAN,    -- afto tha ksexorizi to kata poso i ponti einai points diladi
-                  -- apo 1-10 allios tha simeni oti einai flag system kai ta VALUES tha einai 0-1
-                  -- opou 0 -> red
-                  --  1 -> white
+	PRIMARY KEY (id)
+)
 
-    head_score      INTEGER,
+
+CREATE TABLE game_score (
+    id              SERIAL,
+    game_id 	    INTEGER         REFERENCES games(id)
+    athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
+
     score1          INTEGER,
     score2          INTEGER,
     score3          INTEGER,
     score4          INTEGER,
+    score5          INTEGER,
 
-    head_judge_id   INTEGER         REFERENCES judges(id),
     judge1          INTEGER         REFERENCES judges(id),
     judge2          INTEGER         REFERENCES judges(id),
     judge3          INTEGER         REFERENCES judges(id),
     judge4          INTEGER         REFERENCES judges(id),
+    judge5          INTEGER         REFERENCES judges(id),
 
     PRIMARY KEY (game_id, athlete_id)
 );
 
 
--- rollback transaction (useful for checking syntax):
---ROLLBACK;
+create table game_flag (
+    id              SERIAL,
+    game_id 	    INTEGER         REFERENCES games(id)
+    athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
+
+	flag1 		    BOOLEAN,
+	flag2 		    BOOLEAN,
+	flag3 		    BOOLEAN,
+	flag4 		    BOOLEAN,
+	flag5		    BOOLEAN,
+
+	judge1		    INTEGER		    REFERENCES judges(id),
+	judge2	 	    INTEGER  	    REFERENCES judges(id),
+	judge3 		    INTEGER  	    REFERENCES judges(id),
+	judge4 		    INTEGER  	    REFERENCES judges(id),
+	judge5 		    INTEGER  	    REFERENCES judges(id),
+
+	PRIMARY KEY (id)
+)
 
 -- commit transaction (will destroy all existing tables and data):
 COMMIT;
+
+
+-- rollback transaction (useful for checking syntax):
+--ROLLBACK;
+
 
 
 --
