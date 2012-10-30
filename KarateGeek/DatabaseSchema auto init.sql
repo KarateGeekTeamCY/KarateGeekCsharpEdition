@@ -30,9 +30,9 @@
 -- **  SQL KEYWORDS (but NOT data types) :   UPPERCASE
 -- **  other identifiers :                   lowercase
 -- **  PRIMARY KEY (unless composite) and REFERENCES as column constraints
--- **  CHECK as column or table constraint
+-- **  CHECK as column or TABLE constraint
 -- **  SQL standard: "Omitting the column list in the REFERENCES clause implies that the foreign
---                    key shall reference the PRIMARY KEY of the referenced table."
+--                    key shall reference the PRIMARY KEY of the referenced TABLE."
 -- **  Using the "CHAR" type only when the field length is absolutely fixed, eg. country codes
 --       (since there is no performance advantage, it's a matter of style)
 --
@@ -44,7 +44,7 @@
 --
 -- * Standardising VARCHAR lengths (maybe useful for GUI design) to: 12, 50, 80, 255
 --
--- * I still don't know whether the "schema_name." table prefix is necessary (seems it isn't)
+-- * I still don't know whether the "schema_name." TABLE prefix is necessary (seems it isn't)
 --
 --
 
@@ -54,31 +54,31 @@
 BEGIN;
 
 
-drop schema IF EXISTS public CASCADE;      -- WARNING: This also deletes all tables!
+DROP SCHEMA IF EXISTS public CASCADE;      -- WARNING: This also deletes all TABLEs!
 
--- table drops (not needed)
--- drop table countries cascade;
--- drop table cities cascade;
--- drop table addresses cascade;
--- drop table locations cascade;
--- drop table clubs cascade;
--- drop table persons cascade;
--- drop table athletes cascade;
--- drop table judges cascade;
--- drop table users cascade;
--- drop table events cascade;
--- drop table tournaments cascade;
--- drop table games cascade;
--- drop table team_tournament_participations cascade;
--- drop table tournament_participations cascade;
--- drop table game_participation cascade;
--- drop table game_score cascade;
+-- TABLE drops (not needed)
+-- DROP TABLE countries cascade;
+-- DROP TABLE cities cascade;
+-- DROP TABLE addresses cascade;
+-- DROP TABLE locations cascade;
+-- DROP TABLE clubs cascade;
+-- DROP TABLE persons cascade;
+-- DROP TABLE athletes cascade;
+-- DROP TABLE judges cascade;
+-- DROP TABLE users cascade;
+-- DROP TABLE events cascade;
+-- DROP TABLE tournaments cascade;
+-- DROP TABLE games cascade;
+-- DROP TABLE team_tournament_participations cascade;
+-- DROP TABLE tournament_participations cascade;
+-- DROP TABLE game_participation cascade;
+-- DROP TABLE game_score cascade;
 
-create schema public;
+CREATE SCHEMA public;
 
 
 --
--- Table creation:
+-- TABLE creation:
 --
 
 
@@ -89,7 +89,7 @@ CREATE TABLE countries (
 );
 
 
-create table cities (
+CREATE TABLE cities (
   id                SERIAL,             -- "SERIAL" as a data type means an auto-incr. INTEGER
   name              VARCHAR(80)     NOT NULL UNIQUE,
   country_code      VARCHAR(2)      REFERENCES countries(code),
@@ -117,7 +117,7 @@ CREATE TABLE locations (
 );
 
 
-create table clubs (
+CREATE TABLE clubs (
     id              SERIAL,
     name            VARCHAR(50)     NOT NULL UNIQUE,
     phone           CHAR(50),
@@ -162,7 +162,7 @@ CREATE TABLE judges (
 );
 
 
-create table users (
+CREATE TABLE users (
     id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
     username        VARCHAR(255)    NOT NULL UNIQUE,
     password        VARCHAR(255)    NOT NULL,
@@ -176,7 +176,7 @@ create table users (
 );
 
 
---create table game_types (
+--CREATE TABLE game_types (
 --  id              SERIAL,
 --  name            VARCHAR(50),
 --  description     VARCHAR(255),
@@ -184,7 +184,7 @@ create table users (
 --);
 
 
-create table events (
+CREATE TABLE events (
     id              SERIAL,
     name            VARCHAR(80)     NOT NULL,
     date            DATE,
@@ -220,7 +220,7 @@ CREATE TABLE games (
     PRIMARY KEY(id)
 );
 
-create table team_tournament_participations (
+CREATE TABLE team_tournament_participations (
     id              SERIAL,
     ranking         INTEGER,
     --club_id       INTEGER         REFERENCES clubs(id),
@@ -241,7 +241,7 @@ CREATE TABLE tournament_participations (
 );
 
 
-create table game_participation (       -- gia atomika
+CREATE TABLE game_participation (       -- gia atomika
                                         -- tha mpainoun dio tetia entries gia versus
                                         -- gia atomika parousiasi 1
                                         -- gia omadiko vs 6 h 4 anepisima
@@ -254,53 +254,54 @@ create table game_participation (       -- gia atomika
 
 
 
-create table game_points(
+CREATE TABLE game_points(
 
 	id 		SERIAL,
-	game_id 	integer references games(id),
-	athlete_id 	integer references athletes(id),
-	team_id		integer references team_tournament_participations(id),
+	game_id 	INTEGER REFERENCES games(id),
+	athlete_id 	INTEGER REFERENCES athletes(id),
+	team_id		INTEGER REFERENCES team_tournament_participations(id),
 
 
-	technical_point		integer,
+	technical_point		INTEGER,
 	technical_point_desc	varchar(50),
 
 	PRIMARY KEY (id)
-)
+);
+
 
 
 
 CREATE TABLE game_scores(
 
 	id 		SERIAL,
-	game_id 	integer references games(id),
-	athlete_id 	integer references athletes(id),
-	team_id		integer references team_tournament_participations(id),
+	game_id 	INTEGER REFERENCES games(id),
+	athlete_id 	INTEGER REFERENCES athletes(id),
+	team_id		INTEGER REFERENCES team_tournament_participations(id),
 
 	
-	score1 		integer,
-	score2 		integer,
-	score3 		integer,
-	score4 		integer,
-	score5 		integer,
+	score1 		INTEGER,
+	score2 		INTEGER,
+	score3 		INTEGER,
+	score4 		INTEGER,
+	score5 		INTEGER,
 
-	judge1		integer		references judges(id),
-	judge2	 	integer  	references judges(id),
-	judge3 		integer  	references judges(id),
-	judge4 		integer  	references judges(id),
-	judge5 		integer  	references judges(id),
+	judge1		INTEGER		REFERENCES judges(id),
+	judge2	 	INTEGER  	REFERENCES judges(id),
+	judge3 		INTEGER  	REFERENCES judges(id),
+	judge4 		INTEGER  	REFERENCES judges(id),
+	judge5 		INTEGER  	REFERENCES judges(id),
 
 	PRIMARY KEY (id)
 	);
 
 
 
-create table game_flags(
+CREATE TABLE game_flags(
 
 	id 		SERIAL,
-	game_id 	integer references games(id),
-	athlete_id 	integer references athletes(id),
-	team_id		integer references team_tournament_participations(id),
+	game_id 	INTEGER REFERENCES games(id),
+	athlete_id 	INTEGER REFERENCES athletes(id),
+	team_id		INTEGER REFERENCES team_tournament_participations(id),
 	
 	
 	flag1 		boolean,
@@ -309,16 +310,16 @@ create table game_flags(
 	flag4 		boolean,
 	flag5		boolean,
 
-	judge1		integer		references judges(id),
-	judge2	 	integer  	references judges(id),
-	judge3 		integer  	references judges(id),
-	judge4 		integer  	references judges(id),
-	judge5 		integer  	references judges(id),
+	judge1		INTEGER		REFERENCES judges(id),
+	judge2	 	INTEGER  	REFERENCES judges(id),
+	judge3 		INTEGER  	REFERENCES judges(id),
+	judge4 		INTEGER  	REFERENCES judges(id),
+	judge5 		INTEGER  	REFERENCES judges(id),
 
 	PRIMARY KEY (id)
-)
+);
 
--- commit transaction (will destroy all existing tables and data):
+-- commit transaction (will destroy all existing TABLEs and data):
 COMMIT;
 
 
@@ -384,7 +385,7 @@ VALUES (0, 'location 1', '77778888', 'loc@locloc.com');
 
 
 INSERT INTO events (name, date, location_id)
-VALUES ('Big Event', '29/10/2012', 0);
+VALUES ('Big Event', '2012/10/30', 0);
 
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
@@ -392,11 +393,11 @@ VALUES ('Iron Fist Tournament', 'male', 1, 99, 'white', 'black 8 dan', 'deathmat
 
 
 -- A NULL "position" means that the match hasn't taken place yet
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , position , team_participation_id)
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_participation_id)
 VALUES (0, 1, 'black', NULL, NULL );
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , position , team_participation_id)
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_participation_id)
 VALUES (1, 1, 'black', NULL, NULL );
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , position , team_participation_id)
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_participation_id)
 VALUES (2, 1, 'black', NULL, NULL );
 
 
