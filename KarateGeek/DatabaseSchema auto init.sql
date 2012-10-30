@@ -241,7 +241,7 @@ CREATE TABLE tournament_participations (
 );
 
 
-CREATE TABLE game_participation (       -- gia atomika
+CREATE TABLE game_participations (      -- gia atomika
                                         -- tha mpainoun dio tetia entries gia versus
                                         -- gia atomika parousiasi 1
                                         -- gia omadiko vs 6 h 4 anepisima

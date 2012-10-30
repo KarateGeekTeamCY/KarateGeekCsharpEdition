@@ -43,8 +43,12 @@ namespace KarateGeek.guis
 
 
         private DataTable _judges;
-        private DataTable _participation;
+        private DataTable _teamParticipation;
+        private DataTable _participations;
         private DataTable _game;
+
+        private Boolean isTeam;
+        
 
         #endregion
 
