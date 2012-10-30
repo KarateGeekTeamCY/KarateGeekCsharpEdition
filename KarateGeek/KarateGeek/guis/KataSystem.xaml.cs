@@ -24,6 +24,8 @@ namespace KarateGeek.guis
 
         #region private declaretions
 
+        private Window _sender;
+
         private string _judgeAId = "";
         private string _judgeBId = "";
         private string _judgeCId = "";
@@ -38,33 +40,36 @@ namespace KarateGeek.guis
         private double _treamdMean = 0;
 
         private string _gameId = "";
-        private string _ParticipationId = "";
-        private bool _isIndividual = true;
+        private string _turnamentId = "";
+        private string _participationId = "";
+        private bool _isTeam = true;
 
 
-        private DataTable _judges;
-        private DataTable _teamParticipation;
-        private DataTable _participations;
-        private DataTable _game;
+        private DataTable _DTjudges;
+        private DataTable _DTparticipations;
+        private DataTable _DTgame;
 
         private Boolean isTeam;
-        
+
 
         #endregion
 
 
 
-        public KataSystem(string gameId, string participationId)
+        public KataSystem( Window sender, string turnamentId, string gameId, Boolean isTeam)
         {
             InitializeComponent();
-            this._gameId = gameId;
-            this._ParticipationId = participationId;
 
+            _sender = sender;
+
+            this._turnamentId = turnamentId;
+            this._gameId = gameId;
+            this._isTeam = isTeam;
 
             this._loadDataTables();
 
 
-            foreach (DataRow dr in _judges.Rows)
+            foreach (DataRow dr in _DTjudges.Rows)
             {
                 this.eventJudgePickerA.Items.Add("" + dr[1] + " " + dr[2]);
                 this.eventJudgePickerB.Items.Add("" + dr[1] + " " + dr[2]);
@@ -75,17 +80,18 @@ namespace KarateGeek.guis
             //string runka = Strings.rank1;
 
 
-            string gametype = this._game.Rows[0][4].ToString();
-            if (gametype == "")
-            {
+            string gametype = this._DTgame.Rows[0][4].ToString();
 
+            TournamentGameParticipationsConnection tourparconn = new TournamentGameParticipationsConnection();
+            this._DTparticipations = tourparconn.GetParticipation(_gameId).Tables[0];
 
-            }
+            // getting paeticipant id
+            if (_isTeam)
+                _participationId = _DTparticipations.Rows[0][1].ToString();
             else
-            {
+                _participationId = _DTparticipations.Rows[0][0].ToString();
 
 
-            }
 
 
         }
@@ -96,16 +102,17 @@ namespace KarateGeek.guis
         private string _loadDataTables()
         {
             GameConnection gameconn = new GameConnection();
-            this._game = gameconn.GetGameById(this._gameId).Tables[0];
+            this._DTgame = gameconn.GetGameById(this._gameId).Tables[0];
 
             JudgeConnection judgeconn = new JudgeConnection();
-            this._judges = judgeconn.GetJudges().Tables[0];
+            this._DTjudges = judgeconn.GetJudges().Tables[0];
 
 
             return "";
         }
 
-        private void _computeMean(){
+        private void _computeMean()
+        {
             double smaller = 0, larger = 10; ;
 
             if (smaller > _scoreA)
@@ -187,27 +194,27 @@ namespace KarateGeek.guis
 
         private void eventJudgePickerA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this._judgeAId = this._judges.Rows[this.eventJudgePickerA.SelectedIndex][0].ToString() ;
+            this._judgeAId = this._DTjudges.Rows[this.eventJudgePickerA.SelectedIndex][0].ToString();
         }
 
         private void eventJudgePickerB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this._judgeBId = this._judges.Rows[this.eventJudgePickerB.SelectedIndex][0].ToString();
+            this._judgeBId = this._DTjudges.Rows[this.eventJudgePickerB.SelectedIndex][0].ToString();
         }
 
         private void eventJudgePickerC_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this._judgeCId = this._judges.Rows[this.eventJudgePickerC.SelectedIndex][0].ToString();
+            this._judgeCId = this._DTjudges.Rows[this.eventJudgePickerC.SelectedIndex][0].ToString();
         }
 
         private void eventJudgePickerD_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this._judgeDId = this._judges.Rows[this.eventJudgePickerD.SelectedIndex][0].ToString();
+            this._judgeDId = this._DTjudges.Rows[this.eventJudgePickerD.SelectedIndex][0].ToString();
         }
 
         private void eventJudgePickerE_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this._judgeEId = this._judges.Rows[this.eventJudgePickerE.SelectedIndex][0].ToString();
+            this._judgeEId = this._DTjudges.Rows[this.eventJudgePickerE.SelectedIndex][0].ToString();
         }
 
         #endregion
@@ -233,19 +240,27 @@ namespace KarateGeek.guis
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             EveSupScoreConnection scoreconn = new EveSupScoreConnection();
-            //scoreconn.InsertNewScore();
-
+            if(_isTeam){
+                scoreconn.InsertNewScoreTeam(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId, 
+                _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
+            }
+            else
+            {
+                scoreconn.InsertNewScoreInd(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
+            }
 
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-
+            _sender.Visibility = System.Windows.Visibility.Visible;
+            this.Close();
         }
 
         #endregion
 
-        
+
 
 
     }

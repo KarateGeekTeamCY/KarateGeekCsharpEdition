@@ -232,10 +232,10 @@ CREATE TABLE team_tournament_participations (
 CREATE TABLE tournament_participations (
 
     athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id 	    INTEGER   	    REFERENCES team_tournament_participations(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
-    team_participation_id INTEGER   REFERENCES team_tournament_participations(id),
     
     PRIMARY KEY (athlete_id, tournament_id)
 );
@@ -246,6 +246,7 @@ CREATE TABLE game_participations (      -- gia atomika
                                         -- gia atomika parousiasi 1
                                         -- gia omadiko vs 6 h 4 anepisima
     athlete_id      INTEGER         REFERENCES athletes (id),
+    team_id   	    INTEGER	    REFERENCES team_tournament_participations(id),
     game_id         INTEGER         REFERENCES games (id),
     PRIMARY KEY (athlete_id, game_id)
 );
@@ -284,6 +285,7 @@ CREATE TABLE game_scores(
 	score3 		INTEGER,
 	score4 		INTEGER,
 	score5 		INTEGER,
+	mean_score	INTEGER,
 
 	judge1		INTEGER		REFERENCES judges(id),
 	judge2	 	INTEGER  	REFERENCES judges(id),
@@ -393,11 +395,11 @@ VALUES ('Iron Fist Tournament', 'male', 1, 99, 'white', 'black 8 dan', 'deathmat
 
 
 -- A NULL "position" means that the match hasn't taken place yet
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_participation_id)
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (0, 1, 'black', NULL, NULL );
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_participation_id)
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (1, 1, 'black', NULL, NULL );
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_participation_id)
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (2, 1, 'black', NULL, NULL );
 
 

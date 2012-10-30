@@ -85,7 +85,7 @@
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\LotteryGenConnection.cs" />
     <Compile Include="databaseConnection\EveSupScoreConnection.cs" />
-    <Compile Include="databaseConnection\TurnamentParticipationsConnection.cs" />
+    <Compile Include="databaseConnection\TournamentGameParticipationsConnection.cs" />
     <Compile Include="Strings.cs" />
   </ItemGroup>
   <ItemGroup>
