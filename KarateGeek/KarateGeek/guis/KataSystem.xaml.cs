@@ -228,7 +228,7 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            ScoreConnection scoreconn = new ScoreConnection();
+            EveSupScoreConnection scoreconn = new EveSupScoreConnection();
             //scoreconn.InsertNewScore();
 
 

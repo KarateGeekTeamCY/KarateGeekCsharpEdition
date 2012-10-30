@@ -254,7 +254,7 @@ create table game_participation (       -- gia atomika
 
 
 
-create table game_point(
+create table game_points(
 
 	id 		SERIAL,
 	game_id 	integer references games(id),
@@ -270,7 +270,7 @@ create table game_point(
 
 
 
-CREATE TABLE game_score(
+CREATE TABLE game_scores(
 
 	id 		SERIAL,
 	game_id 	integer references games(id),
@@ -295,7 +295,7 @@ CREATE TABLE game_score(
 
 
 
-create table game_flag(
+create table game_flags(
 
 	id 		SERIAL,
 	game_id 	integer references games(id),
