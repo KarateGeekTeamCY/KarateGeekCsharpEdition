@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="databaseConnection\GameConnection.cs" />
+    <Compile Include="databaseConnection\LotteryGenConnection.cs" />
     <Compile Include="databaseConnection\ScoreConnection.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +134,7 @@
       <DependentUpon>KumiteSystem.xaml</DependentUpon>
     </Compile>
     <Compile Include="helpers\ImageConverter.cs" />
+    <Compile Include="helpers\LotteryGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

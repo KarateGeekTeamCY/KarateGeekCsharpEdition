@@ -27,7 +27,7 @@ namespace KarateGeek.databaseConnection
             for (int index = 0; index < dt.Rows.Count; ++index)
                 L.Add(long.Parse(dt.Rows[index][0].ToString()));
 
-            Debug.Writeline("Tournament participants in List<long> :");
+            Debug.WriteLine("Tournament participants in List<long> :");
             foreach(long element in L) //debug
                 Debug.WriteLine(element);
 

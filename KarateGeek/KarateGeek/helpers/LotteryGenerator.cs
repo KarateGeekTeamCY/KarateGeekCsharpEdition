@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Random; // for randomisation
+// using System; // for randomisation
 using KarateGeek.databaseConnection;
 
 namespace KarateGeek.helpers
@@ -31,8 +31,8 @@ namespace KarateGeek.helpers
     class LotteryGenerator
     {
         private List<long> athleteList;
-        private Int32 randomSeed = 134563;  // use a constant value with "random(randomSeed)" (for now),
-                                            // or "random()" for a time-dependent value.
+        private Int32 randomSeed = 134563;  // use a constant value with "Random(randomSeed)" (for now),
+                                            // or "Random()" for a time-dependent value.
 
 
         public LotteryGenerator(int tournamentId) // constructor
@@ -41,7 +41,7 @@ namespace KarateGeek.helpers
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
-            random(randomSeed); // initialise pseudo-random number-generator
+            Random rand = new Random(randomSeed); // initialise pseudo-random number-generator
         }
 
 
@@ -82,7 +82,7 @@ namespace KarateGeek.helpers
 
         public List<long> getLottery()
         {
-        
+            return new List<long>();
         }
 
     }
