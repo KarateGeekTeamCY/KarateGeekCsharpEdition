@@ -236,6 +236,7 @@ CREATE TABLE tournament_participations (
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
     team_participation_id INTEGER   REFERENCES team_tournament_participations(id),
+    
     PRIMARY KEY (athlete_id, tournament_id)
 );
 
@@ -255,7 +256,7 @@ create table game_participation (       -- gia atomika
 
 create table game_point(
 
-	id 		BIGSERIAL,
+	id 		SERIAL,
 	game_id 	integer references games(id),
 	athlete_id 	integer references athletes(id),
 	team_id		integer references team_tournament_participations(id),
@@ -271,7 +272,7 @@ create table game_point(
 
 CREATE TABLE game_score(
 
-	id 		BIGSERIAL,
+	id 		SERIAL,
 	game_id 	integer references games(id),
 	athlete_id 	integer references athletes(id),
 	team_id		integer references team_tournament_participations(id),
@@ -296,7 +297,7 @@ CREATE TABLE game_score(
 
 create table game_flag(
 
-	id 		BIGSERIAL,
+	id 		SERIAL,
 	game_id 	integer references games(id),
 	athlete_id 	integer references athletes(id),
 	team_id		integer references team_tournament_participations(id),
