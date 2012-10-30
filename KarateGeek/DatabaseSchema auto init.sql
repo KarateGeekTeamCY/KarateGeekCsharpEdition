@@ -252,20 +252,20 @@ create table game_participation (       -- gia atomika
 
 create table game_point (
     id              SERIAL,
-    game_id 	    INTEGER         REFERENCES games(id)
+    game_id         INTEGER         REFERENCES games(id)
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
     technical_point INTEGER,
     technical_point_desc VARCHAR(50),
 
-	PRIMARY KEY (id)
+    PRIMARY KEY (id)
 )
 
 
 CREATE TABLE game_score (
     id              SERIAL,
-    game_id 	    INTEGER         REFERENCES games(id)
+    game_id         INTEGER         REFERENCES games(id)
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
@@ -287,23 +287,23 @@ CREATE TABLE game_score (
 
 create table game_flag (
     id              SERIAL,
-    game_id 	    INTEGER         REFERENCES games(id)
+    game_id         INTEGER         REFERENCES games(id)
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
-	flag1 		    BOOLEAN,
-	flag2 		    BOOLEAN,
-	flag3 		    BOOLEAN,
-	flag4 		    BOOLEAN,
-	flag5		    BOOLEAN,
+    flag1           BOOLEAN,
+    flag2           BOOLEAN,
+    flag3           BOOLEAN,
+    flag4           BOOLEAN,
+    flag5           BOOLEAN,
 
-	judge1		    INTEGER		    REFERENCES judges(id),
-	judge2	 	    INTEGER  	    REFERENCES judges(id),
-	judge3 		    INTEGER  	    REFERENCES judges(id),
-	judge4 		    INTEGER  	    REFERENCES judges(id),
-	judge5 		    INTEGER  	    REFERENCES judges(id),
+    judge1          INTEGER         REFERENCES judges(id),
+    judge2          INTEGER         REFERENCES judges(id),
+    judge3          INTEGER         REFERENCES judges(id),
+    judge4          INTEGER         REFERENCES judges(id),
+    judge5          INTEGER         REFERENCES judges(id),
 
-	PRIMARY KEY (id)
+    PRIMARY KEY (id)
 )
 
 -- commit transaction (will destroy all existing tables and data):
