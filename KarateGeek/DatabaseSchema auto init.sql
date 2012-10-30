@@ -267,6 +267,7 @@ CREATE TABLE game_points(
 	technical_point_desc	varchar(50),
 
 	PRIMARY KEY (id)
+
 );
 
 
