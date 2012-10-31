@@ -36,9 +36,9 @@
 -- **  Using the "CHAR" type only when the field length is absolutely fixed, eg. country codes
 --       (since there is no performance advantage, it's a matter of style)
 --
--- * From the PostgreSQL documentation: "While 'CHARacter(n)' has performance advantages in some
+-- * From the PostgreSQL documentation: "While 'character(n)' has performance advantages in some
 --    other database systems, there is no such advantage in PostgreSQL. [...] In most situations
---    'text' or 'CHARacter varying' should be used instead."
+--    'text' or 'character varying' should be used instead."
 --
 -- * Using 96 columns for this script, unless impossible
 --
@@ -254,8 +254,17 @@ CREATE TABLE game_participations (      -- gia atomika
 );
 
 
+create table game_point (
+    id              SERIAL,
+    game_id         INTEGER         REFERENCES games(id),
+    athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
+    technical_point INTEGER,
+    technical_point_desc VARCHAR(50),
+    PRIMARY KEY (id)
 
+);
 
 CREATE TABLE game_points(
 
@@ -268,60 +277,52 @@ CREATE TABLE game_points(
 	technical_point		INTEGER,
 	technical_point_desc	varchar(50),
 
-	PRIMARY KEY (id)
-
+    PRIMARY KEY (id)
 );
 
 
+CREATE TABLE game_score (
+    id              SERIAL,
+    game_id         INTEGER         REFERENCES games(id),
+    athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
+
+    score1          INTEGER,
+    score2          INTEGER,
+    score3          INTEGER,
+    score4          INTEGER,
+    score5          INTEGER,
+    mean_score      INTEGER,
+
+    judge1          INTEGER         REFERENCES judges(id),
+    judge2          INTEGER         REFERENCES judges(id),
+    judge3          INTEGER         REFERENCES judges(id),
+    judge4          INTEGER         REFERENCES judges(id),
+    judge5          INTEGER         REFERENCES judges(id),
+
+    PRIMARY KEY (id)
+);
 
 
-CREATE TABLE game_scores(
+create table game_flag (
+    id              SERIAL,
+    game_id         INTEGER         REFERENCES games(id),
+    athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
-	id 		SERIAL,
-	game_id 	INTEGER REFERENCES games(id),
-	athlete_id 	INTEGER REFERENCES athletes(id),
-	team_id		INTEGER REFERENCES team_tournament_participations(id),
+    flag1           BOOLEAN,
+    flag2           BOOLEAN,
+    flag3           BOOLEAN,
+    flag4           BOOLEAN,
+    flag5           BOOLEAN,
 
-	
-	score1 		INTEGER,
-	score2 		INTEGER,
-	score3 		INTEGER,
-	score4 		INTEGER,
-	score5 		INTEGER,
-	mean_score	INTEGER,
+    judge1          INTEGER         REFERENCES judges(id),
+    judge2          INTEGER         REFERENCES judges(id),
+    judge3          INTEGER         REFERENCES judges(id),
+    judge4          INTEGER         REFERENCES judges(id),
+    judge5          INTEGER         REFERENCES judges(id),
 
-	judge1		INTEGER		REFERENCES judges(id),
-	judge2	 	INTEGER  	REFERENCES judges(id),
-	judge3 		INTEGER  	REFERENCES judges(id),
-	judge4 		INTEGER  	REFERENCES judges(id),
-	judge5 		INTEGER  	REFERENCES judges(id),
-
-	PRIMARY KEY (id)
-	);
-
-
-
-CREATE TABLE game_flags(
-
-	id 		SERIAL,
-	game_id 	INTEGER REFERENCES games(id),
-	athlete_id 	INTEGER REFERENCES athletes(id),
-	team_id		INTEGER REFERENCES team_tournament_participations(id),
-	
-	
-	flag1 		boolean,
-	flag2 		boolean,
-	flag3 		boolean,
-	flag4 		boolean,
-	flag5		boolean,
-
-	judge1		INTEGER		REFERENCES judges(id),
-	judge2	 	INTEGER  	REFERENCES judges(id),
-	judge3 		INTEGER  	REFERENCES judges(id),
-	judge4 		INTEGER  	REFERENCES judges(id),
-	judge5 		INTEGER  	REFERENCES judges(id),
-
-	PRIMARY KEY (id)
+    PRIMARY KEY (id)
 );
 
 -- commit transaction (will destroy all existing TABLEs and data):
