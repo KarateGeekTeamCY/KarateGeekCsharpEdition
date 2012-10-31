@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="databaseConnection\EveSupFlagConnection.cs" />
     <Compile Include="databaseConnection\EveSupPointConnection.cs" />
+    <Compile Include="databaseConnection\AthleteData.cs" />
     <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\LotteryGenConnection.cs" />

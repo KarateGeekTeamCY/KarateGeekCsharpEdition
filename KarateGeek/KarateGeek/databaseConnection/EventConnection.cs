@@ -21,7 +21,7 @@ namespace KarateGeek.databaseConnection
             LocationConnection locationConnection = new LocationConnection();
             string locationId = locationConnection.InsertNewLocation(location, phone, email, "" + addressId);
 
-            string eventId = this._InsertEvent(name, eventdate, official , locationId);
+            string eventId = this._InsertEvent(name, eventdate, official , addressId);
 
             return eventId;
         }
@@ -31,7 +31,7 @@ namespace KarateGeek.databaseConnection
            string email, string city, string countryCode, Boolean official)
         {
             string sql = "";
-            DataSet drA = null;
+            int addressId;
             DataSet drL = null;
 
             LocationConnection locationConnection = new LocationConnection();
@@ -39,15 +39,10 @@ namespace KarateGeek.databaseConnection
 
             drL = this.Query(sql);
             int locationId = int.Parse(drL.Tables[0].Rows[0][0].ToString());
-            // getting the location_address id
-            sql = "select address_id from locations where id = '" + locationId + "'; ";
-
-            drA = this.Query(sql);
-            int addressId = int.Parse(drA.Tables[0].Rows[0][0].ToString());
-
+            addressId = locationId;
             this._UpdateEvent(eventId, name, eventdate, official, locationId);
 
-            locationConnection.UpdateLocation(locationId, location, phone, email, addressId);
+            locationConnection.UpdateLocation(locationId, location, phone, email);
             AddressConnection addConn = new AddressConnection();
             addConn.UpdateAddress(addressId, addressStreetName, addressStreetNumber, city, addressPostalCode, countryCode);
 
@@ -64,11 +59,8 @@ namespace KarateGeek.databaseConnection
             string sql = "select location_id from events where  id= '" + id + "';";
             dsE =  this.Query(sql);
             location_id = int.Parse(dsE.Tables[0].Rows[0][0].ToString());
-
-            sql = "select address_id from locations where  id= '" + location_id + "';";
-            dsL = this.Query(sql);
-            address_id = int.Parse(dsL.Tables[0].Rows[0][0].ToString());
-
+            address_id = location_id;
+          
             //delete events and tournaments on cascade
             sql = "delete from events where id='" + id + "';";
             this.Query(sql);

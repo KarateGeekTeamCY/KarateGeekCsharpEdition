@@ -114,6 +114,7 @@ CREATE TABLE locations (
     phone           CHAR(15),       -- E.164 standard
     email           VARCHAR(50),
     PRIMARY KEY(id)
+
 );
 
 
@@ -207,9 +208,10 @@ CREATE TABLE tournaments (
                                                 -- "score"      -> arithmitika
                                                 -- "flag"       -> simees
                                                 -- "point"      -> ippon ktl.
-    event_id        INTEGER         REFERENCES events(id),
+    event_id        INTEGER         REFERENCES events(id) on delete cascade,
     PRIMARY KEY(id)
 );
+
 
 
 CREATE TABLE games (
@@ -230,7 +232,6 @@ CREATE TABLE team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
-
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id 	    INTEGER   	    REFERENCES team_tournament_participations(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
@@ -238,7 +239,8 @@ CREATE TABLE tournament_participations (
     ranking         INTEGER,
     
     PRIMARY KEY (athlete_id, tournament_id)
-);
+
+    );
 
 
 CREATE TABLE game_participations (      -- gia atomika

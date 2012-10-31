@@ -13,35 +13,27 @@ namespace KarateGeek.databaseConnection
             string sql;
             DataSet dr = null;
 
-            sql = "insert into locations (name , phone, email," +
-                "address_id) values ( '"
+            sql = "insert into locations (id, name , phone, email) values ( '"
+                + addressId + "','"
                 + location + "', '"
                 + phone + "', '"
-                + email + "', '"
-                + addressId + "');";
+                + email + "');";
 
             this.NonQuery(sql);
 
-
-            sql = "select currval('locations_id_seq');";
-            dr = this.Query(sql);
-            long locationId = long.Parse(dr.Tables[0].Rows[0][0].ToString());
-
-            return "" + locationId;
+            return "" + addressId;
 
         }
 
-        public string UpdateLocation(int id, string location , string phone , string email, int addressId)
+        public string UpdateLocation(int id, string location , string phone , string email)
         {
             string sql;
-            DataSet dr = null;
 
             sql = "update locations set " +
-
                 "name = '" + location + "', " +
                 "phone = '" + phone + "', " +
-                "email = '" + email + "', " +
-                "address_id = '" + addressId + "'where id = '" + id + "' ;";
+                "email = '" + email + "' " +
+                "where id = '" + id + "' ;";
 
             this.NonQuery(sql);
 

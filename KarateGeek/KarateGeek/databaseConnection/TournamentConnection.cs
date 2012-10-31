@@ -11,10 +11,10 @@ namespace KarateGeek.databaseConnection
         DataTable tournament = new DataTable();
         DataSet dr = null;
 
-        public string InsertNewTournament(string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string game, int event_id)
+        public string InsertNewTournament(string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
         {
 
-            string sql = "insert into tournaments ( name, sex, age_from, age_to , level_from, level_to, game_type, game, event_id) values ( '"
+            string sql = "insert into tournaments ( name, sex, age_from, age_to , level_from, level_to, game_type, scoring_type, event_id) values ( '"
                 + name + "', '"
                 + sex + "', '"
                 + ageFrom + "', '"
@@ -22,7 +22,7 @@ namespace KarateGeek.databaseConnection
                 + levelFrom + "', '"
                 + levelTo + "', '"
                 + game_type + "', '"
-                + game + "', '"
+                + scoring_type + "', '"
                 + event_id + "' );";
 
             this.NonQuery(sql);
@@ -34,7 +34,7 @@ namespace KarateGeek.databaseConnection
             return "" + tournamentId;
         }
 
-        public string UpdateTournament(int tournamentId, string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string game, int event_id)
+        public string UpdateTournament(int tournamentId, string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
         {
             string sql = "update tournaments set "+
                  "name = '" + name + "', " +
@@ -44,7 +44,7 @@ namespace KarateGeek.databaseConnection
                  "level_from = '" + levelFrom + "', " +
                  "level_to = '" + levelTo + "', " +
                  "game_type = '" + game_type + "', " +
-                 "game = '" + game + "', " +
+                 "scoring_type = '" + scoring_type + "', " +
                  "event_id = '" + event_id + "' where id = '" + tournamentId + "' ;";
 
             this.NonQuery(sql);
@@ -62,6 +62,5 @@ namespace KarateGeek.databaseConnection
             string sql = "select * from tournaments where event_id='" + eventId + "' and name like '" + filter + "%';";
             return this.Query(sql);
         }
-
     }
 }
