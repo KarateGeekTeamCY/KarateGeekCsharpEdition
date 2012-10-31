@@ -98,6 +98,27 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public DataSet findParticipants(string sex , int ageFrom , int ageTo , string levelFrom , string levelTo)
+        {
+            string filter = "where";
+            int num = 0;
+            if (!sex.Equals(null) )
+            {
+                if (num == 0)
+                {
+                    filter = filter + " sex = '" + sex + "';";
+                }
+                else
+                {
+                    filter = filter + " and sex = '" + sex + "';";
+                }
+            }
+            
+                string sql = "select persons.id as persons_id,first_name,last_name,sex , date_of_birth, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank,clubs.id as club_id,name, clubs.id as clubs_id,clubs.phone as clubs_phone, clubs.email as clubs_email from persons inner join athletes on (persons.id = athletes.id) inner join clubs on (club_id = club_id)" + filter;
+                return this.Query(sql);
+           
+        }
+
         private string _InsertAthlete(string PersonId, string rank, string localClubId)
         {
 

@@ -107,7 +107,7 @@ CREATE TABLE addresses (
 
 
 CREATE TABLE locations (
-	id 		integer 	REFERENCES addresses(id),
+	id 		integer 	REFERENCES addresses(id) on delete cascade,
 	name           	varchar(80),
 	phone           char(15),    		-- E.164 standard
 	email	        varchar(50),
@@ -210,7 +210,7 @@ CREATE TABLE tournaments (
 							--score		arithmitika
 							--flag		simees
 							--point 	ipon ktl
-	event_id        integer 	references events(id),
+	event_id        integer 	references events(id) on delete cascade,
 	primary key(id)	
 
 
@@ -223,7 +223,7 @@ CREATE TABLE games (
 	id            	BIGSERIAL,
 	phase      	integer  	NOT NULL,	
 	position       	integer 	NOT NULL,
-	tournament_id 	integer 	references tournaments(id),
+	tournament_id 	integer 	references tournaments(id) on delete cascade,
 	primary key(id)	
 );
 

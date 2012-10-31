@@ -79,6 +79,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="databaseConnection\AthleteData.cs" />
     <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\ScoreConnection.cs" />
