@@ -24,6 +24,14 @@ namespace KarateGeek.guis
 
         #region private declaretion
 
+        private Window _sender;
+
+        private string _judgeAId = "";
+        private string _judgeBId = "";
+        private string _judgeCId = "";
+        private string _judgeDId = "";
+        private string _judgeEId = "";
+
         private DataTable _DTcompetitors;
 
         private Boolean _judgeAchooseWhite;
@@ -31,6 +39,18 @@ namespace KarateGeek.guis
         private Boolean _judgeCchooseWhite;
         private Boolean _judgeDchooseWhite;
         private Boolean _judgeEchooseWhite;
+
+        private string _gameId = "";
+        private string _turnamentId = "";
+        private string _participationId = "";
+        private bool _isTeam ;
+
+
+        private DataTable _DTjudges;
+        private DataTable _DTparticipations;
+        private DataTable _DTgame;
+
+
 
         private Style darkGray = new Style { TargetType = typeof(Button) };
         private Style lightGray = new Style { TargetType = typeof(Button) };
@@ -44,7 +64,7 @@ namespace KarateGeek.guis
 
 
 
-        public FlagSystem()
+        public FlagSystem(Window sender, string turnamentId, string gameId, Boolean isTeam)
         {
             InitializeComponent();
 
@@ -53,7 +73,44 @@ namespace KarateGeek.guis
 
             lightGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.LightGray));
             this.whitea.Style = lightGray;
+
+
+            _sender = sender;
+
+            this._turnamentId = turnamentId;
+            this._gameId = gameId;
+            this._isTeam = isTeam;
+
+            this._loadDataTables();
+
+            foreach (DataRow dr in _DTjudges.Rows)
+            {
+                this.eventJudgePickerA.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerB.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerC.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerD.Items.Add("" + dr[1] + " " + dr[2]);
+                this.eventJudgePickerE.Items.Add("" + dr[1] + " " + dr[2]);
+            }
+
+
+            string gametype = this._DTgame.Rows[0][4].ToString();
+
+            TournamentGameParticipationsConnection tourparconn = new TournamentGameParticipationsConnection();
+            this._DTparticipations = tourparconn.GetParticipation(_gameId).Tables[0];
+
+            // getting paeticipant id
+            if (_isTeam)
+                _participationId = _DTparticipations.Rows[0][1].ToString();
+            else
+                _participationId = _DTparticipations.Rows[0][0].ToString();
+
+
+
         }
+
+
+
+
 
 
 
@@ -63,6 +120,24 @@ namespace KarateGeek.guis
         }
 
 
+
+
+        #region private functions
+
+        private string _loadDataTables()
+        {
+            GameConnection gameconn = new GameConnection();
+            this._DTgame = gameconn.GetGameById(this._gameId).Tables[0];
+
+            JudgeConnection judgeconn = new JudgeConnection();
+            this._DTjudges = judgeconn.GetJudges().Tables[0];
+
+
+            return "";
+        }
+
+
+        #endregion
 
 
         #region color choosing button listeners
