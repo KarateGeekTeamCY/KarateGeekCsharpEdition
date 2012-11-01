@@ -78,65 +78,85 @@
                </ComboBox>
 
             <Button Name="reda"
-                Content="red"
-                Grid.Row="2"
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                Margin="5" Click="reda_Click" />
+                    Content="red"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Margin="5" 
+                    Background="LightGray"
+                    Click="reda_Click" />
             <Button Name="whitea"
-                Content="white"
-                Grid.Row="2"
-                Grid.Column="2"
-                     VerticalAlignment="Center"
-                    Margin="5" Click="whitea_Click" />
+                    Content="white"
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Margin="5"
+                    Background="LightGray"
+                    Click="whitea_Click" />
             <Button Name="redb"
                 Content="red"
                 Grid.Row="2"
                 Grid.Column="3"
                      VerticalAlignment="Center"
-                    Margin="5" Click="redb_Click" />
+                    Margin="5"
+                    Background="LightGray" 
+                    Click="redb_Click" />
             <Button Name="whiteb"
                 Content="white"
                 Grid.Row="2"
                 Grid.Column="4"
                      VerticalAlignment="Center"
-                    Margin="5" Click="whiteb_Click" />
+                    Margin="5"
+                    Background="LightGray"
+                    Click="whiteb_Click" />
             <Button Name="redc"
                 Content="red"
                 Grid.Row="2"
                 Grid.Column="5"
                      VerticalAlignment="Center"
-                    Margin="5" Click="redc_Click" />
+                    Margin="5"
+                    Background="LightGray"
+                    Click="redc_Click" />
             <Button Name="whitec"
                 Content="white"
                 Grid.Row="2"
                 Grid.Column="6"
                      VerticalAlignment="Center"
-                    Margin="5" Click="whitec_Click" />
+                    Margin="5"
+                    Background="LightGray"
+                    Click="whitec_Click" />
             <Button Name="redd"
                 Content="red"
                 Grid.Row="2"
                 Grid.Column="7"
                      VerticalAlignment="Center"
-                    Margin="5" Click="redd_Click" />
+                    Margin="5" 
+                    Background="LightGray"
+                    Click="redd_Click" />
             <Button Name="whited"
                 Content="white"
                 Grid.Row="2"
                 Grid.Column="8"
                      VerticalAlignment="Center"
-                    Margin="5" Click="whited_Click" />
+                    Margin="5"
+                    Background="LightGray"
+                    Click="whited_Click" />
             <Button Name="rede"
                 Content="red"
                 Grid.Row="2"
                 Grid.Column="9"
                      VerticalAlignment="Center"
-                    Margin="5" Click="rede_Click" />
+                    Margin="5"
+                    Background="LightGray"
+                    Click="rede_Click" />
             <Button Name="whitee"
                 Content="white"
                 Grid.Row="2"
                 Grid.Column="10"
                 VerticalAlignment="Center"
-                Margin="5" Click="whitee_Click" />
+                Margin="5"
+                    Background="LightGray"
+                    Click="whitee_Click" />
         </Grid>
         <Grid Grid.Row="1" 
               Margin="10">
