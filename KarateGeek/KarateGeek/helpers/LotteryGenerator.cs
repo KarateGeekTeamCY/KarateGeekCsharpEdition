@@ -5,6 +5,7 @@ using System.Text;
 
 //using System; // for randomisation
 using KarateGeek.databaseConnection;
+//using System.Windows.Forms.DataVisualization.Charting.Chart;
 
 namespace KarateGeek.helpers
 {
@@ -33,16 +34,18 @@ namespace KarateGeek.helpers
         private List<long> athleteList;
         private Int32 randomSeed = 134563;  // use a constant value with "new Random(randomSeed)" (for now),
                                             // or "new Random()" for a time-dependent value.
+        Random rgen;
 
 
-        public LotteryGenerator(int tournamentId)   // constructor
+        public LotteryGenerator(int tournamentId) // constructor
         {
+            /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI. */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
-            Random rand = new Random(randomSeed);   // initialise pseudo-random number-generator
-                                                    // usage: "int i = rand.next()"
+            rgen = new Random(randomSeed);   // initialise pseudo-random number-generator
+                                             // usage: "int i = rgen.next()"
         }
 
 
@@ -63,18 +66,32 @@ namespace KarateGeek.helpers
                       new Tuple<Factor, int>(Factor.prevyears, 1000)
                     };
 
-
-        private class AthleteRanking
+        private class AthleteRanking // ?
         {
+            private int[] weights;
+
+            public int getAthleteScore(long athleteId)
+            {
+                LotteryGenConnection conn = new LotteryGenConnection();
+
+                int score = conn.getNumOfGoodPlacements(athleteId, 1, true)  * 500 +  // first  place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 2, true)  * 300 +  // second place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 3, true)  * 100 +  // third  place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 4, true)  *  80 +  // fourth place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 1, false) * 250 +  // first  place in unofficial event
+                            conn.getNumOfGoodPlacements(athleteId, 2, false) * 150 +  // second place in unofficial event
+                            conn.getNumOfGoodPlacements(athleteId, 3, false) *  50 +  // third  place in unofficial event
+                            conn.getNumOfGoodPlacements(athleteId, 4, false) *  40 ;  // fourth place in unofficial event
+
+                return score;
+            }
+
+        }
+
+        private class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
+        {                           // because it needs optional .NET components! For now, leave it as a stub.
             
         }
-
-        private class Visualisation //maybe needed only for debugging/tweaking? Too hard to do anyway!
-        {
-        
-        }
-
-        //private 
 
         public void shuffle (List<long> L) // produces a new randomization
         {

@@ -20,7 +20,14 @@ namespace KarateGeek.databaseConnection
 
             DataTable dt = this.Query(sql).Tables[0];
 
-            if (dt.Rows.Count == 0) throw new System.Exception("No tournament participants found."); //ouch
+            if (dt.Rows.Count == 0) // TODO: Standardise exception handling and showing errors to user
+            {
+                // Very ugly "OK button" and blocking the app execution until pressed :-(
+                // Also, the code showing the message box will be moved to where the exception will be handled
+                System.Windows.Forms.MessageBox.Show("No participants found for this tournament."
+                    + "\nPlease add the participants before creating a lottery.", "Usage hint");
+                throw new Exception("No tournament participants found."); // must be handled by GUI
+            }
 
             List<long> L = new List<long>();
 
@@ -33,5 +40,23 @@ namespace KarateGeek.databaseConnection
 
             return L;
         }
+
+
+        public int getNumOfGoodPlacements(long athleteId, int place, Boolean official)
+        {
+            /* If you don't care only about official tournaments, use the following simplified query: */
+            //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
+                //+ " AND ranking = 1;";
+
+            String sql = "SELECT * FROM tournament_participations WHERE athlete_id = 1 AND ranking = " + place
+                       + " AND tournament_id IN (SELECT tournaments.id"
+                       +                      "  FROM tournaments JOIN events ON events.id = tournaments.event_id"
+                       +                      "  WHERE official = " + official
+                       +                      " );";
+                       //+                       "WHERE official = " + (official? "true": "false") + " );" ;
+
+            return this.Query(sql).Tables[0].Rows.Count;
+        }
+
     }
 }
