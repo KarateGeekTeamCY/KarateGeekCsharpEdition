@@ -1,10 +1,14 @@
-﻿using System;
+﻿using System; // also has System.Random, but that's low-quality randomness
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-//using System; // for randomisation
 using KarateGeek.databaseConnection;
+
+/* high quality pseudo-random number generator, suitable for cryptographic purposes. Also see
+ * http://msdn.microsoft.com/en-us/library/system.security.cryptography.rngcryptoserviceprovider(v=vs.100).aspx
+ */
+using System.Security.Cryptography.RNGCryptoServiceProvider;
 //using System.Windows.Forms.DataVisualization.Charting.Chart;
 
 namespace KarateGeek.helpers
@@ -46,31 +50,64 @@ namespace KarateGeek.helpers
              * it would be much, much better than this: */
             rgen = new Random(randomSeed);   // initialise pseudo-random number-generator
                                              // usage: "int i = rgen.next()"
+
+            //AthleteRanking[] array = new AthleteRanking[10];
+
+            //LinkedList<AthleteRanking> athlin = new LinkedList<AthleteRanking>();
+
+            //athlin.AddLast( ( new AthleteRanking().athleteId = 2) );
+
+
+            //athlin.ElementAt(1).athleteId = 23;
+            //long score = athlin.ElementAt(1).score;
+
         }
-
-
-        /* We need SOMETHING to hold the weights for the calculation - maybe an array of tuples?
-         * Or just an array? Or an Enumeration? */
-        //static private Tuple<int,int>[,] weights = new Tuple<int,int> [belt, age, pastyear, prevyears]; //example
-        enum Factor {
-            belt,
-            age,
-            pastyear,
-            prevyears
-        };
-
-        static private Tuple<Factor, int>[] weights = {
-                      new Tuple<Factor, int>(Factor.belt,      1000),
-                      new Tuple<Factor, int>(Factor.age,       1000),
-                      new Tuple<Factor, int>(Factor.pastyear,  1000),
-                      new Tuple<Factor, int>(Factor.prevyears, 1000)
-                    };
 
         private class AthleteRanking // ?
         {
-            private int[] weights;
 
-            public int getAthleteScore(long athleteId)
+            /* We need SOMETHING to hold the weights for the calculation - maybe an array of tuples?
+             * Or just an array? Or an Enumeration? */
+
+            //static private Tuple<int,int>[,] weights = new Tuple<int,int> [belt, age, pastyear, prevyears]; //example
+
+            //enum Factor
+            //{
+            //    belt,
+            //    age,
+            //    pastyear,
+            //    prevyears
+            //};
+
+            //static private Tuple<Factor, int>[] weights = {
+            //          new Tuple<Factor, int>(Factor.belt,      1000),
+            //          new Tuple<Factor, int>(Factor.age,       1000),
+            //          new Tuple<Factor, int>(Factor.pastyear,  1000),
+            //          new Tuple<Factor, int>(Factor.prevyears, 1000)
+            //        };
+
+
+            private long athleteId;
+            
+            private Tuple<long, int> scoreTuple
+            {
+                get
+                {
+                    return new Tuple<long, int>(athleteId, getAthleteScore());
+                }
+                set {
+                    ;
+                }
+            }
+
+            //private int[] weights;
+
+            public AthleteRanking(long athleteId)
+            {
+                this.athleteId = athleteId;
+            }
+
+            private int getAthleteScore()
             {
                 LotteryGenConnection conn = new LotteryGenConnection();
 
@@ -95,13 +132,12 @@ namespace KarateGeek.helpers
 
         public void shuffle (List<long> L) // produces a new randomization
         {
-        
+            
         }
 
         public List<long> getLottery()
         {
             return new List<long>();
         }
-
     }
 }
