@@ -158,7 +158,7 @@
                     VerticalAlignment="Center" 
                     Margin="10,0,10,0" Click="doctorstopB_Click" />
             
-            <TextBox Name="history"
+            <TextBox Name="txtHistory"
                      Text="history"
                      TextAlignment="Center"
                      Grid.Row="0"
