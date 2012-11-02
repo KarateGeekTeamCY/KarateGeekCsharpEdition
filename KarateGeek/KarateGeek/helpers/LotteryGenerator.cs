@@ -41,6 +41,8 @@ namespace KarateGeek.helpers
 
         private readonly List<Tuple<long, int>> athleteScoreList;
 
+        private List<Tuple<long, int>> athleteScoreListShuffled;
+
         private Int32 randomSeed = 134563;  // use a constant value with "new Random(randomSeed)" (for now),
                                             // or "new Random()" for a time-dependent value.
         Random rgen;
@@ -51,10 +53,10 @@ namespace KarateGeek.helpers
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
 
-            List<Tuple<long, int>> tmp = new List<Tuple<long,int>>;
+            List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
             foreach (long athlete in athleteList)
-                tmp.Add(new SingleAthleteRanking(athlete).scoreTuple);
+                tmp.Add(new Tuple<long, int>(athlete, getAthleteScore(athlete)));
 
             athleteScoreList = tmp;
 
@@ -63,103 +65,64 @@ namespace KarateGeek.helpers
             rgen = new Random(randomSeed);   // initialise pseudo-random number-generator
                                              // usage: "int i = rgen.next()"
 
-
-            //AthleteRanking[] array = new AthleteRanking[10];
-
-            //LinkedList<AthleteRanking> athlin = new LinkedList<AthleteRanking>();
-
-            //athlin.AddLast( ( new AthleteRanking().athleteId = 2) );
-
-
-            //athlin.ElementAt(1).athleteId = 23;
-            //long score = athlin.ElementAt(1).score;
-
         }
 
-        private class SingleAthleteRanking // ?
-        {
 
-            /* We need SOMETHING to hold the weights for the calculation - maybe an array of tuples?
-             * Or just an array? Or an Enumeration? BTW, all these should be OUTSIDE of AthleteRanking, to allow easier tuning. */
-
-            //static private Tuple<int,int>[,] weights = new Tuple<int,int> [belt, age, pastyear, prevyears]; //example
-
-            //enum Factor
-            //{
-            //    belt,
-            //    age,
-            //    pastyear,
-            //    prevyears
-            //};
-
-            //static private Tuple<Factor, int>[] weights = {
-            //          new Tuple<Factor, int>(Factor.belt,      1000),
-            //          new Tuple<Factor, int>(Factor.age,       1000),
-            //          new Tuple<Factor, int>(Factor.pastyear,  1000),
-            //          new Tuple<Factor, int>(Factor.prevyears, 1000)
-            //        };
-
-
-            public long athleteId { get; set;}
-            
-            public Tuple<long, int> scoreTuple
-            {
-                get
-                {
-                    return new Tuple<long, int>(athleteId, getAthleteScore());
-                }
-                set {
-                    ;
-                }
-            }
-
-            //private int[] weights;
-
-            public SingleAthleteRanking(long athleteId)
-            {
-                this.athleteId = athleteId;
-            }
-
-            private int getAthleteScore()
-            {
-                LotteryGenConnection conn = new LotteryGenConnection();
-
-                int score = conn.getNumOfGoodPlacements(athleteId, 1, true)  * 500 +  // first  place in   official event
-                            conn.getNumOfGoodPlacements(athleteId, 2, true)  * 300 +  // second place in   official event
-                            conn.getNumOfGoodPlacements(athleteId, 3, true)  * 100 +  // third  place in   official event
-                            conn.getNumOfGoodPlacements(athleteId, 4, true)  *  80 +  // fourth place in   official event
-                            conn.getNumOfGoodPlacements(athleteId, 1, false) * 250 +  // first  place in unofficial event
-                            conn.getNumOfGoodPlacements(athleteId, 2, false) * 150 +  // second place in unofficial event
-                            conn.getNumOfGoodPlacements(athleteId, 3, false) *  50 +  // third  place in unofficial event
-                            conn.getNumOfGoodPlacements(athleteId, 4, false) *  40 ;  // fourth place in unofficial event
-
-                String belt = conn.getBeltFactor(athleteId);
-
-                for (int i; i<Strings.rank.Length ; ++i)
-                    if (Strings.rank[i] == belt)
-                        score += i*100;
-
-                return score;
-            }
-
-        }
 
         private class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
         {                           // because it needs optional .NET components! For now, leave it as a stub.
-            
+
         }
 
-        public void shuffle (List<long> L) // produces a new randomization
+
+        private int getAthleteScore(long athleteId)
+        {
+            LotteryGenConnection conn = new LotteryGenConnection();
+
+            int score = conn.getNumOfGoodPlacements(athleteId, 1, true)  * 400 +  // first  place in   official event
+                        conn.getNumOfGoodPlacements(athleteId, 2, true)  * 240 +  // second place in   official event
+                        conn.getNumOfGoodPlacements(athleteId, 3, true)  * 120 +  // third  place in   official event
+                        conn.getNumOfGoodPlacements(athleteId, 4, true)  *  80 +  // fourth place in   official event
+                        conn.getNumOfGoodPlacements(athleteId, 1, false) * 200 +  // first  place in unofficial event
+                        conn.getNumOfGoodPlacements(athleteId, 2, false) * 120 +  // second place in unofficial event
+                        conn.getNumOfGoodPlacements(athleteId, 3, false) *  60 +  // third  place in unofficial event
+                        conn.getNumOfGoodPlacements(athleteId, 4, false) *  40;   // fourth place in unofficial event
+
+            String belt = conn.getBeltColor(athleteId);
+
+            for (int i = 0 ; i < Strings.rank.Length; ++i)
+                if (Strings.rank[i] == belt)
+                    score += i * 120;
+
+            return score;
+        }
+
+
+        public void shuffle() // produces a new randomization  UNFINISHED
         {
             Debug.WriteLine("shuffling athlete list...");
+
+            //athleteScoreListShuffled = athleteScoreList.CopyTo();
+
+            //foreach (var tuple in athleteScoreListShuffled)
+            //{
+            //    L.Add(tuple.Item1);
+            //    Debug.WriteLine("List item: " + tuple.Item1 + " with score: " + tuple.Item2);
+            //}
             
         }
 
-        public List<long> getLottery()
+
+        public List<long> getLottery() // UNFINISHED (?)
         {
+            if (athleteScoreListShuffled == null) throw new Exception("Use method shuffle() first.");
+            
             List<long> L = new List<long>();
 
-
+            foreach (var tuple in athleteScoreList.OrderBy(x => x.Item2)){
+                L.Add(tuple.Item1);
+                Debug.WriteLine("List item: " + tuple.Item1 + " with score: " + tuple.Item2);
+            }
 
             return L;
         }

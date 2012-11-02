@@ -60,7 +60,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        public String getBeltFactor(long athleteId)
+        public String getBeltColor(long athleteId)
         {
             /* If you don't care only about official tournaments, use the following simplified query: */
             //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
