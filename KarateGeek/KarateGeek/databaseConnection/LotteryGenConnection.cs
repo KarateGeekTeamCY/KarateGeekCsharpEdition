@@ -48,7 +48,8 @@ namespace KarateGeek.databaseConnection
             //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
                 //+ " AND ranking = 1;";
 
-            String sql = "SELECT * FROM tournament_participations WHERE athlete_id = 1 AND ranking = " + place
+            String sql = "SELECT * FROM tournament_participations WHERE athlete_id = " + athleteId
+                       + " AND ranking = " + place 
                        + " AND tournament_id IN (SELECT tournaments.id"
                        +                      "  FROM tournaments JOIN events ON events.id = tournaments.event_id"
                        +                      "  WHERE official = " + official
@@ -56,6 +57,18 @@ namespace KarateGeek.databaseConnection
                        //+                       "WHERE official = " + (official? "true": "false") + " );" ;
 
             return this.Query(sql).Tables[0].Rows.Count;
+        }
+
+
+        public String getBeltFactor(long athleteId)
+        {
+            /* If you don't care only about official tournaments, use the following simplified query: */
+            //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
+            //+ " AND ranking = 1;";
+
+            String sql = "SELECT rank FROM athletes WHERE id = " + athleteId + " ;";
+
+            return this.Query(sql).Tables[0].Rows[0].ToString();
         }
 
     }

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 
 using KarateGeek.databaseConnection;
+using System.Diagnostics;   // has Debug.WriteLine()
 
 /* high quality pseudo-random number generator, suitable for cryptographic purposes. Also see
  * http://msdn.microsoft.com/en-us/library/system.security.cryptography.rngcryptoserviceprovider(v=vs.100).aspx
  */
-using System.Security.Cryptography.RNGCryptoServiceProvider;
+//using System.Security.Cryptography.RNGCryptoServiceProvider;
 //using System.Windows.Forms.DataVisualization.Charting.Chart;
+
 
 namespace KarateGeek.helpers
 {
@@ -35,7 +37,10 @@ namespace KarateGeek.helpers
 
     class LotteryGenerator
     {
-        private List<long> athleteList;
+        private readonly List<long> athleteList;
+
+        private readonly List<Tuple<long, int>> athleteScoreList;
+
         private Int32 randomSeed = 134563;  // use a constant value with "new Random(randomSeed)" (for now),
                                             // or "new Random()" for a time-dependent value.
         Random rgen;
@@ -43,13 +48,21 @@ namespace KarateGeek.helpers
 
         public LotteryGenerator(int tournamentId) // constructor
         {
-            /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI. */
+            /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
+
+            List<Tuple<long, int>> tmp = new List<Tuple<long,int>>;
+
+            foreach (long athlete in athleteList)
+                tmp.Add(new SingleAthleteRanking(athlete).scoreTuple);
+
+            athleteScoreList = tmp;
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
             rgen = new Random(randomSeed);   // initialise pseudo-random number-generator
                                              // usage: "int i = rgen.next()"
+
 
             //AthleteRanking[] array = new AthleteRanking[10];
 
@@ -63,11 +76,11 @@ namespace KarateGeek.helpers
 
         }
 
-        private class AthleteRanking // ?
+        private class SingleAthleteRanking // ?
         {
 
             /* We need SOMETHING to hold the weights for the calculation - maybe an array of tuples?
-             * Or just an array? Or an Enumeration? */
+             * Or just an array? Or an Enumeration? BTW, all these should be OUTSIDE of AthleteRanking, to allow easier tuning. */
 
             //static private Tuple<int,int>[,] weights = new Tuple<int,int> [belt, age, pastyear, prevyears]; //example
 
@@ -87,9 +100,9 @@ namespace KarateGeek.helpers
             //        };
 
 
-            private long athleteId;
+            public long athleteId { get; set;}
             
-            private Tuple<long, int> scoreTuple
+            public Tuple<long, int> scoreTuple
             {
                 get
                 {
@@ -102,7 +115,7 @@ namespace KarateGeek.helpers
 
             //private int[] weights;
 
-            public AthleteRanking(long athleteId)
+            public SingleAthleteRanking(long athleteId)
             {
                 this.athleteId = athleteId;
             }
@@ -120,6 +133,12 @@ namespace KarateGeek.helpers
                             conn.getNumOfGoodPlacements(athleteId, 3, false) *  50 +  // third  place in unofficial event
                             conn.getNumOfGoodPlacements(athleteId, 4, false) *  40 ;  // fourth place in unofficial event
 
+                String belt = conn.getBeltFactor(athleteId);
+
+                for (int i; i<Strings.rank.Length ; ++i)
+                    if (Strings.rank[i] == belt)
+                        score += i*100;
+
                 return score;
             }
 
@@ -132,12 +151,17 @@ namespace KarateGeek.helpers
 
         public void shuffle (List<long> L) // produces a new randomization
         {
+            Debug.WriteLine("shuffling athlete list...");
             
         }
 
         public List<long> getLottery()
         {
-            return new List<long>();
+            List<long> L = new List<long>();
+
+
+
+            return L;
         }
     }
 }
