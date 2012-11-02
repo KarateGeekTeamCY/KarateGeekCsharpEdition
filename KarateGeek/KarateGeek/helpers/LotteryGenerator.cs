@@ -1,10 +1,17 @@
-﻿using System;
+﻿using System; // also has System.Random, but that's low-quality randomness
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-//using System; // for randomisation
 using KarateGeek.databaseConnection;
+using System.Diagnostics;   // has Debug.WriteLine()
+
+/* high quality pseudo-random number generator, suitable for cryptographic purposes. Also see
+ * http://msdn.microsoft.com/en-us/library/system.security.cryptography.rngcryptoserviceprovider(v=vs.100).aspx
+ */
+//using System.Security.Cryptography.RNGCryptoServiceProvider;
+//using System.Windows.Forms.DataVisualization.Charting.Chart;
+
 
 namespace KarateGeek.helpers
 {
@@ -30,61 +37,131 @@ namespace KarateGeek.helpers
 
     class LotteryGenerator
     {
-        private List<long> athleteList;
+        private readonly List<long> athleteList;
+
+        private readonly List<Tuple<long, int>> athleteScoreList;
+
         private Int32 randomSeed = 134563;  // use a constant value with "new Random(randomSeed)" (for now),
                                             // or "new Random()" for a time-dependent value.
+        Random rgen;
 
 
-        public LotteryGenerator(int tournamentId)   // constructor
+        public LotteryGenerator(int tournamentId) // constructor
         {
+            /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
+
+            List<Tuple<long, int>> tmp = new List<Tuple<long,int>>;
+
+            foreach (long athlete in athleteList)
+                tmp.Add(new SingleAthleteRanking(athlete).scoreTuple);
+
+            athleteScoreList = tmp;
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
-            Random rand = new Random(randomSeed);   // initialise pseudo-random number-generator
-                                                    // usage: "int i = rand.next()"
+            rgen = new Random(randomSeed);   // initialise pseudo-random number-generator
+                                             // usage: "int i = rgen.next()"
+
+
+            //AthleteRanking[] array = new AthleteRanking[10];
+
+            //LinkedList<AthleteRanking> athlin = new LinkedList<AthleteRanking>();
+
+            //athlin.AddLast( ( new AthleteRanking().athleteId = 2) );
+
+
+            //athlin.ElementAt(1).athleteId = 23;
+            //long score = athlin.ElementAt(1).score;
+
         }
 
-
-        /* We need SOMETHING to hold the weights for the calculation - maybe an array of tuples?
-         * Or just an array? Or an Enumeration? */
-        //static private Tuple<int,int>[,] weights = new Tuple<int,int> [belt, age, pastyear, prevyears]; //example
-        enum Factor {
-            belt,
-            age,
-            pastyear,
-            prevyears
-        };
-
-        static private Tuple<Factor, int>[] weights = {
-                      new Tuple<Factor, int>(Factor.belt,      1000),
-                      new Tuple<Factor, int>(Factor.age,       1000),
-                      new Tuple<Factor, int>(Factor.pastyear,  1000),
-                      new Tuple<Factor, int>(Factor.prevyears, 1000)
-                    };
-
-
-        private class AthleteRanking
+        private class SingleAthleteRanking // ?
         {
+
+            /* We need SOMETHING to hold the weights for the calculation - maybe an array of tuples?
+             * Or just an array? Or an Enumeration? BTW, all these should be OUTSIDE of AthleteRanking, to allow easier tuning. */
+
+            //static private Tuple<int,int>[,] weights = new Tuple<int,int> [belt, age, pastyear, prevyears]; //example
+
+            //enum Factor
+            //{
+            //    belt,
+            //    age,
+            //    pastyear,
+            //    prevyears
+            //};
+
+            //static private Tuple<Factor, int>[] weights = {
+            //          new Tuple<Factor, int>(Factor.belt,      1000),
+            //          new Tuple<Factor, int>(Factor.age,       1000),
+            //          new Tuple<Factor, int>(Factor.pastyear,  1000),
+            //          new Tuple<Factor, int>(Factor.prevyears, 1000)
+            //        };
+
+
+            public long athleteId { get; set;}
+            
+            public Tuple<long, int> scoreTuple
+            {
+                get
+                {
+                    return new Tuple<long, int>(athleteId, getAthleteScore());
+                }
+                set {
+                    ;
+                }
+            }
+
+            //private int[] weights;
+
+            public SingleAthleteRanking(long athleteId)
+            {
+                this.athleteId = athleteId;
+            }
+
+            private int getAthleteScore()
+            {
+                LotteryGenConnection conn = new LotteryGenConnection();
+
+                int score = conn.getNumOfGoodPlacements(athleteId, 1, true)  * 500 +  // first  place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 2, true)  * 300 +  // second place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 3, true)  * 100 +  // third  place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 4, true)  *  80 +  // fourth place in   official event
+                            conn.getNumOfGoodPlacements(athleteId, 1, false) * 250 +  // first  place in unofficial event
+                            conn.getNumOfGoodPlacements(athleteId, 2, false) * 150 +  // second place in unofficial event
+                            conn.getNumOfGoodPlacements(athleteId, 3, false) *  50 +  // third  place in unofficial event
+                            conn.getNumOfGoodPlacements(athleteId, 4, false) *  40 ;  // fourth place in unofficial event
+
+                String belt = conn.getBeltFactor(athleteId);
+
+                for (int i; i<Strings.rank.Length ; ++i)
+                    if (Strings.rank[i] == belt)
+                        score += i*100;
+
+                return score;
+            }
+
+        }
+
+        private class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
+        {                           // because it needs optional .NET components! For now, leave it as a stub.
             
         }
 
-        private class Visualisation //maybe needed only for debugging/tweaking? Too hard to do anyway!
-        {
-        
-        }
-
-        //private 
-
         public void shuffle (List<long> L) // produces a new randomization
         {
-        
+            Debug.WriteLine("shuffling athlete list...");
+            
         }
 
         public List<long> getLottery()
         {
-            return new List<long>();
-        }
+            List<long> L = new List<long>();
 
+
+
+            return L;
+        }
     }
 }
