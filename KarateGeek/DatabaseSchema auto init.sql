@@ -254,17 +254,7 @@ CREATE TABLE game_participations (      -- gia atomika
 );
 
 
-create table game_point (
-    id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
-    athlete_id      INTEGER         REFERENCES athletes(id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
-    technical_point INTEGER,
-    technical_point_desc VARCHAR(50),
-    PRIMARY KEY (id)
-
-);
 
 CREATE TABLE game_points(
 
