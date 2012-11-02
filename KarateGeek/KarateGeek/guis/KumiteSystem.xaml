@@ -80,77 +80,83 @@
             
             
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" 
+            <Button Name="ipponA"
+                    Grid.Column="1" 
                     Grid.Row="0" 
                     Content="ippon"
                     VerticalAlignment="Center"
-                    Margin="10,0,10,0" 
-                    Click="Button_Click" />
-            <Button Grid.Column="1" 
+                    Margin="10,0,10,0" Click="ipponA_Click" />
+            <Button Name="wazaariA" 
+                    Grid.Column="1" 
                     Grid.Row="1" 
                     Content="waja-ari" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="1" 
+                    Margin="10,0,10,0" Click="wazaariA_Click" />
+            <Button Name="jyogaiA" 
+                    Grid.Column="1" 
                     Grid.Row="2" 
                     Content="jyo-gai" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="1" 
+                    Margin="10,0,10,0" Click="jyogaiA_Click" />
+            <Button Name="chuiA" 
+                    Grid.Column="1" 
                     Grid.Row="3" 
                     Content="chui" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="1" 
+                    Margin="10,0,10,0" Click="chuiA_Click" />
+            <Button Name="keikokuA" 
+                    Grid.Column="1" 
                     Grid.Row="4" 
                     Content="kei-koku" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="1" 
+                    Margin="10,0,10,0" Click="keikokuA_Click" />
+            <Button Name="tentoA" 
+                    Grid.Column="1" 
                     Grid.Row="5" 
                     Content="ten-to" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="1" 
+                    Margin="10,0,10,0" Click="tentoA_Click" />
+            <Button Name="doctorStopA" 
+                    Grid.Column="1" 
                     Grid.Row="6" 
-                    Content="doctor-stop" 
+                    Content="doctorstopA" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="doctorStopA_Click" />
+            <Button Name="ipponB" Grid.Column="3" 
                     Grid.Row="0" 
                     Content="ippon" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="ipponB_Click" />
+            <Button Name="wazaariB" Grid.Column="3" 
                     Grid.Row="1" 
                     Content="waja-ari" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="wazaariB_Click" />
+            <Button Name="jyogaiB" Grid.Column="3" 
                     Grid.Row="2" 
                     Content="jyo-gai" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="jyogaiB_Click" />
+            <Button Name="chuiB" Grid.Column="3" 
                     Grid.Row="3" 
                     Content="chui" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="chuiB_Click" />
+            <Button Name="keikokuB" Grid.Column="3" 
                     Grid.Row="4" 
                     Content="kei-koku" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="keikokuB_Click" />
+            <Button Name="tentoB" Grid.Column="3" 
                     Grid.Row="5" 
                     Content="ten-to" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="tentoB_Click" />
+            <Button Name="doctorstopB" Grid.Column="3" 
                     Grid.Row="6" 
                     Content="doctor-stop" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
+                    Margin="10,0,10,0" Click="doctorstopB_Click" />
             
             <TextBox Name="history"
                      Text="history"
