@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+//using System.Windows.Forms;
 
 
 namespace KarateGeek.guis
@@ -23,14 +24,14 @@ namespace KarateGeek.guis
         #region private declaretions
 
         private int pointsIndex = 0;
-        private LinkedList<Point> pointsLeft = new LinkedList<Point>();
-        private LinkedList<Point> pointsRight = new LinkedList<Point>();
-
-       
+        private LinkedList<Point> _pointsHistory = new LinkedList<Point>();
+        //private LinkedList<Point> pointsRight = new LinkedList<Point>();
 
 
 
-        #endregion 
+
+
+        #endregion
 
 
 
@@ -45,9 +46,9 @@ namespace KarateGeek.guis
 
         private void ipponA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.ippon, 1, pointsIndex);
+            Point p = new Point(Strings.ippon, 1, pointsIndex, "left");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
 
@@ -55,45 +56,45 @@ namespace KarateGeek.guis
 
         private void wazaariA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.wazaari, 1, pointsIndex);
+            Point p = new Point(Strings.wazaari, 1, pointsIndex, "left");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void jyogaiA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.jyogai, 1, pointsIndex);
+            Point p = new Point(Strings.jyogai, 1, pointsIndex, "left");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void chuiA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.chui, 1, pointsIndex);
+            Point p = new Point(Strings.chui, 1, pointsIndex, "left");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void keikokuA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.keikoku, 1, pointsIndex);
+            Point p = new Point(Strings.keikoku, 1, pointsIndex, "left");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void tentoA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.tento, 1, pointsIndex);
+            Point p = new Point(Strings.tento, 1, pointsIndex, "left");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
@@ -105,9 +106,9 @@ namespace KarateGeek.guis
 
         private void ipponB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.ippon, 1, pointsIndex);
+            Point p = new Point(Strings.ippon, 1, pointsIndex, "right");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
 
@@ -115,45 +116,45 @@ namespace KarateGeek.guis
 
         private void wazaariB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.wazaari, 1, pointsIndex);
+            Point p = new Point(Strings.wazaari, 1, pointsIndex, "right");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void jyogaiB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.jyogai, 1, pointsIndex);
+            Point p = new Point(Strings.jyogai, 1, pointsIndex, "right");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void chuiB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.chui, 1, pointsIndex);
+            Point p = new Point(Strings.chui, 1, pointsIndex, "right");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void keikokuB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.keikoku, 1, pointsIndex);
+            Point p = new Point(Strings.keikoku, 1, pointsIndex, "right");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
 
         private void tentoB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.tento, 1, pointsIndex);
+            Point p = new Point(Strings.tento, 1, pointsIndex, "right");
             pointsIndex++;
-            this.pointsLeft.AddLast(p);
+            this._pointsHistory.AddLast(p);
 
             updateHistory();
         }
@@ -170,47 +171,53 @@ namespace KarateGeek.guis
         {
             StringBuilder sb = new StringBuilder();
             bool endFlag = false;
-            int leftIndex = 0;
-            int rightIndex = 0;
+            int historyIndex = 0;
 
             sb.Append("");
 
             while (!endFlag)
             {
-                if (pointsLeft.ElementAt(leftIndex).pointsIndex > pointsRight.ElementAt(rightIndex).pointsIndex)
-                {
-                    sb.Append(pointsLeft.ElementAt(leftIndex).time);
-                    sb.Append(": ");
-                    sb.Append("Comp. A -> ");
-                    sb.Append(pointsLeft.ElementAt(leftIndex).descreption);
-                    sb.Append("\n");
-                    leftIndex++;
-                }
-                else 
-                {
-                    sb.Append(pointsRight.ElementAt(rightIndex).time);
-                    sb.Append(": ");
+
+                sb.Append(_pointsHistory.ElementAt(historyIndex).time);
+                sb.Append(": ");
+
+                if (_pointsHistory.ElementAt(historyIndex).side == "right")
                     sb.Append("Comp. B -> ");
-                    sb.Append(pointsRight.ElementAt(rightIndex).descreption);
-                    sb.Append("\n");
-                    rightIndex++;
-                }
+                else
+                    sb.Append("Comp. A -> ");
 
+                sb.Append(_pointsHistory.ElementAt(historyIndex).descreption);
+                sb.Append("\n");
+                historyIndex++;
 
-                if (leftIndex == pointsLeft.Count && rightIndex == pointsRight.Count)
-                {
-                    endFlag = true;
-                }
             }
-
-            this.txtHistory.Text = sb.ToString();
+            this.listBoxHistory.Items.Add(sb.ToString());
         }
 
         private void checkWinner()
-        { 
-        
-        
-        
+        {
+
+
+
+        }
+
+        private void listBoxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string result = MessageBox.Show("Do you want to delete this record? If the answer is NO then press No to replace the record or Cancel to continue normally", "Important.", 
+                MessageBoxButton.YesNoCancel ,
+                MessageBoxImage.Question).ToString();
+
+            if (result == "yes")
+            { 
+            
+            
+            }
+            
+            if( result == "no")
+            {
+            
+            
+            }
         }
 
     }
@@ -223,15 +230,17 @@ namespace KarateGeek.guis
         public int points { get; set; }
         public int pointsIndex { get; set; }
         public string time { get; set; }
+        public string side { get; set; }
 
-        public Point(string dsc, int points, int PointIndex)
+        public Point(string dsc, int points, int PointIndex, string side)
         {
             this.descreption = dsc;
             this.points = points;
             this.pointsIndex = pointsIndex;
             this.time = DateTime.Now.ToString("HH:mm:ss tt");
+            this.side = side;
         }
-        
+
     }
 
 

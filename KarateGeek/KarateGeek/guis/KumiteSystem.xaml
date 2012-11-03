@@ -158,15 +158,13 @@
                     VerticalAlignment="Center" 
                     Margin="10,0,10,0" Click="doctorstopB_Click" />
             
-            <TextBox Name="txtHistory"
-                     Text="history"
-                     TextAlignment="Center"
+            <ListBox Name="listBoxHistory"
                      Grid.Row="0"
                      Grid.Column="2"
                      Margin="5"
                      Grid.RowSpan="7" 
                      BorderThickness="2" 
-                     BorderBrush="#FF009600" />
+                     BorderBrush="#FF009600" SelectionChanged="listBoxHistory_SelectionChanged" />
 
         </Grid>
         
