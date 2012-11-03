@@ -43,9 +43,11 @@ namespace KarateGeek.helpers
 
         private List<Tuple<long, int>> athleteScoreListShuffled;
 
-        private Int32 randomSeed = 134563;  // use a constant value with "new Random(randomSeed)" (for now),
+        private Int32 randomSeed = 134368;  // use a constant value with "new Random(randomSeed)" (for now),
                                             // or "new Random()" for a time-dependent value.
         Random rgen;
+
+        public int randomisationFactor { get; set; }
 
 
         public LotteryGenerator(int tournamentId) // constructor
@@ -62,16 +64,10 @@ namespace KarateGeek.helpers
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
-            rgen = new Random(randomSeed);   // initialise pseudo-random number-generator
-                                             // usage: "int i = rgen.next()"
-
-        }
-
-
-
-        private class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
-        {                           // because it needs optional .NET components! For now, leave it as a stub.
-
+            //rgen = new Random(randomSeed);   // initialise pseudo-random number-generator
+                                               // usage: "int i = rgen.next()"
+            rgen = new Random();
+            randomisationFactor = 800;
         }
 
 
@@ -98,33 +94,41 @@ namespace KarateGeek.helpers
         }
 
 
-        public void shuffle() // produces a new randomization  UNFINISHED
+        public void shuffle() // produces a new randomization [It would be less ugly with more LINQ usage!]
         {
-            Debug.WriteLine("shuffling athlete list...");
+            Debug.WriteLine("Shuffling athlete list...");
 
-            //athleteScoreListShuffled = athleteScoreList.CopyTo();
+            List<Tuple<long, int>> L = new List<Tuple<long, int>>();
 
-            //foreach (var tuple in athleteScoreListShuffled)
-            //{
-            //    L.Add(tuple.Item1);
-            //    Debug.WriteLine("List item: " + tuple.Item1 + " with score: " + tuple.Item2);
-            //}
-            
+            foreach (var tuple in athleteScoreList) //TODO: Tweak randomisation factor
+            {
+                L.Add(new Tuple<long, int> (tuple.Item1, tuple.Item2 + rgen.Next(0, randomisationFactor)));
+                Debug.WriteLine("List item: " + tuple.Item1 + " with score: " + tuple.Item2);
+            }
+
+            athleteScoreListShuffled = L;
         }
 
 
-        public List<long> getLottery() // UNFINISHED (?)
+        public List<long> getLottery()
         {
             if (athleteScoreListShuffled == null) throw new Exception("Use method shuffle() first.");
             
             List<long> L = new List<long>();
 
-            foreach (var tuple in athleteScoreList.OrderBy(x => x.Item2)){
+            foreach (var tuple in athleteScoreListShuffled.OrderBy(x => x.Item2)){
                 L.Add(tuple.Item1);
-                Debug.WriteLine("List item: " + tuple.Item1 + " with score: " + tuple.Item2);
+                Debug.WriteLine("List item: " + tuple.Item1 + " with score: " + tuple.Item2 + " randomised");
             }
 
             return L;
+        }
+
+
+        /* Methods to display a chart of the randomised athlete list: */
+        private class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
+        {                           // because it needs optional .NET components! For now, leave it as a stub.
+
         }
     }
 }
