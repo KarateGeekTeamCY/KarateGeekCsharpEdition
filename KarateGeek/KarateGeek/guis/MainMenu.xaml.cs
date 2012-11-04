@@ -71,6 +71,12 @@ namespace KarateGeek.guis
             LotteryGenerator lg = new LotteryGenerator(1);
         }
 
+        private void btnReports_Click(object sender, RoutedEventArgs e)
+        {
+            reports.Form1 f1 = new reports.Form1();
+            f1.Show();
+        }
+
         
     }
 }
