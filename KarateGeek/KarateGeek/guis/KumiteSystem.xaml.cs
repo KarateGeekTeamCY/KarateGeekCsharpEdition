@@ -21,7 +21,7 @@ namespace KarateGeek.guis
     public partial class KumiteSystem : Window
     {
 
-        #region private declaretions
+        #region private declarations
 
         private int pointsIndex = 0;
         private LinkedList<Point> _pointsHistory = new LinkedList<Point>();
@@ -186,7 +186,7 @@ namespace KarateGeek.guis
                 else
                     sb.Append("Comp. A -> ");
 
-                sb.Append(_pointsHistory.ElementAt(historyIndex).descreption);
+                sb.Append(_pointsHistory.ElementAt(historyIndex).description);
                 sb.Append("\n");
                 historyIndex++;
 
@@ -226,7 +226,7 @@ namespace KarateGeek.guis
     public class Point
     {
 
-        public string descreption { get; set; }
+        public string description { get; set; }
         public int points { get; set; }
         public int pointsIndex { get; set; }
         public string time { get; set; }
@@ -234,7 +234,7 @@ namespace KarateGeek.guis
 
         public Point(string dsc, int points, int PointIndex, string side)
         {
-            this.descreption = dsc;
+            this.description = dsc;
             this.points = points;
             this.pointsIndex = pointsIndex;
             this.time = DateTime.Now.ToString("HH:mm:ss tt");

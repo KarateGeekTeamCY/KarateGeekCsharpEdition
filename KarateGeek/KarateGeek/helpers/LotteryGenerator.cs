@@ -129,13 +129,6 @@ namespace KarateGeek.helpers
         }
 
 
-            //athlin.AddLast( ( new AthleteRanking().athleteId = 2) );
-
-
-            //athlin.ElementAt(1).athleteId = 23;
-            //long score = athlin.ElementAt(1).score;
-
-
         public List<long> getLottery()
         {
             if (athleteScoreListShuffled == null) throw new Exception("Use method shuffle() first.");
