@@ -109,6 +109,7 @@ namespace KarateGeek.helpers
             for (int i = 0; i < age && i < 18; ++i)
                 score += 100;
 
+
             return score;
         }
 
@@ -133,7 +134,8 @@ namespace KarateGeek.helpers
             
             List<long> L = new List<long>();
 
-            foreach (var tuple in athleteScoreListShuffled.OrderBy(x => x.Item2)){
+            /* OrderByDescending() instead of OrderBy(), because we want the highest-ranked athletes first: */
+            foreach (var tuple in athleteScoreListShuffled.OrderByDescending(x => x.Item2)){
                 L.Add(tuple.Item1);
                 Debug.WriteLine("List item: " + tuple.Item1 + " with randomised score: " + tuple.Item2);
             }
@@ -142,24 +144,90 @@ namespace KarateGeek.helpers
         }
 
 
-        private List<Tuple<long, long, int, int>> getPairsHelper(List<long> Participants) // recursive
-        {
-            /* Oops! C#, despite LINQ, doesn't have functional-style lists! */
-            //if (Participants.Count() == 0)
-            //    return new List<Tuple<long, long, int, int>>();
-            //else
-            //    //return getPairsHelper(...).Add(new Tuple<long, long, int, int>(Participants.head, .tail));
-            return null;
-        }
-
         private List<Tuple<long, long, int, int>> getPairs(List<long> Participants) // Stub; see project specs for the algorithm
         {
-            List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long,long,int,int>>();
+            List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long, long, int, int>>();
 
             /* Code that constructs athlete pairs goes here... */
-            
-            /* Crude and untested first version (the algorithm might be incorrect!): */
-            foreach (var p in Participants) ;
+            /**
+             * ALGORITHM (please confirm correctness):
+             * 
+             * - copy sorted list to array (easier than using C#-style lists, I think)
+             * - get array length (let's say "l")
+             *   [ Actually we use LINQ and, instead of using System.ArraySegment<T> on
+             *     Participants.ToArray() (and then Array.Copy()), we split the list
+             *     into 2 arrays of lengths "x" and "y"... see below for the calculation
+             *     of x and y.
+             *   ]
+             * 
+             * - if "len" is a power of 2, OK; else, if "p" is the next-largest power of 2,
+             *   "y" the number of athletes who auto-advance to the second round, "x" the
+             *   number of athletes who do not and "z" the number of pairs in the first
+             *   round (so that z == 2*x), solve the equations:
+             * 
+             * 
+             *     2*y + (len - y) = p    (1)
+             * 
+             *     z = p/2 - y            (2)
+             * 
+             * 
+             *   (1)  =>  y = p - len
+             *   (2)  =>  2*z = p - 2*y  =>¹  z = (len - y)/2 = x/2  !
+             * 
+             * 
+             * - first y athletes fill-in the "wings" of the lottery tree (going to phase 2
+             *   directly) and the rest get paired in the first round (aka phase). Example
+             *   for 11 athletes:
+             * 
+             *   y*2 + (11-y) = 16  =>  y=5 and z=8-5=3 pairs in the 1st phase
+             * 
+             *         /           \                   /           \
+             *        /             \                 /             \
+             *       •               •               •               •
+             *      / \             / \             / \             / \
+             *     /   \           /   \           /   \           /   \
+             *    /     \         /     \         /     \         /     \
+             *   y1      y3      y5      •       •       •       y4      y2
+             *                          / \     / \     / \
+             *                         /   \   /   \   /   \
+             *                        x1   x3 x5   x6 x4   x2
+             * 
+             * 
+             *  [number of y-type athletes "above" x1:  n = (y+1) mod 2
+             *   so x1 and x3 meet at the "4th position" of phase 1     ]
+             * 
+             * 
+             *  ** There might be a smarter way to do it! (using Lists?!) **
+             */
+
+            /* Crude and untested first version: */
+
+            int len = Participants.Count;
+            int p = (int)Math.Pow(2, Math.Ceiling(Math.Log(len, 2))); // tested, works well for x>=1
+            int y = p - len;
+            int x = len - y;
+            int z = p / 2 - y; // x must be >=2 (?)
+
+            long[] Yarray = Participants.Take(y).ToArray();
+            long[] Xarray = Participants.Skip(y).ToArray();
+
+            /* Some assertions: */
+            Debug.Assert(x == 2 * z);
+            Debug.Assert(Xarray.Length == x);
+
+            { //will be removed in the final version
+                Debug.WriteLine(Participants);
+                foreach (var i in Participants)
+                    Debug.WriteLine(i);
+                Debug.WriteLine(Yarray);
+                foreach (var i in Yarray)
+                    Debug.WriteLine(i);
+                Debug.WriteLine(Xarray);
+                foreach (var i in Xarray)
+                    Debug.WriteLine(i);
+            }
+
+            //foreach (var p in Participants) ;
 
             return Pairs;
 

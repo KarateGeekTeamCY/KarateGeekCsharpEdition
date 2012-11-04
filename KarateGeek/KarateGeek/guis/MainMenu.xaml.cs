@@ -88,6 +88,9 @@ namespace KarateGeek.guis
             lg.shuffle();
             foreach (var element in lg.getLottery())
                 Debug.WriteLine("Athlete number: " + element);
+
+            // This will crash:
+            lg.confirmLottery();
         }
 
         private void btnReports_Click(object sender, RoutedEventArgs e)
