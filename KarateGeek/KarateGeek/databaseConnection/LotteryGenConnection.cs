@@ -71,5 +71,56 @@ namespace KarateGeek.databaseConnection
             return this.Query(sql).Tables[0].Rows[0].ToString();
         }
 
+
+        public int getAge(long athleteId)
+        {
+            String sql = "SELECT date_of_birth FROM athletes NATURAL JOIN persons"
+                       + " WHERE id = " + athleteId + " ;";
+
+            DataTable dt = this.Query(sql).Tables[0];
+
+            if (dt.Rows.Count == 0) // TODO: Standardise exception handling and showing errors to user
+                throw new Exception("Athlete id not in database");
+
+            DateTime birthdate = DateTime.Parse(dt.Rows[0][0].ToString());
+
+            // See: http://stackoverflow.com/a/1404
+            DateTime now = DateTime.Today;
+            int age = now.Year - birthdate.Year;
+            if (birthdate > now.AddYears(-age)) age--;
+
+            Debug.WriteLine("Athlete's day of birth is " + birthdate + " and their calculated age is: " + age);
+            return age;
+        }
+
+
+        /* Writes a tournament pair to the database: */
+        private void writeTournamentPair(long id1, long id2, int phase, int position)
+        {
+            /* UNFINISHED! */
+            String writegame = "";
+
+            /* Using game_id returned from above: */
+            String writepair_first  = "";
+            String writepair_second = "";
+        }
+
+        /* Writes all tournament pairs to the database, atomically: */
+        /* Is this the correct approach for atomicity? */
+        public bool writeAllTournamentPairs(List<Tuple<long, long, int, int>> Pairs, bool doCommit)
+        {
+            this.NonQuery("BEGIN;");
+
+            foreach (var pair in Pairs)
+                writeTournamentPair(pair.Item1, pair.Item2, pair.Item3, pair.Item4);
+
+            if (doCommit) {
+                return this.NonQuery("COMMIT;"); // supposed to return true if successful (currently it's always true)
+            } else {
+                this.NonQuery("ROLLBACK;"); // very useful for checking syntax etc.
+                return false;               // false, since we didn't write anything
+            }
+        }
+
     }
 }
