@@ -22,24 +22,30 @@ namespace KarateGeek
         //5th kyu - Yellow (at least 7 Month of traning or more)
         //6th kyu - White (at least 5 Month of traning or more)
         //
-        public static string rank01 = "White-6th kyu";
-        public static string rank02 = "Yellow-5th kyu";
-        public static string rank03 = "Orange-4th kyu";
-        public static string rank04 = "Green-3th kyu";
-        public static string rank05 = "Blue-2nd kyu";
-        public static string rank06 = "Brown-1st kyu";
-        public static string rank07 = "Black-1st dan";
-        public static string rank08 = "Black-2nd dan";
-        public static string rank09 = "Black-3th dan";
-        public static string rank10 = "Black-4th dan";
-        public static string rank11 = "Black-5th dan";
-        public static string rank12 = "White/Red-6th dan";
-        public static string rank13 = "White/Red-7th dan";
-        public static string rank14 = "White/Red-8th dan";
-        public static string rank15 = "Red-9th dan";
-        public static string rank16 = "Red-10th dan";
+        public static readonly string rank01 = "White-6th kyu";
+        public static readonly string rank02 = "Yellow-5th kyu";
+        public static readonly string rank03 = "Orange-4th kyu";
+        public static readonly string rank04 = "Green-3th kyu";
+        public static readonly string rank05 = "Blue-2nd kyu";
+        public static readonly string rank06 = "Brown-1st kyu";
+        public static readonly string rank07 = "Black-1st dan";
+        public static readonly string rank08 = "Black-2nd dan";
+        public static readonly string rank09 = "Black-3th dan";
+        public static readonly string rank10 = "Black-4th dan";
+        public static readonly string rank11 = "Black-5th dan";
+        public static readonly string rank12 = "White/Red-6th dan";
+        public static readonly string rank13 = "White/Red-7th dan";
+        public static readonly string rank14 = "White/Red-8th dan";
+        public static readonly string rank15 = "Red-9th dan";
+        public static readonly string rank16 = "Red-10th dan";
 
-        //public static enum ranks {rank01, rank02, rank03, rank04, ank05, ank06, ank07, ank08, ank09}
+        public static readonly string[] rank = { rank01, rank02, rank03, rank04,
+                                                 rank05, rank06, rank07, rank08,
+                                                 rank09, rank10, rank11, rank12,
+                                                 rank13, rank14, rank15, rank16
+                                               };
+
+                 //public static enum ranks {rank01, rank02, rank03, rank04, ank05, ank06, ank07, ank08, ank09}
 
         //
         // game types

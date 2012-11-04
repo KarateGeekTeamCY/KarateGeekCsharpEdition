@@ -98,7 +98,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        public DataSet findParticipants(string sex , int ageFrom , int ageTo , string levelFrom , string levelTo)
+        public DataSet findPotentialParticipants(string sex , int ageFrom , int ageTo , string levelFrom , string levelTo)
         {
             string filter = "where";
             int num = 0;
@@ -118,6 +118,8 @@ namespace KarateGeek.databaseConnection
                 return this.Query(sql);
            
         }
+
+
 
         private string _InsertAthlete(string PersonId, string rank, string localClubId)
         {
@@ -157,5 +159,16 @@ namespace KarateGeek.databaseConnection
             return temp.Tables[0];
         
         }
+
+
+
+        public int getNumOfScheduledParticipation(long athleteId) // returns the number of scheduled participations
+        {                                                         // where the tournament hasn't taken place yet.
+            String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
+                + " AND ranking IS NULL;";
+
+            return this.Query(sql).Tables[0].Rows.Count;
+        }
+
     }
 }

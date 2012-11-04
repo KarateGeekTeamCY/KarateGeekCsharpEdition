@@ -754,7 +754,7 @@ namespace KarateGeek.guis
             List<AthleteData> list = new List<AthleteData>();
 
 
-            this.filteredAthletes = athleteConnection.findParticipants(_tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo);
+            this.filteredAthletes = athleteConnection.findPotentialParticipants(_tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo);
             int i = 1;
             foreach (DataRow dr in filteredAthletes.Tables[0].Rows)
             {
