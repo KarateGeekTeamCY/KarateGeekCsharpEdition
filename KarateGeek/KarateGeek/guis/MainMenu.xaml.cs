@@ -96,6 +96,8 @@ namespace KarateGeek.guis
             f1.Show();
         }
 
+       
+
         
     }
 }
