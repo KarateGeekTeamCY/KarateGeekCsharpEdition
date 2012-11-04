@@ -95,30 +95,35 @@ namespace KarateGeek.databaseConnection
 
 
         /* Writes a tournament pair to the database: */
-        private void writeTournamentPair(long id1, long id2, int phase, int position)
+        private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
         {
-            /* UNFINISHED! */
-            String writegame = "";
-
-            /* Using game_id returned from above: */
-            String writepair_first  = "";
-            String writepair_second = "";
+            /* UNTESTED!! */
+            String writegame = "INSERT INTO games (phase, position, tournament_id ) "
+                             + "VALUES ( " + phase + ", " + position + ", " + tournamentId + " );";
+            String writepair_first  = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+                                    + "VALUES ( " + id1 + ", NULL, ( SELECT currval('games_id_seq') ));";
+            String writepair_second = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+                                    + "VALUES ( " + id2 + ", NULL, ( SELECT currval('games_id_seq') ));";
+            this.NonQuery(writegame);
+            this.NonQuery(writepair_first);
+            this.NonQuery(writepair_second);
         }
 
         /* Writes all tournament pairs to the database, atomically: */
         /* Is this the correct approach for atomicity? */
-        public bool writeAllTournamentPairs(List<Tuple<long, long, int, int>> Pairs, bool doCommit)
+        public bool writeAllTournamentPairs(List<Tuple<long, long, int, int>> Pairs,
+            long tournamentId, bool doCommit)
         {
             this.NonQuery("BEGIN;");
 
             foreach (var pair in Pairs)
-                writeTournamentPair(pair.Item1, pair.Item2, pair.Item3, pair.Item4);
+                writeTournamentPair(pair.Item1, pair.Item2, pair.Item3, pair.Item4, tournamentId);
 
             if (doCommit) {
                 return this.NonQuery("COMMIT;"); // supposed to return true if successful (currently it's always true)
             } else {
                 this.NonQuery("ROLLBACK;"); // very useful for checking syntax etc.
-                return false;               // false, since we didn't write anything
+                return false;               // always false, since we didn't write anything
             }
         }
 

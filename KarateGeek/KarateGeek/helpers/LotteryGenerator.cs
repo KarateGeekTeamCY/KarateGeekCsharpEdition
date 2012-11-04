@@ -42,11 +42,9 @@ namespace KarateGeek.helpers
 
         /** Class fields/properties: */
 
-
         private readonly List<long> athleteList;
 
         private readonly List<Tuple<long, int>> athleteScoreList;
-
 
         private List<Tuple<long, int>> athleteScoreListShuffled;
 
@@ -58,6 +56,7 @@ namespace KarateGeek.helpers
 
         public int randomisationFactor { get; set; }
 
+        public readonly int tournamentId;
 
 
         /** Class methods: */
@@ -67,20 +66,19 @@ namespace KarateGeek.helpers
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
 
-
             List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
             foreach (long athlete in athleteList)
                 tmp.Add(new Tuple<long, int>(athlete, getAthleteScore(athlete)));
 
-
             athleteScoreList = tmp;
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
-
             rgen = new Random(); // initialise pseudo-random number-generator with a time-dependent value.
-            randomisationFactor = 800;
+
+            this.randomisationFactor = 800;
+            this.tournamentId = tournamentId;
         }
 
 
@@ -177,7 +175,9 @@ namespace KarateGeek.helpers
             LotteryGenConnection conn = new LotteryGenConnection();
             List<long> L = this.getLottery();
             List<Tuple<long, long, int, int>> Pairs = getPairs(L);
-            this.confirmed = conn.writeAllTournamentPairs(Pairs, false); // the flag will be changed to "true" after some testing
+
+            /* the flag will be changed to "true" after some testing */
+            this.confirmed = conn.writeAllTournamentPairs(Pairs, tournamentId, false);
         }
 
 
