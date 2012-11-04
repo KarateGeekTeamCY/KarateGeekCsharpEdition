@@ -68,6 +68,21 @@ namespace KarateGeek
                                                     // me vasi kritiria texnikis
 
 
+
+        //
+        // kumite points
+        //
+
+        public static string ippon = "IPPON";
+        public static string wazaari = "WAZA-ARI";
+        public static string jyogai = "JUO-GAI";
+        public static string chui = "CHUI";
+        public static string keikoku = "KEI-KOKU";
+        public static string tento = "TEN-TO";
+        public static string doctorStop = "DOCTOR-STOP";
+
+
+
         //
         // more here
         //

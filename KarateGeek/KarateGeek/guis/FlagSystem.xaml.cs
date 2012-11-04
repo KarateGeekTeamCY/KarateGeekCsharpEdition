@@ -236,12 +236,25 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            EveSupFlagConnection conn = new EveSupFlagConnection();
 
+
+            if (_isTeam)
+            {
+                conn.InsertNewflagTeam(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                    _judgeAchooseWhite, _judgeBchooseWhite, _judgeCchooseWhite, _judgeDchooseWhite, _judgeEchooseWhite);
+            }
+            else 
+            {
+                conn.InsertNewflagInd(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                    _judgeAchooseWhite, _judgeBchooseWhite, _judgeCchooseWhite, _judgeDchooseWhite, _judgeEchooseWhite);
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-
+            this._sender.Show();
+            this.Close();
         }
 
         #endregion
