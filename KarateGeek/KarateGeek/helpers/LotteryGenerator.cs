@@ -39,11 +39,14 @@ namespace KarateGeek.helpers
 
     class LotteryGenerator
     {
+
         /** Class fields/properties: */
+
 
         private readonly List<long> athleteList;
 
         private readonly List<Tuple<long, int>> athleteScoreList;
+
 
         private List<Tuple<long, int>> athleteScoreListShuffled;
 
@@ -56,6 +59,7 @@ namespace KarateGeek.helpers
         public int randomisationFactor { get; set; }
 
 
+
         /** Class methods: */
 
         public LotteryGenerator(int tournamentId) // constructor
@@ -63,15 +67,18 @@ namespace KarateGeek.helpers
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
 
+
             List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
             foreach (long athlete in athleteList)
                 tmp.Add(new Tuple<long, int>(athlete, getAthleteScore(athlete)));
 
+
             athleteScoreList = tmp;
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
+
             rgen = new Random(); // initialise pseudo-random number-generator with a time-dependent value.
             randomisationFactor = 800;
         }
@@ -122,6 +129,13 @@ namespace KarateGeek.helpers
         }
 
 
+            //athlin.AddLast( ( new AthleteRanking().athleteId = 2) );
+
+
+            //athlin.ElementAt(1).athleteId = 23;
+            //long score = athlin.ElementAt(1).score;
+
+
         public List<long> getLottery()
         {
             if (athleteScoreListShuffled == null) throw new Exception("Use method shuffle() first.");
@@ -157,11 +171,13 @@ namespace KarateGeek.helpers
             foreach (var p in Participants) ;
 
             return Pairs;
+
         }
 
 
         public void confirmLottery() // writes current lottery to the database, atomically!
         {
+
             if (this.confirmed)
                 throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore");
 
@@ -175,6 +191,7 @@ namespace KarateGeek.helpers
         /* Methods to display a chart of the randomised athlete list: */
         private class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
         {                           // because it needs optional .NET components! For now, leave it as a stub.
+
 
         }
     }
