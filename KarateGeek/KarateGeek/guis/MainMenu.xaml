@@ -57,7 +57,7 @@
                 <Button Name="btnClubmanagement" Content="Club management" Grid.Column="1" Grid.Row="3" Margin="5" Click="btnClubmanagement_Click" />
                 <Button Name="btnLottery" Content="Lottery" Grid.Column="1" Grid.Row="4" Margin="5" Click="btnLottery_Click" />
                 <Button Name="btnEventSupport" Content="Event support" Grid.Column="1" Grid.Row="5" Margin="5" />
-                <Button Name="btnReports" Content="Reports" Grid.Column="1" Grid.Row="6" Margin="5" />
+                <Button Name="btnReports" Content="Reports" Grid.Column="1" Grid.Row="6" Margin="5" Click="btnReports_Click" />
 
                
 
