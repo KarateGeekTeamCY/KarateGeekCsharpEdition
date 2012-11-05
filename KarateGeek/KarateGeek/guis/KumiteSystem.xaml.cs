@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Collections;
 //using System.Windows.Forms;
 
 
@@ -25,8 +26,10 @@ namespace KarateGeek.guis
 
         private int pointsIndex = 0;
         private LinkedList<Point> _pointsHistory = new LinkedList<Point>();
-        //private LinkedList<Point> pointsRight = new LinkedList<Point>();
 
+        private bool replaceFlag = false;
+        private int toReplaceIndex = -1;
+        private Point toReplacePoint;
 
 
 
@@ -48,7 +51,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.ippon, 1, pointsIndex, "left");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.ippon, 1, "left");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
 
@@ -58,7 +68,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.wazaari, 1, pointsIndex, "left");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.wazaari, 1, "left");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -67,7 +84,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.jyogai, 1, pointsIndex, "left");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.jyogai, 1, "left");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -76,7 +100,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.chui, 1, pointsIndex, "left");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.chui, 1, "left");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -85,7 +116,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.keikoku, 1, pointsIndex, "left");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.keikoku, 1, "left");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -94,7 +132,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.tento, 1, pointsIndex, "left");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.tento, 1, "left");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -108,7 +153,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.ippon, 1, pointsIndex, "right");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.ippon, 1, "right");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
 
@@ -118,7 +170,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.wazaari, 1, pointsIndex, "right");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.wazaari, 1, "right");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -127,8 +186,15 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.jyogai, 1, pointsIndex, "right");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
 
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.jyogai, 1, "right");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
+            
             updateHistory();
         }
 
@@ -136,7 +202,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.chui, 1, pointsIndex, "right");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.chui, 1, "right");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -145,7 +218,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.keikoku, 1, pointsIndex, "right");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.keikoku, 1, "right");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -154,7 +234,14 @@ namespace KarateGeek.guis
         {
             Point p = new Point(Strings.tento, 1, pointsIndex, "right");
             pointsIndex++;
-            this._pointsHistory.AddLast(p);
+
+            if (replaceFlag)
+                this.toReplacePoint.update(Strings.tento, 1, "right");
+            else
+                this._pointsHistory.AddLast(p);
+
+            if (this.replaceFlag)
+                this.replaceFlag = false;
 
             updateHistory();
         }
@@ -203,22 +290,50 @@ namespace KarateGeek.guis
 
         private void listBoxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string result = MessageBox.Show("Do you want to delete this record? If the answer is NO then press No to replace the record or Cancel to continue normally", "Important.", 
-                MessageBoxButton.YesNoCancel ,
+            string result = MessageBox.Show("Do you want to delete this record? If the answer is NO then press No to replace the record or Cancel to continue normally", "Important.",
+                MessageBoxButton.YesNoCancel,
                 MessageBoxImage.Question).ToString();
 
+            this.toReplaceIndex = this.listBoxHistory.SelectedIndex;
+            this.toReplacePoint = this._pointsHistory.ElementAt(toReplaceIndex);
+
             if (result == "yes")
-            { 
-            
-            
-            }
-            
-            if( result == "no")
             {
-            
-            
+                this._pointsHistory.Remove(toReplacePoint);
+                this.updateHistory();
+            }
+
+            if (result == "no")
+            {
+                this.replaceFlag = true;
             }
         }
+
+
+
+        #region management buttons
+        
+        private void btnStart_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnPause_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnEnd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion 
 
     }
 
@@ -238,6 +353,14 @@ namespace KarateGeek.guis
             this.points = points;
             this.pointsIndex = pointsIndex;
             this.time = DateTime.Now.ToString("HH:mm:ss tt");
+            this.side = side;
+        }
+
+        public void update(string dsc, int points, string side)
+        {
+
+            this.description = dsc;
+            this.points = points;
             this.side = side;
         }
 

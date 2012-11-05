@@ -180,26 +180,26 @@
             </Grid.ColumnDefinitions>
             
             
-            <Button Grid.Column="1" 
+            <Button Name="btnStart" Grid.Column="1" 
                     Grid.Row="0" 
                     Content="start" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="2" 
+                    Margin="10,0,10,0" Click="btnStart_Click" />
+            <Button Name="btnPause" Grid.Column="2" 
                     Grid.Row="0" 
                     Content="pause" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="3" 
+                    Margin="10,0,10,0" Click="btnPause_Click" />
+            <Button Name="btnEnd" Grid.Column="3" 
                     Grid.Row="0" 
                     Content="end" 
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
-            <Button Grid.Column="4" 
+                    Margin="10,0,10,0" Click="btnEnd_Click" />
+            <Button Name="btnSave" Grid.Column="4" 
                     Grid.Row="0" 
                     Content="save"
                     VerticalAlignment="Center" 
-                    Margin="10,0,10,0"  />
+                    Margin="10,0,10,0" Click="btnSave_Click" />
         </Grid>
         
     </Grid>
