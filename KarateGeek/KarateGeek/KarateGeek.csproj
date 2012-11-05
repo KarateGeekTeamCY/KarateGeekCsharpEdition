@@ -82,6 +82,7 @@
     <Compile Include="databaseConnection\AthleteData.cs" />
     <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="databaseConnection\GameConnection.cs" />
+    <Compile Include="databaseConnection\ParticipationsConnection.cs" />
     <Compile Include="databaseConnection\ScoreConnection.cs" />
   </ItemGroup>
   <ItemGroup>
