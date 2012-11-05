@@ -15,27 +15,28 @@ using System.Diagnostics;   // has Debug.WriteLine()
 
 namespace KarateGeek.helpers
 {
-    /** Algorithm described in project specs.
-      * Simplified description (algorithm can be improved):
-      * 
-      * - Get list of tournament participants, in the form of List<long>,
-      *   where the "long" is their index in the DB table "Athletes".
-      * - Map that List to a List of tuples (athleteScoreList) which gets
-      *   constructed using DB data. This applies a function to all list
-      *   members which calculates their "score" (see project specs
-      *   for the Factors taken into account)
-      * - Randomise that score a little bit (configurable!)
-      * - Sort the List<AthleteRanking> by score and return a new
-      *   List<int>. That List will be used by the reporting tools.
-      *
-      * - The class LotteryGenerator will have a constructor that takes
-      *   a tournament id and three publicly accessible methods:
-      *   shuffle(), which produces a new randomisation, getLottery(),
-      *   which returns it, and confirmLottery(), which writes to the DB.
-      * - It must take into account team sports (HOW?!!?)
-      * 
-      * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!
-      */
+    /** 
+     * Algorithm described in project specs.
+     * Simplified description (algorithm can be improved):
+     * 
+     * - Get list of tournament participants, in the form of List<long>,
+     *   where the "long" is their index in the DB table "Athletes".
+     * - Map that List to a List of tuples (athleteScoreList) which gets
+     *   constructed using DB data. This applies a function to all list
+     *   members which calculates their "score" (see project specs
+     *   for the Factors taken into account)
+     * - Randomise that score a little bit (configurable!)
+     * - Sort the List<AthleteRanking> by score and return a new
+     *   List<int>. That List will be used by the reporting tools.
+     *
+     * - The class LotteryGenerator will have a constructor that takes
+     *   a tournament id and three publicly accessible methods:
+     *   shuffle(), which produces a new randomisation, getLottery(),
+     *   which returns it, and confirmLottery(), which writes to the DB.
+     * - It must take into account team sports (HOW?!!?)
+     * 
+     * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!
+     */
 
     class LotteryGenerator
     {
@@ -165,6 +166,8 @@ namespace KarateGeek.helpers
         }
 
 
+        /* CONVENTION: For semi-complete pairs, we provide a negative athlete id
+         * to the writeTournamentPair() method of the LotteryGenConnection class. */
         private List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
         {
             List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long, long, int, int>>();
@@ -225,10 +228,12 @@ namespace KarateGeek.helpers
             /* Crude and untested first version: */
 
             int len = Participants.Count;
-            int p = (int)Math.Pow(2, Math.Ceiling(Math.Log(len, 2))); // tested, works well for len>=1
+            int p = (int) Math.Pow(2, Math.Ceiling(Math.Log(len, 2))); // tested, works well for len>=1
             int y = p - len;
             int x = len - y;
             int z = p / 2 - y; // len must be >=2 (?)
+
+            int Yabove = (y + 1) / 2;
 
             long[] Yarray = Participants.Take(y).ToArray();
             long[] Xarray = Participants.Skip(y).ToArray();
@@ -251,7 +256,20 @@ namespace KarateGeek.helpers
 
             /* TODO: Actually construct the pairs and add them to the List "Pairs" */
             /**/
+            //for (int i = 0; i < x; ++i){
 
+            //}
+            //for (int i = 0; i < Yabove; ++i){
+            
+            //}
+            //for (int i = Yabove; i < y; ++i){
+
+            //}
+
+            //long[] Ylow  = new long[(y+1)/2];
+            //long[] Yhigh = new long[(y+1)/2];
+            //long[] Xlow  = new long[(x+1)/2];
+            //long[] Xhigh = new long[(x+1)/2];
 
             /**/
 

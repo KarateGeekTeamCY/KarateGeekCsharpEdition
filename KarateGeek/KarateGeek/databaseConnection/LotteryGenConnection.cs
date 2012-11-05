@@ -84,8 +84,8 @@ namespace KarateGeek.databaseConnection
 
             DateTime birthdate = DateTime.Parse(dt.Rows[0][0].ToString());
 
-            // See: http://stackoverflow.com/a/1404
-            DateTime now = DateTime.Today;
+            // See http://stackoverflow.com/a/1404 for a public domain example :)
+            DateTime now = DateTime.Today;  // we could also use the date of the event
             int age = now.Year - birthdate.Year;
             if (birthdate > now.AddYears(-age)) age--;
 
@@ -105,7 +105,8 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        /* Writes a tournament pair to the database: */
+        /* Writes a tournament pair to the database.
+         * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id. */
         private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
         {
             /* UNTESTED!! */
@@ -115,9 +116,10 @@ namespace KarateGeek.databaseConnection
                                     + "VALUES ( " + id1 + ", NULL, ( SELECT currval('games_id_seq') ));";
             String writepair_second = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
                                     + "VALUES ( " + id2 + ", NULL, ( SELECT currval('games_id_seq') ));";
-            this.NonQuery(writegame);
-            this.NonQuery(writepair_first);
-            this.NonQuery(writepair_second);
+
+            if (id1 >= 0 || id2 >= 0) this.NonQuery(writegame);
+            if (id1 >= 0) this.NonQuery(writepair_first);
+            if (id2 >= 0) this.NonQuery(writepair_second);
         }
 
         /* Writes all tournament pairs to the database, atomically: */
