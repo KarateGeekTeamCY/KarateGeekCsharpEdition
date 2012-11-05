@@ -103,9 +103,14 @@ namespace KarateGeek.helpers
                         conn.getNumOfGoodPlacements(athleteId, 4, false) *  40;   // fourth place in unofficial event
 
             /* belt color: */
+            //String belt = conn.getBeltColor(athleteId);
+            //for (int i = 0 ; i < Strings.rank.Length; ++i)
+            //    if (Strings.rank[i] == belt)
+            //        score += i * beltFactor;
+
             String belt = conn.getBeltColor(athleteId);
-            for (int i = 0 ; i < Strings.rank.Length; ++i)
-                if (Strings.rank[i] == belt)
+            for (int i = 0; i < Strings.rank.Length; ++i)
+                if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))
                     score += i * beltFactor;
 
             /* age, only for children (<18): */
@@ -177,7 +182,7 @@ namespace KarateGeek.helpers
              * ALGORITHM (please confirm correctness, and cross-check with projec specs):
              * 
              * - copy sorted list to array (easier than using C#-style lists, I think)
-             * - get array length (let's say "l")
+             * - get array length (let's say "len")
              *   [ Actually we use LINQ and, instead of using System.ArraySegment<T> on
              *     Participants.ToArray() (and then Array.Copy()), we split the list
              *     into 2 arrays of lengths "x" and "y"... see below for the calculation

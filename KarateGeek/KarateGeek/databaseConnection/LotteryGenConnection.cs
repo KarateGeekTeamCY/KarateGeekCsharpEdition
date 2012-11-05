@@ -46,7 +46,7 @@ namespace KarateGeek.databaseConnection
         {
             /* If you don't care only about official tournaments, use the following simplified query: */
             //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
-                //+ " AND ranking = 1;";
+            //           + " AND ranking = 1;";
 
             String sql = "SELECT * FROM tournament_participations WHERE athlete_id = " + athleteId
                        + " AND ranking = " + place 
@@ -62,10 +62,6 @@ namespace KarateGeek.databaseConnection
 
         public String getBeltColor(long athleteId)
         {
-            /* If you don't care only about official tournaments, use the following simplified query: */
-            //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
-            //+ " AND ranking = 1;";
-
             String sql = "SELECT rank FROM athletes WHERE id = " + athleteId + " ;";
 
             return this.Query(sql).Tables[0].Rows[0].ToString();
