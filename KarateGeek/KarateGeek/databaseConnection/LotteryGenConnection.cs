@@ -64,7 +64,7 @@ namespace KarateGeek.databaseConnection
         {
             String sql = "SELECT rank FROM athletes WHERE id = " + athleteId + " ;";
 
-            return this.Query(sql).Tables[0].Rows[0].ToString();
+            return this.Query(sql).Tables[0].Rows[0][0].ToString();
         }
 
 

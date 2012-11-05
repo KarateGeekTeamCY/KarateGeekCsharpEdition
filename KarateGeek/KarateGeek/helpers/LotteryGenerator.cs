@@ -78,7 +78,7 @@ namespace KarateGeek.helpers
              * it would be much, much better than this: */
             rgen = new Random(); // initialise pseudo-random number-generator with a time-dependent value.
 
-            this.randomisationFactor = 800;
+            this.randomisationFactor = 650;
             this.tournamentId = tournamentId;
         }
 
@@ -103,15 +103,15 @@ namespace KarateGeek.helpers
                         conn.getNumOfGoodPlacements(athleteId, 4, false) *  40;   // fourth place in unofficial event
 
             /* belt color: */
-            //String belt = conn.getBeltColor(athleteId);
-            //for (int i = 0 ; i < Strings.rank.Length; ++i)
-            //    if (Strings.rank[i] == belt)
-            //        score += i * beltFactor;
-
             String belt = conn.getBeltColor(athleteId);
             for (int i = 0; i < Strings.rank.Length; ++i)
-                if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))
+                if (Strings.rank[i] == belt)
                     score += i * beltFactor;
+
+            //String belt = conn.getBeltColor(athleteId);  /* Both string comparison methods work! */
+            //for (int i = 0; i < Strings.rank.Length; ++i)
+            //    if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))
+            //        score += i * beltFactor;
 
             /* age, only for children (<18): */
             int age = conn.getAge(athleteId);
@@ -130,7 +130,9 @@ namespace KarateGeek.helpers
 
             foreach (var tuple in athleteScoreList) //TODO: Tweak randomisation factor
             {
-                L.Add(new Tuple<long, int> (tuple.Item1, tuple.Item2 + rgen.Next(0, randomisationFactor)));
+                // L.Add(new Tuple<long, int>(tuple.Item1, tuple.Item2 + rgen.Next(0, randomisationFactor)));
+                L.Add(new Tuple<long, int>(tuple.Item1, tuple.Item2
+                    + rgen.Next(0, randomisationFactor * ( 1 + tuple.Item2 / 1000))));
                 Debug.WriteLine("List item: " + tuple.Item1 + " with initial score: " + tuple.Item2);
             }
 
@@ -138,8 +140,10 @@ namespace KarateGeek.helpers
 
             /* EXPERIMENTAL and very computationally expensive way to check whether an athlete pair belongs
              * to the same club... Some refactoring would reduce the redundancy, but it should work as-is: */
-            if ( tries > 0 && pairsClubConstraintActive(getPairs(this.getLottery())) )
+            if ( tries > 0 && pairsClubConstraintActive(getPairs(this.getLottery())) ){
+                Debug.WriteLine("\n ** AUTO-RESHUFFLING because same-club collisions were found... ** \n");
                 shuffle(tries - 1);
+            }
         }
 
 
