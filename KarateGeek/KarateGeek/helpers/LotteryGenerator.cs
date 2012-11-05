@@ -132,7 +132,7 @@ namespace KarateGeek.helpers
 
             /* EXPERIMENTAL and very computationally expensive way to check whether an athlete pair belongs
              * to the same club... Some refactoring would reduce the redundancy, but it should work as-is: */
-            if (pairsClubConstraintActive(getPairs(this.getLottery())) && tries > 0)
+            if ( tries > 0 && pairsClubConstraintActive(getPairs(this.getLottery())) )
                 shuffle(tries - 1);
         }
 
