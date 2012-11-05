@@ -42,14 +42,13 @@ namespace KarateGeek.guis
         private string _gameId = "";
         private string _turnamentId = "";
         private string _participationId = "";
-        private bool _isTeam = true;
+        private bool _isTeam;
 
 
         private DataTable _DTjudges;
         private DataTable _DTparticipations;
         private DataTable _DTgame;
 
-        private Boolean isTeam;
 
 
         #endregion
@@ -111,6 +110,8 @@ namespace KarateGeek.guis
             return "";
         }
 
+
+
         private void _computeMean()
         {
             double smaller = 0, larger = 10; ;
@@ -152,7 +153,6 @@ namespace KarateGeek.guis
         #endregion
 
 
-
         #region score listeners
 
         private void scoreA_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -189,7 +189,6 @@ namespace KarateGeek.guis
         #endregion
 
 
-
         #region judge listeners
 
         private void eventJudgePickerA_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -218,7 +217,6 @@ namespace KarateGeek.guis
         }
 
         #endregion
-
 
 
         #region buttons functionality

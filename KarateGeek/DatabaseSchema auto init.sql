@@ -237,7 +237,7 @@ CREATE TABLE tournament_participations (
     tournament_id   INTEGER         REFERENCES tournaments(id),
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
-    
+
     PRIMARY KEY (athlete_id, tournament_id)
 
     );
@@ -254,17 +254,7 @@ CREATE TABLE game_participations (      -- gia atomika
 );
 
 
-create table game_point (
-    id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
-    athlete_id      INTEGER         REFERENCES athletes(id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
-    technical_point INTEGER,
-    technical_point_desc VARCHAR(50),
-    PRIMARY KEY (id)
-
-);
 
 CREATE TABLE game_points(
 
@@ -358,17 +348,24 @@ INSERT INTO cities (name, country_code) VALUES ('Thessaloniki', 'GR');
 INSERT INTO addresses (id , street, "number", city_id , postal_code , country_code ) VALUES ('0' , 'tepak' , '1' , '1' , '3025' , 'CY');
 
 
-INSERT INTO clubs (name, address_id, country_code) VALUES ('power fight club', 0, 'CY');
+INSERT INTO clubs (name, address_id, country_code) VALUES ('Fight Club', 0, 'CY');
+INSERT INTO clubs (name, address_id, country_code) VALUES ('Night Club', 0, 'GR'); --address is CY!
 
 
 INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl1' , 'athl1father' , 'athl1last', '02-10-1991' , 'male', '99123145' , null , 'athl1@gmail.com' , '0');
+VALUES ('athl1' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'male', '99123145' , null , 'athl1@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl2' , 'athl2father' , 'athl2last', '02-10-1992' , 'male', '99123146' , null , 'athl2@gmail.com' , '0');
+VALUES ('athl2' , 'athl2_father' , 'athl2_last', '02-10-1992' , 'male', '99123146' , null , 'athl2@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl3' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'male', '99123145' , null , 'athl3@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl4' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'male', '98123146' , null , 'athl4@gmail.com' , '0');
 
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
 -- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')
@@ -381,10 +378,11 @@ INSERT INTO users (id , username , password, person_management, event_management
 VALUES ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
 
 
-INSERT INTO athletes (id, rank, club_id ) VALUES ('0', 'black', '1'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('1', 'black', '1'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('2', 'black', NULL );
-
+INSERT INTO athletes (id, rank, club_id ) VALUES ('0', 'Black  –  1st dan', '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('1', 'Black  –  2nd dan', '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('2', 'Black  –  1st dan', NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('3', 'Blue   –  2nd kyu', '2'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('4', 'White/Red – 8th dan', '2' );
 
 INSERT INTO locations (id, name, phone, email)
 VALUES (0, 'location 1', '77778888', 'loc@locloc.com');
@@ -395,16 +393,20 @@ VALUES ('Big Event', '2012/10/30', 0);
 
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Iron Fist Tournament', 'male', 1, 99, 'white', 'black 8 dan', 'deathmatch', 'flag', 1);
+VALUES ('Iron Fist Tournament', 'male', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'deathmatch', 'flag', 1);
 
 
 -- A NULL "position" means that the match hasn't taken place yet
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (0, 1, 'black', NULL, NULL );
+VALUES (0, 1, (SELECT rank FROM athletes WHERE id = 0), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (1, 1, 'black', NULL, NULL );
+VALUES (1, 1, (SELECT rank FROM athletes WHERE id = 1), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (2, 1, 'black', NULL, NULL );
+VALUES (2, 1, (SELECT rank FROM athletes WHERE id = 2), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (3, 1, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (4, 1, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
 
 
 -- rollback transaction (useful for checking syntax):

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics;   // has Debug.WriteLine()
 
 using KarateGeek.helpers; // for lottery generator testing; THIS LINE WILL BE REMOVED
 
@@ -65,11 +66,40 @@ namespace KarateGeek.guis
             et.Show();
         }
 
-        /* EXPERIMENTAL and not ready, will crash 'n' burn if clicked:*/
+        /* EXPERIMENTAL and not ready, might crash 'n' burn if clicked:*/
+        /* Do not just remove this code; it's a usage example for the lottery class. */
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
             LotteryGenerator lg = new LotteryGenerator(1);
+
+            // Some silly test code:
+            Debug.WriteLine("Our first try:");
+            lg.shuffle();
+            foreach(var element in lg.getLottery())
+                Debug.WriteLine("Athlete number: " + element);
+
+            Debug.WriteLine("Our second try:");
+            lg.shuffle();
+            foreach (var element in lg.getLottery())
+                Debug.WriteLine("Athlete number: " + element);
+
+            Debug.WriteLine("Our third try, randomise MORE:");
+            lg.randomisationFactor = 8000; //!!
+            lg.shuffle();
+            foreach (var element in lg.getLottery())
+                Debug.WriteLine("Athlete number: " + element);
+
+            // This will crash:
+            lg.confirmLottery();
         }
+
+        private void btnReports_Click(object sender, RoutedEventArgs e)
+        {
+            guis.Reports reports = new Reports();
+            reports.Show();
+        }
+
+       
 
         
     }
