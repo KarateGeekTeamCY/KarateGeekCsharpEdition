@@ -20,5 +20,10 @@ namespace KarateGeek.guis
         {
 
         }
+
+        private void AthleteCrystalReport2_InitReport(object sender, EventArgs e)
+        {
+
+        }
     }
 }
