@@ -87,6 +87,9 @@ namespace KarateGeek.helpers
         private int getAthleteScore(long athleteId)
         {
             LotteryGenConnection conn = new LotteryGenConnection();
+
+            const int beltFactor = 125;
+            const int ageFactor  = 100;
             
             /* past achievements: */
             int score = conn.getNumOfGoodPlacements(athleteId, 1, true)  * 500 +  // first  place in   official event
@@ -102,19 +105,20 @@ namespace KarateGeek.helpers
             String belt = conn.getBeltColor(athleteId);
             for (int i = 0 ; i < Strings.rank.Length; ++i)
                 if (Strings.rank[i] == belt)
-                    score += i * 125;
+                    score += i * beltFactor;
 
             /* age, only for children (<18): */
             int age = conn.getAge(athleteId);
             for (int i = 0; i < age && i < 18; ++i)
-                score += 100;
+                score += ageFactor;
 
 
             return score;
         }
 
 
-        public void shuffle() // produces a new randomization [It would be less ugly with more LINQ usage!]
+        /* produces a new randomization [It would be less ugly with more LINQ usage!] */
+        public void shuffle(int tries = 2) // a default value of 2 seems OK - we don't want infinite recursion!
         {
             List<Tuple<long, int>> L = new List<Tuple<long, int>>();
 
@@ -125,6 +129,11 @@ namespace KarateGeek.helpers
             }
 
             athleteScoreListShuffled = L;
+
+            /* EXPERIMENTAL and very computationally expensive way to check whether an athlete pair belongs
+             * to the same club... Some refactoring would reduce the redundancy, but it should work as-is: */
+            if (pairsClubConstraintActive(getPairs(this.getLottery())) && tries > 0)
+                shuffle(tries - 1);
         }
 
 
@@ -144,13 +153,25 @@ namespace KarateGeek.helpers
         }
 
 
-        private List<Tuple<long, long, int, int>> getPairs(List<long> Participants) // Stub; see project specs for the algorithm
+        private bool pairsClubConstraintActive(List<Tuple<long, long, int, int>> Pairs)
+        {
+            LotteryGenConnection conn = new LotteryGenConnection();
+
+            foreach (var pair in Pairs)
+                if (conn.sameClubAthletePair(pair))
+                    return true;
+
+            return false;
+        }
+
+
+        private List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
         {
             List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long, long, int, int>>();
 
             /* Code that constructs athlete pairs goes here... */
             /**
-             * ALGORITHM (please confirm correctness):
+             * ALGORITHM (please confirm correctness, and cross-check with projec specs):
              * 
              * - copy sorted list to array (easier than using C#-style lists, I think)
              * - get array length (let's say "l")
@@ -179,7 +200,8 @@ namespace KarateGeek.helpers
              *   directly) and the rest get paired in the first round (aka phase). Example
              *   for 11 athletes:
              * 
-             *   y*2 + (11-y) = 16  =>  y=5 and z=8-5=3 pairs in the 1st phase
+             *    y*2 + (11-y) = 16  =>  y=5 and z=8-5=3 pairs in the 1st phase
+             * 
              * 
              *         /           \                   /           \
              *        /             \                 /             \
@@ -193,8 +215,8 @@ namespace KarateGeek.helpers
              *                        x1   x3 x5   x6 x4   x2
              * 
              * 
-             *  [number of y-type athletes "above" x1:  n = (y+1) mod 2
-             *   so x1 and x3 meet at the "4th position" of phase 1     ]
+             *  [number of y-type athletes "above" x1:  Yabove = (y+1) / 2
+             *   so x1 and x3 meet at the "4th position" of phase 1        ]
              * 
              * 
              *  ** There might be a smarter way to do it! (using Lists?!) **
@@ -203,19 +225,19 @@ namespace KarateGeek.helpers
             /* Crude and untested first version: */
 
             int len = Participants.Count;
-            int p = (int)Math.Pow(2, Math.Ceiling(Math.Log(len, 2))); // tested, works well for x>=1
+            int p = (int)Math.Pow(2, Math.Ceiling(Math.Log(len, 2))); // tested, works well for len>=1
             int y = p - len;
             int x = len - y;
-            int z = p / 2 - y; // x must be >=2 (?)
+            int z = p / 2 - y; // len must be >=2 (?)
 
             long[] Yarray = Participants.Take(y).ToArray();
             long[] Xarray = Participants.Skip(y).ToArray();
 
-            /* Some assertions: */
+            /* Important assertions: */
             Debug.Assert(x == 2 * z);
             Debug.Assert(Xarray.Length == x);
 
-            { //will be removed in the final version
+            { //Debug info, will be removed in the final version:
                 Debug.WriteLine(Participants);
                 foreach (var i in Participants)
                     Debug.WriteLine(i);
@@ -227,10 +249,13 @@ namespace KarateGeek.helpers
                     Debug.WriteLine(i);
             }
 
-            //foreach (var p in Participants) ;
+            /* TODO: Actually construct the pairs and add them to the List "Pairs" */
+            /**/
+
+
+            /**/
 
             return Pairs;
-
         }
 
 
@@ -244,8 +269,8 @@ namespace KarateGeek.helpers
             List<long> L = this.getLottery();
             List<Tuple<long, long, int, int>> Pairs = getPairs(L);
 
-            /* the flag will be changed to "true" after some testing */
-            this.confirmed = conn.writeAllTournamentPairs(Pairs, tournamentId, false);
+            /* the doCommit flag (named parameter) will be changed to "true" after some testing */
+            this.confirmed = conn.writeAllTournamentPairs(Pairs, tournamentId, doCommit: false);
         }
 
 

@@ -94,6 +94,17 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public bool sameClubAthletePair(Tuple<long, long, int, int> athPair) // a bit hackish
+        {
+            String unfinishedSql = "SELECT club_id FROM athletes WHERE id = ";
+
+            String club1 = this.Query(unfinishedSql + athPair.Item1 + " ;").Tables[0].Rows[0][0].ToString();
+            String club2 = this.Query(unfinishedSql + athPair.Item2 + " ;").Tables[0].Rows[0][0].ToString();
+
+            return String.IsNullOrWhiteSpace(club1) ? false : club1.Equals(club2, StringComparison.Ordinal);
+        }
+
+
         /* Writes a tournament pair to the database: */
         private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
         {
