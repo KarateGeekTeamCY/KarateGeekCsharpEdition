@@ -92,66 +92,6 @@
     <Compile Include="guis\Reports.Designer.cs">
       <DependentUpon>Reports.cs</DependentUpon>
     </Compile>
-    <Compile Include="reports\AthleteCrystalReport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AthleteCrystalReport.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="reports\AthleteForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\AthleteForm.Designer.cs">
-      <DependentUpon>AthleteForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="reports\ClubForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\ClubForm.Designer.cs">
-      <DependentUpon>ClubForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="reports\CountryForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\CountryForm.Designer.cs">
-      <DependentUpon>CountryForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="reports\EventForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\EventForm.Designer.cs">
-      <DependentUpon>EventForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="reports\JudgeCrystalReport.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>JudgeCrystalReport.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="reports\JudgeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\JudgeForm.Designer.cs">
-      <DependentUpon>JudgeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="reports\CrystalReport1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport1.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="reports\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="reports\TournamentForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="reports\TournamentForm.Designer.cs">
-      <DependentUpon>TournamentForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Strings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -221,21 +161,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\AthleteCrystalReport.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>AthleteCrystalReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\CrystalReport1.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="reports\JudgeCrystalReport.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JudgeCrystalReport.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
