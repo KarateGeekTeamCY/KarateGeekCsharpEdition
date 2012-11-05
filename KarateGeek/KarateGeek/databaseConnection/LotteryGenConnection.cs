@@ -46,7 +46,7 @@ namespace KarateGeek.databaseConnection
         {
             /* If you don't care only about official tournaments, use the following simplified query: */
             //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
-                //+ " AND ranking = 1;";
+            //           + " AND ranking = 1;";
 
             String sql = "SELECT * FROM tournament_participations WHERE athlete_id = " + athleteId
                        + " AND ranking = " + place 
@@ -62,13 +62,9 @@ namespace KarateGeek.databaseConnection
 
         public String getBeltColor(long athleteId)
         {
-            /* If you don't care only about official tournaments, use the following simplified query: */
-            //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
-            //+ " AND ranking = 1;";
-
             String sql = "SELECT rank FROM athletes WHERE id = " + athleteId + " ;";
 
-            return this.Query(sql).Tables[0].Rows[0].ToString();
+            return this.Query(sql).Tables[0].Rows[0][0].ToString();
         }
 
 
@@ -84,8 +80,8 @@ namespace KarateGeek.databaseConnection
 
             DateTime birthdate = DateTime.Parse(dt.Rows[0][0].ToString());
 
-            // See: http://stackoverflow.com/a/1404
-            DateTime now = DateTime.Today;
+            // See http://stackoverflow.com/a/1404 for a public domain example :)
+            DateTime now = DateTime.Today;  // we could also use the date of the event
             int age = now.Year - birthdate.Year;
             if (birthdate > now.AddYears(-age)) age--;
 
@@ -94,31 +90,49 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        /* Writes a tournament pair to the database: */
-        private void writeTournamentPair(long id1, long id2, int phase, int position)
+        public bool sameClubAthletePair(Tuple<long, long, int, int> athPair) // a bit hackish
         {
-            /* UNFINISHED! */
-            String writegame = "";
+            String unfinishedSql = "SELECT club_id FROM athletes WHERE id = ";
 
-            /* Using game_id returned from above: */
-            String writepair_first  = "";
-            String writepair_second = "";
+            String club1 = this.Query(unfinishedSql + athPair.Item1 + " ;").Tables[0].Rows[0][0].ToString();
+            String club2 = this.Query(unfinishedSql + athPair.Item2 + " ;").Tables[0].Rows[0][0].ToString();
+
+            return String.IsNullOrWhiteSpace(club1) ? false : club1.Equals(club2, StringComparison.Ordinal);
+        }
+
+
+        /* Writes a tournament pair to the database.
+         * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id. */
+        private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
+        {
+            /* UNTESTED!! */
+            String writegame = "INSERT INTO games (phase, position, tournament_id ) "
+                             + "VALUES ( " + phase + ", " + position + ", " + tournamentId + " );";
+            String writepair_first  = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+                                    + "VALUES ( " + id1 + ", NULL, ( SELECT currval('games_id_seq') ));";
+            String writepair_second = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+                                    + "VALUES ( " + id2 + ", NULL, ( SELECT currval('games_id_seq') ));";
+
+            if (id1 >= 0 || id2 >= 0) this.NonQuery(writegame);
+            if (id1 >= 0) this.NonQuery(writepair_first);
+            if (id2 >= 0) this.NonQuery(writepair_second);
         }
 
         /* Writes all tournament pairs to the database, atomically: */
         /* Is this the correct approach for atomicity? */
-        public bool writeAllTournamentPairs(List<Tuple<long, long, int, int>> Pairs, bool doCommit)
+        public bool writeAllTournamentPairs(List<Tuple<long, long, int, int>> Pairs,
+            long tournamentId, bool doCommit)
         {
             this.NonQuery("BEGIN;");
 
             foreach (var pair in Pairs)
-                writeTournamentPair(pair.Item1, pair.Item2, pair.Item3, pair.Item4);
+                writeTournamentPair(pair.Item1, pair.Item2, pair.Item3, pair.Item4, tournamentId);
 
             if (doCommit) {
                 return this.NonQuery("COMMIT;"); // supposed to return true if successful (currently it's always true)
             } else {
                 this.NonQuery("ROLLBACK;"); // very useful for checking syntax etc.
-                return false;               // false, since we didn't write anything
+                return false;               // always false, since we didn't write anything
             }
         }
 
