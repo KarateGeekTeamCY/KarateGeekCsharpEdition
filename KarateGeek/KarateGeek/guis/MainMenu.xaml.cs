@@ -92,8 +92,8 @@ namespace KarateGeek.guis
 
         private void btnReports_Click(object sender, RoutedEventArgs e)
         {
-            reports.Form1 f1 = new reports.Form1();
-            f1.Show();
+            guis.Reports reports = new Reports();
+            reports.Show();
         }
 
        

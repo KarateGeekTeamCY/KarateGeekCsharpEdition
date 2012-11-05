@@ -16,14 +16,14 @@ namespace KarateGeek.reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class CrystalReport1 : ReportClass {
+    public class JudgeCrystalReport : ReportClass {
         
-        public CrystalReport1() {
+        public JudgeCrystalReport() {
         }
         
         public override string ResourceName {
             get {
-                return "CrystalReport1.rpt";
+                return "JudgeCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace KarateGeek.reports {
         
         public override string FullResourceName {
             get {
-                return "KarateGeek.reports.CrystalReport1.rpt";
+                return "KarateGeek.reports.JudgeCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace KarateGeek.reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedCrystalReport1 : Component, ICachedReport {
+    public class CachedJudgeCrystalReport : Component, ICachedReport {
         
-        public CachedCrystalReport1() {
+        public CachedJudgeCrystalReport() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace KarateGeek.reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            CrystalReport1 rpt = new CrystalReport1();
+            JudgeCrystalReport rpt = new JudgeCrystalReport();
             rpt.Site = this.Site;
             return rpt;
         }
