@@ -118,7 +118,7 @@
                     VerticalAlignment="Center"
                     Grid.Column="2"
                     Margin="5"
-                    Padding="20,5"/>
+                    Padding="20,5" Click="btnBack_Click" />
             
             
             <Button Name="btnStartNextGame"
@@ -126,7 +126,7 @@
                     VerticalAlignment="Center"
                     Grid.Column="1"
                     Padding="5"
-                    Margin="5"/>
+                    Margin="5" Click="btnStartNextGame_Click" />
 
 
         </Grid>
