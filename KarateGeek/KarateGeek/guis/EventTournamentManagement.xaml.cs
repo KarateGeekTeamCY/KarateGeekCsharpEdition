@@ -35,6 +35,7 @@ namespace KarateGeek.guis
         private CityConnection cityConnection;
         private CountryConnection countryConnection;
         private LocationConnection locationConnection;
+        private ParticipationsConnection participantConnection;
         List<ListData> eventNameListForAutoComplete;
         List<ListData> tournamentNameListForAutoComplete;
         List<AthleteData> athleteListForAutoComplete;
@@ -75,6 +76,7 @@ namespace KarateGeek.guis
         private string _tournamentScoringType = null;
         private string _eventInfo = null;
         private int _tournamentId;
+        private int teamsNum = 0;
 
         //
         //participants specific variables
@@ -106,6 +108,7 @@ namespace KarateGeek.guis
             athleteConnection = new AthleteConnection();
             addressConnection = new AddressConnection();
             locationConnection = new LocationConnection();
+            participantConnection = new ParticipationsConnection();
             //cities kai countries
             cityConnection = new CityConnection();
             countryConnection = new CountryConnection();
@@ -544,6 +547,8 @@ namespace KarateGeek.guis
                 tSuggestionList.Visibility = Visibility.Collapsed;
                 tSuggestionList.DataContext = null;
             }
+
+           
         }
 
 
@@ -671,6 +676,25 @@ namespace KarateGeek.guis
                     }
                     this.cmbTGame.SelectedIndex = gamePosition;
 
+                    DataSet participants = participantConnection.getParticipantsI(_tournamentId);
+                    List<AthleteData> list = new List<AthleteData>();
+                    int num = 1;
+                    foreach (DataRow dr in participants.Tables[0].Rows)
+                    {
+                        AthleteData suggestion = new AthleteData();
+                        suggestion.id = int.Parse(dr[0].ToString());
+                        suggestion.athlete_name = num + ". " + dr[6].ToString() + " " + dr[7].ToString();
+                        list.Add(suggestion);
+                        num++;
+                    }
+                    if (list.Count > 0)
+                    {
+                        lbTSelectedParticipants.DataContext = list;
+                    }
+                    else
+                    {
+                        lbTSelectedParticipants.DataContext = null;
+                    }
                 }
                 tbTName.TextChanged += new TextChangedEventHandler(tbTName_TextChanged);
             }
@@ -805,7 +829,7 @@ namespace KarateGeek.guis
         private void cmbTteamsNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbTteamsNumber.SelectedIndex;
-            int teamsNum = 0;
+            
             int team=65;
 
             if (index != 0)
@@ -898,6 +922,87 @@ namespace KarateGeek.guis
 
 
         #endregion
+
+        private void btaddParticipant_Click(object sender, RoutedEventArgs e)
+        {
+           
+            AthleteData selection = new AthleteData();
+            List<String> athletes = new List<String>();
+            DataSet participants;
+
+            if(_tournamentGameType.Equals("individual")){
+            foreach(Object item in lbTparticipants.SelectedItems)
+            {
+                List<AthleteData> list = new List<AthleteData>();
+                selection = (AthleteData)item;
+                participantConnection.InsertNewParticipantI(selection.id, _tournamentId, "kapoio", 4);
+
+                participants = participantConnection.getParticipantsI(_tournamentId);
+                int i = 1;
+                foreach (DataRow dr in participants.Tables[0].Rows)
+                {
+                    AthleteData suggestion = new AthleteData();
+                    suggestion.id = int.Parse(dr[0].ToString());
+                    suggestion.athlete_name = i + ". " + dr[6].ToString() + " " + dr[7].ToString();
+                    list.Add(suggestion);
+                    i++;
+                }
+                if (list.Count > 0)
+                {
+                    lbTSelectedParticipants.DataContext = list;
+                }
+                else
+                {
+                    lbTSelectedParticipants.DataContext = null;
+                }
+            }
+            }else if(_tournamentGameType.Equals("team")){
+               
+            }
+          
+        }
+
+        private void btdeleteParticipant_Click(object sender, RoutedEventArgs e)
+        {
+            
+            AthleteData selection = new AthleteData();
+            List<String> athletes = new List<String>();
+            List<AthleteData> finalList = new List<AthleteData>();
+            DataSet participants;
+
+            foreach (Object item in lbTSelectedParticipants.SelectedItems)
+            {
+                List<AthleteData> list = new List<AthleteData>();
+                selection = (AthleteData)item;
+                participantConnection.deleteParticipantI(selection.id, _tournamentId);
+
+                participants = participantConnection.getParticipantsI(_tournamentId);
+                int i = 1;
+                foreach (DataRow dr in participants.Tables[0].Rows)
+                {
+                    AthleteData suggestion = new AthleteData();
+                    suggestion.id = int.Parse(dr[0].ToString());
+                    suggestion.athlete_name = i + ". " + dr[6].ToString() + " " + dr[7].ToString();
+                    list.Add(suggestion);
+                    i++;
+                }
+                finalList = list;
+                
+            }
+            if (finalList.Count > 0)
+            {
+                lbTSelectedParticipants.DataContext = finalList;
+            }
+            else
+            {
+                lbTSelectedParticipants.DataContext = null;
+            }
+        }
+
+       
+       
+
+        
 
      
 
