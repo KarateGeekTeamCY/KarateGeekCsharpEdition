@@ -416,20 +416,6 @@ VALUES (4, 1, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
 
 
 
-CREATE or REPLACE  VIEW athletes_total_details AS
-select athletes.id, first_name, last_name, fathers_name, sex, date_of_birth, persons.phone, secondary_phone, persons.email,
-		rank, clubs.name as club_name, street, number, cities.name as city
-
- from  persons join athletes 
-	on athletes.id = persons.id 
-		join addresses 
-			on persons.address_id = addresses.id 
-				join clubs 
-					on athletes.club_id = clubs.id
-						join cities 
-							on cities.id = addresses.city_id; 
-
-
 							
 
 

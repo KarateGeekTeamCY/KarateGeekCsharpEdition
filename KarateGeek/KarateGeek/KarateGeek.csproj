@@ -104,7 +104,6 @@
     <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="databaseConnection\GameConnection.cs" />
     <Compile Include="databaseConnection\ParticipationsConnection.cs" />
-    <Compile Include="databaseConnection\ScoreConnection.cs" />
     <Compile Include="databaseConnection\LotteryGenConnection.cs" />
     <Compile Include="databaseConnection\EveSupScoreConnection.cs" />
     <Compile Include="databaseConnection\TournamentGameParticipationsConnection.cs" />
