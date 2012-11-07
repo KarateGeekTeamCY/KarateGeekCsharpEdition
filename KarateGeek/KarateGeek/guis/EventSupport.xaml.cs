@@ -37,6 +37,7 @@ namespace KarateGeek.guis
 
 
 
+
         #endregion private declaretions
 
 
@@ -46,6 +47,7 @@ namespace KarateGeek.guis
         {
             InitializeComponent();
             
+            //DataTable todayEvent = _eventConn.ge
 
 
 
