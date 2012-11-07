@@ -102,9 +102,7 @@ namespace KarateGeek.guis
         private void btnEventSupport_Click(object sender, RoutedEventArgs e)
         {
             EventSupport eventSup = new EventSupport(this);
-            //dont need to show it wil show it self
-            //eventSup.Show();
-            //this.Hide();
+            
         }
 
        

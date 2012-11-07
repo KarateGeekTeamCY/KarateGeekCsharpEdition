@@ -34,18 +34,21 @@ namespace KarateGeek.guis
         private string _eventId;
         private string _tournamentId;
         
-        private List<string> _availableTournaments;
-
-
+        
 
         private TournamentConnection _tournamentConn;
         private TournamentGameParticipationsConnection _tournamentParticipationConn;
-        
         private EventConnection _eventConn;
-        private List<string> _todaysEventTournaments = new List<string>();
+        private GameConnection gameConn;
 
+        private DataTable _TournamantsDT;
+        private DataTable _gamesDT;
+        private DataTable _gameParticipationsDT;
 
-
+        private List<string> _availableTournaments;
+        private List<string> _currentGames;
+        private List<string> _commingGames;
+        private List<List<string>> _gameParticipants;
 
 
         #endregion private declaretions
@@ -76,6 +79,7 @@ namespace KarateGeek.guis
 
                 //this._sender.Show();
                 this.Close();
+                return;
             }
             else {
                 this.Show();
@@ -83,13 +87,17 @@ namespace KarateGeek.guis
 
                 this._eventId = todayEventDT.Rows[0][0].ToString();
             }
-                
 
+            _tournamentConn = new TournamentConnection();
+            this._TournamantsDT = this._tournamentConn.findSimilar("", int.Parse(this._eventId) ).Tables[0];
 
+            foreach (DataRow dr in _TournamantsDT.Rows)
+            {
+                this._availableTournaments.Add("" + dr[1]);
+            }
 
-
-
-
+            this.cboTurnamentSelector.ItemsSource = _availableTournaments;
+            cboTurnamentSelector.SelectedIndex = 0;
         }
         
 
@@ -109,5 +117,23 @@ namespace KarateGeek.guis
         }
 
         #endregion
+
+
+        //#region gui elements
+        
+        private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int i = this.cboTurnamentSelector.SelectedIndex;
+            this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
+            //this.tour
+
+
+
+        }
+
+
+
+
+
     }
 }
