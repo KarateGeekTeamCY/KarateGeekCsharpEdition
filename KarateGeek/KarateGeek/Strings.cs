@@ -48,15 +48,15 @@ namespace KarateGeek
         //
         // game types
         //
-        public static string indKata = "IMD|KATA";
+        public static string indKata = "IND|KATA";
         public static string teamKata = "TEAM|KATA";
-        public static string syncKata = "SYNCHRONIZED KATA";
+        public static string syncKata = "TEAM|SYNCHRONIZED KATA";
         public static string indKumite = "IND|KUMITE";
         public static string teamKumite = "TEAM|KUMITE";
-        public static string enbu = "EN-BU";
-        public static string fugugo = "FUGU-GO";
+        public static string enbu = "TEAM|EN-BU";
+        public static string fugugo = "TEAM|FUGU-GO";
         public static string team = "TEAM";
-        public static string indevidual = "IND";
+        public static string individual = "IND";
 
         //
         // judging types
@@ -88,8 +88,10 @@ namespace KarateGeek
 
 
         //
-        // more here
+        // person sex
         //
+        public static string male = "male";
+        public static string female = "female";
 
 
 
