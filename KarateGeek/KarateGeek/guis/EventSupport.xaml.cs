@@ -24,13 +24,23 @@ namespace KarateGeek.guis
 
         #region private declaretions
 
-        private int  _tournamentId;
+        private Window _sender;
 
         private bool _isTeam;
+        
         private string _gameType;
         private string judgingType;
+        
+        private string _eventId;
+        private string _tournamentId;
+        
+        private List<string> _availableTournaments;
+
+
+
         private TournamentConnection _tournamentConn;
         private TournamentGameParticipationsConnection _tournamentParticipationConn;
+        
         private EventConnection _eventConn;
         private List<string> _todaysEventTournaments = new List<string>();
 
@@ -43,12 +53,37 @@ namespace KarateGeek.guis
 
 
 
-        public EventSupport()
+        public EventSupport(Window sender)
         {
-            InitializeComponent();
             
-            //DataTable todayEvent = _eventConn.ge
+            InitializeComponent();
+            this._sender = sender;
 
+
+            DateTime date = DateTime.Today;
+            string datestring = date.ToString("yyyy-M-d");
+
+            _eventConn = new EventConnection();
+
+            DataSet todayEventDS = _eventConn.getEventsBydate( datestring);
+            DataTable todayEventDT = todayEventDS.Tables[0];
+
+            if (todayEventDT.Rows.Count == 0)
+            {
+                string result = MessageBox.Show("Unfortunately there is no scheduled event for today. Press OK to return to main menu.", "No event for today.",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+
+                //this._sender.Show();
+                this.Close();
+            }
+            else {
+                this.Show();
+                this._sender.Hide();
+
+                this._eventId = todayEventDT.Rows[0][0].ToString();
+            }
+                
 
 
 

@@ -81,7 +81,7 @@
                         Content="Event support" 
                         Grid.Column="1" 
                         Grid.Row="5" 
-                        Margin="5" />
+                        Margin="5" Click="btnEventSupport_Click" />
                 <Button Name="btnReports" 
                         Content="Reports" 
                         Grid.Column="1" 
