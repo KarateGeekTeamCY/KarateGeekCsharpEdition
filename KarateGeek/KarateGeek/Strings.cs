@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,20 @@ namespace KarateGeek
 {
     static class Strings
     {
-        
+
+
+        public static readonly string phase2 = "FINAL";
+        public static readonly string phase4 = "SEMI FINAL";
+        public static readonly string phase8 = "PHASE OF 8";
+        public static readonly string phase16 = "PHASE OF 16";
+        public static readonly string phase32 = "PHASE OF 32";
+        public static readonly string phase64 = "PHASE OF 64";
+        public static readonly string phase128 = "PHASE OF 128";
+
+        public static readonly string[] phase = { phase128, phase64, phase32, phase16,
+                                                 phase8, phase4, phase2
+                                               };
+
 
         //
         // ranking types
@@ -90,8 +103,8 @@ namespace KarateGeek
         //
         // person sex
         //
-        public static string male = "male";
-        public static string female = "female";
+        public static string male = "MALE";
+        public static string female = "FEMALE";
 
 
 

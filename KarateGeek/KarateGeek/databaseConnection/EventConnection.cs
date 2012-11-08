@@ -119,5 +119,13 @@ namespace KarateGeek.databaseConnection
             string sql = "select * from events where name = '" + name + "';";
             return this.Query(sql);
         }
+
+        public DataSet getEventsBydate(string date)
+        {
+            string sql = "select * from events where date = '" + date + "';";
+            return this.Query(sql);
+        }
+
+
     }
 }

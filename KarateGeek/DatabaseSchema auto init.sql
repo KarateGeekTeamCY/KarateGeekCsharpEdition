@@ -216,9 +216,11 @@ CREATE TABLE tournaments (
 
 CREATE TABLE games (
     id              SERIAL,
-    phase           INTEGER         NOT NULL,
+    phase           VARCHAR(50)     NOT NULL,
     position        INTEGER         NOT NULL,
     tournament_id   INTEGER         REFERENCES tournaments(id),
+    is_ready        BOOLEAN,
+    is_finished     BOOLEAN,
     PRIMARY KEY(id)
 );
 
@@ -409,14 +411,6 @@ INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_tim
 VALUES (4, 1, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
 
 
-
---
---	VIEWA
---
-
-
-
-							
 
 
 -- rollback transaction (useful for checking syntax):

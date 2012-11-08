@@ -44,6 +44,12 @@ namespace KarateGeek.databaseConnection
             return this.Query(sql);
         }
 
+        public DataSet getFuturePhaces(string tournamentId)
+        {
+            sql = "select distinct phase from games where is_finished = false and tournament_id = '" + tournamentId + "' ;";
+            return this.Query(sql);
+        }
+
 
 
     }
