@@ -286,31 +286,35 @@ namespace KarateGeek.helpers
                     ++phase2position;
                 }
 
-                if (yleft % 2 == 0) {
+                if (yleft % 2 != 0) {
                     Pairs.Add(new Tuple<long, long, int, int>(Yleft[yleft - 1], -1, 2, phase2position));
                     ++phase2position;
                 }
 
-                phase2position += z / 2; // ?! I think it's OK.
+                phase2position += z / 2; // ?!?! I think this line is OK.
 
-                Debug.Assert(yright % 2 == 0); // WRONG!
+                if (yright % 2 != 0) {
+                    Pairs.Add(new Tuple<long, long, int, int>(-1, Yright[0], 2, phase2position));
+                    ++phase2position;
+                }
 
-                for (int i = 0; i < yright; i += 2) {
+                for (int i = (yright % 2 != 0) ? 1 : 0; i < yright; i += 2) { // FIXME: check boundary conditions, especially here!
                     Pairs.Add(new Tuple<long, long, int, int>(Yright[i], Yright[i + 1], 2, phase2position));
                     ++phase2position;
                 }
 
-                for (int i = 0; i < z; i += 2) {
+                for (int i = 0; i < z - 1; i += 2) {
                     Pairs.Add(new Tuple<long, long, int, int>(Xleft[i], Xleft[i + 1], 1, phase1position));
                     ++phase1position;
                 }
 
-                if (z % 2 == 0) {
+                if (z % 2 != 0) {
                     Pairs.Add(new Tuple<long, long, int, int>(Xleft[z - 1], Xright[0], 1, phase1position));
                     ++phase1position;
                 }
 
-                for (int i = (z % 2 == 0) ? 1 : 0; i < z; i += 2) { // FIXME: check boundary conditions, especially here!
+                //for (int i = (z % 2 == 0) ? 1 : 0; i < ((z % 2 == 0) ? z - 1 : z); i += 2) {
+                for (int i = (z % 2 != 0) ? 1 : 0; i <  z - 1; i += 2) { // FIXME: check boundary conditions, especially here!
                     Pairs.Add(new Tuple<long, long, int, int>(Xright[i], Xright[i + 1], 1, phase1position));
                     ++phase1position;
                 }
@@ -318,7 +322,7 @@ namespace KarateGeek.helpers
 
             /**/
 
-            { //Debug info, will be removed in the final version:
+            { //Debug info, will be removed in the final version (auto-disabled in "release" builds anyway):
                 Debug.WriteLine("Participants: " + Participants);
                 foreach (var i in Participants)
                     Debug.WriteLine(i);
@@ -349,8 +353,8 @@ namespace KarateGeek.helpers
 
                 Debug.WriteLine("Pairs and positions: " + Pairs);
                 foreach (var i in Pairs)
-                    Debug.WriteLine("athl.1: " + i.Item1 + "  athl.2: " + i.Item2
-                        + "  phase: " + i.Item3 + "  position: " + i.Item4);
+                    Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
+                        i.Item1, i.Item2, i.Item3, i.Item4);
             }
 
             return Pairs;
@@ -361,7 +365,7 @@ namespace KarateGeek.helpers
         {
 
             if (this.confirmed)
-                throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore");
+                throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore.");
 
             LotteryGenConnection conn = new LotteryGenConnection();
             List<long> L = this.getLottery();
