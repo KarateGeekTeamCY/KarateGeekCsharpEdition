@@ -127,6 +127,8 @@ namespace KarateGeek.guis
             this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
             DataTable gamesTempDT = gameConn.getFuturePhaces(this._tournamentId).Tables[0];
 
+            //int currentIndex = 
+
             if (int.Parse(gamesTempDT.Rows[0][0].ToString()) < int.Parse(gamesTempDT.Rows[1][0].ToString()))
             {
 
