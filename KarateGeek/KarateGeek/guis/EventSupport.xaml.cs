@@ -29,7 +29,7 @@ namespace KarateGeek.guis
         private bool _isTeam;
         
         private string _gameType;
-        private string judgingType;
+        private string _judgingType;
         
         private string _eventId;
         private string _tournamentId;
@@ -39,21 +39,22 @@ namespace KarateGeek.guis
         private TournamentConnection _tournamentConn;
         private TournamentGameParticipationsConnection _tournamentParticipationConn;
         private EventConnection _eventConn;
-        private GameConnection gameConn;
+        private GameConnection _gameConn;
 
         private DataTable _TournamantsDT;
-        private DataTable _gamesDT;
-        private DataTable _gameParticipationsDT;
+        private DataTable _currentGamesDT;
+        private DataTable _futureGamesDT;
+        private DataTable _currentGameParticipationsDT;
+        private DataTable _futureGameParticipationsDT;
 
         private List<string> _availableTournaments;
         private List<string> _currentGames;
-        private List<string> _commingGames;
-        private List<List<string>> _gameParticipants;
+        private List<string> _futureGames;
+        private List<List<string>> _currentGameParticipants;
+        private List<List<string>> _futureGameParticipants;
 
 
         #endregion private declaretions
-
-
 
 
         public EventSupport(Window sender)
@@ -98,12 +99,10 @@ namespace KarateGeek.guis
 
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
             cboTurnamentSelector.SelectedIndex = 0;
+
+            
         }
         
-
-
-
-
 
         #region buttons
         private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
@@ -125,22 +124,51 @@ namespace KarateGeek.guis
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
             this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
-            DataTable gamesTempDT = gameConn.getFuturePhaces(this._tournamentId).Tables[0];
+            
+            this._gameType =  (string)_TournamantsDT.Rows[i][7];
+            string [] type = _gameType.Split('|');
+            
+            if (type[0] == Strings.team)
+                this._isTeam = true;
+            else
+                this._isTeam = false;
 
-            //int currentIndex = 
+            this._judgingType = (string)_TournamantsDT.Rows[i][8];
+
+
+            _LoadPhases();
+
+
+
+
+        }
+
+        private void _LoadPhases()
+        {
+            DataTable gamesTempDT = _gameConn.getFuturePhaces(this._tournamentId).Tables[0];
+
+            int currentIndex, nextIndex;
 
             if (int.Parse(gamesTempDT.Rows[0][0].ToString()) < int.Parse(gamesTempDT.Rows[1][0].ToString()))
             {
-
+                nextIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
+                currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
             }
-            else 
+            else
             {
- 
+                currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
+                nextIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
             }
 
+            //this._c
 
 
 
+
+
+
+
+        
         }
 
 
