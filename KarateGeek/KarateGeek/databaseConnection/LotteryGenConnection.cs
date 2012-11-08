@@ -91,7 +91,7 @@ namespace KarateGeek.databaseConnection
 
 
         public bool sameClubAthletePair(Tuple<long, long, int, int> athPair) // a bit hackish
-        {
+        {                                                                    // using Strings to handle NULL
             String unfinishedSql = "SELECT club_id FROM athletes WHERE id = ";
 
             String club1 = this.Query(unfinishedSql + athPair.Item1 + " ;").Tables[0].Rows[0][0].ToString();

@@ -226,9 +226,11 @@ namespace KarateGeek.helpers
              *                         /   \   /   \   /   \
              *                        x1   x3 x5   x6 x4   x2
              * 
+             *  ├───── yleft ─────┤├─── z ────┤├─── z ────┤├── yright ──┤
              * 
-             *  [number of y-type athletes "above" x1:  Yabove = (y+1) / 2
-             *   so x1 and x3 meet at the "4th position" of phase 1        ]
+             * 
+             *  [number of y-type athletes "above" x1:  yleft = (y+1) / 2
+             *   so x1 and x3 meet at the "4th position" of phase 1       ]
              * 
              * 
              *  ** There might be a smarter way to do it! (using Lists?!) **
@@ -242,45 +244,114 @@ namespace KarateGeek.helpers
             int x = len - y;
             int z = p / 2 - y; // len must be >=2 (?)
 
-            int Yabove = (y + 1) / 2;
+            int yleft  = (y + 1) / 2;  // BUG FOUND!! What happens when y==3?! (y==5 is OK!)  ;)
+            int yright = y - yleft;
 
             long[] Yarray = Participants.Take(y).ToArray();
             long[] Xarray = Participants.Skip(y).ToArray();
 
             /* Important assertions: */
-            Debug.Assert(x == 2 * z);
+            Debug.Assert(x == 2 * z);           // "x" is always divisible by 2!
             Debug.Assert(Xarray.Length == x);
 
-            { //Debug info, will be removed in the final version:
-                Debug.WriteLine(Participants);
-                foreach (var i in Participants)
-                    Debug.WriteLine(i);
-                Debug.WriteLine(Yarray);
-                foreach (var i in Yarray)
-                    Debug.WriteLine(i);
-                Debug.WriteLine(Xarray);
-                foreach (var i in Xarray)
-                    Debug.WriteLine(i);
+            /**/
+
+            /* The following part might need more testing to eliminate off-by-one errors: */
+
+            long[] Yleft  = new long[yleft];
+            long[] Yright = new long[yright];
+            long[] Xleft  = new long[z];
+            long[] Xright = new long[z];
+
+
+            for (int i = 0; i < x; i += 2) {
+                Xleft[i / 2] = Xarray[i];
+                Xright[z - (i / 2) - 1] = Xarray[i + 1]; // reverse order needed
             }
 
-            /* TODO: Actually construct the pairs and add them to the List "Pairs" */
+            for (int i = 0; i < yleft; ++i)
+                Yleft[i] = Yarray[2 * i];
+
+            for (int i = 0; i < yright; ++i)
+                Yright[yright - i - 1] = Yarray[(2 * i) + 1]; // reverse order needed
+
+
+            /* Now let's add the pairs to the list of pairs: */
+            {
+                int phase1position = yleft + 1; // "phase" and "position" are 1-based
+                int phase2position = 1;
+
+                for (int i = 0; i < yleft; i += 2) {
+                    Pairs.Add(new Tuple<long, long, int, int>(Yleft[i], Yleft[i + 1], 2, phase2position));
+                    ++phase2position;
+                }
+
+                if (yleft % 2 == 0) {
+                    Pairs.Add(new Tuple<long, long, int, int>(Yleft[yleft - 1], -1, 2, phase2position));
+                    ++phase2position;
+                }
+
+                phase2position += z / 2; // ?! I think it's OK.
+
+                Debug.Assert(yright % 2 == 0); // WRONG!
+
+                for (int i = 0; i < yright; i += 2) {
+                    Pairs.Add(new Tuple<long, long, int, int>(Yright[i], Yright[i + 1], 2, phase2position));
+                    ++phase2position;
+                }
+
+                for (int i = 0; i < z; i += 2) {
+                    Pairs.Add(new Tuple<long, long, int, int>(Xleft[i], Xleft[i + 1], 1, phase1position));
+                    ++phase1position;
+                }
+
+                if (z % 2 == 0) {
+                    Pairs.Add(new Tuple<long, long, int, int>(Xleft[z - 1], Xright[0], 1, phase1position));
+                    ++phase1position;
+                }
+
+                for (int i = (z % 2 == 0) ? 1 : 0; i < z; i += 2) { // FIXME: check boundary conditions, especially here!
+                    Pairs.Add(new Tuple<long, long, int, int>(Xright[i], Xright[i + 1], 1, phase1position));
+                    ++phase1position;
+                }
+            }
+
             /**/
-            //for (int i = 0; i < x; ++i){
 
-            //}
-            //for (int i = 0; i < Yabove; ++i){
-            
-            //}
-            //for (int i = Yabove; i < y; ++i){
+            { //Debug info, will be removed in the final version:
+                Debug.WriteLine("Participants: " + Participants);
+                foreach (var i in Participants)
+                    Debug.WriteLine(i);
 
-            //}
+                Debug.WriteLine("Yarray: " + Yarray);
+                foreach (var i in Yarray)
+                    Debug.WriteLine(i);
 
-            //long[] Ylow  = new long[(y+1)/2];
-            //long[] Yhigh = new long[(y+1)/2];
-            //long[] Xlow  = new long[(x+1)/2];
-            //long[] Xhigh = new long[(x+1)/2];
+                Debug.WriteLine("Xarray: " + Xarray);
+                foreach (var i in Xarray)
+                    Debug.WriteLine(i);
 
-            /**/
+                Debug.WriteLine("Yleft array: " + Yleft);
+                foreach (var i in Yleft)
+                    Debug.WriteLine(i);
+
+                Debug.WriteLine("Yright array: " + Yright);
+                foreach (var i in Yright)
+                    Debug.WriteLine(i);
+
+                Debug.WriteLine("Xleft array: " + Xleft);
+                foreach (var i in Xleft)
+                    Debug.WriteLine(i);
+
+                Debug.WriteLine("Xright array: " + Xright);
+                foreach (var i in Xright)
+                    Debug.WriteLine(i);
+
+                Debug.WriteLine("Pairs and positions: " + Pairs);
+                foreach (var i in Pairs)
+                    Debug.WriteLine("athl.1: " + i.Item1 + "  athl.2: " + i.Item2
+                        + "  phase: " + i.Item3 + "  position: " + i.Item4);
+            }
 
             return Pairs;
         }
