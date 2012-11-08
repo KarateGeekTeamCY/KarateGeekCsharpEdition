@@ -216,7 +216,7 @@ CREATE TABLE tournaments (
 
 CREATE TABLE games (
     id              SERIAL,
-    phase           VARCHAR(50)     NOT NULL,
+    phase           INTEGER         NOT NULL,
     position        INTEGER         NOT NULL,
     tournament_id   INTEGER         REFERENCES tournaments(id),
     is_ready        BOOLEAN,
