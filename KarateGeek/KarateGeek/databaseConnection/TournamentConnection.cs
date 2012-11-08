@@ -11,7 +11,7 @@ namespace KarateGeek.databaseConnection
         DataTable tournament = new DataTable();
         DataSet dr = null;
 
-        public string InsertNewTournament(string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
+        public int InsertNewTournament(string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
         {
 
             string sql = "insert into tournaments ( name, sex, age_from, age_to , level_from, level_to, game_type, scoring_type, event_id) values ( '"
@@ -29,9 +29,9 @@ namespace KarateGeek.databaseConnection
 
             sql = "select currval('tournaments_id_seq');";
             dr = this.Query(sql);
-            long tournamentId = long.Parse(dr.Tables[0].Rows[0][0].ToString());
+            int tournamentId = int.Parse(dr.Tables[0].Rows[0][0].ToString());
 
-            return "" + tournamentId;
+            return tournamentId;
         }
 
         public string UpdateTournament(int tournamentId, string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)

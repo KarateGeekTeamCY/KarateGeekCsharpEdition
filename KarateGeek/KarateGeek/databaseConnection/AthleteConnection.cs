@@ -85,23 +85,33 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
-        public DataSet deleteAthlete(int id){
-            string sql = "delete from athletes where id='" + id + "';";
-            return this.Query(sql);
+        public void deleteAthlete(int id){
+            JudgeConnection judgeConnection = new JudgeConnection();
+            DataSet ds;
+            string sql = null;
+
+            ds = judgeConnection.findJudge(id);
+            sql = "delete from athletes where id='" + id + "';";
+            this.Query(sql);
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                sql = "delete from persons where id='" + id + "';";
+                this.Query(sql);
+            }
+
         }
 
-        public DataSet findSimilar(string filter)
+        public DataSet findAthlete(int id)
         {
-            //select * from persons JOIN athletes on persons.id = athletes.id where persons.athlete_first_name like 'd%';
-
-            string sql = "select * from persons JOIN athletes on persons.id = athletes.id where first_name like '" + filter + "%';";
+            string sql = "select * from athletes where id = '" + id + "';";
             return this.Query(sql);
         }
 
-
-       
-
-
+        public DataSet findAthleteClub(int id)
+        {
+            string sql = "select * from athletes inner join clubs on club_id = clubs.id where athletes.id = '" + id + "';";
+            return this.Query(sql);
+        }
 
         private string _InsertAthlete(string PersonId, string rank, string localClubId)
         {

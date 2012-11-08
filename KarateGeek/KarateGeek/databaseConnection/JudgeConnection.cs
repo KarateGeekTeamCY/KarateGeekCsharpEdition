@@ -69,17 +69,27 @@ namespace KarateGeek.databaseConnection
              return "";
          }
 
-
-         public DataSet findSimilar(string filter)
+         public DataSet findJudge(int id)
          {
-             string sql = "select * from persons JOIN judges on persons.id = judges.id where first_name like '" + filter + "%';";
+             string sql = "select * from judges where id = '" + id + "';";
              return this.Query(sql);
          }
 
-         public DataSet deleteJudge(int id)
+         public void deleteJudge(int id)
          {
-             string sql = "delete from judges where id='" + id + "';";
-             return this.Query(sql);
+             AthleteConnection athleteConnection = new AthleteConnection();
+             DataSet ds;
+             string sql = null;
+
+             ds = athleteConnection.findAthlete(id);
+             sql = "delete from judges where id='" + id + "';";
+             this.Query(sql);
+             if (ds.Tables[0].Rows.Count == 0)
+             {
+                 sql = "delete from persons where id='" + id + "';";
+                 this.Query(sql);
+             }
+            
          }
 
 
