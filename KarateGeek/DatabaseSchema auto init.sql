@@ -26,11 +26,11 @@
 --
 -- * Using the following CONVENTIONS:
 --
--- **  Using "id" for PK, "person_id" for FK!
+-- **  Using "id" for PK, "person_id" for FK.
 -- **  SQL KEYWORDS (but NOT data types) :   UPPERCASE
 -- **  other identifiers :                   lowercase
--- **  PRIMARY KEY (unless composite) and REFERENCES as column constraints
--- **  CHECK as column or TABLE constraint
+-- **  REFERENCES as a column constraint
+-- **  PRIMARY KEY (composite or not) and CHECK as table constraints
 -- **  SQL standard: "Omitting the column list in the REFERENCES clause implies that the foreign
 --                    key shall reference the PRIMARY KEY of the referenced TABLE."
 -- **  Using the "CHAR" type only when the field length is absolutely fixed, eg. country codes
@@ -44,35 +44,17 @@
 --
 -- * Standardising VARCHAR lengths (maybe useful for GUI design) to: 12, 50, 80, 255
 --
--- * I still don't know whether the "schema_name." TABLE prefix is necessary (seems it isn't)
---
+-- * Using the public schema. The "schema_name." table prefix is necessary otherwise,
+--   unless one uses "SET search_path TO schema_name;" after initiating _every_ DB connection.
 --
 
 ------------------------------------------------------------------------------------------------
 
+
 -- begin transaction:
 BEGIN;
 
-
-DROP SCHEMA IF EXISTS public CASCADE;      -- WARNING: This also deletes all TABLEs!
-
--- TABLE drops (not needed)
--- DROP TABLE countries cascade;
--- DROP TABLE cities cascade;
--- DROP TABLE addresses cascade;
--- DROP TABLE locations cascade;
--- DROP TABLE clubs cascade;
--- DROP TABLE persons cascade;
--- DROP TABLE athletes cascade;
--- DROP TABLE judges cascade;
--- DROP TABLE users cascade;
--- DROP TABLE events cascade;
--- DROP TABLE tournaments cascade;
--- DROP TABLE games cascade;
--- DROP TABLE team_tournament_participations cascade;
--- DROP TABLE tournament_participations cascade;
--- DROP TABLE game_participation cascade;
--- DROP TABLE game_score cascade;
+DROP SCHEMA IF EXISTS public CASCADE;      -- WARNING: This also deletes all tables!
 
 CREATE SCHEMA public;
 
@@ -90,7 +72,7 @@ CREATE TABLE countries (
 
 
 CREATE TABLE cities (
-  id                SERIAL,             -- "SERIAL" as a data type means an auto-incr. INTEGER
+  id                SERIAL,             -- "SERIAL" as a data type means an auto-incr. integer
   name              VARCHAR(80)     NOT NULL UNIQUE,
   country_code      VARCHAR(2)      REFERENCES countries(code),
   PRIMARY KEY(id)
@@ -141,15 +123,14 @@ CREATE TABLE persons (
     secondary_phone CHAR(15),
     email           VARCHAR(50),
     address_id      INTEGER         REFERENCES addresses( id ),
-    PRIMARY KEY(id)
-    --,
-    --CHECK (email ~* '^[_a-zA-Z0-9-+]+(.[_a-zA-Z0-9-+]+)*@[a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)*.([a-zA-Z]{2,6})$')
+    PRIMARY KEY(id),
+    CHECK (email ~* E'^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,}$') -- not very restrictive (on purpose)
 );
 
 
 CREATE TABLE athletes (
     id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION, -- not CASCADE!
-    rank            VARCHAR(50)     NOT NULL,                                    -- CHAR or int?
+    rank            VARCHAR(50)     NOT NULL,
     club_id         INTEGER         REFERENCES clubs(id),   -- this was "NOT NULL" initially
     PRIMARY KEY(id)
 );
@@ -157,7 +138,7 @@ CREATE TABLE athletes (
 
 CREATE TABLE judges (
     id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
-    rank            VARCHAR(50)     NOT NULL,                                    -- CHAR or int?
+    rank            VARCHAR(50)     NOT NULL,
     class           CHARacter(1)    NOT NULL,
     PRIMARY KEY(id)
 );
@@ -167,22 +148,14 @@ CREATE TABLE users (
     id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
     username        VARCHAR(255)    NOT NULL UNIQUE,
     password        VARCHAR(255)    NOT NULL,
-    person_management   BOOLEAN     NOT NULL DEFAULT FALSE,
-    event_management    BOOLEAN     NOT NULL DEFAULT FALSE,
-    lottery         BOOLEAN         NOT NULL DEFAULT FALSE,
-    game_support    BOOLEAN         NOT NULL DEFAULT FALSE,
-    reports         BOOLEAN         NOT NULL DEFAULT FALSE,
-    settings        BOOLEAN         NOT NULL DEFAULT FALSE,
+    person_management   BOOLEAN     NOT NULL DEFAULT false,
+    event_management    BOOLEAN     NOT NULL DEFAULT false,
+    lottery         BOOLEAN         NOT NULL DEFAULT false,
+    game_support    BOOLEAN         NOT NULL DEFAULT false,
+    reports         BOOLEAN         NOT NULL DEFAULT false,
+    settings        BOOLEAN         NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
-
-
---CREATE TABLE game_types (
---  id              SERIAL,
---  name            VARCHAR(50),
---  description     VARCHAR(255),
---  PRIMARY KEY(id)
---);
 
 
 CREATE TABLE events (
@@ -208,10 +181,9 @@ CREATE TABLE tournaments (
                                                 -- "score"      -> arithmitika
                                                 -- "flag"       -> simees
                                                 -- "point"      -> ippon ktl.
-    event_id        INTEGER         REFERENCES events(id) on delete cascade,
+    event_id        INTEGER         REFERENCES events(id) ON DELETE CASCADE,
     PRIMARY KEY(id)
 );
-
 
 
 CREATE TABLE games (
@@ -225,10 +197,11 @@ CREATE TABLE games (
     PRIMARY KEY(id)
 );
 
+
 CREATE TABLE team_tournament_participations (
     id              SERIAL,
     ranking         INTEGER,
-    team	    INTEGER,
+    team            INTEGER,        -- "team" is only used by the GUI code (doesn't interfere with the rest of the DB)
     --club_id       INTEGER         REFERENCES clubs(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
     PRIMARY KEY (id)
@@ -243,14 +216,12 @@ CREATE TABLE tournament_participations (
     ranking         INTEGER,
 
     PRIMARY KEY (athlete_id, tournament_id)
+);
 
-    );
 
-
-CREATE TABLE game_participations (      -- gia atomika
-                                        -- tha mpainoun dio tetia entries gia versus
-                                        -- gia atomika parousiasi 1
-                                        -- gia omadiko vs 6 h 4 anepisima
+CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio tetoia entries
+                                        -- gia atomika (parousiasi) 1 entry
+                                        -- gia omadiko (versus) 6 (OR 4, anepisima)
     athlete_id      INTEGER         REFERENCES athletes (id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id),
     game_id         INTEGER         REFERENCES games (id),
@@ -258,17 +229,14 @@ CREATE TABLE game_participations (      -- gia atomika
 );
 
 
-
-
 CREATE TABLE game_points(
-
     id              SERIAL,
     game_id         INTEGER         REFERENCES games(id),
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id),
 
     technical_point         INTEGER,
-    technical_point_desc    varchar(50),
+    technical_point_desc    VARCHAR(50),
 
     PRIMARY KEY (id)
 );
@@ -318,13 +286,12 @@ create table game_flag (
     PRIMARY KEY (id)
 );
 
--- commit transaction (will destroy all existing TABLEs and data):
-COMMIT;
-
 
 -- rollback transaction (useful for checking syntax):
 --ROLLBACK;
 
+-- commit transaction (will destroy all existing tables and data):
+COMMIT;
 
 
 --
@@ -413,7 +380,6 @@ INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_tim
 VALUES (3, 2, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (4, 2, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
-
 
 
 
