@@ -9,15 +9,15 @@ namespace KarateGeek
     {
 
 
-        public static readonly string phase2 = "FINAL";
-        public static readonly string phase4 = "SEMI FINAL";
-        public static readonly string phase8 = "PHASE OF 8";
-        public static readonly string phase16 = "PHASE OF 16";
-        public static readonly string phase32 = "PHASE OF 32";
-        public static readonly string phase64 = "PHASE OF 64";
-        public static readonly string phase128 = "PHASE OF 128";
+        public const string phase2 = "FINAL";
+        public const string phase4 = "SEMI FINAL";
+        public const string phase8 = "PHASE OF 8";
+        public const string phase16 = "PHASE OF 16";
+        public const string phase32 = "PHASE OF 32";
+        public const string phase64 = "PHASE OF 64";
+        public const string phase128 = "PHASE OF 128";
 
-        public static readonly string[] phase = { phase2, phase4, phase8, phase16,
+        public const string[] phase = { phase2, phase4, phase8, phase16,
                                                  phase32, phase64, phase128
                                                };
 
@@ -35,24 +35,24 @@ namespace KarateGeek
         //5th kyu - Yellow (at least 7 Month of traning or more)
         //6th kyu - White (at least 5 Month of traning or more)
         //
-        public static readonly string rank01 = "White  –  6th kyu";     // TODO: change "static readonly" to "const"??
-        public static readonly string rank02 = "Yellow –  5th kyu";
-        public static readonly string rank03 = "Orange –  4th kyu";
-        public static readonly string rank04 = "Green  –  3th kyu";
-        public static readonly string rank05 = "Blue   –  2nd kyu";
-        public static readonly string rank06 = "Brown  –  1st kyu";
-        public static readonly string rank07 = "Black  –  1st dan";
-        public static readonly string rank08 = "Black  –  2nd dan";
-        public static readonly string rank09 = "Black  –  3th dan";
-        public static readonly string rank10 = "Black  –  4th dan";
-        public static readonly string rank11 = "Black  –  5th dan";
-        public static readonly string rank12 = "White/Red – 6th dan";
-        public static readonly string rank13 = "White/Red – 7th dan";
-        public static readonly string rank14 = "White/Red – 8th dan";
-        public static readonly string rank15 = "Red    –  9th dan";
-        public static readonly string rank16 = "Red    –  10th dan";
+        public const string rank01 = "White  –  6th kyu";     // TODO: change "static " to "const"??
+        public const string rank02 = "Yellow –  5th kyu";
+        public const string rank03 = "Orange –  4th kyu";
+        public const string rank04 = "Green  –  3th kyu";
+        public const string rank05 = "Blue   –  2nd kyu";
+        public const string rank06 = "Brown  –  1st kyu";
+        public const string rank07 = "Black  –  1st dan";
+        public const string rank08 = "Black  –  2nd dan";
+        public const string rank09 = "Black  –  3th dan";
+        public const string rank10 = "Black  –  4th dan";
+        public const string rank11 = "Black  –  5th dan";
+        public const string rank12 = "White/Red – 6th dan";
+        public const string rank13 = "White/Red – 7th dan";
+        public const string rank14 = "White/Red – 8th dan";
+        public const string rank15 = "Red    –  9th dan";
+        public const string rank16 = "Red    –  10th dan";
 
-        public static readonly string[] rank = { rank01, rank02, rank03, rank04,
+        public const string[] rank = { rank01, rank02, rank03, rank04,
                                                  rank05, rank06, rank07, rank08,
                                                  rank09, rank10, rank11, rank12,
                                                  rank13, rank14, rank15, rank16
@@ -75,14 +75,14 @@ namespace KarateGeek
         //
         // judging types
         //
-        public static string flag = "FLAG";         // einai to flag system
+        public const string flag = "FLAG";         // einai to flag system
 
-        public static string point = "POINT";       //  einai to sistima me tis 
+        public const string point = "POINT";       //  einai to sistima me tis 
                                                     // diaforetikes vathmologies
                                                     // analoga me tin epitixia
                                                     // tis texnikis
 
-        public static string score = "SCORE";       // einai i arithmitiki vathmologia
+        public const string score = "SCORE";       // einai i arithmitiki vathmologia
                                                     // me vasi kritiria texnikis
 
 
@@ -91,21 +91,21 @@ namespace KarateGeek
         // kumite points
         //
 
-        public static string ippon = "IPPON";
-        public static string wazaari = "WAZA-ARI";
-        public static string jyogai = "JUO-GAI";
-        public static string chui = "CHUI";
-        public static string keikoku = "KEI-KOKU";
-        public static string tento = "TEN-TO";
-        public static string doctorStop = "DOCTOR STOP";
+        public const string ippon = "IPPON";
+        public const string wazaari = "WAZA-ARI";
+        public const string jyogai = "JUO-GAI";
+        public const string chui = "CHUI";
+        public const string keikoku = "KEI-KOKU";
+        public const string tento = "TEN-TO";
+        public const string doctorStop = "DOCTOR STOP";
 
 
 
         //
         // person sex
         //
-        public static string male = "MALE";
-        public static string female = "FEMALE";
+        public const string male = "MALE";
+        public const string female = "FEMALE";
 
 
 

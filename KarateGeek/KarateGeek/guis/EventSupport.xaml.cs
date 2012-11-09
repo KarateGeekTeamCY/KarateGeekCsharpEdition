@@ -33,6 +33,7 @@ namespace KarateGeek.guis
 
         private string _eventId;
         private string _tournamentId;
+        private string _lastExecutedGame;
 
 
 
@@ -120,7 +121,7 @@ namespace KarateGeek.guis
         #endregion
 
 
-        //#region gui elements
+        #region the load shit
 
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -235,11 +236,60 @@ namespace KarateGeek.guis
                 this._futureGameParticipants.Add(game);
             }
 
+            this.listBoxCurrentGameList.ItemsSource = this._currentGameParticipants;
+            this.listBoxNextGameList.ItemsSource = this._futureGameParticipants;
+        }
+
+        #endregion the load shet
+ 
+        
+        // #region the progress shit 
+        
+        
+        private void listBoxCurrentGameList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int _lastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
+            
+            if (_gameType == Strings.fugugo)
+            {
+
+                if ((int.Parse(this._currentGamesDT.Rows[_lastExecutedGame][1].ToString()) % 2) == 0)
+                {
+                    _judgingType = Strings.point;
+                }
+                else
+                {
+                    _judgingType = Strings.score;
+                }
+            }
 
 
+            switch (this._judgingType)
+            {
+                case Strings.flag:
+                    FlagSystem fflagS = new FlagSystem(this, this._tournamentId, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString(), this._isTeam);
+                    break;
 
+                case Strings.point:
+                    KumiteSystem kumiteS = new KumiteSystem(this, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString());
+                    break;
+
+                case Strings.score:
+                    KataSystem kataS = new KataSystem(this, this._tournamentId, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString(), this._isTeam);
+                    break;
+
+            }
 
 
         }
+
+       
+
+
+
+
+
+
+
     }
 }
