@@ -17,8 +17,8 @@ namespace KarateGeek
         public static readonly string phase64 = "PHASE OF 64";
         public static readonly string phase128 = "PHASE OF 128";
 
-        public static readonly string[] phase = { phase128, phase64, phase32, phase16,
-                                                 phase8, phase4, phase2
+        public static readonly string[] phase = { phase2, phase4, phase8, phase16,
+                                                 phase32, phase64, phase128
                                                };
 
 

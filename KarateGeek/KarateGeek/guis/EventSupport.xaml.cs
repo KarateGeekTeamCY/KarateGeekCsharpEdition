@@ -147,20 +147,23 @@ namespace KarateGeek.guis
         {
             DataTable gamesTempDT = _gameConn.getFuturePhaces(this._tournamentId).Tables[0];
 
-            int currentIndex, nextIndex;
+            int currentIndex, futureIndex;
 
             if (int.Parse(gamesTempDT.Rows[0][0].ToString()) < int.Parse(gamesTempDT.Rows[1][0].ToString()))
             {
-                nextIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
+                futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
                 currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
             }
             else
             {
                 currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
-                nextIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
+                futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
             }
 
-            //this._c
+            this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase( _tournamentId, "" + currentIndex).Tables[0];
+            this._futureGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + futureIndex).Tables[0];
+
+
 
 
 
