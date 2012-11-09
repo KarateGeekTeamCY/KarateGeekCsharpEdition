@@ -225,8 +225,8 @@
                                   SelectionChanged="cmbAClubChooses_SelectionChanged">
                         </ComboBox>
 
-                        
-                            <ListBox Name="aSuggestionList" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top"  SelectionChanged="aSuggestionList_SelectionChanged" Visibility="Collapsed" />                       
+
+                        <ListBox Name="aSuggestionList" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top"  SelectionChanged="aSuggestionList_SelectionChanged" Visibility="Collapsed" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}"/>                       
                     
 
 
@@ -479,7 +479,7 @@
                                  Grid.RowSpan="3" 
                                  VerticalAlignment="Top"  
                                  SelectionChanged="jSuggestionList_SelectionChanged" 
-                                 Visibility="Collapsed" />
+                                 Visibility="Collapsed" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}"/>
 
 
 

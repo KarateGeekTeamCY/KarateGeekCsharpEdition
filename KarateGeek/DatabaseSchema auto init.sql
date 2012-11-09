@@ -227,6 +227,7 @@ CREATE TABLE games (
 CREATE TABLE team_tournament_participations (
     id              SERIAL,
     ranking         INTEGER,
+    team	    INTEGER,
     --club_id       INTEGER         REFERENCES clubs(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
     PRIMARY KEY (id)
@@ -234,8 +235,8 @@ CREATE TABLE team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
-    athlete_id      INTEGER         REFERENCES athletes(id),
-    team_id 	    INTEGER   	    REFERENCES team_tournament_participations(id),
+    athlete_id      INTEGER         REFERENCES athletes(id) on delete cascade,
+    team_id 	    INTEGER   	    REFERENCES team_tournament_participations(id) on delete cascade,
     tournament_id   INTEGER         REFERENCES tournaments(id),
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
@@ -389,26 +390,29 @@ INSERT INTO athletes (id, rank, club_id ) VALUES ('4', 'White/Red – 8th dan', 
 INSERT INTO locations (id, name, phone, email)
 VALUES (0, 'location 1', '77778888', 'loc@locloc.com');
 
-
+INSERT INTO events (name, date, location_id)
+VALUES ('temp', '2012/10/30', 0);
 INSERT INTO events (name, date, location_id)
 VALUES ('Big Event', '2012/10/30', 0);
 
-
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Iron Fist Tournament', 'male', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'deathmatch', 'flag', 1);
+VALUES ('temp', 'male', 1, 99, 'White  –  6th kyu', 'Red – 10th dan', 'KATA' , 'FLAG', 1);
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Iron Fist Tournament', 'male', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'deathmatch', 'flag', 2);
+
 
 
 -- A NULL "position" means that the match hasn't taken place yet
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (0, 1, (SELECT rank FROM athletes WHERE id = 0), NULL, NULL );
+VALUES (0, 2, (SELECT rank FROM athletes WHERE id = 0), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (1, 1, (SELECT rank FROM athletes WHERE id = 1), NULL, NULL );
+VALUES (1, 2, (SELECT rank FROM athletes WHERE id = 1), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (2, 1, (SELECT rank FROM athletes WHERE id = 2), NULL, NULL );
+VALUES (2, 2, (SELECT rank FROM athletes WHERE id = 2), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (3, 1, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
+VALUES (3, 2, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (4, 1, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
+VALUES (4, 2, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
 
 
 

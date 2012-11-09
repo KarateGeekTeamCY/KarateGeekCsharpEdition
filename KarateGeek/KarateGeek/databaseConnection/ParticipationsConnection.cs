@@ -22,10 +22,24 @@ namespace KarateGeek.databaseConnection
             this.NonQuery(sql);
         }
 
-        public void InsertNewTeam(int ranking, int tournament_id)
+        public void InsertNewParticipantT(int athlete_id, int tournament_id, string rank, int position , int team)
         {
-            string sql = "insert into team_tournament_participations ( ranking , tournament_id ) values ( '"
+
+            string sql = "insert into tournament_participations ( athlete_id, tournament_id , rank_at_time , ranking, team_id ) values ( '"
+                + athlete_id + "', '"
+                + tournament_id + "', '"
+                + rank + "', '"
+                + position + "', '"
+                + team + "');";
+
+            this.NonQuery(sql);
+        }
+
+        public void InsertNewTeam(int ranking, int team , int tournament_id)
+        {
+            string sql = "insert into team_tournament_participations ( ranking , team ,tournament_id ) values ( '"
                 + ranking + "', '"
+                + team + "', '"
                 + tournament_id + "');";
 
             this.NonQuery(sql);
@@ -37,16 +51,66 @@ namespace KarateGeek.databaseConnection
             this.Query(sql);
         }
 
+        public string UpdateParticipationsI(int tournamentId)
+        {
+            string sql = "update tournament_participations set " +
+                 "tournament_id = '" + tournamentId + "'" +
+                  "where tournament_id = '1' ;";
+
+            this.NonQuery(sql);
+
+            return "";
+        }
+
+        public string UpdateParticipationsT(int tournamentId)
+        {
+            string sql = "update team_tournament_participations set " +
+                 "tournament_id = '" + tournamentId + "'" +
+                  "where tournament_id = '1' ;";
+
+            this.NonQuery(sql);
+            return "";
+        }
+
         public DataSet getParticipantsI(int tournamentId)
         {
             string sql = "select * from tournament_participations inner join persons on athlete_id=id where tournament_id= '" + tournamentId + "';";
             return this.Query(sql);
         }
 
+        public DataSet getParticipantsT(int tournamentId, int team)
+        {
+            string sql = "select * from(select athlete_id from team_tournament_participations inner join tournament_participations on id=team_id and tournament_participations.tournament_id= '" + tournamentId + "' and team= '" + team + "') as t1 inner join persons on id=athlete_id;";
+            return this.Query(sql);
+        }
+
+        public int getNumTeams(int tournamentId)
+        {
+            DataSet ds;
+            string sql = "select count(*) from team_tournament_participations where tournament_id= '" + tournamentId + "';";
+            ds = this.Query(sql);
+            return int.Parse(ds.Tables[0].Rows[0][0].ToString());
+        }
+
+        public void deleteLastNRows(int rows, int tournamentId)
+        {
+            string sql = "delete from team_tournament_participations where id in(select id from team_tournament_participations where tournament_id = '" + tournamentId + "' order by id desc limit " + rows + ");";
+            this.Query(sql);
+          
+        }
+
         public DataSet getTeams(int tournamentId)
         {
             string sql = "select * from tournament_participations inner join persons on athlete_id=id where tournament_id= '" + tournamentId + "';";
             return this.Query(sql);
+        }
+
+        public int getTeamId(int team, int tournamentId)
+        {
+            DataSet ds;
+            string sql = "select id from team_tournament_participations where team= '" + team + "' and tournament_id = '" + tournamentId + "';";
+            ds = this.Query(sql);
+            return int.Parse(ds.Tables[0].Rows[0][0].ToString());
         }
 
         public DataSet findPotentialParticipants(string sex, int ageFrom, int ageTo, int levelFrom, int levelTo, int tournamentId)
@@ -92,7 +156,7 @@ namespace KarateGeek.databaseConnection
                 }
             }
 
-            if (levelFrom > 0 && levelTo > 0)
+            if (levelFrom >= 0 && levelTo >= 0)
             {
                 if (num == 0)
                 {
@@ -129,7 +193,7 @@ namespace KarateGeek.databaseConnection
                 }
             }
 
-            if (tournamentId != 0)
+            if (tournamentId != 1)
             {
                 sql = "select * from (select persons.id as persons_id,first_name,last_name,sex , extract(year from age(date_of_birth)) as age, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank, club_id from persons inner join athletes on (persons.id = athletes.id)) as t1 " + filter + " and persons_id not in(select athlete_id from tournament_participations where tournament_id='" + tournamentId + "');";
             }

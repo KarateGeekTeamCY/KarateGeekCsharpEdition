@@ -52,7 +52,6 @@ namespace KarateGeek.databaseConnection
         public void deleteEvent(int id)
         {
             DataSet dsE = null;
-            DataSet dsL = null;
             int location_id;
             int address_id;
 
@@ -110,7 +109,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet getEvents()
         {
-            string sql = "select * from events;";
+            string sql = "select * from events where id!='1';";
             return this.Query(sql);
         }
 
