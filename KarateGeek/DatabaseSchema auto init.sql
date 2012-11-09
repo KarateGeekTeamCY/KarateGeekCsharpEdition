@@ -219,8 +219,9 @@ CREATE TABLE games (
     phase           INTEGER         NOT NULL,
     position        INTEGER         NOT NULL,
     tournament_id   INTEGER         REFERENCES tournaments(id),
-    is_ready        BOOLEAN,
-    is_finished     BOOLEAN,
+    is_ready        BOOLEAN         NOT NULL DEFAULT false,
+    is_finished     BOOLEAN         NOT NULL DEFAULT false,
+
     PRIMARY KEY(id)
 );
 
@@ -235,8 +236,8 @@ CREATE TABLE team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
-    athlete_id      INTEGER         REFERENCES athletes(id) on delete cascade,
-    team_id 	    INTEGER   	    REFERENCES team_tournament_participations(id) on delete cascade,
+    athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id),
     tournament_id   INTEGER         REFERENCES tournaments(id),
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
@@ -251,7 +252,7 @@ CREATE TABLE game_participations (      -- gia atomika
                                         -- gia atomika parousiasi 1
                                         -- gia omadiko vs 6 h 4 anepisima
     athlete_id      INTEGER         REFERENCES athletes (id),
-    team_id   	    INTEGER	    REFERENCES team_tournament_participations(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id),
     game_id         INTEGER         REFERENCES games (id),
     PRIMARY KEY (athlete_id, game_id)
 );
@@ -261,14 +262,13 @@ CREATE TABLE game_participations (      -- gia atomika
 
 CREATE TABLE game_points(
 
-	id 		SERIAL,
-	game_id 	INTEGER REFERENCES games(id),
-	athlete_id 	INTEGER REFERENCES athletes(id),
-	team_id		INTEGER REFERENCES team_tournament_participations(id),
+    id              SERIAL,
+    game_id         INTEGER         REFERENCES games(id),
+    athlete_id      INTEGER         REFERENCES athletes(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id),
 
-
-	technical_point		INTEGER,
-	technical_point_desc	varchar(50),
+    technical_point         INTEGER,
+    technical_point_desc    varchar(50),
 
     PRIMARY KEY (id)
 );
