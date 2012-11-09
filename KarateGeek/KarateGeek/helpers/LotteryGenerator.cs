@@ -16,7 +16,7 @@ using System.Diagnostics;   // has Debug.WriteLine()
 namespace KarateGeek.helpers
 {
     /** 
-     * Algorithm described in project specs.
+     * Algorithm for the Lottery Generator described in project specs.
      * Simplified description (algorithm can be improved):
      * 
      * - Get list of tournament participants, in the form of List<long>,
@@ -26,7 +26,7 @@ namespace KarateGeek.helpers
      *   members which calculates their "score" (see project specs
      *   for the Factors taken into account)
      * - Randomise that score a little bit (configurable!)
-     * - Sort the List<AthleteRanking> by score and return a new
+     * - Sort the List (athleteScoreList) by score and return a new
      *   List<int>. That List will be used by the reporting tools.
      *
      * - The class LotteryGenerator will have a constructor that takes
@@ -40,6 +40,13 @@ namespace KarateGeek.helpers
 
     class LotteryGenerator
     {
+        public enum LotteryType {
+            indiv_single,
+            indiv_versus,
+            team_single,
+            team_versus
+        };
+
 
         /** Class fields/properties: */
 
@@ -59,6 +66,8 @@ namespace KarateGeek.helpers
 
         public readonly int tournamentId;
 
+        public readonly LotteryType ltype;
+
 
         /** Class methods: */
 
@@ -66,6 +75,25 @@ namespace KarateGeek.helpers
         {
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
+
+            /* assignment of lottery type: the cases of the following switch are unfinished (and WRONG): */
+            switch (new LotteryGenConnection().getTournamentGameType(tournamentId)) { // TODO: Re-use the connection
+                case Strings.indKata:    ltype = LotteryType.indiv_single;
+                                         break;
+
+                case Strings.indKumite:
+                case Strings.individual: ltype = LotteryType.indiv_versus;
+                                         break;
+
+                case Strings.syncKata:
+                case Strings.teamKata:   ltype = LotteryType.team_single;
+                                         break;
+
+                case Strings.teamKumite:
+                case Strings.team:       ltype = LotteryType.team_versus;
+                                         break;
+                /* for indKata and ?? we should also check the scoring system! */
+            }
 
             List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
@@ -108,7 +136,7 @@ namespace KarateGeek.helpers
                 if (Strings.rank[i] == belt)
                     score += i * beltFactor;
 
-            //String belt = conn.getBeltColor(athleteId);  /* Both string comparison methods work! */
+            //String belt = conn.getBeltColor(athleteId);  /* Both string comparison methods tested to work! */
             //for (int i = 0; i < Strings.rank.Length; ++i)
             //    if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))
             //        score += i * beltFactor;
@@ -217,11 +245,11 @@ namespace KarateGeek.helpers
              * 
              *         /           \                   /           \
              *        /             \                 /             \
-             *       •               •               •               •
+             *       •               •               •               •           ← phaseY
              *      / \             / \             / \             / \
              *     /   \           /   \           /   \           /   \
              *    /     \         /     \         /     \         /     \
-             *   y1      y3      y5      •       •       •       y4      y2
+             *   y1      y3      y5      •       •       •       y4      y2      ← phaseX
              *                          / \     / \     / \
              *                         /   \   /   \   /   \
              *                        x1   x3 x5   x6 x4   x2
@@ -239,12 +267,13 @@ namespace KarateGeek.helpers
             /* Crude and untested first version: */
 
             int len = Participants.Count;
-            int p = (int) Math.Pow(2, Math.Ceiling(Math.Log(len, 2))); // tested, works well for len>=1
+            int numOfPhases = (int) Math.Ceiling(Math.Log(len, 2));
+            int p = (int) Math.Pow(2, numOfPhases);             // p has been tested, works well for len>=1
             int y = p - len;
             int x = len - y;
             int z = p / 2 - y; // len must be >=2 (?)
 
-            int yleft  = (y + 1) / 2;  // BUG FOUND!! What happens when y==3?! (y==5 is OK!)  ;)
+            int yleft  = (y + 1) / 2;  // What happens when y==3?! (y==5 is OK!) EDIT: I think the bug is fixed
             int yright = y - yleft;
 
             long[] Yarray = Participants.Take(y).ToArray();
@@ -256,13 +285,12 @@ namespace KarateGeek.helpers
 
             /**/
 
-            /* The following part might need more testing to eliminate off-by-one errors: */
+            /* The following parts might need more testing to eliminate off-by-one errors: */
 
             long[] Yleft  = new long[yleft];
             long[] Yright = new long[yright];
             long[] Xleft  = new long[z];
             long[] Xright = new long[z];
-
 
             for (int i = 0; i < x; i += 2) {
                 Xleft[i / 2] = Xarray[i];
@@ -278,45 +306,47 @@ namespace KarateGeek.helpers
 
             /* Now let's add the pairs to the list of pairs: */
             {
-                int phase1position = yleft + 1; // "phase" and "position" are 1-based
-                int phase2position = 1;
+                /* "position" is 1-based; "phase" is 0-based and 0 is the final (1 is the semi-final etc.) */
+                int phaseX = numOfPhases - 1;
+                int phaseY = numOfPhases - 2;
+                int phaseXposition = yleft + 1;
+                int phaseYposition = 1;
 
                 for (int i = 0; i < yleft; i += 2) {
-                    Pairs.Add(new Tuple<long, long, int, int>(Yleft[i], Yleft[i + 1], 2, phase2position));
-                    ++phase2position;
+                    Pairs.Add(new Tuple<long, long, int, int>(Yleft[i], Yleft[i + 1], phaseY, phaseYposition));
+                    ++phaseYposition;
                 }
 
                 if (yleft % 2 != 0) {
-                    Pairs.Add(new Tuple<long, long, int, int>(Yleft[yleft - 1], -1, 2, phase2position));
-                    ++phase2position;
+                    Pairs.Add(new Tuple<long, long, int, int>(Yleft[yleft - 1], -1, phaseY, phaseYposition));
+                    ++phaseYposition;
                 }
 
-                phase2position += z / 2; // ?!?! I think this line is OK.
+                phaseYposition += z / 2; // ?!?! I think this line is OK.
 
                 if (yright % 2 != 0) {
-                    Pairs.Add(new Tuple<long, long, int, int>(-1, Yright[0], 2, phase2position));
-                    ++phase2position;
+                    Pairs.Add(new Tuple<long, long, int, int>(-1, Yright[0], phaseY, phaseYposition));
+                    ++phaseYposition;
                 }
 
                 for (int i = (yright % 2 != 0) ? 1 : 0; i < yright; i += 2) { // FIXME: check boundary conditions, especially here!
-                    Pairs.Add(new Tuple<long, long, int, int>(Yright[i], Yright[i + 1], 2, phase2position));
-                    ++phase2position;
+                    Pairs.Add(new Tuple<long, long, int, int>(Yright[i], Yright[i + 1], phaseY, phaseYposition));
+                    ++phaseYposition;
                 }
 
                 for (int i = 0; i < z - 1; i += 2) {
-                    Pairs.Add(new Tuple<long, long, int, int>(Xleft[i], Xleft[i + 1], 1, phase1position));
-                    ++phase1position;
+                    Pairs.Add(new Tuple<long, long, int, int>(Xleft[i], Xleft[i + 1], phaseX, phaseXposition));
+                    ++phaseXposition;
                 }
 
                 if (z % 2 != 0) {
-                    Pairs.Add(new Tuple<long, long, int, int>(Xleft[z - 1], Xright[0], 1, phase1position));
-                    ++phase1position;
+                    Pairs.Add(new Tuple<long, long, int, int>(Xleft[z - 1], Xright[0], phaseX, phaseXposition));
+                    ++phaseXposition;
                 }
 
-                //for (int i = (z % 2 == 0) ? 1 : 0; i < ((z % 2 == 0) ? z - 1 : z); i += 2) {
                 for (int i = (z % 2 != 0) ? 1 : 0; i <  z - 1; i += 2) { // FIXME: check boundary conditions, especially here!
-                    Pairs.Add(new Tuple<long, long, int, int>(Xright[i], Xright[i + 1], 1, phase1position));
-                    ++phase1position;
+                    Pairs.Add(new Tuple<long, long, int, int>(Xright[i], Xright[i + 1], phaseX, phaseXposition));
+                    ++phaseXposition;
                 }
             }
 

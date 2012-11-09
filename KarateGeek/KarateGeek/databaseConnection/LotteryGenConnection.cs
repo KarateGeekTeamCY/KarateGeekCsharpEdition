@@ -42,6 +42,14 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public String getTournamentGameType(long tournamentId)
+        {
+            String sql = "SELECT game_type FROM tournaments WHERE id = " + tournamentId + " ;";
+
+            return this.Query(sql).Tables[0].Rows[0][0].ToString();
+        }
+
+
         public int getNumOfGoodPlacements(long athleteId, int place, Boolean official)
         {
             /* If you don't care only about official tournaments, use the following simplified query: */
@@ -108,9 +116,10 @@ namespace KarateGeek.databaseConnection
          * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id. */
         private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
         {
-            /* UNTESTED!! */
-            String writegame = "INSERT INTO games (phase, position, tournament_id ) "
-                             + "VALUES ( " + phase + ", " + position + ", " + tournamentId + " );";
+            bool isReady = id1 >= 0 && id2 >= 0;
+
+            String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
+                             + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
             String writepair_first  = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
                                     + "VALUES ( " + id1 + ", NULL, ( SELECT currval('games_id_seq') ));";
             String writepair_second = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "

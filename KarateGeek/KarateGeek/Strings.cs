@@ -22,7 +22,7 @@ namespace KarateGeek
         //5th kyu - Yellow (at least 7 Month of traning or more)
         //6th kyu - White (at least 5 Month of traning or more)
         //
-        public static readonly string rank01 = "White  –  6th kyu";
+        public static readonly string rank01 = "White  –  6th kyu";     // TODO: change "static readonly" to "const"??
         public static readonly string rank02 = "Yellow –  5th kyu";
         public static readonly string rank03 = "Orange –  4th kyu";
         public static readonly string rank04 = "Green  –  3th kyu";
@@ -48,15 +48,15 @@ namespace KarateGeek
         //
         // game types
         //
-        public static string indKata = "IMD|KATA";
-        public static string teamKata = "TEAM|KATA";
-        public static string syncKata = "SYNCHRONIZED KATA";
-        public static string indKumite = "IND|KUMITE";
-        public static string teamKumite = "TEAM|KUMITE";
-        public static string enbu = "EN-BU";
-        public static string fugugo = "FUGU-GO";
-        public static string team = "TEAM";
-        public static string indevidual = "IND";
+        public const string indKata    = "IMD|KATA";
+        public const string teamKata   = "TEAM|KATA";
+        public const string syncKata   = "SYNCHRONIZED KATA";
+        public const string indKumite  = "IND|KUMITE";
+        public const string teamKumite = "TEAM|KUMITE";
+        public const string enbu       = "EN-BU";
+        public const string fugugo     = "FUGU-GO";
+        public const string team       = "TEAM";
+        public const string individual = "IND";
 
         //
         // judging types
