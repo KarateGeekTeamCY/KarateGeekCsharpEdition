@@ -167,6 +167,9 @@ namespace KarateGeek.guis
 
             this._gameParticipationConn = new TournamentGameParticipationsConnection();
 
+
+
+
             foreach (DataRow dr in _currentGamesDT.Rows)
             {
                 this._currentGameParticipationsDT = this._gameParticipationConn.GetParticipation(dr[0].ToString()).Tables[0];
@@ -184,40 +187,59 @@ namespace KarateGeek.guis
                         game = _currentGameParticipationsDT.Rows[1][5].ToString() + _currentGameParticipationsDT.Rows[1][6].ToString();
                         break;
                     default:
-                        string leftSide = _currentGameParticipationsDT.Rows[0][5].ToString() + _currentGameParticipationsDT.Rows[0][6].ToString();
-                        leftSide += " - ";
-                        string rightside = "";
                         int I = _currentGameParticipationsDT.Rows.Count;
-                        for (int i = 1; i < I; i++)
-                        {
-                            if (_currentGameParticipationsDT.Rows[0][3].ToString() == _currentGameParticipationsDT.Rows[i][3].ToString())
-                            {
-                                leftSide = _currentGameParticipationsDT.Rows[i][5].ToString() + _currentGameParticipationsDT.Rows[i][6].ToString();
-                                leftSide += " - ";
-                            }
-                            else
-                            {
-                                rightside = _currentGameParticipationsDT.Rows[i][5].ToString() + _currentGameParticipationsDT.Rows[i][6].ToString();
-                                rightside += " - ";
-                            }
-                        }
-                        game = leftSide + "\nVS" + rightside;
-                        break;
 
+                        for (int i = 0; i < I; i++)
+                        {
+                            game = _currentGameParticipationsDT.Rows[i][5].ToString() + " " + _currentGameParticipationsDT.Rows[i][6].ToString();
+
+                            if (1 != (I - 1))
+                                game += " - ";
+
+                        }
+                        break;
                 }
                 this._currentGameParticipants.Add(game);
+            }
 
+
+
+            foreach (DataRow dr in this._futureGamesDT .Rows)
+            {
+                this._futureGameParticipationsDT = this._gameParticipationConn.GetParticipation(dr[0].ToString()).Tables[0];
+                int parts = _futureGameParticipationsDT.Rows.Count;
+                string game = "";
+
+                switch (parts)
+                {
+                    case 1:
+                        game = _futureGameParticipationsDT.Rows[0][5].ToString() + _futureGameParticipationsDT.Rows[0][6].ToString();
+                        break;
+                    case 2:
+                        game = _futureGameParticipationsDT.Rows[0][5].ToString() + _futureGameParticipationsDT.Rows[0][6].ToString();
+                        game = "\nVS";
+                        game = _futureGameParticipationsDT.Rows[1][5].ToString() + _futureGameParticipationsDT.Rows[1][6].ToString();
+                        break;
+                    default:
+                        int I = _futureGameParticipationsDT.Rows.Count;
+
+                        for (int i = 0; i < I; i++)
+                        {
+                            game = _futureGameParticipationsDT.Rows[i][5].ToString() + " " + _futureGameParticipationsDT.Rows[i][6].ToString();
+
+                            if (1 != (I - 1))
+                                game += " - ";
+                        }
+                        break;
+                }
+                this._futureGameParticipants.Add(game);
             }
 
 
 
 
 
+
         }
-
-
-
-
-
     }
 }
