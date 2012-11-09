@@ -30,3 +30,60 @@ select athletes.id, first_name, last_name, fathers_name, sex, date_of_birth, per
 									on countries.code = cities.country_code
 										join athlete_first_places_ind
 											on athlete_first_places_ind.athlete_id = athletes.id;
+
+
+
+
+
+
+
+
+
+
+
+
+
+--
+-- mikes t's views
+--
+
+
+create view game_participants_total_det as
+select event_id, tournament_id, game_id, team_id,
+	athletes.id as athlete_id, last_name, first_name
+from events join tournaments 
+		on events.id = tournaments.event_id
+	join games 
+		on tournaments.id = games.tournament_id
+	join game_participations
+		on game_participations.game_id = games.id
+	join athletes
+		on game_participations.athlete_id = athletes.id
+	join persons 
+		on athletes.id = persons.id;
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

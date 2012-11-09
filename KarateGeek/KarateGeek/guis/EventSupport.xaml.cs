@@ -27,19 +27,20 @@ namespace KarateGeek.guis
         private Window _sender;
 
         private bool _isTeam;
-        
+
         private string _gameType;
         private string _judgingType;
-        
+
         private string _eventId;
         private string _tournamentId;
-        
-        
+
+
 
         private TournamentConnection _tournamentConn;
         private TournamentGameParticipationsConnection _tournamentParticipationConn;
         private EventConnection _eventConn;
         private GameConnection _gameConn;
+        private TournamentGameParticipationsConnection _gameParticipationConn;
 
         private DataTable _TournamantsDT;
         private DataTable _currentGamesDT;
@@ -50,8 +51,8 @@ namespace KarateGeek.guis
         private List<string> _availableTournaments;
         private List<string> _currentGames;
         private List<string> _futureGames;
-        private List<List<string>> _currentGameParticipants;
-        private List<List<string>> _futureGameParticipants;
+        private List<string> _currentGameParticipants;
+        private List<string> _futureGameParticipants;
 
 
         #endregion private declaretions
@@ -59,7 +60,7 @@ namespace KarateGeek.guis
 
         public EventSupport(Window sender)
         {
-            
+
             InitializeComponent();
             this._sender = sender;
 
@@ -69,7 +70,7 @@ namespace KarateGeek.guis
 
             _eventConn = new EventConnection();
 
-            DataSet todayEventDS = _eventConn.getEventsBydate( datestring);
+            DataSet todayEventDS = _eventConn.getEventsBydate(datestring);
             DataTable todayEventDT = todayEventDS.Tables[0];
 
             if (todayEventDT.Rows.Count == 0)
@@ -82,7 +83,8 @@ namespace KarateGeek.guis
                 this.Close();
                 return;
             }
-            else {
+            else
+            {
                 this.Show();
                 this._sender.Hide();
 
@@ -90,7 +92,7 @@ namespace KarateGeek.guis
             }
 
             _tournamentConn = new TournamentConnection();
-            this._TournamantsDT = this._tournamentConn.findSimilar("", int.Parse(this._eventId) ).Tables[0];
+            this._TournamantsDT = this._tournamentConn.findSimilar("", int.Parse(this._eventId)).Tables[0];
 
             foreach (DataRow dr in _TournamantsDT.Rows)
             {
@@ -100,9 +102,9 @@ namespace KarateGeek.guis
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
             cboTurnamentSelector.SelectedIndex = 0;
 
-            
+
         }
-        
+
 
         #region buttons
         private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
@@ -119,15 +121,15 @@ namespace KarateGeek.guis
 
 
         //#region gui elements
-        
+
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
             this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
-            
-            this._gameType =  (string)_TournamantsDT.Rows[i][7];
-            string [] type = _gameType.Split('|');
-            
+
+            this._gameType = (string)_TournamantsDT.Rows[i][7];
+            string[] type = _gameType.Split('|');
+
             if (type[0] == Strings.team)
                 this._isTeam = true;
             else
@@ -160,18 +162,57 @@ namespace KarateGeek.guis
                 futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
             }
 
-            this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase( _tournamentId, "" + currentIndex).Tables[0];
+            this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + currentIndex).Tables[0];
             this._futureGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + futureIndex).Tables[0];
 
+            this._gameParticipationConn = new TournamentGameParticipationsConnection();
+
+            foreach (DataRow dr in _currentGamesDT.Rows)
+            {
+                this._currentGameParticipationsDT = this._gameParticipationConn.GetParticipation(dr[0].ToString()).Tables[0];
+                int parts = _currentGameParticipationsDT.Rows.Count;
+                string game = "";
+
+                switch (parts)
+                {
+                    case 1:
+                        game = _currentGameParticipationsDT.Rows[0][5].ToString() + _currentGameParticipationsDT.Rows[0][6].ToString();
+                        break;
+                    case 2:
+                        game = _currentGameParticipationsDT.Rows[0][5].ToString() + _currentGameParticipationsDT.Rows[0][6].ToString();
+                        game = "\nVS";
+                        game = _currentGameParticipationsDT.Rows[1][5].ToString() + _currentGameParticipationsDT.Rows[1][6].ToString();
+                        break;
+                    default:
+                        string leftSide = _currentGameParticipationsDT.Rows[0][5].ToString() + _currentGameParticipationsDT.Rows[0][6].ToString();
+                        leftSide += " - ";
+                        string rightside = "";
+                        int I = _currentGameParticipationsDT.Rows.Count;
+                        for (int i = 1; i < I; i++)
+                        {
+                            if (_currentGameParticipationsDT.Rows[0][3].ToString() == _currentGameParticipationsDT.Rows[i][3].ToString())
+                            {
+                                leftSide = _currentGameParticipationsDT.Rows[i][5].ToString() + _currentGameParticipationsDT.Rows[i][6].ToString();
+                                leftSide += " - ";
+                            }
+                            else
+                            {
+                                rightside = _currentGameParticipationsDT.Rows[i][5].ToString() + _currentGameParticipationsDT.Rows[i][6].ToString();
+                                rightside += " - ";
+                            }
+                        }
+                        game = leftSide + "\nVS" + rightside;
+                        break;
+
+                }
+                this._currentGameParticipants.Add(game);
+
+            }
 
 
 
 
 
-
-
-
-        
         }
 
 
