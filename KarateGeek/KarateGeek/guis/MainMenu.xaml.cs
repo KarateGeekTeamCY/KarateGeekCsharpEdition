@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;   // has Debug.WriteLine()
 
-using KarateGeek.helpers; // for lottery generator testing; THIS LINE WILL BE REMOVED
+using KarateGeek.lottery; // for lottery generator testing; THIS LINE WILL BE REMOVED
 
 namespace KarateGeek.guis
 {

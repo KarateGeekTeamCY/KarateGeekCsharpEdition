@@ -128,6 +128,8 @@
     <Compile Include="guis\Reports.Designer.cs">
       <DependentUpon>Reports.cs</DependentUpon>
     </Compile>
+    <Compile Include="lottery\LotteryGeneratorFactory.cs" />
+    <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="Strings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +179,7 @@
       <DependentUpon>KumiteSystem.xaml</DependentUpon>
     </Compile>
     <Compile Include="helpers\ImageConverter.cs" />
-    <Compile Include="helpers\LotteryGenerator.cs" />
+    <Compile Include="lottery\LotteryGeneratorBaseClasses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
