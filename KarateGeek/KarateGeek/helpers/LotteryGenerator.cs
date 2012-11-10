@@ -33,67 +33,137 @@ namespace KarateGeek.helpers
      *   a tournament id and three publicly accessible methods:
      *   shuffle(), which produces a new randomisation, getLottery(),
      *   which returns it, and confirmLottery(), which writes to the DB.
-     * - It must take into account team sports (HOW?!!?)
+     * - It must take into account team sports.
+     * 
+     * 
+     * USING A (SIMPLIFIED) FACTORY-LIKE DESIGN PATTERN: LotteryGenerator
+     * is an abstract base class providing the aforementioned three methods
+     * and is extended by LotteryGen_Ind_Single, LotteryGen_Ind_Versus,
+     * LotteryGen_Team_Single and LotteryGen_Team_Versus;
+     * LotteryGeneratorFactory mainly has a "factory method" that chooses
+     * which one of the above should be instatiated, based on DB data.
+     * 
+     * LotteryGenerator cannot be instatiated, but has a useful constructor
+     * inherited by the others.
+     * 
      * 
      * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!
      */
 
-    class LotteryGenerator
+
+    /* base class, abstract: */
+    abstract class LotteryGenerator //TODO: Move some code up here.
     {
-        public enum LotteryType {
+
+        /** Class fields/properties: **/
+
+        public int randomisationFactor { get; set; }
+
+
+        /** Class methods: **/
+
+        public abstract void shuffle(int tries = 2);
+        public abstract List<long> getLottery();
+        public abstract void confirmLottery();
+
+        /* Methods to display a chart of the randomised athlete list: */
+        protected class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
+        {                           // because it needs optional .NET components! For now, leave it as a stub.
+
+        }
+    }
+
+
+
+    /* Factory class: */
+    class LotteryGeneratorFactory
+    {
+        public enum LotteryType { // enum not really needed anymore, replaced by class structure
             indiv_single,
             indiv_versus,
             team_single,
             team_versus
         };
 
+        public static LotteryGenerator Create(int tournamentId)
+        {
+            LotteryGenerator lg;
 
-        /** Class fields/properties: */
+            /* assignment of lottery type: the cases of the following switch are unfinished (and WRONG): */
+            //switch (new LotteryGenConnection().getTournamentGameType(tournamentId)) {
+            //    case Strings.indKata:    lg = new LotteryGen_Ind_Single(tournamentId);
+            //                             break;
 
-        private readonly List<long> athleteList;
+            //    case Strings.indKumite:
+            //    case Strings.individual: lg = new LotteryGen_Ind_Versus(tournamentId);
+            //                             break;
 
-        private readonly List<Tuple<long, int>> athleteScoreList;
+            //    case Strings.syncKata:
+            //    case Strings.teamKata:   lg = new LotteryGen_Team_Single(tournamentId);
+            //                             break;
+
+            //    case Strings.teamKumite:
+            //    case Strings.team:       lg = new LotteryGen_Team_Versus(tournamentId);
+            //                             break;
+
+            //    default:                 lg = null;
+            //    /* for indKata and ?? we should also check the scoring system! */
+            //}
+
+            // for now only create LotteryGen_Ind_Versus objects...
+
+            lg = new LotteryGen_Ind_Versus(tournamentId);
+
+            Debug.Assert(lg != null);
+
+            return lg;
+        }
+
+    }
+
+
+
+    /* Implementation classes LotteryGen_Ind_Single, LotteryGen_Ind_Versus,
+     * LotteryGen_Team_Single and LotteryGen_Team_Versus start here:           */
+
+
+    class LotteryGen_Ind_Single : LotteryGenerator
+    {
+        public override void shuffle(int tries){}
+        public override List<long> getLottery() { return null; }
+        public override void confirmLottery() { }
+    }
+
+
+
+    class LotteryGen_Ind_Versus : LotteryGenerator
+    {
+
+        /** Class fields/properties: **/
+
+        protected readonly List<long> athleteList; //TODO: private -> protected for all fields ??
+
+        protected readonly List<Tuple<long, int>> athleteScoreList;
 
         private List<Tuple<long, int>> athleteScoreListShuffled;
 
-        private bool confirmed = false; // once "confirmed", a LotteryGenerator object cannot write to the DB anymore!
+        protected bool confirmed = false; // once "confirmed", a LotteryGen_Ind_Versus object cannot write to the DB anymore!
 
-        private Int32 randomSeed = 134368;  // use a constant value with "new Random(randomSeed)",
-                                            // or "new Random()" for a time-dependent value... (UNUSED, for now)
-        private Random rgen;
+        protected Int32 randomSeed = 134368;  // use a constant value with "new Random(randomSeed)",
+                                              // or "new Random()" for a time-dependent value... (UNUSED, for now)
+        protected Random rgen;
 
-        public int randomisationFactor { get; set; }
+        // public int randomisationFactor { get; set; }
 
         public readonly int tournamentId;
 
-        public readonly LotteryType ltype;
 
+        /** Class methods: **/
 
-        /** Class methods: */
-
-        public LotteryGenerator(int tournamentId) // constructor
+        public LotteryGen_Ind_Versus(int tournamentId) // constructor
         {
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
-
-            /* assignment of lottery type: the cases of the following switch are unfinished (and WRONG): */
-            switch (new LotteryGenConnection().getTournamentGameType(tournamentId)) { // TODO: Re-use the connection
-                case Strings.indKata:    ltype = LotteryType.indiv_single;
-                                         break;
-
-                case Strings.indKumite:
-                case Strings.individual: ltype = LotteryType.indiv_versus;
-                                         break;
-
-                case Strings.syncKata:
-                case Strings.teamKata:   ltype = LotteryType.team_single;
-                                         break;
-
-                case Strings.teamKumite:
-                case Strings.team:       ltype = LotteryType.team_versus;
-                                         break;
-                /* for indKata and ?? we should also check the scoring system! */
-            }
 
             List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
@@ -113,7 +183,7 @@ namespace KarateGeek.helpers
 
         /* NOTE: Lots of hard-coded values here, but at least all of them are in the same place
          * and easy to edit (also set the "randomisationFactor" in the class constructor!)      */
-        private int getAthleteScore(long athleteId)
+        protected int getAthleteScore(long athleteId)
         {
             LotteryGenConnection conn = new LotteryGenConnection();
 
@@ -152,7 +222,7 @@ namespace KarateGeek.helpers
 
 
         /* produces a new randomization [It would be less ugly with more LINQ usage!] */
-        public void shuffle(int tries = 2) // a default value of 2 seems OK - we don't want infinite recursion!
+        public override void shuffle(int tries = 2) // a default value of 2 seems OK - we don't want infinite recursion!
         {
             List<Tuple<long, int>> L = new List<Tuple<long, int>>();
 
@@ -175,7 +245,7 @@ namespace KarateGeek.helpers
         }
 
 
-        public List<long> getLottery()
+        public override List<long> getLottery()
         {
             if (athleteScoreListShuffled == null) throw new Exception("Use method shuffle() first.");
             
@@ -191,7 +261,7 @@ namespace KarateGeek.helpers
         }
 
 
-        private bool pairsClubConstraintActive(List<Tuple<long, long, int, int>> Pairs)
+        protected bool pairsClubConstraintActive(List<Tuple<long, long, int, int>> Pairs)
         {
             LotteryGenConnection conn = new LotteryGenConnection();
 
@@ -204,7 +274,10 @@ namespace KarateGeek.helpers
 
 
         /* CONVENTION: For semi-complete pairs, we provide a negative athlete id
-         * to the writeTournamentPair() method of the LotteryGenConnection class. */
+         * to the writeTournamentPair() method of the LotteryGenConnection class.
+         *
+         * Specifically, we use -1 for !is_ready pairs and -2 for is_ready "pairs".
+         * The latter are just single athlete participations (reusing the same code). */
         private List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
         {
             List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long, long, int, int>>();
@@ -391,7 +464,7 @@ namespace KarateGeek.helpers
         }
 
 
-        public void confirmLottery() // writes current lottery to the database, atomically!
+        public override void confirmLottery() // writes current lottery to the database, atomically!
         {
 
             if (this.confirmed)
@@ -404,13 +477,24 @@ namespace KarateGeek.helpers
             /* the doCommit flag (named parameter) will be changed to "true" after some testing */
             this.confirmed = conn.writeAllTournamentPairs(Pairs, tournamentId, doCommit: false);
         }
-
-
-        /* Methods to display a chart of the randomised athlete list: */
-        private class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
-        {                           // because it needs optional .NET components! For now, leave it as a stub.
-
-
-        }
     }
+
+
+
+    class LotteryGen_Team_Single : LotteryGenerator
+    {
+        public override void shuffle(int tries) { }
+        public override List<long> getLottery() { return null; }
+        public override void confirmLottery() { }
+    }
+
+
+
+    class LotteryGen_Team_Versus : LotteryGenerator
+    {
+        public override void shuffle(int tries) { }
+        public override List<long> getLottery() { return null; }
+        public override void confirmLottery() { }
+    }
+
 }

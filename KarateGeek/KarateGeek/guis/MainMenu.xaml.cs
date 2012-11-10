@@ -70,7 +70,7 @@ namespace KarateGeek.guis
         /* Do not just remove this code; it's a usage example for the lottery class. */
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
-            LotteryGenerator lg = new LotteryGenerator(1);
+            LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 2);
 
             // Some silly test code:
             Debug.WriteLine("Our first try:");

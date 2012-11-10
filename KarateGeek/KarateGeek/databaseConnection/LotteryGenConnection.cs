@@ -113,10 +113,15 @@ namespace KarateGeek.databaseConnection
 
 
         /* Writes a tournament pair to the database.
-         * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id. */
+         * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id.
+         *
+         * Specifically, -1 is used for !is_ready pairs and -2 for is_ready "pairs". The
+         * latter are just single athlete participations (reusing the same code).         */
         private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
         {
-            bool isReady = id1 >= 0 && id2 >= 0;
+            Debug.Assert(id1 >= -1 && id2 >= -2);
+
+            bool isReady = (id1 >= 0 && id2 >= 0) || (id1 >= 0 && id2 == -2);
 
             String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
                              + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
