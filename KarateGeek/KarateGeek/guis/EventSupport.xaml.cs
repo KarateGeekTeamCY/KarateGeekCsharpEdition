@@ -283,7 +283,13 @@ namespace KarateGeek.guis
 
         }
 
-       
+
+        public void AdvanceGameStatistics(string gameId)
+        {
+ 
+
+
+        }
 
 
 
