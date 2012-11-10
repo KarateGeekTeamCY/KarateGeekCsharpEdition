@@ -89,7 +89,7 @@ namespace KarateGeek.guis
             foreach (var element in lg.getLottery())
                 Debug.WriteLine("Athlete number: " + element);
 
-            // This will crash:
+            // This might write to the DB:
             lg.confirmLottery();
         }
 

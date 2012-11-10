@@ -363,9 +363,9 @@ INSERT INTO events (name, date, location_id)
 VALUES ('Big Event', '2012/10/30', 0);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('temp', 'male', 1, 99, 'White  –  6th kyu', 'Red – 10th dan', 'KATA' , 'FLAG', 1);
+VALUES ('temp tournament', 'male', 1, 99, 'White  –  6th kyu', 'Red – 10th dan', 'IMD|KATA' , 'FLAG', 1);
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Iron Fist Tournament', 'male', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'deathmatch', 'flag', 2);
+VALUES ('Iron Fist Tournament', 'male', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 2);
 
 
 

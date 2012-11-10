@@ -8,33 +8,36 @@ namespace KarateGeek
     static class Strings
     {
 
-
-        public static readonly string phase2 = "FINAL";
-        public static readonly string phase4 = "SEMI FINAL";
-        public static readonly string phase8 = "PHASE OF 8";
-        public static readonly string phase16 = "PHASE OF 16";
-        public static readonly string phase32 = "PHASE OF 32";
-        public static readonly string phase64 = "PHASE OF 64";
+        public static readonly string phase2   = "FINAL";
+        public static readonly string phase4   = "SEMI-FINAL";
+        public static readonly string phase8   = "PHASE OF 8";
+        public static readonly string phase16  = "PHASE OF 16";
+        public static readonly string phase32  = "PHASE OF 32";
+        public static readonly string phase64  = "PHASE OF 64";
         public static readonly string phase128 = "PHASE OF 128";
+        public static readonly string phase256 = "PHASE OF 256";
 
         public static readonly string[] phase = { phase2, phase4, phase8, phase16,
-                                                 phase32, phase64, phase128
-                                               };
+                                                  phase32, phase64, phase128, phase256
+                                                };
 
 
         //
         // ranking types
         //
-        //9th dan - 10th dan- Wide Red optional as Sensei Ilija Yorga himself wore a Black Belt, Master's title
-        //6th dan - 8th dan - White and Red, Master's title
-        //1st dan - 5th dan - Black
-        //1st kyu - Brown (at least 25 Month of traning or more)
-        //2nd kyu - Blue (at least 18 Month of traning or more)
-        //3rd kyu - Green (at least 15 Month of traning or more)
-        //4th kyu - Orange (at least 9 Month of traning or more)
-        //5th kyu - Yellow (at least 7 Month of traning or more)
-        //6th kyu - White (at least 5 Month of traning or more)
-        //
+
+        /*  Info:
+         * 
+         *  9th dan - 10th dan  –  Wide Red (optional as Sensei Ilija Yorga himself wore a Black Belt) Master's title
+         *  6th dan - 8th dan   –  White and Red, Master's title
+         *  1st dan - 5th dan   –  Black
+         *  1st kyu             –  Brown (at least 25 Month of traning or more)
+         *  2nd kyu             –  Blue (at least 18 Month of traning or more)
+         *  3rd kyu             –  Green (at least 15 Month of traning or more)
+         *  4th kyu             –  Orange (at least 9 Month of traning or more)
+         *  5th kyu             –  Yellow (at least 7 Month of traning or more)
+         *  6th kyu             –  White (at least 5 Month of traning or more)
+         */
         public static readonly string rank01 = "White  –  6th kyu";     // TODO: change "static readonly" to "const"??
         public static readonly string rank02 = "Yellow –  5th kyu";
         public static readonly string rank03 = "Orange –  4th kyu";
@@ -58,8 +61,9 @@ namespace KarateGeek
                                                  rank13, rank14, rank15, rank16
                                                };
 
+
         //
-        // game types
+        // game types (tournament types)
         //
 
         public const string indKata    = "IMD|KATA";
@@ -72,12 +76,14 @@ namespace KarateGeek
         public const string team       = "TEAM";
         public const string individual = "IND";
 
-        //
-        // judging types
-        //
-        public static string flag = "FLAG";         // einai to flag system
 
-        public static string point = "POINT";       //  einai to sistima me tis 
+        //
+        // scoring types
+        //
+
+        public static string flag  = "FLAG";        // einai to flag system
+
+        public static string point = "POINT";       // einai to sistima me tis 
                                                     // diaforetikes vathmologies
                                                     // analoga me tin epitixia
                                                     // tis texnikis
@@ -85,29 +91,25 @@ namespace KarateGeek
         public static string score = "SCORE";       // einai i arithmitiki vathmologia
                                                     // me vasi kritiria texnikis
 
-
-
         //
         // kumite points
         //
 
-        public static string ippon = "IPPON";
-        public static string wazaari = "WAZA-ARI";
-        public static string jyogai = "JUO-GAI";
-        public static string chui = "CHUI";
-        public static string keikoku = "KEI-KOKU";
-        public static string tento = "TEN-TO";
+        public static string ippon      = "IPPON";
+        public static string wazaari    = "WAZA-ARI";
+        public static string jyogai     = "JUO-GAI";
+        public static string chui       = "CHUI";
+        public static string keikoku    = "KEI-KOKU";
+        public static string tento      = "TEN-TO";
         public static string doctorStop = "DOCTOR STOP";
-
 
 
         //
         // person sex
         //
-        public static string male = "MALE";
+
+        public static string male   = "MALE";
         public static string female = "FEMALE";
-
-
 
 
         //public static string ;

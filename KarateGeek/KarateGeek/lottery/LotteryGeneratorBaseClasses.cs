@@ -56,26 +56,6 @@ namespace KarateGeek.lottery
     abstract class LotteryGenerator //TODO: Move more code up here.
     {
 
-        ///** Class fields/properties: **/
-
-        //public int randomisationFactor { get; set; }
-
-
-        ///** Class methods: **/
-
-        //public abstract void shuffle(int tries = 2);
-        //public abstract List<long> getLottery();
-        //public abstract void confirmLottery();
-
-        ///* Methods to display a chart of the randomised athlete list: */
-        //protected class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
-        //{                           // because it needs optional .NET components! For now, leave it as a stub.
-
-        //}
-
-
-
-
         /** Class fields/properties: **/
 
         protected readonly List<long> athleteList;
@@ -124,8 +104,9 @@ namespace KarateGeek.lottery
         }
 
 
-        /* NOTE: Lots of hard-coded values here, but at least all of them are in the same place
-         * and easy to edit (also set the "randomisationFactor" in the class constructor!)      */
+        /* NOTE: Lots of hard-coded values here, but at least all of them are in the
+         * same place and easy to edit (also set the "randomisationFactor" in the class
+         * constructor or the subclass constructors!)                                   */
         protected int getAthleteScore(long athleteId)
         {
             LotteryGenConnection conn = new LotteryGenConnection();
@@ -134,14 +115,14 @@ namespace KarateGeek.lottery
             const int ageFactor = 100;
 
             /* past achievements: */
-            int score = conn.getNumOfGoodPlacements(athleteId, 1, true) * 500 +  // first  place in   official event
-                        conn.getNumOfGoodPlacements(athleteId, 2, true) * 240 +  // second place in   official event
-                        conn.getNumOfGoodPlacements(athleteId, 3, true) * 120 +  // third  place in   official event
-                        conn.getNumOfGoodPlacements(athleteId, 4, true) * 80 +  // fourth place in   official event
+            int score = conn.getNumOfGoodPlacements(athleteId, 1, true)  * 500 +  // first  place in   official event
+                        conn.getNumOfGoodPlacements(athleteId, 2, true)  * 240 +  // second place in   official event
+                        conn.getNumOfGoodPlacements(athleteId, 3, true)  * 120 +  // third  place in   official event
+                        conn.getNumOfGoodPlacements(athleteId, 4, true)  *  80 +  // fourth place in   official event
                         conn.getNumOfGoodPlacements(athleteId, 1, false) * 250 +  // first  place in unofficial event
                         conn.getNumOfGoodPlacements(athleteId, 2, false) * 120 +  // second place in unofficial event
-                        conn.getNumOfGoodPlacements(athleteId, 3, false) * 60 +  // third  place in unofficial event
-                        conn.getNumOfGoodPlacements(athleteId, 4, false) * 40;   // fourth place in unofficial event
+                        conn.getNumOfGoodPlacements(athleteId, 3, false) *  60 +  // third  place in unofficial event
+                        conn.getNumOfGoodPlacements(athleteId, 4, false) *  40;   // fourth place in unofficial event
 
             /* belt color: */
             String belt = conn.getBeltColor(athleteId);
@@ -182,6 +163,17 @@ namespace KarateGeek.lottery
         }
 
 
+        ///* Methods to display a chart of the randomised athlete list: */
+        //protected class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
+        //{                           // because it needs optional .NET components! For now, leave it as a stub.
+
+        //}
+
+        /* Helper methods to handle teams and team lists (class to be renamed!): */
+        protected class TeamSomething // Is this even a good idea? (C# lacks multiple inheritance)
+        {
+
+        }
     }
 
 
@@ -214,7 +206,6 @@ namespace KarateGeek.lottery
 
     abstract class LotteryGen_Versus : LotteryGenerator
     {
-
 
         public LotteryGen_Versus(int tournamentId) : base(tournamentId) { } //calling base constructor
 

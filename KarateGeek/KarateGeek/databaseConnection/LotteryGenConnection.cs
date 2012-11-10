@@ -50,6 +50,13 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public String getTournamentScoringType(long tournamentId)
+        {
+            String sql = "SELECT scoring_type FROM tournaments WHERE id = " + tournamentId + " ;";
+
+            return this.Query(sql).Tables[0].Rows[0][0].ToString();
+        }
+        
         public int getNumOfGoodPlacements(long athleteId, int place, Boolean official)
         {
             /* If you don't care only about official tournaments, use the following simplified query: */
