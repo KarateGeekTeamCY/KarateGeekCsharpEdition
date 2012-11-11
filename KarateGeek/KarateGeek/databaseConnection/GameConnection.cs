@@ -36,7 +36,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet GetGamesByTurnamentPhase( string turnamentId, string phase)
         {
-            sql = "SELECT * FROM games WHERE turnament_id = '" + turnamentId + "' AND phase = '" + phase + "';" ;
+            sql = "SELECT * FROM games WHERE tournament_id = '" + turnamentId + "' AND phase = '" + phase + "';" ;
             return this.Query(sql);
         }
 

@@ -414,8 +414,13 @@ VALUES (3, 2, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (4, 2, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
 
+--select * from tournaments;
 
+--select * from games;
 
+INSERT INTO games (phase, position, tournament_id, is_ready )  values (1, 1, 3, true);
+
+insert into game_participations (athlete_id, game_id) values (2, 1);
 
 -- rollback transaction (useful for checking syntax):
 --ROLLBACK;

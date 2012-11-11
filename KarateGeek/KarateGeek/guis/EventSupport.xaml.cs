@@ -37,11 +37,11 @@ namespace KarateGeek.guis
 
 
 
-        private TournamentConnection _tournamentConn;
-        private TournamentGameParticipationsConnection _tournamentParticipationConn;
-        private EventConnection _eventConn;
-        private GameConnection _gameConn;
-        private TournamentGameParticipationsConnection _gameParticipationConn;
+        private TournamentConnection _tournamentConn = new TournamentConnection();
+        private TournamentGameParticipationsConnection _tournamentParticipationConn = new TournamentGameParticipationsConnection();
+        private EventConnection _eventConn = new EventConnection();
+        private GameConnection _gameConn = new GameConnection();
+        private TournamentGameParticipationsConnection _gameParticipationConn = new TournamentGameParticipationsConnection();
 
         private DataTable _TournamantsDT;
         private DataTable _currentGamesDT;
@@ -49,11 +49,11 @@ namespace KarateGeek.guis
         private DataTable _currentGameParticipationsDT;
         private DataTable _futureGameParticipationsDT;
 
-        private List<string> _availableTournaments;
-        private List<string> _currentGames;
-        private List<string> _futureGames;
-        private List<string> _currentGameParticipants;
-        private List<string> _futureGameParticipants;
+        private List<string> _availableTournaments = new List<string>();
+        private List<string> _currentGames = new List<string>();
+        private List<string> _futureGames = new List<string>();
+        private List<string> _currentGameParticipants = new List<string>();
+        private List<string> _futureGameParticipants = new List<string>();
 
 
         #endregion private declaretions
@@ -101,7 +101,7 @@ namespace KarateGeek.guis
             }
 
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
-            cboTurnamentSelector.SelectedIndex = 0;
+            //cboTurnamentSelector.SelectedIndex = 0;
 
 
         }
@@ -176,7 +176,7 @@ namespace KarateGeek.guis
             }
             else
             {
-                currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
+                currentIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
                 this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + currentIndex).Tables[0];
 
             }
