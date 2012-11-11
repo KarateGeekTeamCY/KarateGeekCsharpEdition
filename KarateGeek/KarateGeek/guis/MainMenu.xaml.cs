@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;   // has Debug.WriteLine()
 
-using KarateGeek.helpers; // for lottery generator testing; THIS LINE WILL BE REMOVED
+using KarateGeek.lottery; // for lottery generator testing; THIS LINE WILL BE REMOVED
 
 namespace KarateGeek.guis
 {
@@ -70,7 +70,7 @@ namespace KarateGeek.guis
         /* Do not just remove this code; it's a usage example for the lottery class. */
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
-            LotteryGenerator lg = new LotteryGenerator(1);
+            LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 2); // use 1 to test kata
 
             // Some silly test code:
             Debug.WriteLine("Our first try:");
@@ -89,7 +89,7 @@ namespace KarateGeek.guis
             foreach (var element in lg.getLottery())
                 Debug.WriteLine("Athlete number: " + element);
 
-            // This will crash:
+            // This might write to the DB:
             lg.confirmLottery();
         }
 
