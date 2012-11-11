@@ -122,6 +122,9 @@
     <Compile Include="guis\EventSupport.xaml.cs">
       <DependentUpon>EventSupport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\LotteryChooser.xaml.cs">
+      <DependentUpon>LotteryChooser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\Reports.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\EventTournamentManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\LotteryChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

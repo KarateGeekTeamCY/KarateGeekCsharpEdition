@@ -164,6 +164,7 @@ CREATE TABLE events (
     date            DATE,
     official        BOOLEAN         NOT NULL DEFAULT true,   -- default true according to specs
     location_id     INTEGER         REFERENCES locations(id),
+    is_finished     BOOLEAN         NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
 
