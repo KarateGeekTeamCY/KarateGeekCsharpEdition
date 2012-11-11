@@ -76,6 +76,7 @@ namespace KarateGeek.guis
         private string _tournamentLevelFrom = null;
         private string _tournamentLevelTo = null;
         private string _tournamentGameType = null;
+        private string _tournamentCatType = null;  //individual or team
         private string _tournamentScoringType = null;
         private int _tournamentTeamId = 0;
         private string _eventInfo = null;
@@ -660,12 +661,14 @@ namespace KarateGeek.guis
                     }
                     this.cmbTLevelTo.SelectedIndex = levelPosition;
 
-                    if (gameCatType[0].Equals(KarateGeek.Strings.individual))
+                    if (gameCatType[0].Equals(Strings.individual))
                     {
+                        _tournamentCatType = Strings.individual;
                         this.TrdButtonIndiv.IsChecked = true;
                     }
                     else
                     {
+                        _tournamentCatType = Strings.team;
                         this.TrdButtonTeam.IsChecked = true;
                         teamsNum = participantConnection.getNumTeams(_tournamentId);
                         cmbTteamsNumber.SelectedIndex = teamsNum - 1;
@@ -829,7 +832,7 @@ namespace KarateGeek.guis
             if (index != 0)
             {
                 if (index < cmbTGame.Items.Count && index != -1)
-                    _tournamentGameType = _tournamentGameType + "|" + cmbTGame.Items[index].ToString();
+                    _tournamentGameType = _tournamentCatType + "|" + cmbTGame.Items[index].ToString();
             }
         }
 

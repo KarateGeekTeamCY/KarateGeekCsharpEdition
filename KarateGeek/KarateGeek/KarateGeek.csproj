@@ -122,12 +122,17 @@
     <Compile Include="guis\EventSupport.xaml.cs">
       <DependentUpon>EventSupport.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\LotteryChooser.xaml.cs">
+      <DependentUpon>LotteryChooser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\Reports.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="guis\Reports.Designer.cs">
       <DependentUpon>Reports.cs</DependentUpon>
     </Compile>
+    <Compile Include="lottery\LotteryGeneratorFactory.cs" />
+    <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="Strings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +182,7 @@
       <DependentUpon>KumiteSystem.xaml</DependentUpon>
     </Compile>
     <Compile Include="helpers\ImageConverter.cs" />
-    <Compile Include="helpers\LotteryGenerator.cs" />
+    <Compile Include="lottery\LotteryGeneratorBaseClasses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -223,6 +228,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\EventTournamentManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\LotteryChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

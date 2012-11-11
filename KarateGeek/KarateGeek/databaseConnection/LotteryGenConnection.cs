@@ -50,6 +50,13 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public String getTournamentScoringType(long tournamentId)
+        {
+            String sql = "SELECT scoring_type FROM tournaments WHERE id = " + tournamentId + " ;";
+
+            return this.Query(sql).Tables[0].Rows[0][0].ToString();
+        }
+        
         public int getNumOfGoodPlacements(long athleteId, int place, Boolean official)
         {
             /* If you don't care only about official tournaments, use the following simplified query: */
@@ -112,11 +119,30 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        /* Writes a tournament pair to the database.
-         * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id. */
+        public long getTeamOfAthlete(long tournamentId, long athleteId) // returns teamId
+        {
+            /* TODO: TEST THIS SQL QUERY STRING AGAIN! */
+            String sql = "SELECT team_id FROM tournament_participations"
+                       + " WHERE tournament_id = " + tournamentId + " AND athlete_id = " + athleteId + " ;";
+
+            String teamId = this.Query(sql).Tables[0].Rows[0][0].ToString();
+
+            return long.Parse(teamId); // if null, what?
+        }
+
+
+        /* Writes a tournament pair to the database (important: it should be "private" to ensure atomicity).
+         * 
+         * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id.
+         *
+         * Specifically, we use -1 for !is_ready pairs and -2 for is_ready "pairs".
+         * The latter are just single athlete participations, or single team
+         * participations (reusing the same code for the DB transaction).                 */
         private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
         {
-            bool isReady = id1 >= 0 && id2 >= 0;
+            Debug.Assert(id1 >= -1 && id2 >= -2);
+
+            bool isReady = (id1 >= 0 && id2 >= 0) || (id1 >= 0 && id2 == -2);
 
             String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
                              + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
@@ -129,6 +155,7 @@ namespace KarateGeek.databaseConnection
             if (id1 >= 0) this.NonQuery(writepair_first);
             if (id2 >= 0) this.NonQuery(writepair_second);
         }
+
 
         /* Writes all tournament pairs to the database, atomically: */
         /* Is this the correct approach for atomicity? */
