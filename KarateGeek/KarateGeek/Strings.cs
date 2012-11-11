@@ -90,10 +90,6 @@ namespace KarateGeek
         //
         // person sex
         //
-
-
-
-
         public static string male = "male";
         public static string female = "female";
 
