@@ -24,6 +24,10 @@ namespace KarateGeek.guis
 
         #region private declarations
 
+        private Window _sender;
+        private string _gameId;
+
+
         private int pointsIndex = 0;
         private LinkedList<Point> _pointsHistory = new LinkedList<Point>();
 
@@ -38,10 +42,23 @@ namespace KarateGeek.guis
 
 
 
-        public KumiteSystem()
+        public KumiteSystem(Window sender, string gameId)
         {
+
             InitializeComponent();
+            this._sender = sender;
+            this._gameId = gameId;
+            this._LoadData();
         }
+
+        private void _LoadData()
+        {
+ 
+
+
+        }
+
+
 
 
         #region point buttons

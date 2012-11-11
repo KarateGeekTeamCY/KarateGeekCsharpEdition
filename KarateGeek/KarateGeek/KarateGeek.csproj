@@ -119,6 +119,9 @@
       <DependentUpon>CrystalReport2.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="guis\EventSupport.xaml.cs">
+      <DependentUpon>EventSupport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\Reports.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +215,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="guis\ClubManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\EventSupport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

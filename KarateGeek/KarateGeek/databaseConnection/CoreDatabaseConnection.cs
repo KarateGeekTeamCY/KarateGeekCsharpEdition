@@ -19,9 +19,22 @@ namespace KarateGeek.databaseConnection
             get
             {
                 if (_conn == null)
+                {
                     _conn = new NpgsqlConnection("Server=127.0.0.1; Port=5432; User Id=postgres; Password=admin; Database=karategeek;");
+
+                    /* Use the following code to test with a remote DB (to check for latency issues): */
+                    //_conn = new NpgsqlConnection("Server=nicholas.ddns.net; Port=52728; User Id=karate; Password=xI85nO; Database=karate_db;");
+
+                    //{ /* temporary (and UGLY) hack to test remote DB with different schema name... */
+                    //    NpgsqlCommand comm = _conn.CreateCommand();
+                    //    comm.CommandText = "SET search_path TO schema_v1;";
+                    //    _conn.Open();
+                    //    comm.ExecuteNonQuery();
+                    //}
+                }
                 if (_conn.State != ConnectionState.Open)
                     _conn.Open();
+
                 return _conn;
 
             }
