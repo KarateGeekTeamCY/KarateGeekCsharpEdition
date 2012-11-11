@@ -76,7 +76,7 @@ namespace KarateGeek.guis
 
             if (todayEventDT.Rows.Count == 0)
             {
-                string result = MessageBox.Show("Unfortunately there is no scheduled event for today. Press OK to return to main menu.", "No event for today.",
+                string result = MessageBox.Show("Unfortunately there is no scheduled event for today. Press OK to return to main menu.", "Message!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
 
@@ -267,7 +267,7 @@ namespace KarateGeek.guis
             switch (this._judgingType)
             {
                 case Strings.flag:
-                    FlagSystem fflagS = new FlagSystem(this, this._tournamentId, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString(), this._isTeam);
+                    FlagSystem flagS = new FlagSystem(this, this._tournamentId, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString(), this._isTeam);
                     break;
 
                 case Strings.point:
@@ -292,13 +292,13 @@ namespace KarateGeek.guis
             {
                 case Strings.flag:
 
-                    EveSupFlagConnection flagC = new EveSupFlagConnection();
+                    EveSupFlagConnection flagConn = new EveSupFlagConnection();
                     _gameParticipationConn = new TournamentGameParticipationsConnection();
 
                     DataTable gameParticipants = this._gameParticipationConn.GetParticipation(_lastExecutedGame).Tables[0];
 
 
-                    DataTable flag = flagC.GetflagById(
+                    DataTable flag = flagConn.GetflagById(
                         this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][2].ToString(),
                         gameParticipants.Rows[0][0].ToString()
                         ).Tables[0];           // 2 4
