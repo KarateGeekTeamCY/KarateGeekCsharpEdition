@@ -19,15 +19,16 @@ namespace KarateGeek.lottery
 {
 
     /* Factory class: */
-    class LotteryGeneratorFactory
+    static class LotteryGeneratorFactory
     {
-        public enum LotteryType
-        { // enum not really needed anymore, replaced by class structure
-            indiv_single,
-            indiv_versus,
-            team_single,
-            team_versus
-        };
+        /* enum not really needed anymore, replaced by class structure */
+        //public enum LotteryType
+        //{
+        //    indiv_single,
+        //    indiv_versus,
+        //    team_single,
+        //    team_versus
+        //};
 
         public static LotteryGenerator Create(int tournamentId)
         {
@@ -39,9 +40,9 @@ namespace KarateGeek.lottery
              * the flag system, so it's a "versus" type tournament.) I'm not sure about teamKata... */
             switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
             {
-                case Strings.indKata: if (new LotteryGenConnection().getTournamentScoringType(tournamentId) == Strings.flag)
+                case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId) == Strings.flag)
                                              lg = new LotteryGen_Versus_Ind(tournamentId);
-                                         else // point system
+                                         else // score system
                                              lg = new LotteryGen_Expo_Ind(tournamentId);
                                          break;
 
@@ -56,7 +57,7 @@ namespace KarateGeek.lottery
 
                 case Strings.syncKata:   if (new LotteryGenConnection().getTournamentScoringType(tournamentId) == Strings.flag)
                                              lg = new LotteryGen_Versus_Team(tournamentId);
-                                         else // point system
+                                         else // score system
                                              lg = new LotteryGen_Expo_Team(tournamentId);
                                          break;
 
@@ -68,7 +69,7 @@ namespace KarateGeek.lottery
                                          break;
             }
 
-            // For now only create LotteryGen_Versus_Ind objects...
+            // For now (!) only create LotteryGen_Versus_Ind objects...
             lg = new LotteryGen_Versus_Ind(tournamentId);
 
             Debug.Assert(lg != null);

@@ -51,8 +51,7 @@ namespace KarateGeek.lottery
      * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!
      */
 
-
-    /* base class, abstract: */
+    #region abstract base class LotteryGenerator
     abstract class LotteryGenerator //TODO: Move more code up here.
     {
 
@@ -61,10 +60,10 @@ namespace KarateGeek.lottery
         protected readonly List<long> athleteList;
 
         protected readonly List<Tuple<long, int>> athleteScoreList; // an athlete scoreList
-        
-        protected readonly List<Tuple<long, int>> teamScoreList; // ?? a team scoreList, unused for individual matches
 
-        protected List<Tuple<long, int>> scoreListShuffled; // might be an athlete or a team scoreList
+        protected abstract List<Tuple<long, int>> scoreList { get; } // an athlete/team scoreList (property)
+
+        protected List<Tuple<long, int>> scoreListShuffled; // again, might be an athlete or a team scoreList!
 
         protected bool confirmed = false; // once "confirmed", a LotteryGen_Versus_Ind object cannot write to the DB anymore!
 
@@ -79,11 +78,11 @@ namespace KarateGeek.lottery
 
         /** Class methods: **/
 
-        public abstract void shuffle(int tries = 2);
-        public abstract List<long> getLottery();
+        //public abstract void shuffle(int tries = 2);
+        //public abstract List<long> getLottery();
 
 
-        protected LotteryGenerator(int tournamentId) // constructor
+        protected LotteryGenerator(int tournamentId) // constructor of the abstract class
         {
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
@@ -127,13 +126,8 @@ namespace KarateGeek.lottery
             /* belt color: */
             String belt = conn.getBeltColor(athleteId);
             for (int i = 0; i < Strings.rank.Length; ++i)
-                if (Strings.rank[i] == belt)
+                if (Strings.rank[i] == belt)  // "if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))" also works well
                     score += i * beltFactor;
-
-            //String belt = conn.getBeltColor(athleteId);  /* Both string comparison methods tested to work! */
-            //for (int i = 0; i < Strings.rank.Length; ++i)
-            //    if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))
-            //        score += i * beltFactor;
 
             /* age, only for children (<18): */
             int age = conn.getAge(athleteId);
@@ -142,6 +136,62 @@ namespace KarateGeek.lottery
 
 
             return score;
+        }
+
+
+        
+        /* Produces a new randomization [It would be less ugly with more LINQ usage!] */
+        /* Declared as "virtual" means that it can be overridden by child classes. */
+        public virtual void shuffle(int tries = 2) // a default value of 2 seems OK - we don't want infinite recursion!
+        {
+            List<Tuple<long, int>> L = new List<Tuple<long, int>>();
+
+            Debug.Assert(scoreList != null);
+
+            foreach (var tuple in scoreList) //TODO: Tweak randomisation factor
+            {
+                // L.Add(new Tuple<long, int>(tuple.Item1, tuple.Item2 + rgen.Next(0, randomisationFactor)));
+                L.Add(new Tuple<long, int>(tuple.Item1, tuple.Item2
+                    + rgen.Next(0, randomisationFactor * ( 1 + tuple.Item2 / 1000))));
+                Debug.WriteLine("List item: " + tuple.Item1 + " with initial score: " + tuple.Item2);
+            }
+
+            scoreListShuffled = L;
+
+            /* EXPERIMENTAL and very computationally expensive way to check whether an athlete pair belongs
+             * to the same club... Some refactoring would reduce the redundancy, but it should work as-is: */
+            if ( tries > 0 && pairsClubConstraintActive(getPairs(this.getLottery())) ){
+                Debug.WriteLine("\n ** AUTO-RESHUFFLING because same-club collisions were found... ** \n");
+                shuffle(tries - 1);
+            }
+        }
+
+
+        private bool pairsClubConstraintActive(List<Tuple<long, long, int, int>> Pairs)
+        {
+            LotteryGenConnection conn = new LotteryGenConnection();
+
+            foreach (var pair in Pairs)
+                if (conn.sameClubAthletePair(pair))
+                    return true;
+
+            return false;
+        }
+
+
+        public virtual List<long> getLottery()
+        {
+            if (scoreListShuffled == null) throw new Exception("Use method shuffle() first.");
+            
+            List<long> L = new List<long>();
+
+            /* OrderByDescending() instead of OrderBy(), because we want the highest-ranked athletes first: */
+            foreach (var tuple in scoreListShuffled.OrderByDescending(x => x.Item2)){
+                L.Add(tuple.Item1);
+                Debug.WriteLine("List item: " + tuple.Item1 + " with randomised score: " + tuple.Item2);
+            }
+
+            return L;
         }
 
 
@@ -162,26 +212,72 @@ namespace KarateGeek.lottery
             this.confirmed = conn.writeAllTournamentPairs(Pairs, tournamentId, doCommit: false);
         }
 
-
+        #region helper nested classes
         ///* Methods to display a chart of the randomised athlete list: */
         //protected class Visualisation // maybe needed only for debugging/tweaking? Too hard to do anyway,
         //{                           // because it needs optional .NET components! For now, leave it as a stub.
 
         //}
 
-        /* Helper methods to handle teams and team lists (class to be renamed!): */
-        protected class TeamSomething // Is this even a good idea? (C# lacks multiple inheritance)
+        /* Helper methods to handle teams and team lists (class to be renamed?): */
+        protected sealed class TeamHelper // Is this even a good idea? (C# lacks multiple inheritance)
         {
 
+            /** Class fields/properties: **/
+
+            private readonly List<Tuple<long, int>> athleteScoreList;
+            private readonly int tournamentId;
+
+            /** Class methods: **/
+
+            public TeamHelper(int tournamentId) // constructor of the abstract class
+            {
+                this.tournamentId = tournamentId;
+            }
+
+            public List<Tuple<long, int>> getTeamScoreList(List<Tuple<long, int>> athleteScoreList) // was static!
+            {
+                LotteryGenConnection conn = new LotteryGenConnection();
+                /** pseudocode:
+                 *
+                 * for each athlete find his team;
+                 *     if the team is not in the list
+                 *         add its id and athlete's score as a new list node;
+                 *     else
+                 *         find the id and add the athlete's score (careful, tuples are immutable!)
+                 *
+                 * return the constructed list
+                 */
+
+                List<Tuple<long, int>> L = new List<Tuple<long, int>>();
+
+                foreach (var ath in athleteScoreList) {
+                    long teamId = conn.getTeamOfAthlete(tournamentId, ath.Item1);
+                    Tuple<long, int> old = L.First(t => t.Item1 == teamId);
+
+                    if (old == null) // team not yet in the list
+                        L.Add(new Tuple<long, int>(teamId, ath.Item2));
+                    else {
+                        L.Remove(old);
+                        L.Add(new Tuple<long, int>(teamId, old.Item2 + ath.Item2));
+                    }
+                }
+
+                return L;
+            }
         }
+        #endregion
     }
+    #endregion
 
 
 
+    #region abstract base class LotteryGen_Expo : LotteryGenerator
     abstract class LotteryGen_Expo : LotteryGenerator
     {
 
         public LotteryGen_Expo(int tournamentId) : base(tournamentId) { } //calling base constructor
+
 
         protected override List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
         {
@@ -190,6 +286,13 @@ namespace KarateGeek.lottery
             /**
              * ALGORITHM: Simply use the given (shuffled) list of athletes!
              *            Phase is always 0.
+             *
+             *  WARNING:  This might be wrong according to the project specs. Some Exposition-type
+             *            tournaments still have phases (usually 16 -> 8 -> 4 -> winner). In that
+             *            case we will re-use the getPairs() implementation from LotteryGen_Versus,
+             *            but the numOfPhases calculation needs to be corrected.
+             *             Or we might declare them as Versus-type tournaments (still correcting
+             *            the calculation of numOfPhases, decreasing by 1).
              */
 
             int pos = 1;
@@ -201,9 +304,11 @@ namespace KarateGeek.lottery
             return Pairs;
         }
     }
+    #endregion
 
 
 
+    #region abstract base class LotteryGen_Versus : LotteryGenerator
     abstract class LotteryGen_Versus : LotteryGenerator
     {
 
@@ -221,7 +326,7 @@ namespace KarateGeek.lottery
             List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long, long, int, int>>();
 
             /**
-             * ALGORITHM (please confirm correctness, and cross-check with projec specs):
+             * ALGORITHM (please confirm correctness, and cross-check with project specs):
              * 
              * - copy sorted list to array (easier than using C#-style lists, I think)
              * - get array length (let's say "len")
@@ -246,8 +351,8 @@ namespace KarateGeek.lottery
              *   (2)  =>  2*z = p - 2*y  =>¹  z = (len - y)/2 = x/2  !
              * 
              * 
-             * - first y athletes fill-in the "wings" of the lottery tree (going to phase 2
-             *   directly) and the rest get paired in the first round (aka phase). Example
+             * - first y athletes fill-in the "wings" of the lottery tree (going to phase Y
+             *   directly) and the rest get paired in the first round (aka phase X). Example
              *   for 11 athletes:
              * 
              *    y*2 + (11-y) = 16  =>  y=5 and z=8-5=3 pairs in the 1st phase
@@ -401,7 +506,7 @@ namespace KarateGeek.lottery
         }
 
     }
-
+    #endregion
 
 }
 

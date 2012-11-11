@@ -119,6 +119,18 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public long getTeamOfAthlete(long tournamentId, long athleteId) // returns teamId
+        {
+            /* TODO: TEST THIS SQL QUERY STRING AGAIN! */
+            String sql = "SELECT team_id FROM tournament_participations"
+                       + " WHERE tournament_id = " + tournamentId + " AND athlete_id = " + athleteId + " ;";
+
+            String teamId = this.Query(sql).Tables[0].Rows[0][0].ToString();
+
+            return long.Parse(teamId); // if null, what?
+        }
+
+
         /* Writes a tournament pair to the database (important: it should be "private" to ensure atomicity).
          * 
          * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id.
@@ -143,6 +155,7 @@ namespace KarateGeek.databaseConnection
             if (id1 >= 0) this.NonQuery(writepair_first);
             if (id2 >= 0) this.NonQuery(writepair_second);
         }
+
 
         /* Writes all tournament pairs to the database, atomically: */
         /* Is this the correct approach for atomicity? */
