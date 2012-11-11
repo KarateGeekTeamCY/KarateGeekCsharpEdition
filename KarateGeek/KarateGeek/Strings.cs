@@ -18,7 +18,7 @@ namespace KarateGeek
         public const string phase128 = "PHASE OF 128";
         public const string phase256 = "PHASE OF 256";
 
-        public const string[] phase = { phase2, phase4, phase8, phase16,
+        public static readonly string[] phase = { phase2, phase4, phase8, phase16,
                                                   phase32, phase64, phase128, phase256
                                                 };
 
@@ -56,7 +56,7 @@ namespace KarateGeek
         public const string rank15 = "Red    –  9th dan";
         public const string rank16 = "Red    –  10th dan";
 
-        public const string[] rank = { rank01, rank02, rank03, rank04,
+        public static readonly string[] rank = { rank01, rank02, rank03, rank04,
                                                  rank05, rank06, rank07, rank08,
                                                  rank09, rank10, rank11, rank12,
                                                  rank13, rank14, rank15, rank16
