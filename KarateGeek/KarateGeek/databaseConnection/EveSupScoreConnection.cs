@@ -47,9 +47,11 @@ namespace KarateGeek.databaseConnection
 
         public DataSet GetScoreById(string gameId, string athleteId)
         {
-            sql = "select * from game_scores where game_id = '" + gameId + "' and athlete_id = '" + athleteId + "' ;";
+            sql = "select * from total_score_system where game_id = '" + gameId + "' and athlete_id = '" + athleteId + "' ;";
             return this.Query(sql);
         }
+
+        
 
 
     }

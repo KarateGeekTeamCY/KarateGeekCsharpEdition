@@ -11,7 +11,7 @@ namespace KarateGeek.databaseConnection
         DataTable tournament = new DataTable();
         DataSet dr = null;
 
-        public int InsertNewTournament(string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
+        public int InsertNewTournament(string name, string sex, int ageFrom, int ageTo, string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
         {
 
             string sql = "insert into tournaments ( name, sex, age_from, age_to , level_from, level_to, game_type, scoring_type, event_id) values ( '"
@@ -34,9 +34,9 @@ namespace KarateGeek.databaseConnection
             return tournamentId;
         }
 
-        public string UpdateTournament(int tournamentId, string name, string sex, int ageFrom, int ageTo , string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
+        public string UpdateTournament(int tournamentId, string name, string sex, int ageFrom, int ageTo, string levelFrom, string levelTo, string game_type, string scoring_type, int event_id)
         {
-            string sql = "update tournaments set "+
+            string sql = "update tournaments set " +
                  "name = '" + name + "', " +
                  "sex = '" + sex + "', " +
                  "age_from = '" + ageFrom + "', " +
@@ -62,5 +62,16 @@ namespace KarateGeek.databaseConnection
             string sql = "select * from tournaments where event_id='" + eventId + "' and name like '" + filter + "%';";
             return this.Query(sql);
         }
+
+
+       
+
+
+
+      
+
+
+
+
     }
 }

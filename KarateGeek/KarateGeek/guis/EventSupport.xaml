@@ -1,0 +1,136 @@
+﻿<Window x:Class="KarateGeek.guis.EventSupport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="EventSupport" 
+        ResizeMode="NoResize"
+        Height="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        
+        <Label Name="lblInfo"
+               Content="INFO"
+               Grid.Row="0"
+               Grid.Column="1"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"
+               Padding="20"
+               MinWidth="500"/>
+        
+        <Grid Grid.Column="1"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="7*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Content="Tournamet"
+                   VerticalAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   Padding="8"
+                   Grid.Column="0"/>
+            <ComboBox Name="cboTurnamentSelector" 
+                      Grid.Column="1"
+                      VerticalAlignment="Center"
+                      Margin="8" SelectionChanged="cboTurnamentSelector_SelectionChanged" />
+            
+            <Grid Grid.Column="0"
+                  Grid.Row="1"
+                  Grid.ColumnSpan="2">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Current phase"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Padding="5"/>
+                <Label Content="Next phase" 
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Padding="5"/>
+                    
+                
+
+                <ListBox Name="listBoxCurrentGameList" 
+                     Grid.Column="0"
+                     Grid.Row="1"
+                         Margin="3" SelectionChanged="listBoxCurrentGameList_SelectionChanged" />
+
+                <ListBox Name="listBoxNextGameList" 
+                     Grid.Column="1"
+                     Grid.Row="1"
+                         Margin="3"/>
+
+            </Grid>
+            
+            
+            
+
+
+
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Margin="0,10,0,0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <Button Name="btnBack"
+                    Content="Back"
+                    VerticalAlignment="Center"
+                    Grid.Column="2"
+                    Margin="5"
+                    Padding="20,5" Click="btnBack_Click" />
+            
+            
+            <Button Name="btnStartNextGame"
+                    Content="Start next game"
+                    VerticalAlignment="Center"
+                    Grid.Column="1"
+                    Padding="5"
+                    Margin="5" Click="btnStartNextGame_Click" />
+
+
+        </Grid>
+
+
+    </Grid>
+</Window>

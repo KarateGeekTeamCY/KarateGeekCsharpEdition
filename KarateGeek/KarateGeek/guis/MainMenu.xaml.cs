@@ -99,6 +99,12 @@ namespace KarateGeek.guis
             reports.Show();
         }
 
+        private void btnEventSupport_Click(object sender, RoutedEventArgs e)
+        {
+            EventSupport eventSup = new EventSupport(this);
+            
+        }
+
        
 
         
