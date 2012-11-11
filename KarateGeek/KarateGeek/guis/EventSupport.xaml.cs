@@ -108,6 +108,7 @@ namespace KarateGeek.guis
 
 
         #region buttons
+
         private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
         {
 
@@ -152,19 +153,35 @@ namespace KarateGeek.guis
 
             int currentIndex, futureIndex;
 
-            if (int.Parse(gamesTempDT.Rows[0][0].ToString()) < int.Parse(gamesTempDT.Rows[1][0].ToString()))
+            int phaseCount = gamesTempDT.Rows.Count;
+
+            if (phaseCount == 2)
             {
-                futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
-                currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
+
+                if (int.Parse(gamesTempDT.Rows[0][0].ToString()) < int.Parse(gamesTempDT.Rows[1][0].ToString()))
+                {
+                    futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
+                    currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
+                }
+                else
+                {
+                    currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
+                    futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
+                }
+
+
+                this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + currentIndex).Tables[0];
+                this._futureGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + futureIndex).Tables[0];
+
             }
             else
             {
                 currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
-                futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
+                this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + currentIndex).Tables[0];
+
             }
 
-            this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + currentIndex).Tables[0];
-            this._futureGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + futureIndex).Tables[0];
+
 
             this._gameParticipationConn = new TournamentGameParticipationsConnection();
 
@@ -403,4 +420,91 @@ namespace KarateGeek.guis
 
 
     }
+
+
+
+    class Game : KarateGeek.databaseConnection.CoreDatabaseConnection
+    {
+        private string sql;
+
+        public string touenamentId { get; set; }
+        public string gameId { get; set; }
+        public string phase { get; set; }
+        public string position { get; set; }
+        public List<string> participantIds { get; set; }
+        public List<string> participantTeamIds { get; set; }
+        public List<string> participants { get; set; }
+        public bool isReady { get; set; }
+        public bool isFinished { get; set; }
+        public int numOfParticipants { get; set; }
+
+
+        public Game(string gameId)
+        {
+            this.gameId = gameId;
+            this.load();
+
+
+        }
+
+
+        public void load()
+        {
+
+            sql = "select * from games where id = '" + this.gameId + "';";
+            DataTable temp = this.Query(sql).Tables[0];
+
+            
+            this.phase = temp.Rows[0][1].ToString();
+            this.position = temp.Rows[0][2].ToString();
+            this.touenamentId = temp.Rows[0][3].ToString();
+            this.isReady = (bool)temp.Rows[0][4];
+            this.isFinished = (bool)temp.Rows[0][5];
+
+            sql = "select * from game_participants_total_det where game_id = '" + this.gameId + "'";
+            temp = this.Query(sql).Tables[0];
+
+            this.numOfParticipants = 0;
+
+            foreach (DataRow dr in temp.Rows)
+            {
+                this.participantIds.Add(dr[4].ToString());
+                this.participantTeamIds.Add(dr[3].ToString());
+                this.participants.Add(dr[5].ToString() + " " + dr[6].ToString());
+                this.numOfParticipants++;
+            }
+        }
+
+        public void Update()
+        {
+
+            //UPDATE table_name
+            //SET column1=value, column2=value2,...
+            //WHERE some_column=some_value
+            sql = "UPDATE games SET is_ready = '" + this.isReady + "', " +
+                "is_finished = '" + this.isFinished + "' where game_id = '" + this.gameId + "'; ";
+
+            for (int i = 0; i < this.numOfParticipants; i++)
+            {
+                sql = "select * from game_participants where game_id = '" + this.gameId + "' and athlete_id = '" + this.participantIds.ElementAt(i) + "' ; ";
+
+                int exist = this.Query(sql).Tables[0].Rows.Count;
+                if (exist == 0)
+                {
+                    sql = "insert into game_participations";
+                }
+
+            }
+
+
+        }
+
+
+
+
+
+    }
+
+
+
 }
