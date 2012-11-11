@@ -611,7 +611,7 @@ namespace KarateGeek.guis
 
                     string[] gameCatType = game.Split('|');
 
-                    if (sex.Equals("male"))
+                    if (sex.Equals(KarateGeek.Strings.male))
                     {
                         this.TrdButtonMale.IsChecked = true;
                     }

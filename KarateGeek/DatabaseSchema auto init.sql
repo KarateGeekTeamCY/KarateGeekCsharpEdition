@@ -359,16 +359,16 @@ INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, se
 VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl1' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'male', '99123145' , null , 'athl1@gmail.com' , '0');
+VALUES ('athl1' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'MALE', '99123145' , null , 'athl1@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl2' , 'athl2_father' , 'athl2_last', '02-10-1992' , 'male', '99123146' , null , 'athl2@gmail.com' , '0');
+VALUES ('athl2' , 'athl2_father' , 'athl2_last', '02-10-1992' , 'MALE', '99123146' , null , 'athl2@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl3' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'male', '99123145' , null , 'athl3@gmail.com' , '0');
+VALUES ('athl3' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'FEMALE', '99123145' , null , 'athl3@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl4' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'male', '98123146' , null , 'athl4@gmail.com' , '0');
+VALUES ('athl4' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'MALE', '98123146' , null , 'athl4@gmail.com' , '0');
 
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
 -- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')

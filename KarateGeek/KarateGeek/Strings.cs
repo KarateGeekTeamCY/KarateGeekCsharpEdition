@@ -62,13 +62,13 @@ namespace KarateGeek
         // game types
         //
 
-        public const string indKata    = "IMD|KATA";
+        public const string indKata    = "IND|KATA";
         public const string teamKata   = "TEAM|KATA";
-        public const string syncKata   = "SYNCHRONIZED KATA";
+        public const string syncKata   = "TEAM|SYNCHRONIZED KATA";
         public const string indKumite  = "IND|KUMITE";
         public const string teamKumite = "TEAM|KUMITE";
-        public const string enbu       = "EN-BU";
-        public const string fugugo     = "FUGU-GO";
+        public const string enbu       = "IND|EN-BU";
+        public const string fugugo     = "IND|FUGU-GO";
         public const string team       = "TEAM";
         public const string individual = "IND";
 
