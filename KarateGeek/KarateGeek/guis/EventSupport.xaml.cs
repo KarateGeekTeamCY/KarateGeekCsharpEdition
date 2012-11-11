@@ -205,7 +205,7 @@ namespace KarateGeek.guis
 
 
 
-            foreach (DataRow dr in this._futureGamesDT .Rows)
+            foreach (DataRow dr in this._futureGamesDT.Rows)
             {
                 this._futureGameParticipationsDT = this._gameParticipationConn.GetParticipation(dr[0].ToString()).Tables[0];
                 int parts = _futureGameParticipationsDT.Rows.Count;
@@ -241,15 +241,15 @@ namespace KarateGeek.guis
         }
 
         #endregion the load shet
- 
-        
+
+
         // #region the progress shit 
-        
-        
+
+
         private void listBoxCurrentGameList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int _lastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
-            
+
             if (_gameType == Strings.fugugo)
             {
 
@@ -284,11 +284,116 @@ namespace KarateGeek.guis
         }
 
 
+
+
         public void AdvanceGameStatistics(string gameId)
         {
- 
+            switch (this._judgingType)
+            {
+                case Strings.flag:
+
+                    EveSupFlagConnection flagC = new EveSupFlagConnection();
+                    _gameParticipationConn = new TournamentGameParticipationsConnection();
+
+                    DataTable gameParticipants = this._gameParticipationConn.GetParticipation(_lastExecutedGame).Tables[0];
 
 
+                    DataTable flag = flagC.GetflagById(
+                        this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][2].ToString(),
+                        gameParticipants.Rows[0][0].ToString()
+                        ).Tables[0];           // 2 4
+
+
+
+                    int flagCount = 0;
+
+                    for (int i = 4; i <= 8; i++)
+                        if (((bool)flag.Rows[0][i]) == true)
+                            flagCount++;
+
+
+                    if (flagCount > 2)
+                    {
+                        string newGameId = _CheckIfExistAndInsert();
+                        this._gameParticipationConn.insertParticipant(
+                            gameParticipants.Rows[0][0].ToString(),
+                            newGameId);
+                    }
+                    else
+                    {
+                        string newGameId = _CheckIfExistAndInsert();
+                        this._gameParticipationConn.insertParticipant(
+                            gameParticipants.Rows[0][1].ToString(),
+                            newGameId);
+                    }
+
+
+                    break;
+
+                case Strings.point:
+                    EveSupPointConnection pointC = new EveSupPointConnection();
+                    DataTable points = pointC.getPointsOfAthleteAtGame(this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][2].ToString(),
+                        this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][4].ToString());
+
+                    double pointsA = (double)points.Rows[0][2];
+                    double pointsB = (double)points.Rows[1][2];
+
+                    if (pointsA > pointsB)
+                    {
+                        string newGameId = _CheckIfExistAndInsert();
+                        this._gameParticipationConn.insertParticipant(
+                            points.Rows[0][1].ToString(), newGameId);
+                    }
+                    else
+                    {
+                        string newGameId = _CheckIfExistAndInsert();
+                        this._gameParticipationConn.insertParticipant(
+                            points.Rows[1][1].ToString(), newGameId);
+                    }
+
+
+
+                    break;
+
+                case Strings.score:
+                    EveSupScoreConnection scoreC = new EveSupScoreConnection();
+                    DataTable score = scoreC.GetScoreById(this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][2].ToString(),
+                        this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][4].ToString()).Tables[0];
+
+
+
+
+
+
+
+
+
+                    break;
+
+            }
+
+
+
+        }
+
+
+        private string _CheckIfExistAndInsert()
+        {
+            int nextPhase, nextPos;
+
+            nextPhase = (int)this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][1] - 1;
+            nextPos = (int)Math.Ceiling(((double)this._currentGamesDT.Rows[int.Parse(_lastExecutedGame)][2]) / 2);
+
+            // check if there axisting game at that phase position
+            DataTable temp = _gameConn.GetGamesByTurnamentPhasePosition(this._tournamentId, "" + nextPhase, "" + nextPos).Tables[0];
+            //if 0 then create a new game at that phase possition
+            if (temp.Rows.Count == 0)
+            {
+                return _gameConn.InsertNewGame(this._tournamentId, "" + nextPhase, "" + nextPos, this._gameType);
+            }
+
+
+            return "-1";
         }
 
 

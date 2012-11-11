@@ -19,34 +19,44 @@ namespace KarateGeek.databaseConnection
                 position + "', '" +
                 gameType + "' );";
             this.NonQuery(sql);
-            return "";
+
+            return this.Query("select currval('games_id_seq');").Tables[0].Rows[0][0].ToString();
         }
+
+        
 
 
 
         public DataSet GetGamesByTurnament( string turnamentId )
         {
-            sql = "select * from games where tournament_id = '" + turnamentId + "';";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + turnamentId + "';";
             return this.Query(sql);
         }
 
 
         public DataSet GetGamesByTurnamentPhase( string turnamentId, string phase)
         {
-            sql = "select * from games where turnament_id = '" + turnamentId + "' and phase = '" + phase + "';" ;
+            sql = "SELECT * FROM games WHERE turnament_id = '" + turnamentId + "' AND phase = '" + phase + "';" ;
+            return this.Query(sql);
+        }
+
+
+        public DataSet GetGamesByTurnamentPhasePosition(string turnamentId, string phase, string position)
+        {
+            sql = "SELECT * FROM games WHERE turnament_id = '" + turnamentId + "' AND phase = '" + phase + "' AND position = '" + position + "';";
             return this.Query(sql);
         }
 
 
         public DataSet GetGameById(string gameId)
         {
-            sql = "select * from games where id = '" + gameId + "' ;" ;
+            sql = "SELECT * FROM games WHERE id = '" + gameId + "' ;" ;
             return this.Query(sql);
         }
 
         public DataSet getFuturePhaces(string tournamentId)
         {
-            sql = "select distinct phase from games where is_finished = false and tournament_id = '" + tournamentId + "' ;";
+            sql = "SELECT DISTINCT phase FROM games WHERE is_finished = false AND tournament_id = '" + tournamentId + "' ;";
             return this.Query(sql);
         }
 

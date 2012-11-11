@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace KarateGeek.databaseConnection
 {
@@ -21,6 +22,13 @@ namespace KarateGeek.databaseConnection
                 + gameId + "', '" + athleteId + "', '" + technical + "', '" + technicalDesc + "');";
             this.NonQuery(sql);
             return "";
+        }
+
+
+        public DataTable getPointsOfAthleteAtGame(string gameId, string athleteId)
+        {
+            this.sql = "select * from total_point_system where game_id = '" + gameId + "' and athlete_id = '" + athleteId + "';";
+            return this.Query(sql).Tables[0];
         }
 
 

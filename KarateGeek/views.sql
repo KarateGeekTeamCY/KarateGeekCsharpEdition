@@ -48,19 +48,20 @@ select athletes.id, first_name, last_name, fathers_name, sex, date_of_birth, per
 --
 
 
-create view game_participants_total_det as
-select event_id, tournament_id, game_id, team_id,
-	athletes.id as athlete_id, last_name, first_name
-from events join tournaments 
-		on events.id = tournaments.event_id
-	join games 
-		on tournaments.id = games.tournament_id
-	join game_participations
-		on game_participations.game_id = games.id
-	join athletes
-		on game_participations.athlete_id = athletes.id
-	join persons 
-		on athletes.id = persons.id;
+CREATE OR REPLACE VIEW game_participants_total_det AS
+SELECT event_id, tournament_id, game_id, team_id,
+	athletes.id AS athlete_id, last_name, first_name
+FROM events 
+	JOIN tournaments 
+		ON events.id = tournaments.event_id
+	JOIN games 
+		ON tournaments.id = games.tournament_id
+	JOIN game_participations
+		ON game_participations.game_id = games.id
+	JOIN athletes
+		ON game_participations.athlete_id = athletes.id
+	JOIN persons 
+		ON athletes.id = persons.id;
 		
 
 
@@ -69,10 +70,55 @@ from events join tournaments
 
 
 
+CREATE OR REPLACE VIEW total_point_system AS
+
+SELECT 
+games.id as game_id, 
+game_participations.athlete_id as athlete_id, 
+SUM(technical_point)
+
+FROM games 
+JOIN game_participations
+    ON games.id = game_participations.game_id
+    
+JOIN game_points
+    on games.id = game_points.game_id
+    
+LEFT JOIN team_tournament_participations
+    on team_tournament_participations.id = game_participations.team_id
+
+GROUP BY games.id, game_participations.athlete_id;
 
 
 
 
+
+
+CREATE OR REPLACE VIEW total_score_system AS
+
+SELECT 
+tournaments.id as tournament_id, 
+games.id as game_id, 
+games.phase as phase, 
+games.position as position, 
+game_participations.athlete_id as athlete_id, 
+mean_score 
+
+FROM games 
+
+JOIN tournaments
+    on tournaments.id = games.tournament_id
+    
+JOIN game_participations
+    ON games.id = game_participations.game_id
+    
+JOIN game_score
+    on games.id = game_score.game_id
+    
+LEFT JOIN team_tournament_participations
+    on team_tournament_participations.id = game_participations.team_id
+    
+    ORDER BY mean_score DESC;
 
 
 
