@@ -987,33 +987,39 @@ namespace KarateGeek.guis
 
         private void btaddParticipant_Click(object sender, RoutedEventArgs e)
         {
-            DataSet ds;
-            String rank = null;
-            AthleteData selection = new AthleteData();
-            List<String> athletes = new List<String>();
-            ds = athleteConnection.findAthlete(selection.id);
-            rank = ds.Tables[0].Rows[0][1].ToString();
-            if ((bool)TrdButtonIndiv.IsChecked)
+            if (_tournamentId == 0)
             {
-                foreach (Object item in lbTparticipants.SelectedItems)
-                {
-                    selection = (AthleteData)item;
-                    participantConnection.InsertNewParticipantI(selection.id, _tournamentId, rank , 4);
-                    selectedParticipantsI();
-                }
-                possibleParticipants();
+                MessageBox.Show("You have to save tournament first in order to add participants");
             }
-            else if ((bool)TrdButtonTeam.IsChecked)
+            else
             {
-                foreach (Object item in lbTparticipants.SelectedItems)
+                DataSet ds;
+                String rank = null;
+                AthleteData selection = new AthleteData();
+                List<String> athletes = new List<String>();
+                ds = athleteConnection.findAthlete(selection.id);
+                rank = ds.Tables[0].Rows[0][1].ToString();
+                if ((bool)TrdButtonIndiv.IsChecked)
                 {
-                    selection = (AthleteData)item;
-                    participantConnection.InsertNewParticipantT(selection.id, _tournamentId, rank , 4, _tournamentTeamId);
-                    selectedParticipantsT();
+                    foreach (Object item in lbTparticipants.SelectedItems)
+                    {
+                        selection = (AthleteData)item;
+                        participantConnection.InsertNewParticipantI(selection.id, _tournamentId, rank, 4);
+                        selectedParticipantsI();
+                    }
+                    possibleParticipants();
                 }
-                possibleParticipants();
+                else if ((bool)TrdButtonTeam.IsChecked)
+                {
+                    foreach (Object item in lbTparticipants.SelectedItems)
+                    {
+                        selection = (AthleteData)item;
+                        participantConnection.InsertNewParticipantT(selection.id, _tournamentId, rank, 4, _tournamentTeamId);
+                        selectedParticipantsT();
+                    }
+                    possibleParticipants();
+                }
             }
-
         }
 
         private void btdeleteParticipant_Click(object sender, RoutedEventArgs e)
