@@ -71,7 +71,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet findSimilar(string filter)
         {
-            string sql = "select * from events where name like '" + filter + "%';";
+            string sql = "select * from events where lower(name) like lower('" + filter + "%');";
             return this.Query(sql);
         }
 

@@ -113,9 +113,21 @@ namespace KarateGeek.guis
             this.eventDate.SelectedDate = dateSelection;
         }
 
+        public EventTournamentManagement(string name)
+        {
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            InitializeComponent();
+            eventConnection = new EventConnection();
+            tournamentConnection = new TournamentConnection();
+            
+            initialize();
+            autocompleteByName(name);
+
+        }
+
         private void initialize()
         {
-            
+
             addressConnection = new AddressConnection();
             locationConnection = new LocationConnection();
 
@@ -129,7 +141,7 @@ namespace KarateGeek.guis
                 cmbECountryChooses.Items.Add(dr[1].ToString());
 
             }
-            cmbECountryChooses.SelectedIndex = 0;
+            cmbECountryChooses.SelectedIndex = 54;
 
             this.eventUpdateCities("CY");
 
@@ -199,40 +211,10 @@ namespace KarateGeek.guis
 
         #region event
 
+
         private void eventName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _eventName = eventName.Text;
-            List<ListData> autoList = new List<ListData>();
-            autoList.Clear();
-
-            eventNameListForAutoComplete = this.EventsfilterNames();
-
-            foreach (ListData item in eventNameListForAutoComplete)
-            {
-                if (!string.IsNullOrEmpty(eventName.Text))
-                {
-                    if (item.name.StartsWith(_eventName))
-                    {
-                        autoList.Add(item);
-                    }
-                }
-            }
-
-            if (autoList.Count > 0)
-            {
-                eSuggestionList.DataContext = autoList;
-                eSuggestionList.Visibility = System.Windows.Visibility.Visible;
-            }
-            else if (eventName.Text.Equals(""))
-            {
-                eSuggestionList.Visibility = Visibility.Collapsed;
-                eSuggestionList.DataContext = null;
-            }
-            else
-            {
-                eSuggestionList.Visibility = Visibility.Collapsed;
-                eSuggestionList.DataContext = null;
-            }
+            eventList();
         }
 
         private List<ListData> EventsfilterNames()
@@ -442,18 +424,21 @@ namespace KarateGeek.guis
 
         private void btnESave_Click(object sender, RoutedEventArgs e)
         {
+            if(checkFields("event")){
             eventConnection.UpdateEvent(_eventId, _eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
-            MessageBox.Show("Succesfully saved!");
+            MessageBox.Show("Succesfully saved!");}
         }
 
         private void btnESaveNew_Click(object sender, RoutedEventArgs e)
         {
+            if(checkFields("event")){
             eventConnection.InsertNewEvent(_eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
             MessageBox.Show("Succesfully saved!");
             EventTournamentManagement etm = new EventTournamentManagement();
             etm.Activate();
             etm.Show();
             this.Close();
+            }
         }
 
         private void btnEDelete_Click(object sender, RoutedEventArgs e)
@@ -513,40 +498,7 @@ namespace KarateGeek.guis
 
         private void tbTName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _tournamentName = tbTName.Text;
-            List<ListData> autoList = new List<ListData>();
-            autoList.Clear();
-
-            tournamentNameListForAutoComplete = this.tournamentsfilterNames();
-
-            foreach (ListData item in tournamentNameListForAutoComplete)
-            {
-                if (!string.IsNullOrEmpty(tbTName.Text))
-                {
-                    if (item.name.StartsWith(_tournamentName))
-                    {
-                        autoList.Add(item);
-                    }
-                }
-            }
-
-            if (autoList.Count > 0)
-            {
-                tSuggestionList.DataContext = autoList;
-                tSuggestionList.Visibility = System.Windows.Visibility.Visible;
-            }
-            else if (tbTName.Text.Equals(""))
-            {
-                tSuggestionList.Visibility = Visibility.Collapsed;
-                tSuggestionList.DataContext = null;
-            }
-            else
-            {
-                tSuggestionList.Visibility = Visibility.Collapsed;
-                tSuggestionList.DataContext = null;
-            }
-
-
+            tournamentList();
         }
 
 
@@ -789,7 +741,7 @@ namespace KarateGeek.guis
         private void TrdButtonIndiv_Checked(object sender, RoutedEventArgs e)
         {
 
-            _tournamentGameType = KarateGeek.Strings.individual;
+            _tournamentCatType = KarateGeek.Strings.individual;
             cmbTGame.Items.Clear();
             cmbTGame.Items.Add("Select game type");
 
@@ -806,7 +758,7 @@ namespace KarateGeek.guis
 
         private void TrdButtonTeam_Checked(object sender, RoutedEventArgs e)
         {
-            _tournamentGameType = KarateGeek.Strings.team;
+            _tournamentCatType = KarateGeek.Strings.team;
             cmbTGame.Items.Clear();
             cmbTGame.Items.Add("Select game type");
 
@@ -932,11 +884,7 @@ namespace KarateGeek.guis
 
         private void btnTSave_Click(object sender, RoutedEventArgs e)
         {
-            if (cmbTEventChooser.SelectedIndex == 0)
-            {
-                MessageBox.Show("Please select one event!");
-            }
-            else
+            if (checkFields("tournament"))
             {
                 tournamentConnection.UpdateTournament(_tournamentId, _tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tournamentGameType, _tournamentScoringType, _tournamentEventId);
                 MessageBox.Show("Succesfully saved!");
@@ -949,12 +897,7 @@ namespace KarateGeek.guis
 
         private void btnTSaveNew_Click(object sender, RoutedEventArgs e)
         {
-            //elegxei an exei epilegei kapoio event 
-            if (cmbTEventChooser.SelectedIndex == 0)
-            {
-                MessageBox.Show("Please select one event!");
-            }
-            else
+            if (checkFields("tournament"))
             {
                 _tournamentId = tournamentConnection.InsertNewTournament(_tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tournamentGameType, _tournamentScoringType, _tournamentEventId);
 
@@ -987,9 +930,11 @@ namespace KarateGeek.guis
 
         private void btaddParticipant_Click(object sender, RoutedEventArgs e)
         {
-            if (_tournamentId == 0)
+            if (_tournamentId == 1)
             {
+
                 MessageBox.Show("You have to save tournament first in order to add participants");
+
             }
             else
             {
@@ -1001,6 +946,7 @@ namespace KarateGeek.guis
                 rank = ds.Tables[0].Rows[0][1].ToString();
                 if ((bool)TrdButtonIndiv.IsChecked)
                 {
+
                     foreach (Object item in lbTparticipants.SelectedItems)
                     {
                         selection = (AthleteData)item;
@@ -1018,6 +964,7 @@ namespace KarateGeek.guis
                         selectedParticipantsT();
                     }
                     possibleParticipants();
+
                 }
             }
         }
@@ -1169,7 +1116,157 @@ namespace KarateGeek.guis
 
 
 
+        #region helping functions
 
+
+        private bool checkFields(string type)
+        {
+            if (type.Equals("event"))
+            {
+                if (_eventName == null)
+                {
+                    errorMessage("Event Name");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (cmbTEventChooser.SelectedIndex == 0)
+                {
+                    errorMessage("Event");
+                    return false;
+                }
+                else if (_tournamentName == null)
+                {
+                    errorMessage("Tournament Name");
+                    return false;
+                }
+                else if (_tournamentSex == null)
+                {
+                    errorMessage("Sex");
+                    return false;
+                }
+                else if (_tournamentAgeFrom == 0)
+                {
+                    errorMessage("Age From");
+                    return false;
+                }
+                else if (_tournamentAgeTo == 0)
+                {
+                    errorMessage("Age To");
+                    return false;
+                }
+                else if (_tournamentLevelFrom == null)
+                {
+                    errorMessage("LevelFrom");
+                    return false;
+                }
+                else if (_tournamentLevelTo == null)
+                {
+                    errorMessage("Level To");
+                    return false;
+                }
+                else if (_tournamentCatType == null)
+                {
+                    errorMessage("Game Type");
+                    return false;
+                }
+                else if (_tournamentGameType == null)
+                {
+                    errorMessage("Game");
+                    return false;
+                }
+                else if (_tournamentScoringType == null)
+                {
+                    errorMessage("Judging type");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        private void errorMessage(string formField)
+        {
+            string message = "Please complete" + formField;
+            MessageBox.Show(message, "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+        }
+
+        private void eventList()
+        {
+            _eventName = eventName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            eventNameListForAutoComplete = this.EventsfilterNames();
+
+            foreach (ListData item in eventNameListForAutoComplete)
+            {
+
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                eSuggestionList.DataContext = autoList;
+                eSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (eventName.Text.Equals(""))
+            {
+                eSuggestionList.Visibility = Visibility.Collapsed;
+                eSuggestionList.DataContext = null;
+            }
+            else
+            {
+                eSuggestionList.Visibility = Visibility.Collapsed;
+                eSuggestionList.DataContext = null;
+            }
+        }
+
+        private void tournamentList()
+        {
+            _tournamentName = tbTName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            tournamentNameListForAutoComplete = this.tournamentsfilterNames();
+
+            foreach (ListData item in tournamentNameListForAutoComplete)
+            {
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                tSuggestionList.DataContext = autoList;
+                tSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (tbTName.Text.Equals(""))
+            {
+                tSuggestionList.Visibility = Visibility.Collapsed;
+                tSuggestionList.DataContext = null;
+            }
+            else
+            {
+                tSuggestionList.Visibility = Visibility.Collapsed;
+                tSuggestionList.DataContext = null;
+            }
+        }
+
+        private void autocompleteByName(string name)
+        {
+            eventName.Text = name;
+        }
+
+        #endregion
 
 
 

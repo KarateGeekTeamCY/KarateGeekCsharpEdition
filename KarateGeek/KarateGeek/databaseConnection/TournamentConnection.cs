@@ -59,7 +59,7 @@ namespace KarateGeek.databaseConnection
         }
         public DataSet findSimilar(string filter, int eventId)
         {
-            string sql = "select * from tournaments where event_id='" + eventId + "' and name like '" + filter + "%';";
+            string sql = "select * from tournaments where event_id='" + eventId + "' and lower(name) like lower('" + filter + "%');";
             return this.Query(sql);
         }
 

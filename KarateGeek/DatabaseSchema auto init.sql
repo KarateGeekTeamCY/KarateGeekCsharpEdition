@@ -124,7 +124,7 @@ CREATE TABLE persons (
     email           VARCHAR(50),
     address_id      INTEGER         REFERENCES addresses( id ),
     PRIMARY KEY(id),
-    CHECK (email ~* E'^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,}$') -- not very restrictive
+    --CHECK (email ~* E'^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,}$') -- not very restrictive
 );
 
 

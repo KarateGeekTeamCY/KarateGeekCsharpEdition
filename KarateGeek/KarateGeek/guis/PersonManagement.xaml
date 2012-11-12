@@ -63,7 +63,8 @@
                         <TextBox Name="athleteFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="athleteFirstName_TextChanged" />
+                               VerticalAlignment="Center" 
+                                 TextChanged="athleteFirstName_TextChanged"  />
                     
                         <Label Content="Last name"
                                Grid.Row="2"
@@ -315,7 +316,7 @@
                             <TextBox Name="judgeFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="judgeFirstName_TextChanged" />
+                               VerticalAlignment="Center" TextChanged="judgeFirstName_TextChanged"  />
                             <Label Content="Last name"
                                Grid.Row="2"
                                Grid.Column="1"
@@ -374,7 +375,7 @@
                             <TextBox Name="judgeFirstPhone" 
                                Grid.Row="6"
                                Grid.Column="2"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center" TextChanged="judgeFirstPhone_TextChanged" />
 
                             <Label Content="Secondary phone num."
                                Grid.Row="7"
