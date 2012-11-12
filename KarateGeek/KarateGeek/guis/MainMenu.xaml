@@ -31,7 +31,8 @@
             <Viewbox Grid.Column="0" 
                      Grid.Row="0">
                 <Calendar Name="mainCalendar" 
-                          Margin="11"/>
+                          Margin="11" 
+                          SelectionMode="MultipleRange"/>
             </Viewbox>
             
 
