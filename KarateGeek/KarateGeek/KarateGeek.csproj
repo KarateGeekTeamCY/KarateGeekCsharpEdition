@@ -136,6 +136,7 @@
     <Compile Include="lottery\LotteryGeneratorFactory.cs" />
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="Strings.cs" />
+    <Compile Include="Tournament.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="databaseConnection\AddressConnection.cs" />
