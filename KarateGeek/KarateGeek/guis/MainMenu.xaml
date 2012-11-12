@@ -32,7 +32,7 @@
                      Grid.Row="0">
                 <Calendar Name="mainCalendar" 
                           Margin="11" 
-                          SelectedDatesChanged="mainCalendar_SelectedDatesChanged" />
+                          SelectionMode="MultipleRange"  />
             </Viewbox>
             
 

@@ -113,6 +113,18 @@ namespace KarateGeek.guis
             this.eventDate.SelectedDate = dateSelection;
         }
 
+        public EventTournamentManagement(string name)
+        {
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            InitializeComponent();
+            eventConnection = new EventConnection();
+            tournamentConnection = new TournamentConnection();
+            
+            initialize();
+            autocompleteByName(name);
+
+        }
+
         private void initialize()
         {
 
@@ -198,6 +210,7 @@ namespace KarateGeek.guis
         }
 
         #region event
+
 
         private void eventName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -917,33 +930,43 @@ namespace KarateGeek.guis
 
         private void btaddParticipant_Click(object sender, RoutedEventArgs e)
         {
-            DataSet ds;
-            String rank = null;
-            AthleteData selection = new AthleteData();
-            List<String> athletes = new List<String>();
-            ds = athleteConnection.findAthlete(selection.id);
-            rank = ds.Tables[0].Rows[0][1].ToString();
-            if ((bool)TrdButtonIndiv.IsChecked)
+            if (_tournamentId == 1)
             {
-                foreach (Object item in lbTparticipants.SelectedItems)
-                {
-                    selection = (AthleteData)item;
-                    participantConnection.InsertNewParticipantI(selection.id, _tournamentId, rank, 4);
-                    selectedParticipantsI();
-                }
-                possibleParticipants();
-            }
-            else if ((bool)TrdButtonTeam.IsChecked)
-            {
-                foreach (Object item in lbTparticipants.SelectedItems)
-                {
-                    selection = (AthleteData)item;
-                    participantConnection.InsertNewParticipantT(selection.id, _tournamentId, rank, 4, _tournamentTeamId);
-                    selectedParticipantsT();
-                }
-                possibleParticipants();
-            }
 
+                MessageBox.Show("You have to save tournament first in order to add participants");
+
+            }
+            else
+            {
+                DataSet ds;
+                String rank = null;
+                AthleteData selection = new AthleteData();
+                List<String> athletes = new List<String>();
+                ds = athleteConnection.findAthlete(selection.id);
+                rank = ds.Tables[0].Rows[0][1].ToString();
+                if ((bool)TrdButtonIndiv.IsChecked)
+                {
+
+                    foreach (Object item in lbTparticipants.SelectedItems)
+                    {
+                        selection = (AthleteData)item;
+                        participantConnection.InsertNewParticipantI(selection.id, _tournamentId, rank, 4);
+                        selectedParticipantsI();
+                    }
+                    possibleParticipants();
+                }
+                else if ((bool)TrdButtonTeam.IsChecked)
+                {
+                    foreach (Object item in lbTparticipants.SelectedItems)
+                    {
+                        selection = (AthleteData)item;
+                        participantConnection.InsertNewParticipantT(selection.id, _tournamentId, rank, 4, _tournamentTeamId);
+                        selectedParticipantsT();
+                    }
+                    possibleParticipants();
+
+                }
+            }
         }
 
         private void btdeleteParticipant_Click(object sender, RoutedEventArgs e)
@@ -1237,6 +1260,12 @@ namespace KarateGeek.guis
                 tSuggestionList.DataContext = null;
             }
         }
+
+        private void autocompleteByName(string name)
+        {
+            eventName.Text = name;
+        }
+
         #endregion
 
 
