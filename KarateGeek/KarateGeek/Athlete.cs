@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using Npgsql;
+using KarateGeek.databaseConnection;
 
-namespace KarateGeek.databaseConnection
+namespace KarateGeek
 {
     class Athlete : CoreDatabaseConnection
     {

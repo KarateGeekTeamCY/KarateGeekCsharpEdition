@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using KarateGeek;
+	
 
 namespace KarateGeek
 {
@@ -15,11 +17,11 @@ namespace KarateGeek
         public string gameId { get; set; }
         public string phase { get; set; }
         public string position { get; set; }
-        public List<string> participantIds { get; set; }
-        public List<string> participantTeamIds { get; set; }
-        public List<string> participants { get; set; }
-        
-        //public List<Athlete> participants { get; set; }
+        //public List<string> participantIds { get; set; }
+        //public List<string> participantTeamIds { get; set; }
+        //public List<string> participants { get; set; }
+
+        public List<Athlete> participants { get; set; }
         
         public bool isReady { get; set; }
         public bool isFinished { get; set; }
@@ -41,7 +43,7 @@ namespace KarateGeek
 
         public void AddParticipant(string athleteId)
         {
-            //this.participants.Add(new Athlete(athleteId));
+            this.participants.Add(new Athlete(athleteId));
             _InsertParticipant(athleteId);
             this.load();
         }
@@ -91,17 +93,18 @@ namespace KarateGeek
             temp = this.Query(sql).Tables[0];
 
             this.numOfParticipants = 0;
-            //this.participants = new List<Athlete>();
+            this.participants = new List<Athlete>();
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.participantIds.Add(dr[4].ToString());
-                this.participantTeamIds.Add(dr[3].ToString());
-                this.participants.Add(dr[5].ToString() + " " + dr[6].ToString());
+                //this.participantIds.Add(dr[4].ToString());
+                //this.participantTeamIds.Add(dr[3].ToString());
+                //this.participants.Add(dr[5].ToString() + " " + dr[6].ToString());
 
-                //this.participants.Add( new Athlete((string)dr[4]) );
+                this.participants.Add( new Athlete((string)dr[4]) );
 
                 this.numOfParticipants++;
+
             }
         }
 
@@ -116,7 +119,7 @@ namespace KarateGeek
 
             for (int i = 0; i < this.numOfParticipants; i++)
             {
-                sql = "select * from game_participants where game_id = '" + this.gameId + "' and athlete_id = '" + this.participantIds.ElementAt(i) + "' ; ";
+                sql = "select * from game_participants where game_id = '" + this.gameId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ; ";
 
                 int exist = this.Query(sql).Tables[0].Rows.Count;
                 if (exist == 0)
