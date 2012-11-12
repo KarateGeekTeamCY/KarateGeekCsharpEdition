@@ -21,6 +21,27 @@ namespace KarateGeek.guis
         public LotteryChooser()
         {
             InitializeComponent();
+            RowDefinition gridRow1 = new RowDefinition();
+            gridRow1.Height = new GridLength(45);
+            RowDefinition gridRow2 = new RowDefinition();
+            gridRow2.Height = new GridLength(45);
+            RowDefinition gridRow3 = new RowDefinition();
+            gridRow3.Height = new GridLength(45);
+
+            content.RowDefinitions.Add(gridRow1);
+            content.RowDefinitions.Add(gridRow2);
+            content.RowDefinitions.Add(gridRow3);
+
+            TextBox txtBox = new TextBox();
+            txtBox.Text = "Author Name";
+            txtBox.FontSize = 14;
+            txtBox.FontWeight = FontWeights.Bold;
+            txtBox.Foreground = new SolidColorBrush(Colors.Green);
+            txtBox.VerticalAlignment = VerticalAlignment.Top;
+            Grid.SetRow(txtBox, 0);
+            Grid.SetColumn(txtBox, 1);
+
+            content.Children.Add(txtBox);
         }
     }
 }

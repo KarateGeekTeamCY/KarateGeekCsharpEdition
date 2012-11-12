@@ -98,6 +98,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Athlete.cs" />
     <Compile Include="databaseConnection\EveSupFlagConnection.cs" />
     <Compile Include="databaseConnection\EveSupPointConnection.cs" />
     <Compile Include="databaseConnection\AthleteData.cs" />

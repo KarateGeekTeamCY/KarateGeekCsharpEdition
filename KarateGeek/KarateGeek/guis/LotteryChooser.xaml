@@ -8,13 +8,32 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Name="kati">
+        <Grid Grid.Row="0">
+            <Label Name="lbllotteryChooserInfo" 
+               Content="Info" 
+               FontSize="20" 
+               VerticalAlignment="Center" 
+               HorizontalContentAlignment="Center"
+               />
+
+        </Grid>
+        <Grid Grid.Row="1" Name="content">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Label Content="Event"/>
+            </Grid>
         </Grid>
+        
     </Grid>
 </Window>
