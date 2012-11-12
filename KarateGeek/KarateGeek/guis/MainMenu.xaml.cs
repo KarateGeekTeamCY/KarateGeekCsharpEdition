@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;   // has Debug.WriteLine()
+using System.Data;
+using KarateGeek.databaseConnection;
 
 using KarateGeek.lottery; // for lottery generator testing; THIS LINE WILL BE REMOVED
 
@@ -25,6 +27,20 @@ namespace KarateGeek.guis
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
+
+
+            //myCalendar.SelectedDates.Add(CType(reader.GetDateTime(0), Date))
+            EventConnection evCon = new EventConnection();
+            DataTable dt = evCon.getEvents().Tables[0];
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                this.mainCalendar.SelectedDates.Add((DateTime)dr[2]);
+            }
+
+            this.mainCalendar.SelectedDatesChanged += new EventHandler<SelectionChangedEventArgs>(mainCalendar_SelectedDatesChanged);
+
+            //this.mainCalendar.
         }
 
         private void btnPersonManagement_Click(object sender, RoutedEventArgs e)

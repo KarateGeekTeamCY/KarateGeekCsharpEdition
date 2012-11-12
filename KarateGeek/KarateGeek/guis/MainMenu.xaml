@@ -31,8 +31,7 @@
             <Viewbox Grid.Column="0" 
                      Grid.Row="0">
                 <Calendar Name="mainCalendar" 
-                          Margin="11" 
-                          SelectedDatesChanged="mainCalendar_SelectedDatesChanged" />
+                          Margin="11"/>
             </Viewbox>
             
 

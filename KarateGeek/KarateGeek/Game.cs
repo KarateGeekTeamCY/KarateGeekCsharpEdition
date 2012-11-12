@@ -17,9 +17,6 @@ namespace KarateGeek
         public string gameId { get; set; }
         public string phase { get; set; }
         public string position { get; set; }
-        //public List<string> participantIds { get; set; }
-        //public List<string> participantTeamIds { get; set; }
-        //public List<string> participants { get; set; }
 
         public List<Athlete> participants { get; set; }
         
