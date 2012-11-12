@@ -1056,11 +1056,7 @@ namespace KarateGeek.guis
 
             foreach (ListData item in athleteNameListForAutoComplete)
             {
-
-                if (item.name.StartsWith(_athleteFirstName))
-                {
-                    autoList.Add(item);
-                }
+                autoList.Add(item);
             }
 
             if (autoList.Count > 0)
@@ -1090,12 +1086,7 @@ namespace KarateGeek.guis
 
             foreach (ListData item in judgeNameListForAutoComplete)
             {
-
-                if (item.name.StartsWith(_judgeFirstName))
-                {
-                    autoList.Add(item);
-                }
-
+                autoList.Add(item);
             }
 
             if (autoList.Count > 0)
