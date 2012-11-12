@@ -67,7 +67,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet findSimilar(string filter)
         {
-            string sql = "select * from persons JOIN athletes on persons.id = athletes.id where first_name like '" + filter + "%';";
+            string sql = "select * from persons where first_name like '" + filter + "%';";
             return this.Query(sql);
         }
     }

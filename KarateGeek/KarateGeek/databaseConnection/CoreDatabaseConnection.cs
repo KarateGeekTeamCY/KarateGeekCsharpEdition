@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Data;          // DataSet, DataTable
 using Npgsql;
 
@@ -57,9 +58,18 @@ namespace KarateGeek.databaseConnection
             Debug.WriteLine("Executing SQL NonQuery: " + sql);  // Much faster than Console.WriteLine()
                                                                 // and auto-disabled in release mode.
 
+            
             NpgsqlCommand comm = this.conn.CreateCommand();
             comm.CommandText = sql;
-            comm.ExecuteNonQuery();
+            try
+            {
+                comm.ExecuteNonQuery();
+            }catch(Exception e){
+                MessageBox.Show("Unfortunately there is no scheduled event for today. Press OK to return to main menu.", "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+            }
+            
             return true;
         }
 
