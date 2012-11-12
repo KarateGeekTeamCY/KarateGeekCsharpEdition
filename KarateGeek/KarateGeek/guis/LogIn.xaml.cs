@@ -31,11 +31,6 @@ namespace KarateGeek.guis
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-
-
-
-
-
             LoginConnection lgConn = new LoginConnection();
 
             /* Temporarily disabling the following two lines to make our life easier during testing: */
@@ -52,8 +47,6 @@ namespace KarateGeek.guis
                 menu.Activate();
                 this.Close();
                 menu.Show();
-                
-
             }
             else
             {
