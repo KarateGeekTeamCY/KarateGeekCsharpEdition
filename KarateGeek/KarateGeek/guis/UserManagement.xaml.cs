@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using KarateGeek.databaseConnection;
+using System.Data;
 
 namespace KarateGeek.guis
 {
@@ -27,13 +29,16 @@ namespace KarateGeek.guis
         private string pass1 = "";
         private string pass2 = "";
 
+        private int userId;
         private bool person = false;
         private bool eventMan = false;
         private bool eventSup = false;
         private bool lottery = false;
         private bool reports = false;
         private bool settings = false;
-
+        private DataTable filteredUsers;
+        private List<ListData> userNameListForAutoComplete;
+        private UserConnection userConnection = new UserConnection();
 
 
         public UserManagement(Window sender)
@@ -139,6 +144,50 @@ namespace KarateGeek.guis
         private void txtUserName_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.userName = this.txtUserName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            userNameListForAutoComplete = this.UserfilterNames();
+
+            foreach (ListData item in userNameListForAutoComplete)
+            {
+                 autoList.Add(item);   
+            }
+
+            if (autoList.Count > 0)
+            {
+                uSuggestionList.DataContext = autoList;
+                uSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (txtUserName.Text.Equals(""))
+            {
+                uSuggestionList.Visibility = Visibility.Collapsed;
+                uSuggestionList.DataContext = null;
+            }
+            else
+            {
+                uSuggestionList.Visibility = Visibility.Collapsed;
+                uSuggestionList.DataContext = null;
+            }
+        }
+
+        private List<ListData> UserfilterNames()
+        {
+            List<ListData> list = new List<ListData>();
+     
+            this.filteredUsers = userConnection.findSimilar(this.txtUserName.Text);
+
+            foreach (DataRow dr in filteredUsers.Rows)
+            {
+                ListData suggestion = new ListData();
+                suggestion.id = int.Parse(dr[0].ToString());
+                suggestion.name = dr[1].ToString();
+                list.Add(suggestion);
+            }
+            return list;
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
+            //this.sugestionList.ItemsSource = list;
+        
         }
 
         private void txtPasswordOne_PasswordChanged(object sender, RoutedEventArgs e)
@@ -152,5 +201,36 @@ namespace KarateGeek.guis
         }
 
         #endregion
+
+        private void uSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index;
+            if (uSuggestionList.ItemsSource != null)
+            {
+                uSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                txtUserName.TextChanged -= new TextChangedEventHandler(txtUserName_TextChanged);
+
+                index = uSuggestionList.SelectedIndex;
+
+                if (uSuggestionList.SelectedIndex != -1)
+                {
+                    ListData item = (ListData)uSuggestionList.SelectedItem;
+                    userId = item.id;
+                    userName = uSuggestionList.SelectedItem.ToString();
+                    
+                    this.txtUserName.Text = filteredUsers.Rows[index][1].ToString();
+
+                    this.chbPersonMan.IsChecked = (bool)filteredUsers.Rows[index][3];
+                    this.chbEventMan.IsChecked = (bool)filteredUsers.Rows[index][4];
+                    this.chbLoteryMan.IsChecked = (bool)filteredUsers.Rows[index][5];
+                    this.chbEventSup.IsChecked = (bool)filteredUsers.Rows[index][6];
+                    this.chbPersonMan.IsChecked = (bool)filteredUsers.Rows[index][7];
+                    this.chbSettings.IsChecked = (bool)filteredUsers.Rows[index][8];
+                   
+                }
+                txtUserName.TextChanged += new TextChangedEventHandler(txtUserName_TextChanged);
+            }
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
+        }
     }
 }

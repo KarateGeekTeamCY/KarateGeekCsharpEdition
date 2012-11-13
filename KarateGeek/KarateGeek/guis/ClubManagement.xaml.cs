@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.IO;
+using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -20,6 +22,7 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class ClubManagement : Window
     {
+        private int _clubId;
         private string _clubName = null;
         private string _clubPhone = null;
         private string _clubEmail = null;
@@ -35,7 +38,7 @@ namespace KarateGeek.guis
         private ClubConnection clubConnection;
         private CountryConnection countryConnection;
         private AddressConnection addressConnection;
-        List<string> clubNameListForAutoComplete;
+        List<ListData> clubNameListForAutoComplete;
 
         public ClubManagement()
         {
@@ -71,7 +74,7 @@ namespace KarateGeek.guis
             {
                 // Open document
                 string filename = dlg.FileName;
-                clubLogoPath.Text = filename;
+                _clubLogoSource = filename;
                 
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
@@ -81,64 +84,49 @@ namespace KarateGeek.guis
             }
         }
 
-        private void clubLogoPath_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _clubLogoSource = clubLogoPath.Text;
-        }
+       
 
         private void clubName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _clubName = clubName.Text;
-            List<string> autoList = new List<string>();
+            List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
             clubNameListForAutoComplete = this.ClubfilterNames();
 
-            foreach (string item in clubNameListForAutoComplete)
+            foreach (ListData item in clubNameListForAutoComplete)
             {
-                if (!string.IsNullOrEmpty(clubName.Text))
-                {
-                    if (item.StartsWith(_clubName))
-                    {
-                        autoList.Add(item);
-                    }
-                }
+                 autoList.Add(item);   
             }
 
             if (autoList.Count > 0)
             {
-                cSuggestionList.ItemsSource = autoList;
-       
+                cSuggestionList.DataContext = autoList;
                 cSuggestionList.Visibility = System.Windows.Visibility.Visible;
-                
             }
             else if (clubName.Text.Equals(""))
             {
                 cSuggestionList.Visibility = Visibility.Collapsed;
-                cSuggestionList.ItemsSource = null;
+                cSuggestionList.DataContext = null;
             }
             else
             {
                 cSuggestionList.Visibility = Visibility.Collapsed;
-                cSuggestionList.ItemsSource = null;
+                cSuggestionList.DataContext = null;
             }
         }
 
-        private List<string> ClubfilterNames()
+        private List<ListData> ClubfilterNames()
         {
-            List<string> list = new List<string>();
-            string suggestion = null;
-
+            List<ListData> list = new List<ListData>();
+     
             this.filteredClubs = clubConnection.findSimilar(this.clubName.Text);
-
-            //if (this.filteredClubs.Tables[0].Rows.Count > 0)
-            //{
-            //    _personId = int.Parse(filteredClubs.Tables[0].Rows[0][0].ToString());
-            //}
 
             foreach (DataRow dr in filteredClubs.Tables[0].Rows)
             {
-                suggestion = dr[1].ToString();
+                ListData suggestion = new ListData();
+                suggestion.id = int.Parse(dr[0].ToString());
+                suggestion.name = dr[1].ToString();
                 list.Add(suggestion);
             }
             return list;
@@ -165,13 +153,15 @@ namespace KarateGeek.guis
 
                 if (cSuggestionList.SelectedIndex != -1)
                 {
+                    ListData item = (ListData)cSuggestionList.SelectedItem;
+                    _clubId = item.id;
                     name = cSuggestionList.SelectedItem.ToString();
                     address_id = int.Parse(filteredClubs.Tables[0].Rows[index][5].ToString());
 
                     this.clubName.Text = filteredClubs.Tables[0].Rows[index][1].ToString();
                     this.clubPhone.Text = filteredClubs.Tables[0].Rows[index][2].ToString();
                     this.clubEmail.Text = filteredClubs.Tables[0].Rows[index][3].ToString();
-
+                    
                     ds = addressConnection.getAddress(address_id);
 
                     this.clubAddress.Text = ds.Tables[0].Rows[0][1].ToString();
@@ -219,6 +209,7 @@ namespace KarateGeek.guis
                         }
                     }
                     this.cmbCCityChooses.SelectedIndex = city_position;
+                    
                 }
                 clubName.TextChanged += new TextChangedEventHandler(clubName_TextChanged);
             }
@@ -315,5 +306,7 @@ namespace KarateGeek.guis
         {
 
         }
+
+        
     }
 }

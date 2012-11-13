@@ -32,10 +32,10 @@ namespace KarateGeek.guis
         private DataSet filteredTournaments;
         private DataSet filteredAthletes;
         private AthleteConnection athleteConnection = new AthleteConnection();
-        private AddressConnection addressConnection;
-        private CityConnection cityConnection;
-        private CountryConnection countryConnection;
-        private LocationConnection locationConnection;
+        private AddressConnection addressConnection = new AddressConnection();
+        private CityConnection cityConnection = new CityConnection();
+        private CountryConnection countryConnection = new CountryConnection();
+        private LocationConnection locationConnection = new LocationConnection();
         private ParticipationsConnection participantConnection = new ParticipationsConnection();
         List<ListData> eventNameListForAutoComplete;
         List<ListData> tournamentNameListForAutoComplete;
@@ -46,7 +46,7 @@ namespace KarateGeek.guis
         //event specific variables
         //
 
-        private EventConnection eventConnection;
+        private EventConnection eventConnection = new EventConnection();
 
         private string _eventName = null;
         private string _eventLocation = null;
@@ -65,7 +65,7 @@ namespace KarateGeek.guis
         //
         //tournament specific variables
         //
-        private TournamentConnection tournamentConnection;
+        private TournamentConnection tournamentConnection = new TournamentConnection();
 
         private int _tournamentEventId;
         private string _tournamentEvent;
@@ -83,7 +83,7 @@ namespace KarateGeek.guis
         private int _tournamentTeam = 0;
         private int _levelFrom = 0;
         private int _levelTo = 0;
-        private int _tournamentId = 1;
+        private int _tournamentId = 0;
         private int teamsNum = 0;
         private int teamNumber = 0;
 
@@ -95,10 +95,8 @@ namespace KarateGeek.guis
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            eventConnection = new EventConnection();
-            tournamentConnection = new TournamentConnection();
 
-            initialize();
+            initialize();   //initialize gui and others
 
         }
         //constructor pou pernei san orisma tin imerominia pou tou exei perastei apo to main
@@ -106,10 +104,8 @@ namespace KarateGeek.guis
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            eventConnection = new EventConnection();
-            tournamentConnection = new TournamentConnection();
-            initialize();
 
+            initialize();   //initialize gui and others
             this.eventDate.SelectedDate = dateSelection;
         }
 
@@ -117,23 +113,14 @@ namespace KarateGeek.guis
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
-            eventConnection = new EventConnection();
-            tournamentConnection = new TournamentConnection();
-            
+
             initialize();
             autocompleteByName(name);
-
         }
 
         private void initialize()
         {
-
-            addressConnection = new AddressConnection();
-            locationConnection = new LocationConnection();
-
             //cities kai countries
-            cityConnection = new CityConnection();
-            countryConnection = new CountryConnection();
             this.countries = countryConnection.GetCountries();
 
             foreach (DataRow dr in countries.Tables[0].Rows)
@@ -145,9 +132,7 @@ namespace KarateGeek.guis
 
             this.eventUpdateCities("CY");
 
-
             //events
-            eventConnection = new EventConnection();
             this.events = eventConnection.getEvents();
             cmbTEventChooser.Items.Add("Select Event");
 
@@ -221,9 +206,7 @@ namespace KarateGeek.guis
         {
             List<ListData> list = new List<ListData>();
 
-
             this.filteredEvents = eventConnection.findSimilar(this.eventName.Text);
-
 
             foreach (DataRow dr in filteredEvents.Tables[0].Rows)
             {
@@ -233,8 +216,6 @@ namespace KarateGeek.guis
                 list.Add(suggestion);
             }
             return list;
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            //this.sugestionList.ItemsSource = list;
         }
 
         private void eSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -244,8 +225,6 @@ namespace KarateGeek.guis
             int index;
             int location_id;
             int address_id;
-            addressConnection = new AddressConnection();
-            locationConnection = new LocationConnection();
             DataSet dsA;
             DataSet dsL;
 
@@ -287,12 +266,8 @@ namespace KarateGeek.guis
                     //
                     //the fix for the country selection error
                     //
-                    CountryConnection countryconn = new CountryConnection();
-                    DataSet countriname = countryconn.getCountryNameByCode(eventCountry);
+                    DataSet countriname = countryConnection.getCountryNameByCode(eventCountry);
                     eventCountry = countriname.Tables[0].Rows[0][0].ToString();
-
-
-
 
                     for (int i = 0; i < this.cmbECountryChooses.Items.Count; i++)
                     {
@@ -306,8 +281,6 @@ namespace KarateGeek.guis
 
                     this.cmbECountryChooses.SelectedIndex = country_position;
 
-
-                    CityConnection cityConnection = new CityConnection();
                     DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(eventCity));
                     eventCity = cityNa.Tables[0].Rows[0][0].ToString();
 
@@ -378,8 +351,7 @@ namespace KarateGeek.guis
 
         private void eventUpdateCities(string countryCode)
         {
-            CityConnection citiesconn = new CityConnection();
-            this.cities = citiesconn.GetCities(countryCode);
+            this.cities = cityConnection.GetCities(countryCode);
 
             //cmbACityChooses = new ComboBox();
 
@@ -396,10 +368,6 @@ namespace KarateGeek.guis
             cmbECityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
 
             cmbECityChooses.Items.Refresh();
-
-
-
-
         }
 
 
@@ -424,20 +392,23 @@ namespace KarateGeek.guis
 
         private void btnESave_Click(object sender, RoutedEventArgs e)
         {
-            if(checkFields("event")){
-            eventConnection.UpdateEvent(_eventId, _eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
-            MessageBox.Show("Succesfully saved!");}
+            if (checkFields("event"))
+            {
+                eventConnection.UpdateEvent(_eventId, _eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
+                MessageBox.Show("Succesfully saved!");
+            }
         }
 
         private void btnESaveNew_Click(object sender, RoutedEventArgs e)
         {
-            if(checkFields("event")){
-            eventConnection.InsertNewEvent(_eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
-            MessageBox.Show("Succesfully saved!");
-            EventTournamentManagement etm = new EventTournamentManagement();
-            etm.Activate();
-            etm.Show();
-            this.Close();
+            if (checkFields("event"))
+            {
+                eventConnection.InsertNewEvent(_eventName, _eventDate, _eventAddress, _eventAddressNum, _eventTK, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
+                MessageBox.Show("Succesfully saved!");
+                EventTournamentManagement etm = new EventTournamentManagement();
+                etm.Activate();
+                etm.Show();
+                this.Close();
             }
         }
 
@@ -517,8 +488,6 @@ namespace KarateGeek.guis
                 list.Add(suggestion);
             }
             return list;
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            //this.sugestionList.ItemsSource = list;
         }
 
         private void tSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -735,8 +704,6 @@ namespace KarateGeek.guis
                 i++;
             }
             return list;
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            //this.sugestionList.ItemsSource = list;
         }
         private void TrdButtonIndiv_Checked(object sender, RoutedEventArgs e)
         {
@@ -888,10 +855,6 @@ namespace KarateGeek.guis
             {
                 tournamentConnection.UpdateTournament(_tournamentId, _tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tournamentGameType, _tournamentScoringType, _tournamentEventId);
                 MessageBox.Show("Succesfully saved!");
-                EventTournamentManagement etm = new EventTournamentManagement();
-                etm.Activate();
-                etm.Show();
-                this.Close();
             }
         }
 
@@ -901,16 +864,7 @@ namespace KarateGeek.guis
             {
                 _tournamentId = tournamentConnection.InsertNewTournament(_tournamentName, _tournamentSex, _tournamentAgeFrom, _tournamentAgeTo, _tournamentLevelFrom, _tournamentLevelTo, _tournamentGameType, _tournamentScoringType, _tournamentEventId);
 
-                participantConnection.UpdateParticipationsI(_tournamentId);
-                if ((bool)TrdButtonTeam.IsChecked)
-                {
-                    participantConnection.UpdateParticipationsT(_tournamentId);
-                }
                 MessageBox.Show("Succesfully saved!");
-                EventTournamentManagement etm = new EventTournamentManagement();
-                etm.Activate();
-                etm.Show();
-                this.Close();
             }
         }
 
@@ -930,7 +884,7 @@ namespace KarateGeek.guis
 
         private void btaddParticipant_Click(object sender, RoutedEventArgs e)
         {
-            if (_tournamentId == 1)
+            if (_tournamentId == 0)
             {
 
                 MessageBox.Show("You have to save tournament first in order to add participants");
