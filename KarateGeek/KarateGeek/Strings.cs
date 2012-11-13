@@ -67,13 +67,13 @@ namespace KarateGeek
         // game types (tournament types)
         //
 
-        public const string indKata    = "IND|KATA";   //score i flag
-        public const string teamKata   = "TEAM|KATA";   //score i flag
+        public const string indKata    = "IND|KATA";      //score i flag
+        public const string teamKata   = "TEAM|KATA";     //score i flag
         public const string syncKata   = "SYNC|KATA";
-        public const string indKumite  = "IND|KUMITE";   //points
-        public const string teamKumite = "TEAM|KUMITE";  //points
+        public const string indKumite  = "IND|KUMITE";    //points
+        public const string teamKumite = "TEAM|KUMITE";   //points
         public const string enbu       = "SYNC|EN-BU";    //score
-        public const string fugugo     = "IND|FUGU-GO";  //points/flag
+        public const string fugugo     = "IND|FUGU-GO";   //points/flag
         public const string team       = "TEAM";
         public const string individual = "IND";
         public const string synchronized = "SYNC";
@@ -84,14 +84,14 @@ namespace KarateGeek
         // scoring types
         //
 
-        public const string flag  = "FLAG";        // einai to flag system
+        public const string flag  = "FLAG";         // einai to flag system
 
-        public const string point = "POINT";       // einai to sistima me tis 
+        public const string point = "POINT";        // einai to sistima me tis 
                                                     // diaforetikes vathmologies
                                                     // analoga me tin epitixia
                                                     // tis texnikis
 
-        public const string score = "SCORE";       // einai i arithmitiki vathmologia
+        public const string score = "SCORE";        // einai i arithmitiki vathmologia
                                                     // me vasi kritiria texnikis
 
         //

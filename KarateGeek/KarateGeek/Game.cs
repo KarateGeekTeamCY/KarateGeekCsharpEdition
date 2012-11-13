@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using KarateGeek;
-	
+
 
 namespace KarateGeek
 {
@@ -19,7 +19,7 @@ namespace KarateGeek
         public string position { get; set; }
 
         public List<Athlete> participants { get; set; }
-        
+
         public bool isReady { get; set; }
         public bool isFinished { get; set; }
         public int numOfParticipants { get; set; }
@@ -41,23 +41,22 @@ namespace KarateGeek
         public void AddParticipant(string athleteId)
         {
             this.participants.Add(new Athlete(athleteId));
-            _InsertParticipant(athleteId);
-            this.load();
+            this.Update();
         }
 
 
-        private string _InsertParticipant(string athleteId)
-        {
-            sql = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
-                                    + "VALUES ( " + athleteId + ", NULL, '" + gameId + "');";
+        //private string _InsertParticipant(string athleteId)
+        //{
+        //    sql = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+        //                            + "VALUES ( " + athleteId + ", NULL, '" + gameId + "');";
 
-            this.NonQuery(sql);
-            return "";
-        }
+        //    this.NonQuery(sql);
+        //    return "";
+        //}
 
         private string _InsertNewGame(string tournamentId, string phase, string position)
         {
-            sql = "insert into games (tournament_id, phase, position) values ( '" + 
+            sql = "insert into games (tournament_id, phase, position) values ( '" +
                 tournamentId + "'. '" +
                 phase + "', '" +
                 position + "' );";
@@ -98,7 +97,7 @@ namespace KarateGeek
                 //this.participantTeamIds.Add(dr[3].ToString());
                 //this.participants.Add(dr[5].ToString() + " " + dr[6].ToString());
 
-                this.participants.Add( new Athlete((string)dr[4]) );
+                this.participants.Add(new Athlete((string)dr[4]));
 
                 this.numOfParticipants++;
 
@@ -113,15 +112,36 @@ namespace KarateGeek
             //WHERE some_column=some_value
             sql = "UPDATE games SET is_ready = '" + this.isReady + "', " +
                 "is_finished = '" + this.isFinished + "' where game_id = '" + this.gameId + "'; ";
+            this.NonQuery(sql);
+
 
             for (int i = 0; i < this.numOfParticipants; i++)
             {
                 sql = "select * from game_participants where game_id = '" + this.gameId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ; ";
 
+
                 int exist = this.Query(sql).Tables[0].Rows.Count;
                 if (exist == 0)
                 {
-                    sql = "insert into game_participations";
+                    
+                     sql = "select * from tournament_participations where tournament_id = '" + this.touenamentId + "', and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
+                    DataTable temp = Query(sql).Tables[0];
+
+                    if (temp.Rows.Count == 0)
+                    {
+                        sql = "insert into game_participations (athlete_id, game_id) values ('"
+                            + this.participants.ElementAt(i).id + "', '"
+                            + this.gameId + "' );";
+                    }
+                    else
+                    {
+                        sql = "insert into game_participations (athlete_id, team_id, game_id) values ('"
+                            + this.participants.ElementAt(i).id + "', '"
+                            + temp.Rows[0][1] + "', '"
+                            + this.gameId + "' );";
+                    }
+
+                    this.NonQuery(sql);
                 }
 
             }

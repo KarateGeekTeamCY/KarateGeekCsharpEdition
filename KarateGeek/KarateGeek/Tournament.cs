@@ -70,13 +70,13 @@ namespace KarateGeek
                 case Strings.team:
                     this.isTeam = true;
                     break;
-                case "SYNC":
+                case Strings.synchronized:
                     this.isSync = true;
                     break;
             }
 
 
-            #region load games
+            #region load games if exist for all phases
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 7 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
