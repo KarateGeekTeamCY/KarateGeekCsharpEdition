@@ -427,7 +427,12 @@ namespace KarateGeek.lottery
                 int phaseXposition = yleft + 1;
                 int phaseYposition = 1;
 
-                for (int i = 0; i < yleft; i += 2) { // crashes for Y.Length == 1
+                //for (int i = 0; i < yleft; i += 2) { // crashes for Y.Length == 1
+                for (int i = 0; i < ((yleft > 1) ? yleft : -1) ; i += 2) { // BUG FIXED?! (ugly code!)
+                /*
+                 * possibly better fix (check correctness):
+                 * for (int i = 0; i < yleft - 1; i += 2) {
+                 */
                     Pairs.Add(new Tuple<long, long, int, int>(Yleft[i], Yleft[i + 1], phaseY, phaseYposition));
                     ++phaseYposition;
                 }
