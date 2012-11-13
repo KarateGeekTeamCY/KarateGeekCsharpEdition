@@ -145,7 +145,7 @@ CREATE TABLE judges (
 
 
 CREATE TABLE users (
-    id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
+    id              SERIAL,
     username        VARCHAR(255)    NOT NULL UNIQUE,
     password        VARCHAR(255)    NOT NULL,
     person_management   BOOLEAN     NOT NULL DEFAULT false,

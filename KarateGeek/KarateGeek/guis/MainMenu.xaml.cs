@@ -137,6 +137,12 @@ namespace KarateGeek.guis
             
         }
 
+        private void btnUserManagement_Click(object sender, RoutedEventArgs e)
+        {
+            UserManagement userMan = new UserManagement(this);
+            userMan.Show();
+        }
+
      
 
        

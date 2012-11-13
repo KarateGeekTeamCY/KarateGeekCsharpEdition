@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KarateGeek.guis {
+namespace KarateGeek.reports {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace KarateGeek.guis {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class AthleteCrystalReport : ReportClass {
+    public class EventCrystalReport : ReportClass {
         
-        public AthleteCrystalReport() {
+        public EventCrystalReport() {
         }
         
         public override string ResourceName {
             get {
-                return "AthleteCrystalReport.rpt";
+                return "EventCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace KarateGeek.guis {
         
         public override string FullResourceName {
             get {
-                return "KarateGeek.guis.AthleteCrystalReport.rpt";
+                return "KarateGeek.reports.EventCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace KarateGeek.guis {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace KarateGeek.guis {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,17 +82,33 @@ namespace KarateGeek.guis {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
             get {
                 return this.ReportDefinition.Sections[4];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
+            get {
+                return this.ReportDefinition.Sections[5];
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.CrystalReports.Engine.Section Section5 {
+            get {
+                return this.ReportDefinition.Sections[6];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedAthleteCrystalReport : Component, ICachedReport {
+    public class CachedEventCrystalReport : Component, ICachedReport {
         
-        public CachedAthleteCrystalReport() {
+        public CachedEventCrystalReport() {
         }
         
         [Browsable(false)]
@@ -129,7 +145,7 @@ namespace KarateGeek.guis {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            AthleteCrystalReport rpt = new AthleteCrystalReport();
+            EventCrystalReport rpt = new EventCrystalReport();
             rpt.Site = this.Site;
             return rpt;
         }

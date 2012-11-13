@@ -45,6 +45,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -86,7 +87,13 @@
                         Content="Reports" 
                         Grid.Column="1" 
                         Grid.Row="6" 
-                        Margin="5" Click="btnReports_Click" />
+                        Margin="5" 
+                        Click="btnReports_Click" />
+                <Button Name="btnUserManagement" 
+                        Content="User management" 
+                        Grid.Column="1" 
+                        Grid.Row="6" 
+                        Margin="5" Click="btnUserManagement_Click" />
 
 
                
