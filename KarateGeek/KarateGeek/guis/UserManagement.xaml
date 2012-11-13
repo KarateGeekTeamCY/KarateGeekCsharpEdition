@@ -1,0 +1,163 @@
+﻿<Window x:Class="KarateGeek.guis.UserManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="UserManagement" 
+        Height="400"  
+        Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Label Name="lblInfo"
+               Content="New user"
+               HorizontalContentAlignment="Center"
+               VerticalAlignment="Center"
+               Padding="10"
+               FontSize="16"/>
+        
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+           
+            <Label Content="User name"
+                   Grid.Column="1"
+                   Grid.Row="0"/>
+            <TextBox Name="txtUserName"
+                     Grid.Column="2"
+                     VerticalAlignment="Center" TextChanged="txtUserName_TextChanged" />
+            
+            <Label Content="Password"
+                   Grid.Column="1"
+                   Grid.Row="1"/>
+            <PasswordBox Name="txtPasswordOne" 
+                         Grid.Column="2"
+                         Grid.Row="1"
+                         VerticalAlignment="Center" PasswordChanged="txtPasswordOne_PasswordChanged" />
+            
+            <Label Content="Repeat password"
+                   Grid.Column="1"
+                   Grid.Row="2"/>
+            <PasswordBox Name="txtPasswordTwo" 
+                         Grid.Column="2"
+                         Grid.Row="2"
+                         VerticalAlignment="Center" PasswordChanged="txtPasswordTwo_PasswordChanged" />
+            
+            
+
+            <Label Content="Rights"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   HorizontalContentAlignment="Center"
+                   FontSize="18"
+                   Grid.Row="3"/>
+           
+
+            <Label Content="Person management"
+                   Grid.Column="1"
+                   Grid.Row="4"/>
+            <CheckBox Name="chbPersonMan"
+                      Grid.Column="2"
+                      Grid.Row="4"
+                      VerticalAlignment="Center" Checked="chbPersonMan_Checked" />
+            <Label Content="Event Tournament Management"
+                   Grid.Column="1"
+                   Grid.Row="5"/>
+            <CheckBox Name="chbEventMan"
+                      Grid.Column="2"
+                      Grid.Row="5"
+                      VerticalAlignment="Center" Checked="chbEventMan_Checked" />
+            
+            <Label Content="Lottery"
+                   Grid.Column="1"
+                   Grid.Row="7"/>
+            <CheckBox Name="chbLoteryMan"
+                      Grid.Column="2"
+                      Grid.Row="7"
+                      VerticalAlignment="Center" Checked="chbLoteryMan_Checked" />
+            
+            <Label Content="Event support"
+                   Grid.Column="1"
+                   Grid.Row="8"/>
+            <CheckBox Name="chbEventSup"
+                      Grid.Column="2"
+                      Grid.Row="8"
+                      VerticalAlignment="Center" Checked="chbEventSup_Checked" />
+            
+
+            <Label Content="Reports"
+                   Grid.Column="1"
+                   Grid.Row="9"/>
+            <CheckBox Name="chbReportsMan"
+                      Grid.Column="2"
+                      Grid.Row="9"
+                      VerticalAlignment="Center" Checked="chbReportsMan_Checked" />
+
+            <Label Content="Settings"
+                   Grid.Column="1"
+                   Grid.Row="10"/>
+            <CheckBox Name="chbSettings"
+                      Grid.Column="2"
+                      Grid.Row="10"
+                      VerticalAlignment="Center" Checked="chbSettings_Checked" />
+            
+            <ListBox Name="listAutoComplite"
+                     Grid.Column="2"
+                     Grid.Row="1"/>
+        </Grid>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Name="btnBack" 
+                    Content="Back"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Margin="5,10" 
+                    Click="btnBack_Click" />
+            <Button Name="btnSave" 
+                    Content="Save"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Margin="5,10" 
+                    Click="btnSave_Click" />
+            <Button Name="btnDelete" 
+                    Content="Delete"
+                    Grid.Column="3"
+                    VerticalAlignment="Center"
+                    Margin="5,10" 
+                    Click="btnDelete_Click" />
+            
+            
+        </Grid>
+        
+        
+        
+        
+    </Grid>
+</Window>

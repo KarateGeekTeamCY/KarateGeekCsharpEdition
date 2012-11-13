@@ -115,6 +115,9 @@
     <Compile Include="guis\LotteryChooser.xaml.cs">
       <DependentUpon>LotteryChooser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\UserManagement.xaml.cs">
+      <DependentUpon>UserManagement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="lottery\LotteryGeneratorFactory.cs" />
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="reports\AthleteCrystalReport.cs">
@@ -297,6 +300,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\KumiteSystem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\UserManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
