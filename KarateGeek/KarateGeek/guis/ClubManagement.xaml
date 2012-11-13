@@ -95,20 +95,27 @@
                                      Grid.Column="3"
                                      VerticalAlignment="Center" Margin="0,0,5,0" TextChanged="clubTK_TextChanged" />
             </Grid>
-            <ListBox Name="cSuggestionList" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" SelectionChanged="cSuggestionList_SelectionChanged" Visibility="Collapsed" />
+            <ListBox Name="cSuggestionList" 
+                     Grid.Column="2" 
+                     Grid.Row="0" 
+                     Grid.RowSpan="3" 
+                     VerticalAlignment="Top" 
+                     SelectionChanged="cSuggestionList_SelectionChanged" 
+                     Visibility="Collapsed" 
+                     DisplayMemberPath="name" 
+                     SelectedValuePath="id" 
+                     Margin="0,27,0,0"
+                     ItemsSource="{Binding}" />
             <Button Name="btCBrowse"
-                    Content="Logo Browse"
+                    Content="Select Logo"
                     VerticalAlignment="Center"
-                    Margin="60,0,0,0"
+                    Margin="120,0,0,0"
                     
                 Grid.Row="5"
                 Grid.Column="3" HorizontalAlignment="Left" Click="btCBrowse_Click">
                 
             </Button>
-            <TextBox Name="clubLogoPath" 
-                                    Grid.Row="6"
-                                     Grid.Column="3"
-                                     VerticalAlignment="Center" HorizontalAlignment="Left" Width="200" Margin="60,0,0,0" TextChanged="clubLogoPath_TextChanged" />
+            
             <Label Content="City"
                                Grid.Row="5"
                                Grid.Column="1"

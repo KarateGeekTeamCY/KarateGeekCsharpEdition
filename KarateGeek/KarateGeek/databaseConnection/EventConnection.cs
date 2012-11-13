@@ -109,7 +109,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet getEvents()
         {
-            string sql = "select * from events where id!='1';";
+            string sql = "select * from events;";
             return this.Query(sql);
         }
 
