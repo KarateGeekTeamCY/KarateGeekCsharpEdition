@@ -586,8 +586,8 @@ VALUES ('NotAnAthll' , 'NotAnAthllfather' , 'NotAnAthlllast', '02-10-1992' , 'MA
 
 
 -- adding user: "admin" pass: "admin" (will be removed in the final releases!)
-INSERT INTO users (id , username , password, person_management, event_management , lottery , game_support , reports , settings)
-VALUES ( '0', 'admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
+INSERT INTO users (username , password, person_management, event_management , lottery , game_support , reports , settings)
+VALUES ('admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1');
 
 
 INSERT INTO athletes (id, rank, club_id ) VALUES ('0', 'Black  –  1st dan', '1'  );

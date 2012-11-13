@@ -22,14 +22,14 @@ namespace KarateGeek.guis
     {
         private Window sender;
 
-        private databaseConnection.UserConnection conn = new databaseConnection.UserConnection();
+      //  private databaseConnection.UserConnection conn = new databaseConnection.UserConnection();
 
 
         private string userName = "";
         private string pass1 = "";
         private string pass2 = "";
 
-        private int userId;
+        private int userId=-1;
         private bool person = false;
         private bool eventMan = false;
         private bool eventSup = false;
@@ -65,6 +65,26 @@ namespace KarateGeek.guis
                     MessageBoxButton.OK,
                     MessageBoxImage.Information).ToString();
                 return;
+            }else{
+                userConnection.updateUser(userId, this.userName, this.pass1,
+                this.person, this.eventMan, this.lottery, this.eventSup,
+                this.reports, this.settings);
+              
+                MessageBox.Show("Succesfully updated!");
+            }
+
+            
+
+        }
+
+        private void btnSaveAsNew_Click(object sender, RoutedEventArgs e)
+        {
+            if (userName.Equals(""))
+            {
+                string result = MessageBox.Show("You didn't choose any valid user name, please try again.", "No user name!",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information).ToString();
+                return;
             }
 
             if (pass1.Equals(""))
@@ -90,17 +110,29 @@ namespace KarateGeek.guis
                     MessageBoxImage.Information).ToString();
                 return;
             }
-
-
-            conn.insertNewUser(this.userName, this.pass1,
+            else {
+                userConnection.insertNewUser(this.userName, this.pass1,
                 this.person, this.eventMan, this.lottery, this.eventSup,
                 this.reports, this.settings);
+                MessageBox.Show("Succesfully saved!");
+            }
+
+
+               
 
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            if (userId != -1)
+            {
+                userConnection.deleteUser(userId);
+                MessageBox.Show("Succesfully deleted!");
+            }
+            else
+            {
+                MessageBox.Show("Select one user to delete!");
+            }
         }
 
         #endregion
@@ -216,7 +248,7 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)uSuggestionList.SelectedItem;
                     userId = item.id;
-                    userName = uSuggestionList.SelectedItem.ToString();
+                    userName = item.name;
                     
                     this.txtUserName.Text = filteredUsers.Rows[index][1].ToString();
 
@@ -224,7 +256,7 @@ namespace KarateGeek.guis
                     this.chbEventMan.IsChecked = (bool)filteredUsers.Rows[index][4];
                     this.chbLoteryMan.IsChecked = (bool)filteredUsers.Rows[index][5];
                     this.chbEventSup.IsChecked = (bool)filteredUsers.Rows[index][6];
-                    this.chbPersonMan.IsChecked = (bool)filteredUsers.Rows[index][7];
+                    this.chbReportsMan.IsChecked = (bool)filteredUsers.Rows[index][7];
                     this.chbSettings.IsChecked = (bool)filteredUsers.Rows[index][8];
                    
                 }
@@ -232,5 +264,7 @@ namespace KarateGeek.guis
             }
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
+
+        
     }
 }

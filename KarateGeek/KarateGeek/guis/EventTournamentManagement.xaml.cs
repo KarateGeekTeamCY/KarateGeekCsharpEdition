@@ -173,11 +173,8 @@ namespace KarateGeek.guis
 
             //judging type
             cmbTJudging.Items.Add("Select judging type");
-            cmbTJudging.Items.Add(KarateGeek.Strings.flag);
-            cmbTJudging.Items.Add(KarateGeek.Strings.point);
-            cmbTJudging.Items.Add(KarateGeek.Strings.score);
 
-            cmbTJudging.SelectedIndex = 0;
+
 
             //tournament number of teams
             cmbTteamsNumber.Items.Add("Teams");
@@ -716,6 +713,8 @@ namespace KarateGeek.guis
             cmbTGame.Items.Add(gameType[1]);
             gameType = KarateGeek.Strings.indKumite.Split('|');
             cmbTGame.Items.Add(gameType[1]);
+            gameType = KarateGeek.Strings.fugugo.Split('|');
+            cmbTGame.Items.Add(gameType[1]);
 
             cmbTGame.SelectedIndex = 0;
 
@@ -731,13 +730,24 @@ namespace KarateGeek.guis
 
             String[] gameType = KarateGeek.Strings.teamKata.Split('|');
             cmbTGame.Items.Add(gameType[1]);
-            gameType = KarateGeek.Strings.syncKata.Split('|');
-            cmbTGame.Items.Add(gameType[1]);
             gameType = KarateGeek.Strings.teamKumite.Split('|');
             cmbTGame.Items.Add(gameType[1]);
-            gameType = KarateGeek.Strings.enbu.Split('|');
+
+            cmbTGame.SelectedIndex = 0;
+            teamGrid.Visibility = System.Windows.Visibility.Visible;
+            individualGrid.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+
+        private void TrdButtonSync_Checked(object sender, RoutedEventArgs e)
+        {
+            _tournamentCatType = KarateGeek.Strings.synchronized;
+            cmbTGame.Items.Clear();
+            cmbTGame.Items.Add("Select game type");
+
+            String[] gameType = KarateGeek.Strings.syncKata.Split('|');
             cmbTGame.Items.Add(gameType[1]);
-            gameType = KarateGeek.Strings.fugugo.Split('|');
+            gameType = KarateGeek.Strings.enbu.Split('|');
             cmbTGame.Items.Add(gameType[1]);
 
             cmbTGame.SelectedIndex = 0;
@@ -748,21 +758,62 @@ namespace KarateGeek.guis
         private void cmbTGame_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbTGame.SelectedIndex;
+
+            cmbTJudging.Items.Clear();
+
+
             if (index != 0)
             {
                 if (index < cmbTGame.Items.Count && index != -1)
+                {
                     _tournamentGameType = _tournamentCatType + "|" + cmbTGame.Items[index].ToString();
+
+                    if (_tournamentGameType.Equals(Strings.indKata))
+                    {
+                        cmbTJudging.Items.Clear();
+                        cmbTJudging.Items.Add("Select game type");
+                        cmbTJudging.Items.Add(Strings.score);
+                        cmbTJudging.Items.Add(Strings.flag);
+                    }
+                    else if (_tournamentGameType.Equals(Strings.teamKata))
+                    {
+                        cmbTJudging.Items.Add(Strings.score);
+                    }
+                    else if (_tournamentGameType.Equals(Strings.syncKata))
+                    {
+                        cmbTJudging.Items.Add(Strings.score);
+                    }
+                    else if (_tournamentGameType.Equals(Strings.indKumite))
+                    {
+                        cmbTJudging.Items.Add(Strings.point);
+                    }
+                    else if (_tournamentGameType.Equals(Strings.teamKumite))
+                    {
+                        cmbTJudging.Items.Add(Strings.point);
+                    }
+                    else if (_tournamentGameType.Equals(Strings.enbu))
+                    {
+                        cmbTJudging.Items.Add(Strings.score);
+                    }
+                    else if (_tournamentGameType.Equals(Strings.fugugo))
+                    {
+                        cmbTJudging.Items.Add(Strings.point + "/" + Strings.flag);
+                    }
+                    cmbTJudging.SelectedIndex = 0;
+                }
+
+
             }
+
         }
 
         private void cmbTJudging_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbTJudging.SelectedIndex;
-            if (index != 0)
-            {
-                if (index < cmbTJudging.Items.Count && index != -1)
-                    _tournamentScoringType = cmbTJudging.Items[index].ToString();
-            }
+
+            if (index < cmbTJudging.Items.Count && index != -1 && !cmbTJudging.Items[index].ToString().Equals("Select game type"))
+                _tournamentScoringType = cmbTJudging.Items[index].ToString();
+
         }
 
         private void cmbTteamsNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -896,8 +947,93 @@ namespace KarateGeek.guis
                 String rank = null;
                 AthleteData selection = new AthleteData();
                 List<String> athletes = new List<String>();
+
+                switch (this._tournamentCatType)
+                { 
+                    case Strings.individual :
+
+                    switch (this._tournamentGameType)
+                        {
+                            case Strings.indKata :
+                            
+                            if(this._tournamentScoringType == Strings.score)
+                            {
+                            
+                            }
+                            else
+                            {
+
+
+                            }
+
+
+                                break;
+                        case Strings.indKumite:
+
+
+
+
+                                break;
+                        case Strings.fugugo:
+
+
+                            break;
+                        }
+                        break;
+                    case Strings.team:
+                        switch (this._tournamentGameType)
+                        { 
+                            case Strings.teamKata:
+
+                                break;
+                            case Strings.teamKumite:
+
+
+
+                                break;
+                        }
+
+                        break;
+                    case Strings.synchronized:
+
+
+                        break;
+                }
+
+
+
+
+
                 ds = athleteConnection.findAthlete(selection.id);
                 rank = ds.Tables[0].Rows[0][1].ToString();
+               
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 if ((bool)TrdButtonIndiv.IsChecked)
                 {
 
@@ -911,13 +1047,50 @@ namespace KarateGeek.guis
                 }
                 else if ((bool)TrdButtonTeam.IsChecked)
                 {
-                    foreach (Object item in lbTparticipants.SelectedItems)
+                    if(_tournamentCatType.Equals(Strings.teamKata) && _tournamentScoringType.Equals(Strings.score))
+                    {
+                        if (lbTparticipants.SelectedItems.Count != 3)
+                        {
+                            MessageBox.Show("Every team must have 3 participants");
+                        }
+                        else
+                        {
+                            foreach (Object item in lbTparticipants.SelectedItems)
+                            {
+                                selection = (AthleteData)item;
+                                participantConnection.InsertNewParticipantT(selection.id, _tournamentId, rank, 4, _tournamentTeamId);
+                                selectedParticipantsT();
+                            }
+                            possibleParticipants();
+                        }
+                    }else if(_tournamentCatType.Equals(Strings.teamKumite) && _tournamentScoringType.Equals(Strings.point)){
+                        if (lbTparticipants.SelectedItems.Count != 3)
+                        {
+                            MessageBox.Show("Every team must have 3 participants");
+                        }
+                        else
+                        {
+                            foreach (Object item in lbTparticipants.SelectedItems)
+                            {
+                                selection = (AthleteData)item;
+                                participantConnection.InsertNewParticipantT(selection.id, _tournamentId, rank, 4, _tournamentTeamId);
+                                selectedParticipantsT();
+                            }
+                            possibleParticipants();
+                        }
+                    }
+                    else if (_tournamentCatType.Equals(Strings.teamKata) && _tournamentScoringType.Equals(Strings.score))
+                    {
+                    }else{
+                         foreach (Object item in lbTparticipants.SelectedItems)
                     {
                         selection = (AthleteData)item;
                         participantConnection.InsertNewParticipantT(selection.id, _tournamentId, rank, 4, _tournamentTeamId);
                         selectedParticipantsT();
                     }
                     possibleParticipants();
+                    }
+                   
 
                 }
             }
@@ -1221,6 +1394,7 @@ namespace KarateGeek.guis
         }
 
         #endregion
+
 
 
 
