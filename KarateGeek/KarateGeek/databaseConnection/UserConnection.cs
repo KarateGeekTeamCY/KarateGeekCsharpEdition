@@ -46,6 +46,55 @@ namespace KarateGeek.databaseConnection
 
         }
 
+        public string updateUser(int userId, string username, string password,
+            bool personManagement, bool eventManagement, bool lottery, bool gameSupport, bool reports, bool settings)
+        {
+
+            if (password == "")
+            {
+                string sql = "update users set " +
+                "username = '" + username + "', " +
+                "person_management = '" + personManagement + "', " +
+                "event_management = '" + eventManagement + "', " +
+                "lottery = '" + lottery + "', " +
+                "game_support = '" + gameSupport + "', " +
+                "reports = '" + reports + "', " +
+                "settings = '" + settings + "' where id = '" + userId + "' ;";
+
+                this.NonQuery(sql);
+
+            }
+            else
+            {
+                password = cr.cryptography(password);
+
+                string sql = "update users set " +
+                "username = '" + username + "', " +
+                "password = '" + password + "', " +
+                "person_management = '" + personManagement + "', " +
+                "event_management = '" + eventManagement + "', " +
+                "lottery = '" + lottery + "', " +
+                "game_support = '" + gameSupport + "', " +
+                "reports = '" + reports + "', " +
+                "settings = '" + settings + "' where id = '" + userId + "' ;";
+
+                this.NonQuery(sql);
+            }
+
+            return "";
+        }
+
+        public void deleteUser(int id)
+        {
+
+
+            sql = "delete from users where id='" + id + "';";
+            this.NonQuery(sql);
+
+
+        }
+
+
         public DataTable findSimilar(string like)
         {
             return this.Query("select * from users where lower(username) like lower('" + like + "%');").Tables[0];
