@@ -24,8 +24,13 @@ namespace KarateGeek
         public string judgingType { get; set; }
         public bool isTeam { get; set; }
 
-
-        public List<Game> games { get; set; }
+        public List<Game> games2 { get; set; }
+        public List<Game> games4 { get; set; }
+        public List<Game> games8 { get; set; }
+        public List<Game> games16 { get; set; }
+        public List<Game> games32 { get; set; }
+        public List<Game> games64 { get; set; }
+        public List<Game> games128 { get; set; }
 
 
         public Tournament(string tournamentId)
@@ -51,12 +56,12 @@ namespace KarateGeek
             sql = "select * from games where tournament_id = '" + this.id + "';";
             temp = Query(sql).Tables[0];
 
-            this.games = new List<Game>();
+            this.games128 = new List<Game>();
 
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games.Add(new Game((string)dr[0]));
+                this.games128.Add(new Game((string)dr[0]));
             }
 
 
