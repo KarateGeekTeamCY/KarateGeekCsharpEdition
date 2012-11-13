@@ -1,12 +1,12 @@
 ﻿<Window x:Class="KarateGeek.guis.LotteryChooser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="LotteryChooser" Height="600" Width="400">
+        Title="LotteryChooser" Height="600" Width="600">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Label Name="lbllotteryChooserInfo" 
@@ -14,25 +14,106 @@
                FontSize="20" 
                VerticalAlignment="Center" 
                HorizontalContentAlignment="Center"
-               />
+               Margin="5"/>
 
         </Grid>
         <Grid Grid.Row="1" Name="content">
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.5*"/>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="14*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0" Grid.Column="1">
-                <Label Content="Event"/>
+            
+            <Label Content="Event"
+                   Grid.Column="1"
+                   Grid.Row="0"
+                   VerticalAlignment="Bottom"
+                   Padding="5"/>
+            <Label Content="Tournament"
+                   Grid.Column="1"
+                   Grid.Row="1"
+                   VerticalAlignment="Bottom"
+                   Padding="5"/>
+            
+            <ComboBox Name="cboEventCombo"
+                      Grid.Column="2"
+                      Grid.Row="0"
+                      VerticalAlignment="Center"
+                      Margin="5"/>
+
+            <ComboBox Name="cboTurnamentCombo"
+                      Grid.Column="2"
+                      Grid.Row="1"
+                      VerticalAlignment="Center"
+                      Margin="5"/>
+            
+            <Grid Grid.Row="2"
+                  Grid.RowSpan="2"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Width="auto">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <ListBox Name="currentPhase"  
+                         Grid.Column="0"
+                         Margin="5"/>
+                <ListBox Name="nextPhase"
+                         Grid.Column="1"
+                         Margin="5"/>
+
+
             </Grid>
+
+
+        </Grid>
+        
+        <Grid Grid.Row="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="btnShufle" 
+                    Content="Shufle" 
+                    Grid.Column="2"
+                    Margin="5"
+                    Padding="5"
+                    VerticalAlignment="Center"
+                    />
+
+            <Button Name="btnSave" 
+                    Content="Save" 
+                    Grid.Column="3"
+                    Margin="5"
+                    Padding="5"
+                    VerticalAlignment="Center"
+                    />
+
+            <Button Name="btnBack" 
+                    Content="Back" 
+                    Grid.Column="1"
+                    Margin="5"
+                    Padding="5"
+                    VerticalAlignment="Center"
+                    />
+
         </Grid>
         
     </Grid>
