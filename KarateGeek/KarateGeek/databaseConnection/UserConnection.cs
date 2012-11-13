@@ -48,7 +48,7 @@ namespace KarateGeek.databaseConnection
 
         public DataTable findSimilar(string like)
         {
-            return this.Query("select * from users where username like '" + like + "%'; ").Tables[0];
+            return this.Query("select * from users where lower(username) like lower('" + like + "%');").Tables[0];
         }
 
 
