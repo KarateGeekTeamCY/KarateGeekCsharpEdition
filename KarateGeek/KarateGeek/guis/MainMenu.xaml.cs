@@ -127,8 +127,8 @@ namespace KarateGeek.guis
 
         private void btnReports_Click(object sender, RoutedEventArgs e)
         {
-            guis.Reports reports = new Reports();
-            reports.Show();
+            //guis.Reports reports = new Reports();
+            //reports.Show();
         }
 
         private void btnEventSupport_Click(object sender, RoutedEventArgs e)
