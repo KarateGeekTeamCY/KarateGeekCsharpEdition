@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KarateGeek.databaseConnection
 {
-    class AthleteData
+    public class AthleteData
     {
         public int id                { get; set; }
         public string athlete_name   { get; set; }

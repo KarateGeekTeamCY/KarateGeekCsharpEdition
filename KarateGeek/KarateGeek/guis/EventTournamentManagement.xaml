@@ -160,9 +160,9 @@
                                    Grid.Column="2"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                                <TextBox Name="eventTK" 
+                                <TextBox Name="eventPCode" 
                                      Grid.Column="3"
-                                     VerticalAlignment="Center" TextChanged="eventTK_TextChanged" />
+                                     VerticalAlignment="Center" TextChanged="eventPCode_TextChanged" />
                             </Grid>
                             <Label Content="Official"
                                Grid.Row="5"
@@ -172,7 +172,7 @@
                             <CheckBox Name="eventOfficial"
                                       Grid.Row="5"
                                       Grid.Column="4"
-                                      VerticalAlignment="Center" IsChecked="True" Checked="eventOfficial_Checked" Unchecked="eventOfficial_Unchecked"/>
+                                      VerticalAlignment="Center" IsChecked="True" Checked="eventOfficial_Checked" Unchecked="eventOfficial_Checked"/>
                             <ListBox Name="eSuggestionList" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top"  Visibility="Collapsed" SelectionChanged="eSuggestionList_SelectionChanged" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}" />
                         </Grid>
 

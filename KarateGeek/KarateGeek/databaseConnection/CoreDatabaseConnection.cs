@@ -61,14 +61,8 @@ namespace KarateGeek.databaseConnection
             
             NpgsqlCommand comm = this.conn.CreateCommand();
             comm.CommandText = sql;
-            try
-            {
+            
                 comm.ExecuteNonQuery();
-            }catch(Exception e){
-                MessageBox.Show("Unfortunately there is no scheduled event for today. Press OK to return to main menu.", "Message!",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information).ToString();
-            }
             
             return true;
         }
