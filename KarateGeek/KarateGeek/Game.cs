@@ -40,19 +40,11 @@ namespace KarateGeek
 
         public void AddParticipant(string athleteId)
         {
-            this.participants.Add(new Athlete(athleteId));
+            this.participants.Add(new Athlete(athleteId, this.touenamentId));
             this.Update();
         }
 
 
-        //private string _InsertParticipant(string athleteId)
-        //{
-        //    sql = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
-        //                            + "VALUES ( " + athleteId + ", NULL, '" + gameId + "');";
-
-        //    this.NonQuery(sql);
-        //    return "";
-        //}
 
         private string _InsertNewGame(string tournamentId, string phase, string position)
         {
@@ -93,25 +85,15 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                //this.participantIds.Add(dr[4].ToString());
-                //this.participantTeamIds.Add(dr[3].ToString());
-                //this.participants.Add(dr[5].ToString() + " " + dr[6].ToString());
-
-                this.participants.Add(new Athlete((string)dr[4]));
-
+                this.participants.Add(new Athlete((string)dr[4], this.touenamentId));
                 this.numOfParticipants++;
-
             }
         }
 
         public void Update()
         {
-
-            //UPDATE table_name
-            //SET column1=value, column2=value2,...
-            //WHERE some_column=some_value
             sql = "UPDATE games SET is_ready = '" + this.isReady + "', " +
-                "is_finished = '" + this.isFinished + "' where game_id = '" + this.gameId + "'; ";
+                "is_finished = '" + this.isFinished + "' WHERE game_id = '" + this.gameId + "'; ";
             this.NonQuery(sql);
 
 
@@ -147,11 +129,7 @@ namespace KarateGeek
             }
 
             this.load();
-
         }
-
-
-
 
 
     }
