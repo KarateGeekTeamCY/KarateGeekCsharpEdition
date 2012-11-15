@@ -31,20 +31,19 @@ namespace KarateGeek
             this.load();
         }
 
+
+
         public Game(string tournamentId, string phase, string position)
         {
             this.gameId = _InsertNewGame(tournamentId, phase, position);
             this.load();
         }
 
-
         public void AddParticipant(string athleteId)
         {
             this.participants.Add(new Athlete(athleteId, this.touenamentId));
             this.Update();
         }
-
-
 
         private string _InsertNewGame(string tournamentId, string phase, string position)
         {

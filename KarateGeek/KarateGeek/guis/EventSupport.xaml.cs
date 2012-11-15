@@ -56,6 +56,9 @@ namespace KarateGeek.guis
         private List<string> _futureGameParticipants = new List<string>();
 
 
+        private Tournament tournament;
+
+
         #endregion private declaretions
 
 
@@ -103,7 +106,6 @@ namespace KarateGeek.guis
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
             //cboTurnamentSelector.SelectedIndex = 0;
 
-
         }
 
 
@@ -122,150 +124,220 @@ namespace KarateGeek.guis
         #endregion
 
 
-        #region the load shit
 
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
             this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
 
-            this._gameType = (string)_TournamantsDT.Rows[i][7];
-            string[] type = _gameType.Split('|');
-
-            if (type[0] == Strings.team)
-                this._isTeam = true;
-            else
-                this._isTeam = false;
-
-            this._judgingType = (string)_TournamantsDT.Rows[i][8];
-
-
-            _LoadPhases();
-
-
-
-
+            this.tournament = new Tournament(this._tournamentId);
+            loadGames();
+            //todo finf the first phase check the length 
         }
 
-        private void _LoadPhases()
+
+        private void loadGames()
         {
-            DataTable gamesTempDT = _gameConn.getFuturePhaces(this._tournamentId).Tables[0];
-
-            int currentIndex, futureIndex;
-
-            int phaseCount = gamesTempDT.Rows.Count;
-
-            if (phaseCount == 2)
+            if (this.tournament.isInd)
             {
-
-                if (int.Parse(gamesTempDT.Rows[0][0].ToString()) < int.Parse(gamesTempDT.Rows[1][0].ToString()))
-                {
-                    futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
-                    currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
-                }
-                else
-                {
-                    currentIndex = int.Parse(gamesTempDT.Rows[1][0].ToString());
-                    futureIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
-                }
-
-
-                this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + currentIndex).Tables[0];
-                this._futureGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + futureIndex).Tables[0];
-
-            }
-            else
-            {
-                currentIndex = int.Parse(gamesTempDT.Rows[0][0].ToString());
-                this._currentGamesDT = this._gameConn.GetGamesByTurnamentPhase(_tournamentId, "" + currentIndex).Tables[0];
-
+                loadIndevidual();
             }
 
-
-
-            this._gameParticipationConn = new TournamentGameParticipationsConnection();
-
-
-
-
-            foreach (DataRow dr in _currentGamesDT.Rows)
+            if (this.tournament.isTeam)
             {
-                this._currentGameParticipationsDT = this._gameParticipationConn.GetParticipation(dr[0].ToString()).Tables[0];
-                int parts = _currentGameParticipationsDT.Rows.Count;
-                string game = "";
-
-                switch (parts)
-                {
-                    case 1:
-                        game = _currentGameParticipationsDT.Rows[0][5].ToString() + _currentGameParticipationsDT.Rows[0][6].ToString();
-                        break;
-                    case 2:
-                        game = _currentGameParticipationsDT.Rows[0][5].ToString() + _currentGameParticipationsDT.Rows[0][6].ToString();
-                        game = "\nVS";
-                        game = _currentGameParticipationsDT.Rows[1][5].ToString() + _currentGameParticipationsDT.Rows[1][6].ToString();
-                        break;
-                    default:
-                        int I = _currentGameParticipationsDT.Rows.Count;
-
-                        for (int i = 0; i < I; i++)
-                        {
-                            game = _currentGameParticipationsDT.Rows[i][5].ToString() + " " + _currentGameParticipationsDT.Rows[i][6].ToString();
-
-                            if (1 != (I - 1))
-                                game += " - ";
-
-                        }
-                        break;
-                }
-                this._currentGameParticipants.Add(game);
+                loadTeam();
             }
 
-
-
-            foreach (DataRow dr in this._futureGamesDT.Rows)
+            if (this.tournament.isSync)
             {
-                this._futureGameParticipationsDT = this._gameParticipationConn.GetParticipation(dr[0].ToString()).Tables[0];
-                int parts = _futureGameParticipationsDT.Rows.Count;
-                string game = "";
-
-                switch (parts)
-                {
-                    case 1:
-                        game = _futureGameParticipationsDT.Rows[0][5].ToString() + _futureGameParticipationsDT.Rows[0][6].ToString();
-                        break;
-                    case 2:
-                        game = _futureGameParticipationsDT.Rows[0][5].ToString() + _futureGameParticipationsDT.Rows[0][6].ToString();
-                        game = "\nVS";
-                        game = _futureGameParticipationsDT.Rows[1][5].ToString() + _futureGameParticipationsDT.Rows[1][6].ToString();
-                        break;
-                    default:
-                        int I = _futureGameParticipationsDT.Rows.Count;
-
-                        for (int i = 0; i < I; i++)
-                        {
-                            game = _futureGameParticipationsDT.Rows[i][5].ToString() + " " + _futureGameParticipationsDT.Rows[i][6].ToString();
-
-                            if (1 != (I - 1))
-                                game += " - ";
-                        }
-                        break;
-                }
-                this._futureGameParticipants.Add(game);
+                loadSync();
             }
 
-            this.listBoxCurrentGameList.ItemsSource = this._currentGameParticipants;
-            this.listBoxNextGameList.ItemsSource = this._futureGameParticipants;
+            //if (this.tournament.games128.Count != 0)
+            //{
+            //}
+            //else if (this.tournament.games64.Count != 0)
+            //{
+            //}
+            //else if (this.tournament.games32.Count != 0)
+            //{
+            //}
+            //else if (this.tournament.games16.Count != 0)
+            //{
+            //}
+            //else if (this.tournament.games8.Count != 0)
+            //{
+            //}
+            //else if (this.tournament.games4.Count != 0)
+            //{
+            //}
+            //else
+            //{
+            //}
         }
 
-        #endregion the load shet
+        private void loadIndevidual()
+        {
+            switch (this.tournament.gameType)
+            {
+                case Strings.indKata:
+                    if (this.tournament.judgingType == Strings.flag)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+                    break;
+                case Strings.indKumite:
 
 
-        // #region the progress shit 
+                    break;
+                case Strings.fugugo:
+
+
+                    break;
+            }
+        }
+
+        private void loadTeam()
+        {
+            switch (this.tournament.gameType)
+            {
+                case Strings.teamKata:
+
+
+                    break;
+                case Strings.teamKumite:
+
+
+                    break;
+            }
+        }
+
+        private void loadSync()
+        {
+            switch (this.tournament.gameType)
+            {
+                case Strings.syncKata:
+
+
+
+                    break;
+                case Strings.enbu:
+
+
+
+                    break;
+            }
+        }
+
+        //
+        // INDEVIDUAL
+        //
+        private List<Athlete> getKataIndSinglePositioning()
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            sql = "select game_participations.athlete_id, mean_score from tournament_participations join game_participacions on tournament_participations.athlete_id = game_participations.athlete_id join game_score on game_participation.athlete_id = game_score.athlete_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
+            DataTable temp = conn.Query(sql).Tables[0];
+
+            List<Athlete> aths = new List<Athlete>();
+
+            foreach (DataRow dr in temp.Rows)
+                aths.Add(new Athlete((string)dr[0], this.tournament.id));
+
+            return aths;
+        }
+
+        private Athlete getKataIndVersusWinner(string gameId)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            sql = "select * from game_participacions join game_flag on game_participacions.game_id = game_flag.game_id where game_id = '" + gameId + "' ;";
+            DataTable temp = conn.Query(sql).Tables[0];
+
+            return new Athlete((string)temp.Rows[0][0], this.tournament.id);
+        }
+
+        private Athlete getKumiteIndVersusWinner(string gameId)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            sql = "select athlete_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_flag.game_id where game_id = '" + gameId + "' group by (game_participations.athlete_id) ;";
+            DataTable temp = conn.Query(sql).Tables[0];
+
+            if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
+                return new Athlete((string)temp.Rows[0][0], this.tournament.id);
+            else
+                return new Athlete((string)temp.Rows[1][0], this.tournament.id);
+        }
+
+
+        //
+        // TEAM
+        //
+        private List<team> getKataTeamIndPositioning()
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            sql = "select game_participations.team_id, sum(mean_score) from team_tournament_participations join game_participations on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participations.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' group by game_participations.team_id ORDER BY sum(mean_score) DESC ;";
+            DataTable temp = conn.Query(sql).Tables[0];
+
+            List<team> teams = new List<team>();
+
+            foreach (DataRow dr in temp.Rows)
+                teams.Add(new team((string)dr[0]));
+
+            return teams;
+        }
+
+        private team getKumiteTeamWinner(string gameId)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            sql = "select team_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_flag.game_id where game_id = '" + gameId + "' group by (game_participations.team_id) ;";
+            DataTable temp = conn.Query(sql).Tables[0];
+
+
+            if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
+                return new team((string)temp.Rows[0][0]);
+            else
+                return new team((string)temp.Rows[1][0]);
+        }
+
+        //
+        // SYNCRONIZED
+        //
+        private List<team> getSyncKataWinner(string gameId)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            sql = "select game_participations.team_id, mean_score from team_tournament_participations join game_participacions on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participation.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
+            DataTable temp = conn.Query(sql).Tables[0];
+
+            List<team> teams = new List<team>();
+
+            foreach (DataRow dr in temp.Rows)
+                teams.Add(new team((string)dr[0]));
+
+            return teams;
+        }
+
+        private List<team> getEmbuWinner(string gameId)
+        {
+            return this.getSyncKataWinner(gameId);
+        }
+
+
+
 
 
         private void listBoxCurrentGameList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             _lastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
+            _lastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
 
             if (_gameType == Strings.fugugo)
             {
@@ -301,132 +373,5 @@ namespace KarateGeek.guis
         }
 
 
-
-
-        public void AdvanceGameStatistics(string gameId)
-        {
-            switch (this._judgingType)
-            {
-                case Strings.flag:
-
-                    EveSupFlagConnection flagC = new EveSupFlagConnection();
-                    _gameParticipationConn = new TournamentGameParticipationsConnection();
-
-                    DataTable gameParticipants = this._gameParticipationConn.GetParticipation(""+_lastExecutedGame).Tables[0];
-
-
-
-                    DataTable flag = flagC.GetflagById(
-                        this._currentGamesDT.Rows[_lastExecutedGame][2].ToString(),
-
-                        gameParticipants.Rows[0][0].ToString()
-                        ).Tables[0];           // 2 4
-
-
-
-                    int flagCount = 0;
-
-                    for (int i = 4; i <= 8; i++)
-                        if (((bool)flag.Rows[0][i]) == true)
-                            flagCount++;
-
-
-                    if (flagCount > 2)
-                    {
-                        string newGameId = _CheckIfExistAndInsert();
-                        this._gameParticipationConn.insertParticipant(
-                            gameParticipants.Rows[0][0].ToString(),
-                            newGameId);
-                    }
-                    else
-                    {
-                        string newGameId = _CheckIfExistAndInsert();
-                        this._gameParticipationConn.insertParticipant(
-                            gameParticipants.Rows[0][1].ToString(),
-                            newGameId);
-                    }
-
-
-                    break;
-
-                case Strings.point:
-                    EveSupPointConnection pointC = new EveSupPointConnection();
-                    DataTable points = pointC.getPointsOfAthleteAtGame(this._currentGamesDT.Rows[_lastExecutedGame][2].ToString(),
-                        this._currentGamesDT.Rows[_lastExecutedGame][4].ToString());
-
-                    double pointsA = (double)points.Rows[0][2];
-                    double pointsB = (double)points.Rows[1][2];
-
-                    if (pointsA > pointsB)
-                    {
-                        string newGameId = _CheckIfExistAndInsert();
-                        this._gameParticipationConn.insertParticipant(
-                            points.Rows[0][1].ToString(), newGameId);
-                    }
-                    else
-                    {
-                        string newGameId = _CheckIfExistAndInsert();
-                        this._gameParticipationConn.insertParticipant(
-                            points.Rows[1][1].ToString(), newGameId);
-                    }
-
-
-
-                    break;
-
-                case Strings.score:
-                    EveSupScoreConnection scoreC = new EveSupScoreConnection();
-                    DataTable score = scoreC.GetScoreById(this._currentGamesDT.Rows[_lastExecutedGame][2].ToString(),
-                        this._currentGamesDT.Rows[_lastExecutedGame][4].ToString()).Tables[0];
-
-
-
-
-
-
-
-
-
-                    break;
-
-            }
-
-
-
-        }
-
-
-        private string _CheckIfExistAndInsert()
-        {
-            int nextPhase, nextPos;
-
-            nextPhase = (int)this._currentGamesDT.Rows[_lastExecutedGame][1] - 1;
-            nextPos = (int)Math.Ceiling(((double)this._currentGamesDT.Rows[_lastExecutedGame][2]) / 2);
-
-            // check if there axisting game at that phase position
-            DataTable temp = _gameConn.GetGamesByTurnamentPhasePosition(this._tournamentId, "" + nextPhase, "" + nextPos).Tables[0];
-            //if 0 then create a new game at that phase possition
-            if (temp.Rows.Count == 0)
-            {
-                return _gameConn.InsertNewGame(this._tournamentId, "" + nextPhase, "" + nextPos, this._gameType);
-            }
-
-
-            return "-1";
-        }
-
-
-
-
-
-
-
     }
-
-
-
-   
-
-
-
 }

@@ -53,7 +53,7 @@ namespace KarateGeek.databaseConnection
             return true;
         }
 
-        protected Boolean NonQuery(string sql)
+        public Boolean NonQuery(string sql)
         {
             Debug.WriteLine("Executing SQL NonQuery: " + sql);  // Much faster than Console.WriteLine()
                                                                 // and auto-disabled in release mode.
@@ -68,7 +68,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        protected DataSet Query(string sql)
+        public DataSet Query(string sql)
         {
             Debug.WriteLine("Executing SQL Query:    " + sql);  // Much faster than Console.WriteLine()
                                                                 // and auto-disabled in release mode.
