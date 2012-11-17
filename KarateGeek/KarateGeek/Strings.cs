@@ -28,7 +28,7 @@ namespace KarateGeek
         //
 
         /*  Info:
-         * 
+         *
          *  9th dan - 10th dan  –  Wide Red (optional as Sensei Ilija Yorga himself wore a Black Belt) Master's title
          *  6th dan - 8th dan   –  White and Red, Master's title
          *  1st dan - 5th dan   –  Black
@@ -67,17 +67,29 @@ namespace KarateGeek
         // game types (tournament types)
         //
 
-        public const string indKata    = "IND|KATA";      //score i flag
-        public const string teamKata   = "TEAM|KATA";     //score i flag
-        public const string syncKata   = "SYNC|KATA";
-        public const string indKumite  = "IND|KUMITE";    //points
-        public const string teamKumite = "TEAM|KUMITE";   //points
-        public const string enbu       = "SYNC|EN-BU";    //score
-        public const string fugugo     = "IND|FUGU-GO";   //points/flag
-        public const string team       = "TEAM";
-        public const string individual = "IND";
-        public const string synchronized = "SYNC";
+        public const string prefixInd  = "IND";
+        public const string prefixTeam = "TEAM";
+        public const string prefixSync = "SYNC";
 
+        public const string gameTypeDelim = "|";
+
+        public const string suffixKata     = "KATA";                // suffixes are useful for SQL's "LIKE" etc.
+        //public const string suffixSyncKata = "SYNCHRONIZED KATA"; // NOTE: suffixSyncKata has the same suffix as suffixKata on purpose!
+        public const string suffixKumite   = "KUMITE";
+        public const string suffixEnbu     = "EN-BU";
+        public const string suffixFugugo   = "FUGU-GO";
+
+        public const string indKata    = prefixInd  + gameTypeDelim + suffixKata;   // score or flag
+        public const string teamKata   = prefixTeam + gameTypeDelim + suffixKata;   // score or flag
+        public const string syncKata   = prefixSync + gameTypeDelim + suffixKata;
+        public const string indKumite  = prefixInd  + gameTypeDelim + suffixKumite; // points
+        public const string teamKumite = prefixTeam + gameTypeDelim + suffixKumite; // points
+        public const string enbu       = prefixInd  + gameTypeDelim + suffixEnbu;   // score
+        public const string fugugo     = prefixInd  + gameTypeDelim + suffixFugugo; // points/flag
+
+        public const string individual   = prefixInd;   // for compatibility
+        public const string team         = prefixTeam;  // for compatibility
+        public const string synchronized = prefixSync;  // for compatibility
 
 
         //
@@ -86,7 +98,7 @@ namespace KarateGeek
 
         public const string flag  = "FLAG";         // einai to flag system
 
-        public const string point = "POINT";        // einai to sistima me tis 
+        public const string point = "POINT";        // einai to sistima me tis
                                                     // diaforetikes vathmologies
                                                     // analoga me tin epitixia
                                                     // tis texnikis
