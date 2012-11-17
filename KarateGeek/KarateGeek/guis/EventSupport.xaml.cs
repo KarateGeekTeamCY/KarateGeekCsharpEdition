@@ -127,6 +127,7 @@ namespace KarateGeek.guis
         #endregion
 
 
+        #region game loading functions
 
         private void loadGames()
         {
@@ -631,7 +632,6 @@ namespace KarateGeek.guis
         }
 
 
-
         private void loadTeam()
         {
             switch (this.tournament.gameType)
@@ -974,7 +974,6 @@ namespace KarateGeek.guis
 
 
         }
-
 
 
         private void loadSync()
@@ -1416,7 +1415,7 @@ namespace KarateGeek.guis
         }
 
 
-
+        #endregion game loading functions
 
 
         #region winner checks
@@ -1519,11 +1518,14 @@ namespace KarateGeek.guis
         #endregion winner checks
 
 
-
-
+        //
+        // game starting functionality
+        //
         private void listBoxCurrentGameList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Game gm = null;
+            this._indexlastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
+
 
             switch (this._indexCurentphase)
             {
@@ -1604,6 +1606,82 @@ namespace KarateGeek.guis
                     break;
                 case Strings.syncKata:
 
+                    kataSys = new KataSystem(this, gm);
+
+                    break;
+                case Strings.enbu:
+
+                    kataSys = new KataSystem(this, gm);
+                    break;
+            }
+        }
+
+
+
+
+        public void advanceAthlites()
+        {
+
+            switch (tournament.gameType)
+            {
+                case Strings.indKata:
+
+                    switch (tournament.judgingType)
+                    {
+                        case Strings.flag:
+
+
+                            break;
+                        case Strings.score:
+
+
+                            break;
+                    }
+
+                    break;
+                case Strings.indKumite:
+
+
+
+                    break;
+                case Strings.fugugo:
+
+                    if (this._indexCurentphase % 2 == 1)
+                    {
+
+
+                    }
+                    else
+                    {
+
+
+
+                    }
+
+                    break;
+                case Strings.teamKata:
+
+
+
+                    break;
+                case Strings.teamKumite:
+
+                    if (this._currentGames.ElementAt(this.listBoxCurrentGameList.SelectedIndex) == "Click to add game members.")
+                    {
+
+
+
+                    }
+                    else
+                    {
+
+
+
+                    }
+
+                    break;
+                case Strings.syncKata:
+
 
 
 
@@ -1613,42 +1691,42 @@ namespace KarateGeek.guis
 
 
 
+
                     break;
             }
-            //_lastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
-
-            //if (_gameType == Strings.fugugo)
-            //{
-
-            //    if ((int.Parse(this._currentGamesDT.Rows[_lastExecutedGame][1].ToString()) % 2) == 0)
-            //    {
-            //        _judgingType = Strings.point;
-            //    }
-            //    else
-            //    {
-            //        _judgingType = Strings.score;
-            //    }
-            //}
 
 
-            //switch (this._judgingType)
-            //{
-            //    case Strings.flag:
-            //        FlagSystem flagS = new FlagSystem(this, this._tournamentId, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString(), this._isTeam);
-            //        break;
-
-            //    case Strings.point:
-            //        KumiteSystem kumiteS = new KumiteSystem(this, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString());
-            //        break;
-
-            //    case Strings.score:
-            //        KataSystem kataS = new KataSystem(this, this._tournamentId, this._currentGamesDT.Rows[_lastExecutedGame][0].ToString(), this._isTeam);
-            //        break;
-
-            //}
 
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }
