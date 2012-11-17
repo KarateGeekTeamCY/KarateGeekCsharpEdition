@@ -224,7 +224,7 @@ CREATE TABLE tournament_participations (
 CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio tetoia entries
                                         -- gia atomika (parousiasi) 1 entry
                                         -- gia omadiko (versus) 6 (OR 4, anepisima)
-    id              SERIAL,	
+    id              SERIAL,
     athlete_id      INTEGER         REFERENCES athletes (id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id),
     game_id         INTEGER         REFERENCES games (id),

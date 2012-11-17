@@ -102,7 +102,7 @@ namespace KarateGeek.guis
         /* Do not just remove this code; it's a usage example for the lottery class. */
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
-            LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 2); // use 1 to test kata
+            LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 1); // use 1 to test kata
 
             // Some silly test code:
             Debug.WriteLine("Our first try:");
@@ -127,8 +127,8 @@ namespace KarateGeek.guis
             lg.confirmLottery();
 
             // printing lottery to the console, now from the database (THIS IS JUST AN EXAMPLE/TEST):
-            new LotteryGenConnection().printTournamentGameTable(tournamentId: 2);
-            new LotteryGenConnection().printTournamentGameTableWithNames(tournamentId: 2);
+            new LotteryGenConnection().printTournamentGameTable(tournamentId: 1);
+            new LotteryGenConnection().printTournamentGameTableWithNames(tournamentId: 1);
         }
 
         private void btnReports_Click(object sender, RoutedEventArgs e)
