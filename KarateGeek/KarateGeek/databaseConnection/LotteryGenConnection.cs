@@ -42,6 +42,25 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public bool getTournamentLotteryStateReady(long tournamentId)
+        {
+            String sql = "SELECT lottery_ready FROM tournaments WHERE id = " + tournamentId + " ;";
+
+            String lotteryReady = this.Query(sql).Tables[0].Rows[0][0].ToString();
+
+            return bool.Parse(lotteryReady);
+        }
+
+
+        public void setTournamentLotteryStateReady(long tournamentId, bool lotteryReady = true)
+        {
+            String sql =  "UPDATE tournaments SET lottery_ready = '" + lotteryReady + "'"
+                       + " WHERE id = " + tournamentId + " ;";
+
+            this.NonQuery(sql);
+        }
+
+
         public String getTournamentGameType(long tournamentId)
         {
             String sql = "SELECT game_type FROM tournaments WHERE id = " + tournamentId + " ;";
@@ -197,6 +216,7 @@ namespace KarateGeek.databaseConnection
 
         /** The following methods aren't strictly related to lotteries, and might be moved elsewhere: **/
 
+
         public DataTable getTournamentGameTable(long tournamentId)  // overloaded method
         {
             /* The following query string can be used as a template for many others, eg. by
@@ -290,8 +310,8 @@ namespace KarateGeek.databaseConnection
 
             Console.WriteLine("Athlete \"ready\" participations (with their names), sorted by phase, then position:");
             for (int row = 0; row < dt.Rows.Count; ++row)
-                Console.WriteLine("first_name:{0,6}  fathers_name:{1,2}  last_name:{2,2}  phase:{3,4}  position:{4,6}  "
-                                 + "is_ready:{5,6}  is_finished:{6,4}",
+                Console.WriteLine("first_name: {0,4}  fathers_name: {1,4}  last_name: {2,4}  phase:{3,2}  position:{4,2}  "
+                                 + "is_ready:{5,6}  is_finished:{6,6}",
                                   dt.Rows[row][0], dt.Rows[row][1], dt.Rows[row][2], dt.Rows[row][3],
                                   dt.Rows[row][4], dt.Rows[row][5], dt.Rows[row][6]);
         }

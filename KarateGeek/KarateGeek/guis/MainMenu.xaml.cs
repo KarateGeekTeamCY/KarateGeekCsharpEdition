@@ -112,8 +112,6 @@ namespace KarateGeek.guis
             
         }
 
-       
 
-        
     }
 }

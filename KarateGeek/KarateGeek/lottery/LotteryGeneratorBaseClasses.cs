@@ -65,7 +65,7 @@ namespace KarateGeek.lottery
 
         protected List<Tuple<long, int>> scoreListShuffled; // again, might be an athlete or a team scoreList!
 
-        protected bool confirmed = false; // once "confirmed", a LotteryGen_Versus_Ind object cannot write to the DB anymore!
+        protected bool confirmed;   // once "confirmed", a LotteryGen_Versus_Ind object cannot write to the DB anymore!
 
         protected Int32 randomSeed = 134368;  // use a constant value with "new Random(randomSeed)",
                                               // or "new Random()" for a time-dependent value... (UNUSED, for now)
@@ -85,13 +85,14 @@ namespace KarateGeek.lottery
         protected LotteryGenerator(int tournamentId) // constructor of the abstract class
         {
             this.tournamentId = tournamentId;
+            this.confirmed = new LotteryGenConnection().getTournamentLotteryStateReady(tournamentId);
 
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
             this.athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
 
             List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
-            foreach (long athlete in athleteList) // this.tournamentId must be already set to get the scores!
+            foreach (long athlete in athleteList) // this.tournamentId must be already set in order to get the scores!
                 tmp.Add(new Tuple<long, int>(athlete, getAthleteScore(athlete)));
 
             this.athleteScoreList = tmp;
@@ -100,7 +101,7 @@ namespace KarateGeek.lottery
              * it would be much, much better than this: */
             rgen = new Random(); // initialise pseudo-random number-generator with a time-dependent value.
 
-            this.randomisationFactor = 650;
+            this.randomisationFactor = 750;
         }
 
 
@@ -139,7 +140,7 @@ namespace KarateGeek.lottery
                                                                     + Strings.suffixFugugo +   ")'";
                                          break;
 
-                /* fugu-go needs both: */
+                /* fugu-go needs both kata and kumite skills: */
                 case Strings.fugugo:     generalGameTypeSQL = "'%(" + Strings.suffixKata   + "|"
                                                                     + Strings.suffixEnbu   + "|"
                                                                     + Strings.suffixKumite + "|"
@@ -177,14 +178,13 @@ namespace KarateGeek.lottery
           //            ;
 
             /* past achievements: */
-            for (int pos = 1; pos <= 4; ++pos) {
+            for (int pos = 1; pos <= 4; ++pos)
                 scoreAccu += (int) (
                                        conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: true,  sameType: true)  * rankingWeight[pos]
                                      + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: false, sameType: true)  * rankingWeight[pos] * unofficialMultiplier
                                      + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: true,  sameType: false) * rankingWeight[pos] * otherTypeMultiplier
                                      + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: false, sameType: false) * rankingWeight[pos] * otherTypeMultiplier * unofficialMultiplier
                                    );
-            }
 
 
             /* belt color: */
@@ -203,7 +203,6 @@ namespace KarateGeek.lottery
         }
 
 
-        
         /* Produces a new randomization [It would be less ugly with more LINQ usage!] */
         /* Declared as "virtual" means that it can be overridden by child classes. */
         public virtual void shuffle(int tries = 2) // a default value of 2 seems OK - we don't want infinite recursion!
@@ -222,8 +221,8 @@ namespace KarateGeek.lottery
 
             scoreListShuffled = L;
 
-            /* EXPERIMENTAL and very computationally expensive way to check whether an athlete pair belongs
-             * to the same club... Some refactoring would reduce the redundancy, but it should work as-is: */
+            /* EXPERIMENTAL and computationally expensive way to check whether an athlete pair belongs to the
+             * same club... Some refactoring would reduce the redundancy, but it should work as-is (and it does): */
             if ( tries > 0 && pairsClubConstraintActive(getPairs(this.getLottery())) ){
                 Debug.WriteLine("\n ** AUTO-RESHUFFLING because same-club collisions were found... ** \n");
                 shuffle(tries - 1);
@@ -283,6 +282,8 @@ namespace KarateGeek.lottery
 
             /* the doCommit flag (named parameter) will be changed to "true" after some testing */
             this.confirmed = conn.writeAllTournamentPairs(allPairs, tournamentId, doCommit: doCommit);
+            conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);
+            // we could make "confirmed" a property, so that the setter does this automatically :)
         }
 
         #region helper nested classes
@@ -612,10 +613,7 @@ namespace KarateGeek.lottery
             int yleft = (y + 1) / 2;
             int yright = y - yleft;
 
-            int x = numOfParticipants - y;
-            int z = p / 2 - y; // len must be >=2 (?)
-
-            // FIXME: check boundary conditions, especially here!
+            // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK)
             for (int position = 1 + (yleft + 1) / 2; position <= Math.Pow(2, numOfPhases - 2) - (yright + 1) / 2; ++position)  // phase Y (missing games)
                 emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, numOfPhases - 2, position));
 

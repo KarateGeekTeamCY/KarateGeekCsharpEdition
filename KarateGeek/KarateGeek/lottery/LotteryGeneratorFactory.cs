@@ -17,18 +17,9 @@ using System.Diagnostics;   // has Debug.WriteLine()
 
 namespace KarateGeek.lottery
 {
-
     /* Factory class: */
     static class LotteryGeneratorFactory
     {
-        /* enum not really needed anymore, replaced by class structure */
-        //public enum LotteryType
-        //{
-        //    indiv_single,
-        //    indiv_versus,
-        //    team_single,
-        //    team_versus
-        //};
 
         public static LotteryGenerator Create(int tournamentId)
         {
@@ -46,12 +37,15 @@ namespace KarateGeek.lottery
                                              lg = new LotteryGen_Expo_Ind(tournamentId);
                                          break;
 
+                case Strings.teamKata:   lg = new LotteryGen_Expo_Ind(tournamentId);    // !!
+                                         break;
+
                 case Strings.indKumite:
                 case Strings.fugugo:     lg = new LotteryGen_Versus_Ind(tournamentId);
                                          break;
 
+                /* case Strings.teamKata: // was here */
                 case Strings.enbu:
-                case Strings.teamKata:   //? Not very sure about team kata...
                 case Strings.syncKata:   lg = new LotteryGen_Expo_Team(tournamentId);
                                          break;
 

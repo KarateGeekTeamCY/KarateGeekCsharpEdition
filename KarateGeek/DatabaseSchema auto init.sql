@@ -183,6 +183,7 @@ CREATE TABLE tournaments (
                                                 -- "flag"       -> simees
                                                 -- "point"      -> ippon ktl.
     event_id        INTEGER         REFERENCES events(id) ON DELETE CASCADE,
+    lottery_ready   BOOLEAN         NOT NULL DEFAULT false,
     PRIMARY KEY(id)
 );
 
