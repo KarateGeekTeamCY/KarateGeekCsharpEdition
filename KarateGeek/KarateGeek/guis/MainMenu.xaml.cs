@@ -50,7 +50,7 @@ namespace KarateGeek.guis
 
             this.Close();
             pm.Show();
-            
+
         }
 
         private void btnEventmanagement_Click(object sender, RoutedEventArgs e)
@@ -70,7 +70,7 @@ namespace KarateGeek.guis
             cl.Show();
         }
 
-       
+
 
         private void mainCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -95,14 +95,14 @@ namespace KarateGeek.guis
                 this.Close();
                 et.Show();
             }
-           
+
         }
 
         /* EXPERIMENTAL and not ready, might crash 'n' burn if clicked:*/
         /* Do not just remove this code; it's a usage example for the lottery class. */
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
-            LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 2); // use 1 to test kata
+            LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 1); // use 1 to test kata
 
             // Some silly test code:
             Debug.WriteLine("Our first try:");
@@ -116,13 +116,19 @@ namespace KarateGeek.guis
                 Debug.WriteLine("Athlete number: " + element);
 
             Debug.WriteLine("Our third try, randomise MORE:");
-            lg.randomisationFactor = 8000; //!!
+            lg.randomisationFactor = 4000; //!!
             lg.shuffle();
             foreach (var element in lg.getLottery())
                 Debug.WriteLine("Athlete number: " + element);
 
             // This might write to the DB:
+            //lg.confirmLottery(doCommit: true);   // this will commit
+            //lg.confirmLottery(doCommit: false);  // this will rollback (default value)
             lg.confirmLottery();
+
+            // printing lottery to the console, now from the database (THIS IS JUST AN EXAMPLE/TEST):
+            new LotteryGenConnection().printTournamentGameTable(tournamentId: 1);
+            new LotteryGenConnection().printTournamentGameTableWithNames(tournamentId: 1);
         }
 
         private void btnReports_Click(object sender, RoutedEventArgs e)
@@ -136,7 +142,7 @@ namespace KarateGeek.guis
         private void btnEventSupport_Click(object sender, RoutedEventArgs e)
         {
             EventSupport eventSup = new EventSupport(this);
-            
+
         }
 
         private void btnUserManagement_Click(object sender, RoutedEventArgs e)
@@ -145,10 +151,9 @@ namespace KarateGeek.guis
             userMan.Show();
         }
 
-     
 
-       
 
-        
+
+
     }
 }

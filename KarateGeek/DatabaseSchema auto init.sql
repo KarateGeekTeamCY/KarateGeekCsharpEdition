@@ -139,7 +139,7 @@ CREATE TABLE athletes (
 CREATE TABLE judges (
     id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
     rank            VARCHAR(50)     NOT NULL,
-    class           CHARacter(1)    NOT NULL,
+    class           CHAR(1)         NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -147,7 +147,7 @@ CREATE TABLE judges (
 CREATE TABLE users (
     id              SERIAL,
     username        VARCHAR(255)    NOT NULL UNIQUE,
-    password        VARCHAR(255)    NOT NULL,
+    password        CHAR(32)        NOT NULL, --md5 is 16 bytes, sha1 is 20 bytes (40 hex chars)
     person_management   BOOLEAN     NOT NULL DEFAULT false,
     event_management    BOOLEAN     NOT NULL DEFAULT false,
     lottery         BOOLEAN         NOT NULL DEFAULT false,
@@ -183,6 +183,7 @@ CREATE TABLE tournaments (
                                                 -- "flag"       -> simees
                                                 -- "point"      -> ippon ktl.
     event_id        INTEGER         REFERENCES events(id) ON DELETE CASCADE,
+    lottery_ready   BOOLEAN         NOT NULL DEFAULT false,
     PRIMARY KEY(id)
 );
 
@@ -223,7 +224,7 @@ CREATE TABLE tournament_participations (
 CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio tetoia entries
                                         -- gia atomika (parousiasi) 1 entry
                                         -- gia omadiko (versus) 6 (OR 4, anepisima)
-    id              SERIAL,	
+    id              SERIAL,
     athlete_id      INTEGER         REFERENCES athletes (id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id),
     game_id         INTEGER         REFERENCES games (id),

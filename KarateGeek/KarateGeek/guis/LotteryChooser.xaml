@@ -90,8 +90,8 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Name="btnShufle" 
-                    Content="Shufle" 
+            <Button Name="btnShuffle" 
+                    Content="Shuffle" 
                     Grid.Column="2"
                     Margin="5"
                     Padding="5"
