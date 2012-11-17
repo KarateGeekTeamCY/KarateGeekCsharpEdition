@@ -60,40 +60,43 @@
                         Grid.Column="1" 
                         Grid.Row="1" 
                         Margin="5" 
-                        Click="btnPersonManagement_Click" />
+                        Click="btnPersonManagement_Click" IsEnabled="False" />
                 <Button Name="btnEventmanagement" 
                         Content="Event management" 
                         Grid.Column="1" 
                         Grid.Row="2" 
                         Margin="5" 
-                        Click="btnEventmanagement_Click" />
+                        Click="btnEventmanagement_Click" IsEnabled="False" />
                 <Button Name="btnClubmanagement" 
                         Content="Club management" 
                         Grid.Column="1" 
                         Grid.Row="3" 
                         Margin="5" 
-                        Click="btnClubmanagement_Click" />
+                        Click="btnClubmanagement_Click" IsEnabled="False" />
                 <Button Name="btnLottery" 
                         Content="Lottery" 
                         Grid.Column="1" 
                         Grid.Row="4" 
-                        Margin="5" Click="btnLottery_Click" />
+                        Margin="5" Click="btnLottery_Click" IsEnabled="False" />
                 <Button Name="btnEventSupport" 
                         Content="Event support" 
                         Grid.Column="1" 
                         Grid.Row="5" 
-                        Margin="5" Click="btnEventSupport_Click" />
+                        Margin="5" Click="btnEventSupport_Click" IsEnabled="False" />
                 <Button Name="btnReports" 
                         Content="Reports" 
                         Grid.Column="1" 
                         Grid.Row="6" 
                         Margin="5" 
                         Click="btnReports_Click" />
+                
                 <Button Name="btnUserManagement" 
                         Content="User management" 
                         Grid.Column="1" 
+
                         Grid.Row="7" 
-                        Margin="5" Click="btnUserManagement_Click" />
+                        Margin="5" Click="btnUserManagement_Click" IsEnabled="False" />
+
 
 
                

@@ -204,7 +204,7 @@ CREATE TABLE team_tournament_participations (
     ranking         INTEGER,
     team            INTEGER,        -- "team" is only used by the GUI code (doesn't interfere with the rest of the DB)
     --club_id       INTEGER         REFERENCES clubs(id),
-    tournament_id   INTEGER         REFERENCES tournaments(id),
+    tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
 
