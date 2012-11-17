@@ -64,7 +64,7 @@ namespace KarateGeek.guis
 
 
 
-        public FlagSystem(Window sender, string turnamentId, string gameId, Boolean isTeam)
+        public FlagSystem(Window sender, Game gm)
         {
             InitializeComponent();
 
@@ -77,9 +77,9 @@ namespace KarateGeek.guis
 
             _sender = sender;
 
-            this._turnamentId = turnamentId;
-            this._gameId = gameId;
-            this._isTeam = isTeam;
+            //this._turnamentId = turnamentId;
+            //this._gameId = gameId;
+            //this._isTeam = isTeam;
 
             this._loadDataTables();
 

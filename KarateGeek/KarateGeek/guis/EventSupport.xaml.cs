@@ -174,8 +174,8 @@ namespace KarateGeek.guis
                         if (this._firstLoad)
                             foreach (Athlete ath in tournament.participants)
                                 ath.ranking = "128";
-                            
-                        
+
+
                         this.loadIndevidualVersus();
                     }
                     else
@@ -432,8 +432,8 @@ namespace KarateGeek.guis
             {
                 //tournament is finished anounce the winner
             }
-        
-        
+
+
         }
 
         private void loadIndevidualSingle()
@@ -627,7 +627,7 @@ namespace KarateGeek.guis
             else
             {
                 //tournament is finished anounce the winner
-            } 
+            }
         }
 
 
@@ -637,7 +637,7 @@ namespace KarateGeek.guis
             switch (this.tournament.gameType)
             {
                 case Strings.teamKata:
-                    
+
                     if (this._firstLoad)
                         foreach (Athlete ath in tournament.participants)
                             ath.ranking = "128";
@@ -673,9 +673,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games128)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -686,9 +693,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -707,9 +721,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -720,9 +741,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -738,9 +766,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -751,9 +786,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -770,9 +812,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -783,9 +832,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -801,9 +857,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -814,9 +877,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -832,9 +902,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -845,9 +922,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games2)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -864,9 +948,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games2)
                 {
-                    //Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    //current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    if (gm.numOfParticipants == 2)
+                    {
+                        Athlete A = gm.participants.ElementAt(0);
+                        Athlete B = gm.participants.ElementAt(1);
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    }
+                    else
+                    {
+                        current.Add("Click to add game members.");
+                    }
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -933,7 +1024,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " +C.lastName + " " + C.firstName);
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1138,7 +1229,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1152,7 +1243,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -1174,7 +1265,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1188,7 +1279,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1207,7 +1298,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1221,7 +1312,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -1241,7 +1332,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1255,7 +1346,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1274,7 +1365,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1288,7 +1379,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1307,7 +1398,7 @@ namespace KarateGeek.guis
                     Athlete A = gm.participants.ElementAt(0);
                     Athlete B = gm.participants.ElementAt(1);
                     //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName );
+                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1432,6 +1523,98 @@ namespace KarateGeek.guis
 
         private void listBoxCurrentGameList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Game gm = null;
+
+            switch (this._indexCurentphase)
+            {
+                case 1:
+                    gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 2:
+                    gm = tournament.games4.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 3:
+                    gm = tournament.games8.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 4:
+                    gm = tournament.games16.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 5:
+                    gm = tournament.games32.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 6:
+                    gm = tournament.games64.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 7:
+                    gm = tournament.games128.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+            }
+
+            KataSystem kataSys;
+            KumiteSystem kumiteSys;
+            FlagSystem flagSys;
+
+
+            switch (tournament.gameType)
+            {
+                case Strings.indKata:
+
+                    switch (tournament.judgingType)
+                    {
+                        case Strings.flag:
+                            flagSys = new FlagSystem(this, gm);
+                            break;
+                        case Strings.score:
+                            kataSys = new KataSystem(this, gm);
+                            break;
+                    }
+
+                    break;
+                case Strings.indKumite:
+
+                    kumiteSys = new KumiteSystem(this, gm);
+
+                    break;
+                case Strings.fugugo:
+
+                    if (this._indexCurentphase % 2 == 1)
+                    {
+                        kumiteSys = new KumiteSystem(this, gm);
+                    }
+                    else
+                    {
+                        kataSys = new KataSystem(this, gm);
+                    }
+
+                    break;
+                case Strings.teamKata:
+                    kataSys = new KataSystem(this, gm);
+                    break;
+                case Strings.teamKumite:
+
+                    if (this._currentGames.ElementAt(this.listBoxCurrentGameList.SelectedIndex) == "Click to add game members.")
+                    {
+                        KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
+                    }
+                    else
+                    {
+                        kumiteSys = new KumiteSystem(this, gm);
+                    }
+
+                    break;
+                case Strings.syncKata:
+
+
+
+
+                    break;
+                case Strings.enbu:
+
+
+
+
+                    break;
+            }
             //_lastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
 
             //if (_gameType == Strings.fugugo)

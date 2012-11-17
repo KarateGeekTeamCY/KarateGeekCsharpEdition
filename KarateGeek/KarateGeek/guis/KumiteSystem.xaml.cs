@@ -42,12 +42,12 @@ namespace KarateGeek.guis
 
 
 
-        public KumiteSystem(Window sender, string gameId)
+        public KumiteSystem(Window sender, Game game)
         {
 
             InitializeComponent();
             this._sender = sender;
-            this._gameId = gameId;
+            //this._gameId = gameId;
             this._LoadData();
         }
 

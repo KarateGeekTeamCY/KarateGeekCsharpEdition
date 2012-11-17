@@ -55,15 +55,15 @@ namespace KarateGeek.guis
 
 
 
-        public KataSystem( Window sender, string turnamentId, string gameId, Boolean isTeam)
+        public KataSystem( Window sender, Game gm)
         {
             InitializeComponent();
 
             _sender = sender;
 
-            this._turnamentId = turnamentId;
-            this._gameId = gameId;
-            this._isTeam = isTeam;
+            //this._turnamentId = turnamentId;
+            //this._gameId = gameId;
+            //this._isTeam = isTeam;
 
             this._loadDataTables();
 
