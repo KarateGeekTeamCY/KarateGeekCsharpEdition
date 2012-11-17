@@ -11,9 +11,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;   // has Debug.WriteLine()
+using System.Data;
+using KarateGeek.databaseConnection;
 
 using KarateGeek.lottery; // for lottery generator testing; THIS LINE WILL BE REMOVED
-using KarateGeek.databaseConnection; // for lottery generator DB connection testing; THIS LINE WILL BE REMOVED
 
 namespace KarateGeek.guis
 {
@@ -26,6 +27,20 @@ namespace KarateGeek.guis
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
+
+
+            //myCalendar.SelectedDates.Add(CType(reader.GetDateTime(0), Date))
+            EventConnection evCon = new EventConnection();
+            DataTable dt = evCon.getEvents().Tables[0];
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                this.mainCalendar.SelectedDates.Add((DateTime)dr[2]);
+            }
+
+            this.mainCalendar.SelectedDatesChanged += new EventHandler<SelectionChangedEventArgs>(mainCalendar_SelectedDatesChanged);
+
+            //this.mainCalendar.
         }
 
         private void btnPersonManagement_Click(object sender, RoutedEventArgs e)
@@ -35,7 +50,7 @@ namespace KarateGeek.guis
 
             this.Close();
             pm.Show();
-            
+
         }
 
         private void btnEventmanagement_Click(object sender, RoutedEventArgs e)
@@ -55,16 +70,32 @@ namespace KarateGeek.guis
             cl.Show();
         }
 
-       
+
 
         private void mainCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
+            DataTable ds;
+            EventConnection eventConnection = new EventConnection();
             DateTime selectedDate = mainCalendar.SelectedDate.Value;
 
-            EventTournamentManagement et = new EventTournamentManagement(selectedDate);
-            et.Activate();
-            this.Close();
-            et.Show();
+            ds = eventConnection.getEventsBydate(selectedDate.ToString("yyyy-M-d")).Tables[0];
+
+            if (ds.Rows.Count == 0)
+            {
+                EventTournamentManagement et = new EventTournamentManagement(selectedDate);
+                et.Activate();
+                this.Close();
+                et.Show();
+            }
+            else
+            {
+                EventTournamentManagement et = new EventTournamentManagement(ds.Rows[0][1].ToString());
+                et.Activate();
+                et.eSuggestionList.SelectedIndex = 0;
+                this.Close();
+                et.Show();
+            }
+
         }
 
         /* EXPERIMENTAL and not ready, might crash 'n' burn if clicked:*/
@@ -102,15 +133,26 @@ namespace KarateGeek.guis
 
         private void btnReports_Click(object sender, RoutedEventArgs e)
         {
-            guis.Reports reports = new Reports();
+
+            KarateGeek.Reports.ReportsForm reports = new Reports.ReportsForm();
             reports.Show();
+
         }
 
         private void btnEventSupport_Click(object sender, RoutedEventArgs e)
         {
             EventSupport eventSup = new EventSupport(this);
-            
+
         }
+
+        private void btnUserManagement_Click(object sender, RoutedEventArgs e)
+        {
+            UserManagement userMan = new UserManagement(this);
+            userMan.Show();
+        }
+
+
+
 
 
     }

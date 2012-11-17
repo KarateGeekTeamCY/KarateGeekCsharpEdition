@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Data;          // DataSet, DataTable
 using Npgsql;
 
@@ -9,7 +10,7 @@ using System.Diagnostics;   // has Debug.WriteLine()
 
 namespace KarateGeek.databaseConnection
 {
-    class CoreDatabaseConnection
+    public class CoreDatabaseConnection
     {
         private NpgsqlConnection _conn = null;
 
@@ -52,19 +53,22 @@ namespace KarateGeek.databaseConnection
             return true;
         }
 
-        protected Boolean NonQuery(string sql)
+        public Boolean NonQuery(string sql)
         {
             Debug.WriteLine("Executing SQL NonQuery: " + sql);  // Much faster than Console.WriteLine()
                                                                 // and auto-disabled in release mode.
 
+            
             NpgsqlCommand comm = this.conn.CreateCommand();
             comm.CommandText = sql;
-            comm.ExecuteNonQuery();
+            
+                comm.ExecuteNonQuery();
+            
             return true;
         }
 
 
-        protected DataSet Query(string sql)
+        public DataSet Query(string sql)
         {
             Debug.WriteLine("Executing SQL Query:    " + sql);  // Much faster than Console.WriteLine()
                                                                 // and auto-disabled in release mode.

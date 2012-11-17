@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KarateGeek.guis {
+namespace KarateGeek.Reports {
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
@@ -16,14 +16,14 @@ namespace KarateGeek.guis {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class CrystalReport2 : ReportClass {
+    public class ClubCrystalReport : ReportClass {
         
-        public CrystalReport2() {
+        public ClubCrystalReport() {
         }
         
         public override string ResourceName {
             get {
-                return "CrystalReport2.rpt";
+                return "ClubCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace KarateGeek.guis {
         
         public override string FullResourceName {
             get {
-                return "KarateGeek.guis.CrystalReport2.rpt";
+                return "KarateGeek.Reports.ClubCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -106,9 +106,9 @@ namespace KarateGeek.guis {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedCrystalReport2 : Component, ICachedReport {
+    public class CachedClubCrystalReport : Component, ICachedReport {
         
-        public CachedCrystalReport2() {
+        public CachedClubCrystalReport() {
         }
         
         [Browsable(false)]
@@ -145,7 +145,7 @@ namespace KarateGeek.guis {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            CrystalReport2 rpt = new CrystalReport2();
+            ClubCrystalReport rpt = new ClubCrystalReport();
             rpt.Site = this.Site;
             return rpt;
         }

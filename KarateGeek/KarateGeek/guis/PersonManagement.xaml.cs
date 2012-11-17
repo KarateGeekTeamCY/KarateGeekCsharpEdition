@@ -86,7 +86,7 @@ namespace KarateGeek.guis
         //arxizi me #region <name>
         //lai telion me #endregion
         //
-        
+
 
         public PersonManagement()
         {
@@ -115,12 +115,12 @@ namespace KarateGeek.guis
                 cmbACountryChooses.Items.Add(dr[1].ToString());
                 cmbJCountryChooses.Items.Add(dr[1].ToString());
             }
-            cmbACountryChooses.SelectedIndex = 0;
-            cmbJCountryChooses.SelectedIndex = 0;
+            cmbACountryChooses.SelectedIndex = 54;
+            cmbJCountryChooses.SelectedIndex = 54;
 
             this.athleteUpdateCities("CY");
 
-            
+
 
             //prosthetoume athlete_rank
             cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
@@ -139,7 +139,7 @@ namespace KarateGeek.guis
             cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank14);
             cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank15);
             cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank16);
-            
+
             cmbAthleteRankChooses.SelectedIndex = 0;
 
             //string s = Strings.ranks.rank01.ToString(); ;
@@ -161,29 +161,31 @@ namespace KarateGeek.guis
             cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank14);
             cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank15);
             cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank16);
-            
+
 
 
             cmbJudgeRankChooses.SelectedIndex = 0;
-            
+
             //prosthetoume clubs
             this.clubs = clubConnection.GetClubs();
 
             foreach (DataRow dr in clubs.Tables[0].Rows)
             {
                 cmbAClubChooses.Items.Add(dr[1]);
-            
-            
+
+
             }
             cmbAClubChooses.SelectedIndex = 0;
             //cmbAClubChooses.Items.Add("Pro Kata Club (P.K.C.)");
-            
+
             //cmbAClubChooses.Items.Add("Allo Club");
 
             //prosthetoume judge classes
             cmbJClassChooses.Items.Add("A");
             cmbJClassChooses.Items.Add("B");
             cmbJClassChooses.SelectedIndex = 0;
+
+
         }
 
         //private Boolean nameflag = true;
@@ -195,46 +197,15 @@ namespace KarateGeek.guis
 
         private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _athleteFirstName = athleteFirstName.Text;
-            List<ListData> autoList = new List<ListData>();
-            autoList.Clear();
-
-            athleteNameListForAutoComplete = this.AthletesfilterNames();
-
-            foreach (ListData item in athleteNameListForAutoComplete)
-            {
-                if (!string.IsNullOrEmpty(athleteFirstName.Text))
-                {
-                    if (item.name.StartsWith(_athleteFirstName))
-                    {
-                        autoList.Add(item);
-                    }
-                }
-            }
-
-            if (autoList.Count > 0)
-            {
-                aSuggestionList.ItemsSource = autoList;
-                aSuggestionList.Visibility = System.Windows.Visibility.Visible;
-            }
-            else if (athleteFirstName.Text.Equals(""))
-            {
-                aSuggestionList.Visibility = Visibility.Collapsed;
-                aSuggestionList.ItemsSource = null;
-            }
-            else
-            {
-                aSuggestionList.Visibility = Visibility.Collapsed;
-                aSuggestionList.ItemsSource = null;
-            }
+            athleteList();
         }
 
-        
+
 
         private List<ListData> AthletesfilterNames()
         {
             List<ListData> list = new List<ListData>();
-            
+
             this.filteredAthletes = personsConnection.findSimilar(this.athleteFirstName.Text);
 
             foreach (DataRow dr in filteredAthletes.Tables[0].Rows)
@@ -249,7 +220,7 @@ namespace KarateGeek.guis
             //this.sugestionList.ItemsSource = list;
         }
 
-        
+
 
         private void aSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -274,7 +245,7 @@ namespace KarateGeek.guis
                 athleteFirstName.TextChanged -= new TextChangedEventHandler(athleteFirstName_TextChanged);
 
                 index = aSuggestionList.SelectedIndex;
-                
+
                 if (aSuggestionList.SelectedIndex != -1)
                 {
                     ListData item = (ListData)aSuggestionList.SelectedItem;
@@ -284,14 +255,14 @@ namespace KarateGeek.guis
 
                     name = aSuggestionList.SelectedItem.ToString();
                     sex = filteredAthletes.Tables[0].Rows[index][4].ToString();
-                    
+
                     address_id = int.Parse(filteredAthletes.Tables[0].Rows[index][9].ToString());
 
                     this.athleteFirstName.Text = filteredAthletes.Tables[0].Rows[index][1].ToString();
                     this._athleteFirstName = this.athleteFirstName.Text;
                     this.athleteLastName.Text = filteredAthletes.Tables[0].Rows[index][2].ToString();
                     this.athleteFatherName.Text = filteredAthletes.Tables[0].Rows[index][3].ToString();
-                    
+
                     if (sex.Equals("male"))
                     {
                         this.ArdButton1.IsChecked = true;
@@ -305,8 +276,8 @@ namespace KarateGeek.guis
                     this.athleteFirstPhone.Text = filteredAthletes.Tables[0].Rows[index][6].ToString();
                     this.athleteSecondPhone.Text = filteredAthletes.Tables[0].Rows[index][7].ToString();
                     this.athleteEmail.Text = filteredAthletes.Tables[0].Rows[index][8].ToString();
-                    
-                    
+
+
                     ds = addressConnection.getAddress(address_id);
 
                     this.athleteStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
@@ -337,12 +308,12 @@ namespace KarateGeek.guis
                         }
                     }
 
-                   
+
                     this.cmbACountryChooses.SelectedIndex = country_position;
 
 
                     CityConnection cityConnection = new CityConnection();
-                    DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(athCity) );
+                    DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(athCity));
                     athCity = cityNa.Tables[0].Rows[0][0].ToString();
 
                     for (int i = 0; i < this.cmbAthleteCityChooses.Items.Count; i++)
@@ -412,31 +383,31 @@ namespace KarateGeek.guis
             _athleteDateOfBirth = athleteDateOfBirth.SelectedDate.Value;
         }
 
-       
+
         private void athleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
             _athleteFirstPhone = athleteFirstPhone.Text;
         }
 
-        
+
         private void athleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
             _athleteSecondPhone = athleteSecondPhone.Text;
         }
 
-        
+
         private void athleteEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
             _athleteEmail = athleteEmail.Text;
         }
 
-        
+
         private void athleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _athleteAddress = athleteStreetName.Text;
         }
 
-        
+
         private void athleteAddressNum_TextChanged(object sender, TextChangedEventArgs e)
         {
             _athleteAddressNum = athleteAddressNum.Text;
@@ -463,7 +434,7 @@ namespace KarateGeek.guis
             this.athleteUpdateCities(_athleteCountryCode);
         }
 
-        
+
         private void athleteUpdateCities(string countryCode)
         {
             CityConnection citiesconn = new CityConnection();
@@ -490,7 +461,7 @@ namespace KarateGeek.guis
 
         }
 
-        
+
 
         private void cmbARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -524,31 +495,52 @@ namespace KarateGeek.guis
 
         private void btnASave_Click(object sender, RoutedEventArgs e)
         {
-            athleteConnection.UpdateAthlete(_personId, _athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK , _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
-            MessageBox.Show("Succesfully saved!");
+            if (checkFields("athlete"))
+            {
+                athleteConnection.UpdateAthlete(_personId, _athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
+                MessageBox.Show("Succesfully saved!");
+            }
         }
 
         private void btnASaveNew_Click(object sender, RoutedEventArgs e)
         {
-            athleteConnection.InsertNewAthlete(_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK , _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
-            MessageBox.Show("Succesfully saved!");
-            PersonManagement pm = new PersonManagement();
-            pm.Activate();
-            pm.Show();
-            this.Close();
+            if (checkFields("athlete"))
+            {
+
+                athleteConnection.InsertNewAthlete(_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
+                MessageBox.Show("Succesfully saved!");
+                PersonManagement pm = new PersonManagement();
+                pm.Activate();
+                pm.Show();
+                this.Close();
+            }
+
         }
+
 
         private void btnAthleteDelete_Click(object sender, RoutedEventArgs e)
         {
-            athleteConnection.deleteAthlete(_personId);
-            MessageBox.Show("Succesfully deleted!");
-            PersonManagement pm = new PersonManagement();
-            pm.Activate();
-            pm.Show();
-            this.Close();
+
+            if (athleteConnection.deleteAthlete(_personId))
+            {
+                MessageBox.Show("Succesfully deleted!");
+                PersonManagement pm = new PersonManagement();
+                pm.Activate();
+                pm.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Cannot be deleted because of tournament participation!");
+                PersonManagement pm = new PersonManagement();
+                pm.Activate();
+                pm.Show();
+                this.Close();
+            }
+
         }
 
-        
+
 
 
         //
@@ -591,42 +583,7 @@ namespace KarateGeek.guis
 
         private void judgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeFirstName = judgeFirstName.Text;
-            List<ListData> autoList = new List<ListData>();
-            autoList.Clear();
-
-            judgeNameListForAutoComplete = this.JudgefilterNames();
-
-            foreach (ListData item in judgeNameListForAutoComplete)
-            {
-                if (!string.IsNullOrEmpty(judgeFirstName.Text))
-                {
-                    if (item.name.StartsWith(_judgeFirstName))
-                    {
-                        autoList.Add(item);
-                    }
-                }
-            }
-
-            if (autoList.Count > 0)
-            {
-                jSuggestionList.ItemsSource = autoList;
-                jSuggestionList.Visibility = System.Windows.Visibility.Visible;
-            }
-
-
-            else if (judgeFirstName.Text.Equals(""))
-            {
-                jSuggestionList.Visibility = Visibility.Collapsed;
-                jSuggestionList.ItemsSource = null;
-            }
-
-
-            else
-            {
-                jSuggestionList.Visibility = Visibility.Collapsed;
-                jSuggestionList.ItemsSource = null;
-            }
+            judgeList();
         }
 
 
@@ -634,11 +591,11 @@ namespace KarateGeek.guis
         private List<ListData> JudgefilterNames()
         {
             List<ListData> list = new List<ListData>();
-           
+
             this.filteredJudges = personsConnection.findSimilar(this.judgeFirstName.Text);
 
-         
-            
+
+
             foreach (DataRow dr in filteredJudges.Tables[0].Rows)
             {
                 ListData suggestion = new ListData();
@@ -686,7 +643,7 @@ namespace KarateGeek.guis
 
                     name = jSuggestionList.SelectedItem.ToString();
                     sex = filteredJudges.Tables[0].Rows[index][4].ToString();
-                   
+
                     address_id = int.Parse(filteredJudges.Tables[0].Rows[index][9].ToString());
 
                     //
@@ -779,8 +736,8 @@ namespace KarateGeek.guis
                             }
                         }
                         this.cmbJudgeRankChooses.SelectedIndex = rank_position;
-                   
-                        
+
+
 
 
                         for (int i = 0; i < cmbJClassChooses.Items.Count; i++)
@@ -797,7 +754,7 @@ namespace KarateGeek.guis
                     else if (ds3.Tables[0].Rows.Count > 0)
                     {
                         rank = ds3.Tables[0].Rows[0][1].ToString();
-                       
+
                         //vriskei tin zwni pou exei o kathenas se poia thesi einai
                         for (int i = 0; i < cmbJudgeRankChooses.Items.Count; i++)
                         {
@@ -809,7 +766,7 @@ namespace KarateGeek.guis
                         }
                         this.cmbJudgeRankChooses.SelectedIndex = rank_position;
                     }
-                    
+
                 }
                 judgeFirstName.TextChanged += new TextChangedEventHandler(judgeFirstName_TextChanged);
             }
@@ -936,49 +893,224 @@ namespace KarateGeek.guis
 
         private void btnJSave_Click(object sender, RoutedEventArgs e)
         {
-            judgeConnection = new JudgeConnection();
-            judgeConnection.UpdateJudge(_personId, _judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK , _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
-            MessageBox.Show("Succesfully saved!");
+            if (checkFields("judge"))
+            {
+                judgeConnection = new JudgeConnection();
+                judgeConnection.UpdateJudge(_personId, _judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK, _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
+                MessageBox.Show("Succesfully saved!");
+            }
         }
         private void btnJSaveNew_Click(object sender, RoutedEventArgs e)
         {
-            judgeConnection = new JudgeConnection();
+            if (checkFields("judge"))
+            {
+                judgeConnection = new JudgeConnection();
 
 
-            judgeConnection.InsertNewJudge(_judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK , _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
-            MessageBox.Show("Succesfully saved!");
-            PersonManagement pm = new PersonManagement();
-            pm.Activate();
-            pm.Show();
-            this.Hide();
+                judgeConnection.InsertNewJudge(_judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK, _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
+                MessageBox.Show("Succesfully saved!");
+                PersonManagement pm = new PersonManagement();
+                pm.Activate();
+                pm.Show();
+                this.Hide();
+            }
         }
 
         private void btnJDelete_Click(object sender, RoutedEventArgs e)
         {
             judgeConnection = new JudgeConnection();
-            judgeConnection.deleteJudge(_personId);
-            MessageBox.Show("Succesfully deleted!");
-            PersonManagement pm = new PersonManagement();
-            pm.Activate();
-            pm.Show();
-            this.Hide();
+            if (judgeConnection.deleteJudge(_personId))
+            {
+                MessageBox.Show("Succesfully deleted!");
+                PersonManagement pm = new PersonManagement();
+                pm.Activate();
+                pm.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Cannot be deleted because of tournament participation!");
+                PersonManagement pm = new PersonManagement();
+                pm.Activate();
+                pm.Show();
+                this.Close();
+            }
+
+            
+            
         }
+
+
+
+
+
+
+
+
+
+
+        #endregion
+
+
+        #region checks
+
+
+        private bool checkFields(string person)
+        {
+            if (person.Equals("athlete"))
+            {
+                if (_athleteFirstName == null)
+                {
+                    errorMessage("First Name");
+                    return false;
+                }
+                else if (_athleteLastName == null)
+                {
+                    errorMessage("Last Name");
+                    return false;
+                }
+                else if (_athleteSex == null)
+                {
+                    errorMessage("Sex");
+                    return false;
+                }
+                else if (_athleteFirstPhone == null)
+                {
+                    errorMessage("Phone Num.");
+                    return false;
+                }
+                else if (_athleteEmail == null)
+                {
+                    errorMessage("Email");
+                    return false;
+                }
+                else if (_athleteAddress == null)
+                {
+                    errorMessage("Address");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (_judgeFirstName == null)
+                {
+                    errorMessage("First Name");
+                    return false;
+                }
+                else if (_judgeLastName == null)
+                {
+                    errorMessage("Last Name");
+                    return false;
+                }
+                else if (_judgeSex == null)
+                {
+                    errorMessage("Sex");
+                    return false;
+                }
+                else if (_judgeFirstPhone == null)
+                {
+                    errorMessage("Phone Num.");
+                    return false;
+                }
+                else if (_judgeEmail == null)
+                {
+                    errorMessage("Email");
+                    return false;
+                }
+                else if (_judgeAddress == null)
+                {
+                    errorMessage("Address");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        private void errorMessage(string formField)
+        {
+            string message = "Please complete" + formField;
+            MessageBox.Show(message, "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+        }
+        #endregion
 
       
 
 
 
+        private void athleteList()
+        {
+            _athleteFirstName = athleteFirstName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            athleteNameListForAutoComplete = this.AthletesfilterNames();
+
+            foreach (ListData item in athleteNameListForAutoComplete)
+            {
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                aSuggestionList.ItemsSource = autoList;
+                aSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (athleteFirstName.Text.Equals(""))
+            {
+                aSuggestionList.Visibility = Visibility.Collapsed;
+                aSuggestionList.ItemsSource = null;
+            }
+            else
+            {
+                aSuggestionList.Visibility = Visibility.Collapsed;
+                aSuggestionList.ItemsSource = null;
+            }
+        }
+
+        private void judgeList()
+        {
+            _judgeFirstName = judgeFirstName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            judgeNameListForAutoComplete = this.JudgefilterNames();
+
+            foreach (ListData item in judgeNameListForAutoComplete)
+            {
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                jSuggestionList.ItemsSource = autoList;
+                jSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
 
 
+            else if (judgeFirstName.Text.Equals(""))
+            {
+                jSuggestionList.Visibility = Visibility.Collapsed;
+                jSuggestionList.ItemsSource = null;
+            }
 
 
+            else
+            {
+                jSuggestionList.Visibility = Visibility.Collapsed;
+                jSuggestionList.ItemsSource = null;
+            }
+        }
 
-        #endregion 
-
-       
-
-        
-
+     
 
     }
 }

@@ -22,6 +22,8 @@ namespace KarateGeek.guis
         private string username; 
         private string password;
         private Boolean loginCheck;
+        private LoginConnection lgConn;
+        private MainMenu menu;
 
         public LogIn()
         {
@@ -31,29 +33,23 @@ namespace KarateGeek.guis
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-
-
-
-
-
-            LoginConnection lgConn = new LoginConnection();
+            lgConn = new LoginConnection();
 
             /* Temporarily disabling the following two lines to make our life easier during testing: */
-            //username=userNameTB.Text;
-            //password=passwordTB.Password;
-            username = "admin";
-            password=  "admin";
+            username=userNameTB.Text;
+            password=passwordTB.Password;
+            //username = "admin";
+            //password=  "admin";
             /* end of modification */
 
             loginCheck = lgConn.compare(username, password);
             if (loginCheck)
             {
-                MainMenu menu = new MainMenu();
+                menu = new MainMenu();
+                checkRights();
                 menu.Activate();
                 this.Close();
                 menu.Show();
-                
-
             }
             else
             {
@@ -69,6 +65,33 @@ namespace KarateGeek.guis
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void checkRights(){
+            if (lgConn.getPersonMngPerm())
+            {
+                menu.btnPersonManagement.IsEnabled = true;
+            }
+            if (lgConn.getEventMngPerm())
+            {
+                menu.btnEventmanagement.IsEnabled = true;
+            }
+            if (lgConn.getLotteryPerm())
+            {
+                menu.btnLottery.IsEnabled = true;
+            }
+            if (lgConn.getGameSupPerm())
+            {
+                menu.btnEventSupport.IsEnabled = true;
+            }
+            if (lgConn.getReportsPerm())
+            {
+                menu.btnReports.IsEnabled = true;
+            }
+            if (lgConn.getSettingsPerm())
+            {
+                menu.btnUserManagement.IsEnabled = true;
+            }
         }
     }
 }

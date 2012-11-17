@@ -21,6 +21,7 @@ namespace KarateGeek.guis
         public LotteryChooser()
         {
             InitializeComponent();
+            
         }
     }
 }

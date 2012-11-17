@@ -85,18 +85,32 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
-        public void deleteAthlete(int id){
+        public bool deleteAthlete(int id){
             JudgeConnection judgeConnection = new JudgeConnection();
+            TournamentConnection tournamentConnection = new TournamentConnection();
             DataSet ds;
+            DataSet ds2;
             string sql = null;
+           
 
             ds = judgeConnection.findJudge(id);
-            sql = "delete from athletes where id='" + id + "';";
-            this.Query(sql);
-            if (ds.Tables[0].Rows.Count == 0)
+            
+            sql = "select * from tournament_participations where athlete_id='" + id + "';";
+            ds2 = this.Query(sql);
+            if (ds2.Tables[0].Rows.Count == 0)
             {
-                sql = "delete from persons where id='" + id + "';";
-                this.Query(sql);
+                sql = "delete from athletes where id='" + id + "';";
+                this.NonQuery(sql);
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    sql = "delete from persons where id='" + id + "';";
+                    this.NonQuery(sql);
+                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
 
         }

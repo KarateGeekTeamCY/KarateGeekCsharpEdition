@@ -160,9 +160,9 @@
                                    Grid.Column="2"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                                <TextBox Name="eventTK" 
+                                <TextBox Name="eventPCode" 
                                      Grid.Column="3"
-                                     VerticalAlignment="Center" TextChanged="eventTK_TextChanged" />
+                                     VerticalAlignment="Center" TextChanged="eventPCode_TextChanged" />
                             </Grid>
                             <Label Content="Official"
                                Grid.Row="5"
@@ -172,7 +172,7 @@
                             <CheckBox Name="eventOfficial"
                                       Grid.Row="5"
                                       Grid.Column="4"
-                                      VerticalAlignment="Center" IsChecked="True" Checked="eventOfficial_Checked" Unchecked="eventOfficial_Unchecked"/>
+                                      VerticalAlignment="Center" IsChecked="True" Checked="eventOfficial_Checked" Unchecked="eventOfficial_Checked"/>
                             <ListBox Name="eSuggestionList" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top"  Visibility="Collapsed" SelectionChanged="eSuggestionList_SelectionChanged" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}" />
                         </Grid>
 
@@ -244,7 +244,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         
-                        <Grid Name="tournamentList">
+                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="40"/>
                                 <RowDefinition Height="*"/>
@@ -385,18 +385,33 @@
                                        Grid.Column="1"
                                        Grid.Row="4"
                                        VerticalAlignment="Center"/>
-                                <RadioButton Name="TrdButtonIndiv"
+                                <Grid Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton Name="TrdButtonIndiv"
                                     Content="Individual"
-                                             Grid.Column="2"
+                                             Grid.Column="0"
                                              Grid.Row="4"
                                              VerticalAlignment="Center"
-                                             Margin="5" Checked="TrdButtonIndiv_Checked" />
-                                <RadioButton Name="TrdButtonTeam"
+                                             Margin="5" 
+                                             Checked="TrdButtonIndiv_Checked" />
+                                    <RadioButton Name="TrdButtonTeam"
                                     Content="Team"
-                                             Grid.Column="3"
+                                             Grid.Column="1"
                                              Grid.Row="4"
                                              VerticalAlignment="Center"
                                              Margin="5" Checked="TrdButtonTeam_Checked" />
+                                    <RadioButton Name="TrdButtonSync"
+                                    Content="Sync"
+                                             Grid.Column="2"
+                                             Grid.Row="4"
+                                             VerticalAlignment="Center"
+                                             Margin="5" Checked="TrdButtonSync_Checked" />
+                                </Grid>
+                                   
                                 <Label 
                                     Content="Game"
                                        Grid.Column="1"
