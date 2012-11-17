@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;   // has Debug.WriteLine()
 
 using KarateGeek.lottery; // for lottery generator testing; THIS LINE WILL BE REMOVED
+using KarateGeek.databaseConnection; // for lottery generator DB connection testing; THIS LINE WILL BE REMOVED
 
 namespace KarateGeek.guis
 {
@@ -84,13 +85,19 @@ namespace KarateGeek.guis
                 Debug.WriteLine("Athlete number: " + element);
 
             Debug.WriteLine("Our third try, randomise MORE:");
-            lg.randomisationFactor = 8000; //!!
+            lg.randomisationFactor = 4000; //!!
             lg.shuffle();
             foreach (var element in lg.getLottery())
                 Debug.WriteLine("Athlete number: " + element);
 
             // This might write to the DB:
+            //lg.confirmLottery(doCommit: true);   // this will commit
+            //lg.confirmLottery(doCommit: false);  // this will rollback (default value)
             lg.confirmLottery();
+
+            // printing lottery to the console, now from the database (THIS IS JUST AN EXAMPLE/TEST):
+            new LotteryGenConnection().printTournamentGameTable(tournamentId: 2);
+            new LotteryGenConnection().printTournamentGameTableWithNames(tournamentId: 2);
         }
 
         private void btnReports_Click(object sender, RoutedEventArgs e)

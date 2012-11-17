@@ -40,37 +40,32 @@ namespace KarateGeek.lottery
              * the flag system, so it's a "versus" type tournament.) I'm not sure about teamKata... */
             switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
             {
-                case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId) == Strings.flag)
+                case Strings.indKata: if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
                                              lg = new LotteryGen_Versus_Ind(tournamentId);
                                          else // score system
                                              lg = new LotteryGen_Expo_Ind(tournamentId);
                                          break;
 
-                case Strings.fugugo:
                 case Strings.indKumite:
-                case Strings.individual: lg = new LotteryGen_Versus_Ind(tournamentId);
+                case Strings.fugugo:     lg = new LotteryGen_Versus_Ind(tournamentId);
                                          break;
 
                 case Strings.enbu:
-                case Strings.teamKata:   lg = new LotteryGen_Expo_Team(tournamentId);
+                case Strings.teamKata:   //? Not very sure about team kata...
+                case Strings.syncKata:   lg = new LotteryGen_Expo_Team(tournamentId);
                                          break;
 
-                case Strings.syncKata:   if (new LotteryGenConnection().getTournamentScoringType(tournamentId) == Strings.flag)
-                                             lg = new LotteryGen_Versus_Team(tournamentId);
-                                         else // score system
-                                             lg = new LotteryGen_Expo_Team(tournamentId);
+                case Strings.teamKumite: lg = new LotteryGen_Versus_Team(tournamentId);
                                          break;
 
-                case Strings.teamKumite:
-                case Strings.team:       lg = new LotteryGen_Versus_Team(tournamentId);
-                                         break;
-
+                case Strings.individual: // not enough info
+                case Strings.team:       // not enough info
                 default:                 lg = null;
                                          break;
             }
 
-            // For now (!) only create LotteryGen_Versus_Ind objects...
-            lg = new LotteryGen_Versus_Ind(tournamentId);
+            /* For now (!) only create LotteryGen_Versus_Ind objects... */
+            //lg = new LotteryGen_Versus_Ind(tournamentId);
 
             Debug.Assert(lg != null);
 

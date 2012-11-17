@@ -67,15 +67,27 @@ namespace KarateGeek
         // game types (tournament types)
         //
 
-        public const string indKata    = "IND|KATA";
-        public const string teamKata   = "TEAM|KATA";
-        public const string syncKata   = "TEAM|SYNCHRONIZED KATA";
-        public const string indKumite  = "IND|KUMITE";
-        public const string teamKumite = "TEAM|KUMITE";
-        public const string enbu       = "IND|EN-BU";
-        public const string fugugo     = "IND|FUGU-GO";
-        public const string team       = "TEAM";
-        public const string individual = "IND";
+        public const string prefixInd  = "IND";
+        public const string prefixTeam = "TEAM";
+
+        public const string gameTypeDelim = "|";
+
+        public const string suffixKata     = "KATA";                // suffixes are useful for SQL's "LIKE" etc.
+        public const string suffixSyncKata = "SYNCHRONIZED KATA";   // NOTE: suffixSyncKata has the same suffix as suffixKata on purspose!
+        public const string suffixKumite   = "KUMITE";
+        public const string suffixEnbu     = "EN-BU";
+        public const string suffixFugugo   = "FUGU-GO";
+
+        public const string indKata    = prefixInd  + gameTypeDelim + suffixKata;
+        public const string teamKata   = prefixTeam + gameTypeDelim + suffixKata;
+        public const string syncKata   = prefixTeam + gameTypeDelim + suffixSyncKata;
+        public const string indKumite  = prefixInd  + gameTypeDelim + suffixKumite;
+        public const string teamKumite = prefixTeam + gameTypeDelim + suffixKumite;
+        public const string enbu       = prefixInd  + gameTypeDelim + suffixEnbu;
+        public const string fugugo     = prefixInd  + gameTypeDelim + suffixFugugo;
+
+        public const string individual = prefixInd;     // for compatibility
+        public const string team       = prefixTeam;    // for compatibility
 
 
         //

@@ -56,8 +56,9 @@ namespace KarateGeek.databaseConnection
 
             return this.Query(sql).Tables[0].Rows[0][0].ToString();
         }
-        
-        public int getNumOfGoodPlacements(long athleteId, int place, Boolean official)
+
+
+        public int getNumOfGoodPlacements(long athleteId, int place, bool official) // overloaded method, not used any more
         {
             /* If you don't care only about official tournaments, use the following simplified query: */
             //String sql = "SELECT ranking FROM tournament_participations WHERE athlete_id = " + athleteId
@@ -70,6 +71,24 @@ namespace KarateGeek.databaseConnection
                        +                      "  WHERE official = " + official
                        +                      " );";
                        //+                       "WHERE official = " + (official? "true": "false") + " );" ;
+
+            return this.Query(sql).Tables[0].Rows.Count;
+        }
+
+
+        public int getNumOfGoodPlacements(long athleteId, int place, string generalGameType, bool official, bool sameType = true)
+        {
+            /* Limitation: This method gets wins in tournaments of exactly the same type. It should also take into
+             * account other types of kata/kumite... (eg. for enbu it should also get the score of "regular" kata)
+             */
+
+            String sql = "SELECT * FROM tournament_participations WHERE athlete_id = " + athleteId
+                       + " AND ranking = " + place
+                       + " AND tournament_id IN (SELECT tournaments.id"
+                       +                      "  FROM tournaments JOIN events ON events.id = tournaments.event_id"
+                       +                      "  WHERE official = " + official
+                       +    /* addition */    "  AND game_type " + (sameType ? "SIMILAR TO " : "NOT SIMILAR TO ") + generalGameType
+                       +                      " );";
 
             return this.Query(sql).Tables[0].Rows.Count;
         }
@@ -151,7 +170,7 @@ namespace KarateGeek.databaseConnection
             String writepair_second = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
                                     + "VALUES ( " + id2 + ", NULL, ( SELECT currval('games_id_seq') ));";
 
-            if (id1 >= 0 || id2 >= 0) this.NonQuery(writegame);
+            if (id1 >= -1 || id2 >= -1) this.NonQuery(writegame);
             if (id1 >= 0) this.NonQuery(writepair_first);
             if (id2 >= 0) this.NonQuery(writepair_second);
         }
@@ -173,6 +192,108 @@ namespace KarateGeek.databaseConnection
                 this.NonQuery("ROLLBACK;"); // very useful for checking syntax etc.
                 return false;               // always false, since we didn't write anything
             }
+        }
+
+
+        /** The following methods aren't strictly related to lotteries, and might be moved elsewhere: **/
+
+        public DataTable getTournamentGameTable(long tournamentId)  // overloaded method
+        {
+            /* The following query string can be used as a template for many others, eg. by
+             * supplying phase and/or position manually, or choosing only !games.is_ready rows...
+             */
+            String sql =  "SELECT *" //maybe something other than "*"?
+                       + " FROM games LEFT OUTER JOIN game_participations"
+                       + " ON games.id = game_participations.game_id"
+                       + " WHERE games.tournament_id = " + tournamentId
+                       + " ORDER BY games.phase DESC, games.position;"; // phase in descending order
+
+            return this.Query(sql).Tables[0];
+        }
+
+
+        //public DataTable getTournamentGameTable(long tournamentId, bool isReady = true) //overloaded
+        //{
+        //    String sql =  "SELECT *" //maybe something other than "*"?
+        //               + " FROM games LEFT OUTER JOIN game_participations"
+        //               + " ON games.id = game_participations.game_id"
+        //               + " WHERE games.tournament_id = " + tournamentId
+        //               + " AND games.is_ready = " + isReady
+        //               + " ORDER BY games.phase DESC, games.position;"; // phase in descending order
+        //
+        //    return this.Query(sql).Tables[0];
+        //}
+
+
+        public DataTable getTournamentGameTable(long tournamentId, bool isFinished = false)  // overloaded method
+        {
+            String sql =  "SELECT *" //maybe something other than "*"?
+                       + " FROM games LEFT OUTER JOIN game_participations"
+                       + " ON games.id = game_participations.game_id"
+                       + " WHERE games.tournament_id = " + tournamentId
+                       + " AND games.is_finished = " + isFinished
+                       + " ORDER BY games.phase DESC, games.position;"; // phase in descending order
+
+            return this.Query(sql).Tables[0];
+        }
+
+
+        public DataTable getTournamentGameTable(long tournamentId, bool isFinished = false, bool isReady = true)  // overloaded method
+        {
+            String sql =  "SELECT *" //maybe something other than "*"?
+                       + " FROM games LEFT OUTER JOIN game_participations"
+                       + " ON games.id = game_participations.game_id"
+                       + " WHERE games.tournament_id = " + tournamentId
+                       + " AND games.is_ready = " + isReady
+                       + " AND games.is_finished = " + isFinished
+                       + " ORDER BY games.phase DESC, games.position;"; // phase in descending order
+
+            return this.Query(sql).Tables[0];
+        }
+
+
+        public DataTable getTournamentGameTableWithNames(long tournamentId, bool isFinished = false, bool isReady = true)
+        {
+            String sql = "SELECT first_name, fathers_name, last_name, phase, position, is_ready, is_finished"
+                       + " FROM persons INNER JOIN (SELECT *"
+                       +                         "  FROM games LEFT OUTER JOIN game_participations"
+                       +                         "  ON games.id = game_participations.game_id"
+                       +                         "  WHERE games.tournament_id = " + tournamentId
+                       +                         "  AND games.is_ready = " + isReady
+                       +                         "  AND games.is_finished = " + isFinished
+                       +                         " ) AS gjoined"
+                       + " ON persons.id = gjoined.athlete_id"
+                       + " ORDER BY gjoined.phase DESC, gjoined.position;"; // phase in descending order
+
+            return this.Query(sql).Tables[0];
+        }
+
+
+        public void printTournamentGameTable(long tournamentId)  // as an example of using getTournamentGameTable()
+        {
+            /* untested: */
+            DataTable dt = getTournamentGameTable(tournamentId);
+
+            Console.WriteLine("Athlete participations (all data), sorted by phase, then position:");
+            for (int row=0; row < dt.Rows.Count; ++row)
+                Console.WriteLine("id:{0,6}  phase:{1,2}  position:{2,2}  tournament_id:{3,4}  is_ready:{4,6}  "
+                                 + "is_finished:{5,6}  athlete_id:{6,4}  team_id:{7,4}  game_id:{8,6}",
+                                  dt.Rows[row][0], dt.Rows[row][1], dt.Rows[row][2], dt.Rows[row][3], dt.Rows[row][4],
+                                  dt.Rows[row][5], dt.Rows[row][6], dt.Rows[row][7], dt.Rows[row][8]);
+        }
+
+
+        public void printTournamentGameTableWithNames(long tournamentId)  // as an example of using getTournamentGameTableWithNames()
+        {
+            /* untested: */
+            DataTable dt = getTournamentGameTableWithNames(tournamentId, isReady: true);
+
+            Console.WriteLine("Athlete \"ready\" participations (with their names), sorted by phase, then position:");
+            for (int row = 0; row < dt.Rows.Count; ++row)
+                Console.WriteLine("first_name:{0,6}  fathers_name:{1,2}  last_name:{2,2}  phase:{3,4}  position:{4,6}  "
+                                 + "is_ready:{5,6}  is_finished:{6,4}",
+                                  dt.Rows[row][0], dt.Rows[row][1], dt.Rows[row][2], dt.Rows[row][3],
+                                  dt.Rows[row][4], dt.Rows[row][5], dt.Rows[row][6]);
         }
 
     }

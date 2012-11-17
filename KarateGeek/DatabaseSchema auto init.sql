@@ -139,7 +139,7 @@ CREATE TABLE athletes (
 CREATE TABLE judges (
     id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
     rank            VARCHAR(50)     NOT NULL,
-    class           CHARacter(1)    NOT NULL,
+    class           CHAR(1)         NOT NULL,
     PRIMARY KEY(id)
 );
 
@@ -147,7 +147,7 @@ CREATE TABLE judges (
 CREATE TABLE users (
     id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
     username        VARCHAR(255)    NOT NULL UNIQUE,
-    password        VARCHAR(255)    NOT NULL,
+    password        CHAR(32)        NOT NULL, --md5 is 16 bytes, sha1 is 20 bytes (40 hex chars)
     person_management   BOOLEAN     NOT NULL DEFAULT false,
     event_management    BOOLEAN     NOT NULL DEFAULT false,
     lottery         BOOLEAN         NOT NULL DEFAULT false,

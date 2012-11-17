@@ -11,7 +11,7 @@ namespace KarateGeek.helpers
         public string cryptography(string pass)
         {
             string password = null;
-            string salt = "k1k1k1k1";
+            string salt = "k1k1k1k1"; // TODO: Select a better salt! (even better: per-user salt in the DB, or simply ALSO concatenate with the username)
             string sha1pass = null;
             string md5pass = null;
 
@@ -23,7 +23,7 @@ namespace KarateGeek.helpers
             return password;
         }
 
-        public string sha1Encrypt(string data)
+        private string sha1Encrypt(string data)
         {
             SHA1 sha1 = SHA1.Create();
 

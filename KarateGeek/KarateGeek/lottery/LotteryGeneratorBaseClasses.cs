@@ -84,22 +84,23 @@ namespace KarateGeek.lottery
 
         protected LotteryGenerator(int tournamentId) // constructor of the abstract class
         {
+            this.tournamentId = tournamentId;
+
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
-            athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
+            this.athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
 
             List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
-            foreach (long athlete in athleteList)
+            foreach (long athlete in athleteList) // this.tournamentId must be already set to get the scores!
                 tmp.Add(new Tuple<long, int>(athlete, getAthleteScore(athlete)));
 
-            athleteScoreList = tmp;
+            this.athleteScoreList = tmp;
 
             /* NOTE: If we could "capture" REAL system randomness (like /dev/random on Linux)
              * it would be much, much better than this: */
             rgen = new Random(); // initialise pseudo-random number-generator with a time-dependent value.
 
             this.randomisationFactor = 650;
-            this.tournamentId = tournamentId;
         }
 
 
@@ -110,32 +111,95 @@ namespace KarateGeek.lottery
         {
             LotteryGenConnection conn = new LotteryGenConnection();
 
+            String generalGameTypeSQL; // will be used with the PostgreSQL "SIMILAR TO" feature, so it must be formatted accordingly
+
+            int[] rankingWeight = {0, 500, 240, 120, 80, 40, 40, 40, 40}; // index 0 is unused
+            const double unofficialMultiplier = 0.5;
+            const double otherTypeMultiplier  = 0.4;
             const int beltFactor = 125;
-            const int ageFactor = 100;
+            const int ageFactor  = 100;
+
+            int scoreAccu = 0;  // score accumulator
+
+            /* initialisation: */
+            switch (conn.getTournamentGameType(this.tournamentId)) // we could use .Split('|')[1] and be done with it, but we would lose the special handling of fugu-go
+            {
+                /* kata skills needed: */
+                case Strings.indKata:
+                case Strings.teamKata:
+                case Strings.syncKata:
+                case Strings.enbu:       generalGameTypeSQL = "'%(" + Strings.suffixKata   + "|"
+                                                                    + Strings.suffixEnbu   + "|"
+                                                                    + Strings.suffixFugugo +   ")'";
+                                         break;
+
+                /* kumite skills needed: */
+                case Strings.indKumite:
+                case Strings.teamKumite: generalGameTypeSQL = "'%(" + Strings.suffixKumite + "|"
+                                                                    + Strings.suffixFugugo +   ")'";
+                                         break;
+
+                /* fugu-go needs both: */
+                case Strings.fugugo:     generalGameTypeSQL = "'%(" + Strings.suffixKata   + "|"
+                                                                    + Strings.suffixEnbu   + "|"
+                                                                    + Strings.suffixKumite + "|"
+                                                                    + Strings.suffixFugugo +   ")'";
+                                         break;
+
+                /* default case (we assert it won't happen): */
+                default:                 generalGameTypeSQL = null;
+                                         break;
+            }
+            Debug.Assert(generalGameTypeSQL != null);
+            Debug.Assert(unofficialMultiplier < 1);
+            Debug.Assert(otherTypeMultiplier < 1);
+
+          //  /* past achievements: */
+          //  scoreAccu = conn.getNumOfGoodPlacements(athleteId, 1, true, generalGameTypesSQL) * 500 +  // first  place in   official event of the same type
+          //              conn.getNumOfGoodPlacements(athleteId, 2, true, generalGameTypesSQL) * 240 +  // second place in   official event of the same type
+          //              conn.getNumOfGoodPlacements(athleteId, 3, true, generalGameTypesSQL) * 120 +  // third  place in   official event of the same type
+          //              conn.getNumOfGoodPlacements(athleteId, 4, true, generalGameTypesSQL) *  80    // fourth place in   official event of the same type
+
+          ///* x 1/2 */ + conn.getNumOfGoodPlacements(athleteId, 1, false, generalGameTypesSQL) * 250 +  // first  place in unofficial event of the same type
+          //              conn.getNumOfGoodPlacements(athleteId, 2, false, generalGameTypesSQL) * 120 +  // second place in unofficial event of the same type
+          //              conn.getNumOfGoodPlacements(athleteId, 3, false, generalGameTypesSQL) *  60 +  // third  place in unofficial event of the same type
+          //              conn.getNumOfGoodPlacements(athleteId, 4, false, generalGameTypesSQL) *  40    // fourth place in unofficial event of the same type
+
+          ///* x 2/5 */ + conn.getNumOfGoodPlacements(athleteId, 1, true)  * 200 +  // first  place in   official event (any)
+          //              conn.getNumOfGoodPlacements(athleteId, 2, true)  *  96 +  // second place in   official event (any)
+          //              conn.getNumOfGoodPlacements(athleteId, 3, true)  *  48 +  // third  place in   official event (any)
+          //              conn.getNumOfGoodPlacements(athleteId, 4, true)  *  32    // fourth place in   official event (any)
+
+          ///* x 1/5 */ + conn.getNumOfGoodPlacements(athleteId, 1, false) * 100 +  // first  place in unofficial event (any)
+          //              conn.getNumOfGoodPlacements(athleteId, 2, false) *  48 +  // second place in unofficial event (any)
+          //              conn.getNumOfGoodPlacements(athleteId, 3, false) *  24 +  // third  place in unofficial event (any)
+          //              conn.getNumOfGoodPlacements(athleteId, 4, false) *  16    // fourth place in unofficial event (any)
+          //            ;
 
             /* past achievements: */
-            int score = conn.getNumOfGoodPlacements(athleteId, 1, true)  * 500 +  // first  place in   official event
-                        conn.getNumOfGoodPlacements(athleteId, 2, true)  * 240 +  // second place in   official event
-                        conn.getNumOfGoodPlacements(athleteId, 3, true)  * 120 +  // third  place in   official event
-                        conn.getNumOfGoodPlacements(athleteId, 4, true)  *  80 +  // fourth place in   official event
-                        conn.getNumOfGoodPlacements(athleteId, 1, false) * 250 +  // first  place in unofficial event
-                        conn.getNumOfGoodPlacements(athleteId, 2, false) * 120 +  // second place in unofficial event
-                        conn.getNumOfGoodPlacements(athleteId, 3, false) *  60 +  // third  place in unofficial event
-                        conn.getNumOfGoodPlacements(athleteId, 4, false) *  40;   // fourth place in unofficial event
+            for (int pos = 1; pos <= 4; ++pos) {
+                scoreAccu += (int) (
+                                       conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: true,  sameType: true)  * rankingWeight[pos]
+                                     + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: false, sameType: true)  * rankingWeight[pos] * unofficialMultiplier
+                                     + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: true,  sameType: false) * rankingWeight[pos] * otherTypeMultiplier
+                                     + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: false, sameType: false) * rankingWeight[pos] * otherTypeMultiplier * unofficialMultiplier
+                                   );
+            }
+
 
             /* belt color: */
             String belt = conn.getBeltColor(athleteId);
             for (int i = 0; i < Strings.rank.Length; ++i)
-                if (Strings.rank[i] == belt)  // "if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))" also works well
-                    score += i * beltFactor;
+                if (Strings.rank[i].Equals(belt, StringComparison.Ordinal))
+                    scoreAccu += i * beltFactor;
 
             /* age, only for children (<18): */
             int age = conn.getAge(athleteId);
             for (int i = 0; i < age && i < 18; ++i)
-                score += ageFactor;
+                scoreAccu += ageFactor;
 
 
-            return score;
+            return scoreAccu;
         }
 
 
@@ -198,18 +262,27 @@ namespace KarateGeek.lottery
         protected abstract List<Tuple<long, long, int, int>> getPairs(List<long> Participants);
 
 
-        public void confirmLottery() // writes current lottery to the database, atomically!
-        {
+        protected abstract List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants);
 
+
+        public void confirmLottery(bool doCommit = false) // writes current lottery to the database, atomically!
+        {
             if (this.confirmed)
                 throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore.");
 
             LotteryGenConnection conn = new LotteryGenConnection();
             List<long> L = this.getLottery();
-            List<Tuple<long, long, int, int>> Pairs = getPairs(L);
+            List<Tuple<long, long, int, int>> allPairs = getPairs(L).Concat(getEmptyPairs(L.Count)).ToList();
+
+            { // Debug info
+                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + allPairs);
+                foreach (var i in allPairs)
+                    Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
+                        i.Item1, i.Item2, i.Item3, i.Item4);
+            }
 
             /* the doCommit flag (named parameter) will be changed to "true" after some testing */
-            this.confirmed = conn.writeAllTournamentPairs(Pairs, tournamentId, doCommit: false);
+            this.confirmed = conn.writeAllTournamentPairs(allPairs, tournamentId, doCommit: doCommit);
         }
 
         #region helper nested classes
@@ -289,19 +362,40 @@ namespace KarateGeek.lottery
              *
              *  WARNING:  This might be wrong according to the project specs. Some Exposition-type
              *            tournaments still have phases (usually 16 -> 8 -> 4 -> winner). In that
-             *            case we will re-use the getPairs() implementation from LotteryGen_Versus,
+             *            case we can re-use the getPairs() implementation from LotteryGen_Versus,
              *            but the numOfPhases calculation needs to be corrected.
              *             Or we might declare them as Versus-type tournaments (still correcting
              *            the calculation of numOfPhases, decreasing by 1).
+             *
+             *  UPDATE:   Using the given (shuffled) list of athletes, but calculating phase
+             *            similarly to LotteryGen_Versus and then subtracting 1:
+             *            int numOfPhases = (int) Math.Ceiling(Math.Log(Participants.Count, 2)) - 1;
+             *            int phase = numOfPhases - 1;
              */
 
+            int phase = (int) Math.Ceiling(Math.Log(Participants.Count, 2)) - 2;
             int pos = 1;
+
             foreach (var id in this.getLottery()){
-                Pairs.Add(new Tuple<long, long, int, int>(id, -2, 0, pos));
+                Pairs.Add(new Tuple<long, long, int, int>(id, -2, phase, pos));
                 ++pos;
             }
 
             return Pairs;
+        }
+
+
+        protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
+        {
+            List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
+
+            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
+
+            for (int phase = numOfPhases - 2; phase >= 0; --phase)  // numOfPhases - 2 ?
+                for (int position = 1; position <= Math.Pow(2, phase); ++position)
+                    emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+            return emptyPairs;
         }
     }
     #endregion
@@ -427,12 +521,7 @@ namespace KarateGeek.lottery
                 int phaseXposition = yleft + 1;
                 int phaseYposition = 1;
 
-                //for (int i = 0; i < yleft; i += 2) { // crashes for Y.Length == 1
-                for (int i = 0; i < ((yleft > 1) ? yleft : -1) ; i += 2) { // BUG FIXED?! (ugly code!)
-                /*
-                 * possibly better fix (check correctness):
-                 * for (int i = 0; i < yleft - 1; i += 2) {
-                 */
+                for (int i = 0; i < yleft - 1; i += 2) {
                     Pairs.Add(new Tuple<long, long, int, int>(Yleft[i], Yleft[i + 1], phaseY, phaseYposition));
                     ++phaseYposition;
                 }
@@ -442,7 +531,8 @@ namespace KarateGeek.lottery
                     ++phaseYposition;
                 }
 
-                phaseYposition += z / 2; // ?!?! I think this line is OK.
+                //phaseYposition += z / 2; // ?!?! I think this line is OK. EDIT: NO, IT IS NOT!
+                phaseYposition += (z - (yleft % 2)) / 2;  // Check correctness!
 
                 if (yright % 2 != 0) {
                     Pairs.Add(new Tuple<long, long, int, int>(-1, Yright[0], phaseY, phaseYposition));
@@ -472,7 +562,7 @@ namespace KarateGeek.lottery
 
             /**/
 
-            { //Debug info, will be removed in the final version (auto-disabled in "release" builds anyway):
+            { // Debug info, might be removed in the final version (auto-disabled in "release" builds anyway):
                 Debug.WriteLine("Participants: " + Participants);
                 foreach (var i in Participants)
                     Debug.WriteLine(i);
@@ -508,6 +598,39 @@ namespace KarateGeek.lottery
             }
 
             return Pairs;
+        }
+
+
+        protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
+        {
+            List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
+
+            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
+
+            int p = (int)Math.Pow(2, numOfPhases);
+            int y = p - numOfParticipants;
+            int yleft = (y + 1) / 2;
+            int yright = y - yleft;
+
+            int x = numOfParticipants - y;
+            int z = p / 2 - y; // len must be >=2 (?)
+
+            // FIXME: check boundary conditions, especially here!
+            for (int position = 1 + (yleft + 1) / 2; position <= Math.Pow(2, numOfPhases - 2) - (yright + 1) / 2; ++position)  // phase Y (missing games)
+                emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, numOfPhases - 2, position));
+
+            for (int phase = numOfPhases - 3; phase >= 0; --phase)  // phase (Y - 1) to phase 0
+                for (int position = 1; position <= Math.Pow(2, phase); ++position)
+                    emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+            { // Debug info
+                Debug.WriteLine("EMPTY Pairs and positions: " + emptyPairs);
+                foreach (var i in emptyPairs)
+                    Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
+                        i.Item1, i.Item2, i.Item3, i.Item4);
+            }
+
+            return emptyPairs;
         }
 
     }
