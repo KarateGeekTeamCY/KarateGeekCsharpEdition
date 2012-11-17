@@ -8,7 +8,7 @@ using KarateGeek.databaseConnection;
 
 namespace KarateGeek
 {
-    class Tournament : CoreDatabaseConnection
+    public class Tournament : CoreDatabaseConnection
     {
         private string sql;
 

@@ -6,7 +6,7 @@ using System.Data;
 
 namespace KarateGeek
 {
-    class team : KarateGeek.databaseConnection.CoreDatabaseConnection
+    public class team : KarateGeek.databaseConnection.CoreDatabaseConnection
     {
         private string sql;
 

@@ -10,7 +10,7 @@ using System.Diagnostics;   // has Debug.WriteLine()
 
 namespace KarateGeek.databaseConnection
 {
-    class CoreDatabaseConnection
+    public class CoreDatabaseConnection
     {
         private NpgsqlConnection _conn = null;
 
