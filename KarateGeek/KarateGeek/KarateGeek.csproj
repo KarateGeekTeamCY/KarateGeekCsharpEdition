@@ -121,6 +121,9 @@
     <Compile Include="guis\UserManagement.xaml.cs">
       <DependentUpon>UserManagement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\YesNoCancelReplacement.xaml.cs">
+      <DependentUpon>YesNoCancelReplacement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="lottery\LotteryGeneratorFactory.cs" />
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="Reports\AthleteCrystalReport.cs">
@@ -312,6 +315,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\UserManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\YesNoCancelReplacement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

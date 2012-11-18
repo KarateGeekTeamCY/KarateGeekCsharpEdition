@@ -275,42 +275,33 @@ namespace KarateGeek.guis
 
         private void updateHistory()
         {
-            StringBuilder sb = new StringBuilder();
+            //StringBuilder sb = new StringBuilder();
             //bool endFlag = false;
             int historyIndex = 0;
 
-            sb.Append("");
+            //sb.Append("");
 
             //listBoxHistory = new ListBox();
             List<string> temp = new List<string>();
+            
+            foreach (Point p in _pointsHistory)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(p.time);
+                sb.Append(": ");
 
-            sb.Append(_pointsHistory.ElementAt(_pointsHistory.Count-1).time);
+                if (p.side == "right")
+                    sb.Append("Comp. B -> ");
+                else
+                    sb.Append("Comp. A -> ");
 
-            sb.Append(": ");
-            if (_pointsHistory.ElementAt(_pointsHistory.Count - 1).side == "right")
-                sb.Append("Comp. B -> ");
-            else
-                sb.Append("Comp. A -> ");
-            temp.Add(sb.ToString());
-            //foreach (Point p in _pointsHistory)
-            //{
-
-            //    sb.Append(p.time);
-            //    sb.Append(": ");
-
-            //    if (p.side == "right")
-            //        sb.Append("Comp. B -> ");
-            //    else
-            //        sb.Append("Comp. A -> ");
-
-            //    sb.Append(p.description);
-            //    sb.Append("\n");
-            //    historyIndex++;
-            //    temp.Add(sb.ToString());
-            //}
+                sb.Append(p.description);
+                sb.Append("\n");
+                historyIndex++;
+                temp.Add(sb.ToString());
+            }
 
             this.listBoxHistory.ItemsSource = temp;
-
         }
 
         private void checkWinner()
@@ -322,22 +313,33 @@ namespace KarateGeek.guis
 
         private void listBoxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string result = MessageBox.Show("Do you want to delete this record? If the answer is NO then press No to replace the record or Cancel to continue normally", "Important.",
-                MessageBoxButton.YesNoCancel,
-                MessageBoxImage.Question).ToString();
+
 
             this.toReplaceIndex = this.listBoxHistory.SelectedIndex;
-            this.toReplacePoint = this._pointsHistory.ElementAt(toReplaceIndex);
 
-            if (result == "yes")
+            if (toReplaceIndex != -1)
             {
-                this._pointsHistory.Remove(toReplacePoint);
-                this.updateHistory();
-            }
 
-            if (result == "no")
-            {
-                this.replaceFlag = true;
+
+
+                string result = MessageBox.Show("Do you want to delete this record? If the answer is NO then press No to replace the record or Cancel to continue normally", "Important.",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Question).ToString();
+
+
+
+                this.toReplacePoint = this._pointsHistory.ElementAt(toReplaceIndex);
+
+                if (result == "Yes")
+                {
+                    this._pointsHistory.Remove(toReplacePoint);
+                    this.updateHistory();
+                }
+
+                if (result == "No")
+                {
+                    this.replaceFlag = true;
+                }
             }
         }
 
