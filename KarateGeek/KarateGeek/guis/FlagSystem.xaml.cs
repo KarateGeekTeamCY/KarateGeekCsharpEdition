@@ -78,7 +78,7 @@ namespace KarateGeek.guis
             _sender = sender;
 
             //this._turnamentId = turnamentId;
-            //this._gameId = gameId;
+            this._gameId = gm.gameId;
             //this._isTeam = isTeam;
 
             this._loadDataTables();
@@ -104,7 +104,7 @@ namespace KarateGeek.guis
             else
                 _participationId = _DTparticipations.Rows[0][0].ToString();
 
-
+            this.Show();
 
         }
 

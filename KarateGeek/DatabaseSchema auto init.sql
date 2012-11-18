@@ -581,6 +581,18 @@ VALUES ('athl3' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'FEMALE', '99123
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('athl4' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'MALE', '98123146' , null , 'athl4@gmail.com' , '0');
 
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl5' , 'athl5_father' , 'athl5_last', '02-10-1999' , 'MALE', '98123145' , null , 'athl5@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl6' , 'athl6_father' , 'athl6_last', '02-10-1991' , 'MALE', '99123146' , null , 'athl6@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl7' , 'athl7_father' , 'athl7_last', '02-10-2000' , 'FEMALE', '99123145' , null , 'athl7@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl8' , 'athl8_father' , 'athl8_last', '02-10-2008' , 'MALE', '98133146' , null , 'athl8@gmail.com' , '0');
+
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
 -- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
@@ -597,6 +609,11 @@ INSERT INTO athletes (id, rank, club_id ) VALUES ('1', 'Black  –  2nd dan', '1
 INSERT INTO athletes (id, rank, club_id ) VALUES ('2', 'Black  –  1st dan', NULL );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('3', 'Blue   –  2nd kyu', '2'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('4', 'White/Red – 8th dan', '2' );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('5', 'Green  –  3th kyu', '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('6', 'Red    –  9th dan', NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('7', 'Blue   –  2nd kyu', '2'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('8', 'White/Red – 8th dan', '1' );
+
 
 INSERT INTO locations (id, name, phone, email)
 VALUES (0, 'location 1', '77778888', 'loc@locloc.com');
@@ -621,6 +638,14 @@ INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_tim
 VALUES (3, 1, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (4, 1, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (5, 1, (SELECT rank FROM athletes WHERE id = 5), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (6, 1, (SELECT rank FROM athletes WHERE id = 6), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 1, (SELECT rank FROM athletes WHERE id = 7), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (8, 1, (SELECT rank FROM athletes WHERE id = 8), NULL, NULL );
 
 --select * from tournaments;
 

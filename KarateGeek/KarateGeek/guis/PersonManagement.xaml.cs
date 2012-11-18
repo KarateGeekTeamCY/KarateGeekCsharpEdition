@@ -905,9 +905,9 @@ namespace KarateGeek.guis
                 judgeConnection = new JudgeConnection();
 
 
-                judgeConnection.InsertNewJudge(_judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK, _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
+                judgeConnection.InsertNewJudge(_personId, _judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK, _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
                 MessageBox.Show("Succesfully saved!");
-                PersonManagement pm = new PersonManagement(this);
+                PersonManagement pm = new PersonManagement(this.sender);
                 pm.Activate();
                 pm.Show();
                 this.Hide();
@@ -920,7 +920,7 @@ namespace KarateGeek.guis
             if (judgeConnection.deleteJudge(_personId))
             {
                 MessageBox.Show("Succesfully deleted!");
-                PersonManagement pm = new PersonManagement(this);
+                PersonManagement pm = new PersonManagement(this.sender);
                 pm.Activate();
                 pm.Show();
                 this.Close();
@@ -928,7 +928,7 @@ namespace KarateGeek.guis
             else
             {
                 MessageBox.Show("Cannot be deleted because of tournament participation!");
-                PersonManagement pm = new PersonManagement(this);
+                PersonManagement pm = new PersonManagement(this.sender);
                 pm.Activate();
                 pm.Show();
                 this.Close();

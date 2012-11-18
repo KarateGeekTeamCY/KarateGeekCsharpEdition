@@ -37,7 +37,7 @@ namespace KarateGeek.guis
 
             KarateGeek.databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
 
-            DataTable temp = conn.Query("select * from game_participants where tournament_id = '" + game.touenamentId + "' and game_id = '" + game.gameId + "'; ").Tables[0];
+            DataTable temp = conn.Query("select * from game_participants where tournament_id = '" + game.tournamentId + "' and game_id = '" + game.gameId + "'; ").Tables[0];
 
             string phase, teamAid, teamBid;
 
@@ -47,17 +47,17 @@ namespace KarateGeek.guis
             gamePartIdA = (string)temp.Rows[0][0];
             gamePartIdB = (string)temp.Rows[1][0];
 
-            temp = conn.Query("select phase from games where tournament_id = '" + game.touenamentId + "' and game_id = '" + game.gameId + "' ;").Tables[0];
+            temp = conn.Query("select phase from games where tournament_id = '" + game.tournamentId + "' and game_id = '" + game.gameId + "' ;").Tables[0];
             phase = (string)temp.Rows[0][0];
 
 
             StringBuilder sb = new StringBuilder();
             sb.Append("select persons.id, last_name, first_name from tournament_participants join persons on tournament_participants.athlete_id = persons.id");
-            sb.Append("  where tournament_id = '").Append(game.touenamentId);
+            sb.Append("  where tournament_id = '").Append(game.tournamentId);
             sb.Append("' and team_id = '").Append(teamAid);
             sb.Append("' and athelet_id not in ");
             sb.Append("  (select athlete_id from game_participations join games on game_participations.game_id = games.id");
-            sb.Append("  where  tournament_id = '").Append(game.touenamentId);
+            sb.Append("  where  tournament_id = '").Append(game.tournamentId);
             sb.Append("' and phase = '").Append(phase).Append("' ); ");
 
             athsA = conn.Query(sb.ToString()).Tables[0];
@@ -69,11 +69,11 @@ namespace KarateGeek.guis
 
             sb = new StringBuilder();
             sb.Append("select persons.id, last_name, first_name from tournament_participants join persons on tournament_participants.athlete_id = persons.id");
-            sb.Append("  where tournament_id = '").Append(game.touenamentId);
+            sb.Append("  where tournament_id = '").Append(game.tournamentId);
             sb.Append("' and team_id = '").Append(teamBid);
             sb.Append("' and athelet_id not in ");
             sb.Append("  (select athlete_id from game_participations join games on game_participations.game_id = games.id");
-            sb.Append("  where  tournament_id = '").Append(game.touenamentId);
+            sb.Append("  where  tournament_id = '").Append(game.tournamentId);
             sb.Append("' and phase = '").Append(phase).Append("' ); ");
 
             athsB = conn.Query(sb.ToString()).Tables[0];

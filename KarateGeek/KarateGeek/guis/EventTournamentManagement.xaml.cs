@@ -31,6 +31,7 @@ namespace KarateGeek.guis
         TournamentConnection tournamentConnection = new TournamentConnection();
         ParticipationsConnection participantConnection = new ParticipationsConnection();
         AthleteConnection athleteConnection = new AthleteConnection();
+        private Window sender;
 
         private DataSet filteredEvents;
         private DataSet filteredTournaments;
@@ -84,33 +85,37 @@ namespace KarateGeek.guis
         private int teamNumber = 0;
 
 
-        public EventTournamentManagement()
+        public EventTournamentManagement(Window sender)
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
 
             initialize();   //initialize gui and others
 
-
+            this.sender = sender;
         }
 
         //constructor pou pernei san orisma tin imerominia pou tou exei perastei apo to main
-        public EventTournamentManagement(DateTime dateSelection)
+        public EventTournamentManagement(DateTime dateSelection, Window sender)
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
 
             initialize();   //initialize gui and others
             this.eventDate.SelectedDate = dateSelection;
+
+            this.sender = sender;
         }
 
-        public EventTournamentManagement(string name)
+        public EventTournamentManagement(string name, Window sender)
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
 
             initialize();
             autocompleteByName(name);
+
+            this.sender = sender;
         }
 
 
@@ -336,10 +341,8 @@ namespace KarateGeek.guis
 
         private void btnEBack_Click(object sender, RoutedEventArgs e)
         {
-            MainMenu menu = new MainMenu();
-            menu.Activate();
             this.Close();
-            menu.Show();
+            this.sender.Show();
         }
 
         private void btnESave_Click(object sender, RoutedEventArgs e)
@@ -357,7 +360,7 @@ namespace KarateGeek.guis
             {
                 eventConnection.InsertNewEvent(_eventName, _eventDate, _eventAddress, _eventAddressNum, _eventPCode, _eventLocation, _eventPhone, _eventEmail, _eventCity, _eventCountryCode, _eventOfficial);
                 MessageBox.Show("Succesfully saved!");
-                EventTournamentManagement etm = new EventTournamentManagement();
+                EventTournamentManagement etm = new EventTournamentManagement(this.sender); // FIXME: this moves the window to the center of the screen
                 etm.Activate();
                 etm.Show();
                 this.Close();
@@ -368,7 +371,7 @@ namespace KarateGeek.guis
         {
             eventConnection.deleteEvent(_eventId);
             MessageBox.Show("Succesfully deleted!");
-            EventTournamentManagement etm = new EventTournamentManagement();
+            EventTournamentManagement etm = new EventTournamentManagement(this.sender); // FIXME: this moves the window to the center of the screen
             etm.Activate();
             etm.Show();
             this.Close();
@@ -941,11 +944,8 @@ namespace KarateGeek.guis
 
         private void btnTBack_Click(object sender, RoutedEventArgs e)
         {
-
-            MainMenu menu = new MainMenu();
-            menu.Activate();
             this.Close();
-            menu.Show();
+            this.sender.Show();
         }
 
         private void btnTSave_Click(object sender, RoutedEventArgs e)
@@ -975,7 +975,7 @@ namespace KarateGeek.guis
             tournamentConnection.deleteTournament(_tournamentId);
             
             MessageBox.Show("Succesfully deleted!");
-            EventTournamentManagement etm = new EventTournamentManagement();
+            EventTournamentManagement etm = new EventTournamentManagement(this.sender);
             etm.Activate();
             etm.Show();
             this.Close();

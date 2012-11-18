@@ -29,7 +29,7 @@ namespace KarateGeek.guis
 
 
         private int pointsIndex = 0;
-        private LinkedList<Point> _pointsHistory = new LinkedList<Point>();
+        private List<Point> _pointsHistory = new List<Point>();
 
         private bool replaceFlag = false;
         private int toReplaceIndex = -1;
@@ -49,11 +49,12 @@ namespace KarateGeek.guis
             this._sender = sender;
             //this._gameId = gameId;
             this._LoadData();
+            this.Show();
         }
 
         private void _LoadData()
         {
- 
+
 
 
         }
@@ -72,11 +73,12 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.ippon, 1, "left");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
 
+            //_pointsHistory.add
             updateHistory();
 
         }
@@ -89,7 +91,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.wazaari, 1, "left");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -105,7 +107,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.jyogai, 1, "left");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -121,7 +123,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.chui, 1, "left");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -137,7 +139,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.keikoku, 1, "left");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -153,7 +155,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.tento, 1, "left");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -174,7 +176,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.ippon, 1, "right");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -191,7 +193,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.wazaari, 1, "right");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -207,11 +209,11 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.jyogai, 1, "right");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
-            
+
             updateHistory();
         }
 
@@ -223,7 +225,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.chui, 1, "right");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -239,7 +241,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.keikoku, 1, "right");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -255,7 +257,7 @@ namespace KarateGeek.guis
             if (replaceFlag)
                 this.toReplacePoint.update(Strings.tento, 1, "right");
             else
-                this._pointsHistory.AddLast(p);
+                this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
@@ -274,28 +276,41 @@ namespace KarateGeek.guis
         private void updateHistory()
         {
             StringBuilder sb = new StringBuilder();
-            bool endFlag = false;
+            //bool endFlag = false;
             int historyIndex = 0;
 
             sb.Append("");
 
-            while (!endFlag)
-            {
+            //listBoxHistory = new ListBox();
+            List<string> temp = new List<string>();
 
-                sb.Append(_pointsHistory.ElementAt(historyIndex).time);
-                sb.Append(": ");
+            sb.Append(_pointsHistory.ElementAt(_pointsHistory.Count-1).time);
 
-                if (_pointsHistory.ElementAt(historyIndex).side == "right")
-                    sb.Append("Comp. B -> ");
-                else
-                    sb.Append("Comp. A -> ");
+            sb.Append(": ");
+            if (_pointsHistory.ElementAt(_pointsHistory.Count - 1).side == "right")
+                sb.Append("Comp. B -> ");
+            else
+                sb.Append("Comp. A -> ");
+            temp.Add(sb.ToString());
+            //foreach (Point p in _pointsHistory)
+            //{
 
-                sb.Append(_pointsHistory.ElementAt(historyIndex).description);
-                sb.Append("\n");
-                historyIndex++;
+            //    sb.Append(p.time);
+            //    sb.Append(": ");
 
-            }
-            this.listBoxHistory.Items.Add(sb.ToString());
+            //    if (p.side == "right")
+            //        sb.Append("Comp. B -> ");
+            //    else
+            //        sb.Append("Comp. A -> ");
+
+            //    sb.Append(p.description);
+            //    sb.Append("\n");
+            //    historyIndex++;
+            //    temp.Add(sb.ToString());
+            //}
+
+            this.listBoxHistory.ItemsSource = temp;
+
         }
 
         private void checkWinner()
@@ -329,7 +344,7 @@ namespace KarateGeek.guis
 
 
         #region management buttons
-        
+
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
 
@@ -350,7 +365,7 @@ namespace KarateGeek.guis
 
         }
 
-        #endregion 
+        #endregion
 
     }
 

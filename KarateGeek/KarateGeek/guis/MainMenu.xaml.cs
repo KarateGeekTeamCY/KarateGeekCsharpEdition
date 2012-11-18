@@ -55,7 +55,7 @@ namespace KarateGeek.guis
 
         private void btnEventmanagement_Click(object sender, RoutedEventArgs e)
         {
-            EventTournamentManagement et = new EventTournamentManagement();
+            EventTournamentManagement et = new EventTournamentManagement(this);
             et.Activate();
             this.Hide();
             et.Show();
@@ -63,10 +63,10 @@ namespace KarateGeek.guis
 
         private void btnClubmanagement_Click(object sender, RoutedEventArgs e)
         {
-            ClubManagement cl = new ClubManagement();
+            ClubManagement cl = new ClubManagement(this);
             cl.Activate();
 
-            this.Close();
+            this.Hide();
             cl.Show();
         }
 
@@ -82,17 +82,17 @@ namespace KarateGeek.guis
 
             if (ds.Rows.Count == 0)
             {
-                EventTournamentManagement et = new EventTournamentManagement(selectedDate);
+                EventTournamentManagement et = new EventTournamentManagement(selectedDate, this);
                 et.Activate();
-                this.Close();
+                this.Hide();
                 et.Show();
             }
             else
             {
-                EventTournamentManagement et = new EventTournamentManagement(ds.Rows[0][1].ToString());
+                EventTournamentManagement et = new EventTournamentManagement(ds.Rows[0][1].ToString(), this);
                 et.Activate();
                 et.eSuggestionList.SelectedIndex = 0;
-                this.Close();
+                this.Hide();
                 et.Show();
             }
 
@@ -102,10 +102,11 @@ namespace KarateGeek.guis
         /* Do not just remove this code; it's a usage example for the lottery class. */
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
-            LotteryChooser lc = new LotteryChooser();
+            LotteryChooser lc = new LotteryChooser(this);
             lc.Activate();
             this.Hide();
             lc.Show();
+
             //LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 1); // use 1 to test kata
 
             //// Some silly test code:

@@ -164,7 +164,8 @@
                      Margin="5"
                      Grid.RowSpan="7" 
                      BorderThickness="2" 
-                     BorderBrush="#FF009600" SelectionChanged="listBoxHistory_SelectionChanged" />
+                     BorderBrush="#FF009600" 
+                     SelectionChanged="listBoxHistory_SelectionChanged" />
 
         </Grid>
         

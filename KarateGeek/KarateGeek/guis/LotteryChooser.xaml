@@ -67,12 +67,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <ListBox Name="currentPhase"  
-                         Grid.Column="0"
-                         Margin="5"/>
-                <ListBox Name="nextPhase"
-                         Grid.Column="1"
-                         Margin="5"/>
+                <Label Name="terminal"
+                       FontFamily="Lucida Console"
+                       Grid.ColumnSpan="2"
+                       Margin="5"
+                       BorderThickness="2"/>
 
 
             </Grid>
@@ -102,16 +101,14 @@
                     Grid.Column="3"
                     Margin="5"
                     Padding="5"
-                    VerticalAlignment="Center"
-                    />
+                    VerticalAlignment="Center" Click="btnSave_Click" />
 
             <Button Name="btnBack" 
                     Content="Back" 
                     Grid.Column="1"
                     Margin="5"
                     Padding="5"
-                    VerticalAlignment="Center"
-                    />
+                    VerticalAlignment="Center" Click="btnBack_Click" />
 
         </Grid>
         

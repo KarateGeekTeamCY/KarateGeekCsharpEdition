@@ -126,7 +126,7 @@ namespace KarateGeek.databaseConnection
             string filter = "where";
             string sql = null;
             int num = 0;
-            if (!sex.Equals(""))
+            if (sex != null)
             {
                 if (num == 0)
                 {

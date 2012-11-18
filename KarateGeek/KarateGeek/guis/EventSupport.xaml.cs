@@ -103,7 +103,7 @@ namespace KarateGeek.guis
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
-            this._tournamentId = (string)_TournamantsDT.Rows[i][0];
+            this._tournamentId = (string)_TournamantsDT.Rows[i][0].ToString();
 
             this.tournament = new Tournament(this._tournamentId);
 
@@ -398,9 +398,25 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games2)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    Athlete A;
+                    Athlete B;
+                    switch (gm.participants.Count)
+                    {
+                        case 0:
+                            future.Add("...\nVS\n...");
+                            break;
+                        case 1:
+                            A = gm.participants.ElementAt(0);
+                            future.Add(A.lastName + " " + A.firstName + "\nVS\n...");
+                            break;
+                        case 2:
+                            A = gm.participants.ElementAt(0);
+                            B = gm.participants.ElementAt(1);
+                            future.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                            break;
+                    }
+
+
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -1426,7 +1442,7 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select game_participations.athlete_id, mean_score from tournament_participations join game_participacions on tournament_participations.athlete_id = game_participations.athlete_id join game_score on game_participation.athlete_id = game_score.athlete_id where tournament_id = '" + this.tournament.id + "' AND phase '" + this._indexCurrentphase +"' ORDER BY mean_score DESC ;";
+            sql = "select game_participations.athlete_id, mean_score from tournament_participations join game_participacions on tournament_participations.athlete_id = game_participations.athlete_id join game_score on game_participation.athlete_id = game_score.athlete_id where tournament_id = '" + this.tournament.id + "' AND phase '" + this._indexCurrentphase + "' ORDER BY mean_score DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Athlete> aths = new List<Athlete>();
@@ -1687,7 +1703,7 @@ namespace KarateGeek.guis
                             if (dt.Rows.Count == 0)
                             {
                                 List<Athlete> winners = this.getKataIndSinglePositioning();
- 
+
                                 //switch (this._indexCurrentphase)
                                 //{
                                 //    case 1:

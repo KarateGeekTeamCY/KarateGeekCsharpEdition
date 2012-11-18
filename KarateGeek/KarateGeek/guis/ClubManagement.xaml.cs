@@ -39,8 +39,9 @@ namespace KarateGeek.guis
         private CountryConnection countryConnection;
         private AddressConnection addressConnection;
         List<ListData> clubNameListForAutoComplete;
+        private Window sender;
 
-        public ClubManagement()
+        public ClubManagement(Window sender)
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
@@ -59,6 +60,7 @@ namespace KarateGeek.guis
 
             this.clubUpdateCities("CY");
 
+            this.sender = sender;
         }
 
        
@@ -291,10 +293,8 @@ namespace KarateGeek.guis
 
         private void btnCBack_Click(object sender, RoutedEventArgs e)
         {
-            MainMenu menu = new MainMenu();
-            menu.Activate();
             this.Close();
-            menu.Show();
+            this.sender.Show();
         }
 
         private void btnCSave_Click(object sender, RoutedEventArgs e)

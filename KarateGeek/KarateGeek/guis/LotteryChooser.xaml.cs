@@ -28,17 +28,19 @@ namespace KarateGeek.guis
         private int eventId;
         private int tournamentId;
         private LotteryGenerator lg;
+        private Window sender;
 
-        public LotteryChooser()
+        public LotteryChooser(Window sender)
         {
             InitializeComponent();
-
 
             futureUnlotterisedEvents = eventConn.getUnlotterisedEvents();
             foreach (DataRow dr in futureUnlotterisedEvents.Rows)
             {
                 cboEventCombo.Items.Add(dr[1].ToString());
             }
+
+            this.sender = sender;
         }
 
         private void cboEventCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -68,6 +70,17 @@ namespace KarateGeek.guis
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
             lg.shuffle();
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            lg.confirmLottery(true);
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.sender.Show();
+            this.Close();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace KarateGeek
         private string sql;
 
         public string eventId { get; set; }
-        public string touenamentId { get; set; }
+        public string tournamentId { get; set; }
         public string gameId { get; set; }
         public string phase { get; set; }
         public string position { get; set; }
@@ -41,7 +41,7 @@ namespace KarateGeek
 
         public void AddParticipant(string athleteId)
         {
-            this.participants.Add(new Athlete(athleteId, this.touenamentId));
+            this.participants.Add(new Athlete(athleteId, this.tournamentId));
             this.Update();
         }
 
@@ -62,18 +62,18 @@ namespace KarateGeek
         public void load()
         {
 
-            sql = "select * from games join tournaments on games.tournament_id = tournaments.id where id = '" + this.gameId + "';";
+            sql = "select * from games join tournaments on games.tournament_id = tournaments.id where games.id = '" + this.gameId + "';";
             DataTable temp = this.Query(sql).Tables[0];
 
 
-            this.phase = (string)temp.Rows[0][1];
-            this.position = (string)temp.Rows[0][2];
-            this.touenamentId = (string)temp.Rows[0][3];
+            this.phase = (string)temp.Rows[0][1].ToString();
+            this.position = (string)temp.Rows[0][2].ToString();
+            this.tournamentId = (string)temp.Rows[0][3].ToString();
 
             this.isReady = (bool)temp.Rows[0][4];
             this.isFinished = (bool)temp.Rows[0][5];
 
-            this.eventId = (string)temp.Rows[0][15];
+            this.eventId = (string)temp.Rows[0][15].ToString();
 
 
             sql = "select * from game_participants_total_det where game_id = '" + this.gameId + "'";
@@ -84,7 +84,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.participants.Add(new Athlete((string)dr[4], this.touenamentId));
+                this.participants.Add(new Athlete((string)dr[4].ToString(), this.tournamentId));
                 this.numOfParticipants++;
             }
         }
@@ -105,7 +105,7 @@ namespace KarateGeek
                 if (exist == 0)
                 {
                     
-                     sql = "select * from tournament_participations where tournament_id = '" + this.touenamentId + "', and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
+                     sql = "select * from tournament_participations where tournament_id = '" + this.tournamentId + "', and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
                     DataTable temp = Query(sql).Tables[0];
 
                     if (temp.Rows.Count == 0)

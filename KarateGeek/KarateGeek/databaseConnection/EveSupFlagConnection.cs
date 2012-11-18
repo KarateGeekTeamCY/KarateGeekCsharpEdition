@@ -16,7 +16,7 @@ namespace KarateGeek.databaseConnection
         public string InsertNewflagInd(string gameId, string athleteId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id,
                                                                         bool flag1, bool flag2, bool flag3, bool flag4, bool flag5)
         {
-            sql = "insert into gane_flags (game_id, athlete_id, judge1, judge2, judge3, judge4, judge5, " +
+            sql = "insert into game_flags (game_id, athlete_id, judge1, judge2, judge3, judge4, judge5, " +
                 "flag1, flag2, flag3, flag4, flag5) values ('" +
                 gameId + "', '" + athleteId + "', '" +
                 judge1Id + "', '" + judge2Id + "', '" + judge3Id + "', '" + judge4Id + "', '" + judge5Id + "', '" +

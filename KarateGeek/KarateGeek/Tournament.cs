@@ -60,7 +60,7 @@ namespace KarateGeek
             this.rankTo = (string)temp.Rows[0][6];
             this.gameType = (string)temp.Rows[0][7];
             this.judgingType = (string)temp.Rows[0][8];
-            this.eventId = (string)temp.Rows[0][9];
+            this.eventId = (string)temp.Rows[0][9].ToString();
 
             switch ((string)this.gameType.Split('|')[0])
             {
@@ -141,7 +141,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games4.Add(new Game((string)dr[0]));
+                this.games4.Add(new Game((string)dr[0].ToString()));
             }
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 1 ORDER BY position ASC;";
@@ -152,7 +152,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games2.Add(new Game((string)dr[0]));
+                this.games2.Add(new Game((string)dr[0].ToString()));
             }
 
             #endregion load games
@@ -161,10 +161,10 @@ namespace KarateGeek
 
             sql = "SELECT * FROM tournament_participations where tournament_id = '" + this.id + "';";
             temp = this.Query(sql).Tables[0];
-
+            this.participants = new List<Athlete>();
             foreach (DataRow dr in temp.Rows)
             {
-                this.participants.Add(new Athlete((string)dr[0], this.id));
+                this.participants.Add(new Athlete((string)dr[0].ToString(), this.id));
             }
 
             sql = "SELECT * FROM team_tournament_participations where tournament_id = '" + this.id + "';";
