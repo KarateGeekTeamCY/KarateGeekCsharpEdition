@@ -31,7 +31,7 @@ namespace KarateGeek.guis
         private string _tournamentId;
 
         private int _indexlastExecutedGame;
-        private int _indexCurentphase;
+        private int _indexCurrentphase;
         private int _indexNextPhase;
 
         private bool _firstLoad = true;
@@ -215,7 +215,7 @@ namespace KarateGeek.guis
         {
             if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
             {
-                this._indexCurentphase = 7;
+                this._indexCurrentphase = 7;
                 this._indexNextPhase = 6;
 
 
@@ -249,7 +249,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
             {
-                this._indexCurentphase = 6;
+                this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
 
 
@@ -281,7 +281,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
             {
-                this._indexCurentphase = 5;
+                this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
 
                 //
@@ -313,7 +313,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
             {
-                this._indexCurentphase = 4;
+                this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
 
                 //
@@ -344,7 +344,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
             {
-                this._indexCurentphase = 3;
+                this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
 
                 //
@@ -375,7 +375,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
             {
-                this._indexCurentphase = 2;
+                this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
 
                 //
@@ -407,7 +407,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games2.Count != 0 && (!this.tournament.games2.Last().isFinished))
             {
-                this._indexCurentphase = 1;
+                this._indexCurrentphase = 1;
                 this._indexNextPhase = -1;
 
                 //
@@ -442,7 +442,7 @@ namespace KarateGeek.guis
 
             if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
             {
-                this._indexCurentphase = 7;
+                this._indexCurrentphase = 7;
                 this._indexNextPhase = 6;
 
 
@@ -476,7 +476,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
             {
-                this._indexCurentphase = 6;
+                this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
 
 
@@ -508,7 +508,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
             {
-                this._indexCurentphase = 5;
+                this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
 
                 //
@@ -540,7 +540,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
             {
-                this._indexCurentphase = 4;
+                this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
 
                 //
@@ -571,7 +571,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
             {
-                this._indexCurentphase = 3;
+                this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
 
                 //
@@ -602,7 +602,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
             {
-                this._indexCurentphase = 2;
+                this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
 
                 //
@@ -662,7 +662,7 @@ namespace KarateGeek.guis
         {
             if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
             {
-                this._indexCurentphase = 7;
+                this._indexCurrentphase = 7;
                 this._indexNextPhase = 6;
 
 
@@ -710,7 +710,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
             {
-                this._indexCurentphase = 6;
+                this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
 
 
@@ -756,7 +756,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
             {
-                this._indexCurentphase = 5;
+                this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
 
                 //
@@ -802,7 +802,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
             {
-                this._indexCurentphase = 4;
+                this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
 
                 //
@@ -847,7 +847,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
             {
-                this._indexCurentphase = 3;
+                this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
 
                 //
@@ -892,7 +892,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
             {
-                this._indexCurentphase = 2;
+                this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
 
                 //
@@ -938,7 +938,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games2.Count != 0 && (!this.tournament.games2.Last().isFinished))
             {
-                this._indexCurentphase = 1;
+                this._indexCurrentphase = 1;
                 this._indexNextPhase = -1;
 
                 //
@@ -1009,7 +1009,7 @@ namespace KarateGeek.guis
 
             if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
             {
-                this._indexCurentphase = 7;
+                this._indexCurrentphase = 7;
                 this._indexNextPhase = 6;
 
 
@@ -1045,7 +1045,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
             {
-                this._indexCurentphase = 6;
+                this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
 
 
@@ -1079,7 +1079,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
             {
-                this._indexCurentphase = 5;
+                this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
 
                 //
@@ -1113,7 +1113,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
             {
-                this._indexCurentphase = 4;
+                this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
 
                 //
@@ -1146,7 +1146,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
             {
-                this._indexCurentphase = 3;
+                this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
 
                 //
@@ -1179,7 +1179,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
             {
-                this._indexCurentphase = 2;
+                this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
 
                 //
@@ -1214,7 +1214,7 @@ namespace KarateGeek.guis
 
             if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
             {
-                this._indexCurentphase = 7;
+                this._indexCurrentphase = 7;
                 this._indexNextPhase = 6;
 
 
@@ -1250,7 +1250,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
             {
-                this._indexCurentphase = 6;
+                this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
 
 
@@ -1284,7 +1284,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
             {
-                this._indexCurentphase = 5;
+                this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
 
                 //
@@ -1318,7 +1318,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
             {
-                this._indexCurentphase = 4;
+                this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
 
                 //
@@ -1351,7 +1351,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
             {
-                this._indexCurentphase = 3;
+                this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
 
                 //
@@ -1384,7 +1384,7 @@ namespace KarateGeek.guis
             }
             else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
             {
-                this._indexCurentphase = 2;
+                this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
 
                 //
@@ -1420,13 +1420,13 @@ namespace KarateGeek.guis
 
         #region winner checks
         //
-        // INDEVIDUAL
+        // INDIVIDUAL
         //
         private List<Athlete> getKataIndSinglePositioning()
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select game_participations.athlete_id, mean_score from tournament_participations join game_participacions on tournament_participations.athlete_id = game_participations.athlete_id join game_score on game_participation.athlete_id = game_score.athlete_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
+            sql = "select game_participations.athlete_id, mean_score from tournament_participations join game_participacions on tournament_participations.athlete_id = game_participations.athlete_id join game_score on game_participation.athlete_id = game_score.athlete_id where tournament_id = '" + this.tournament.id + "' AND phase '" + this._indexCurrentphase +"' ORDER BY mean_score DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Athlete> aths = new List<Athlete>();
@@ -1527,7 +1527,7 @@ namespace KarateGeek.guis
             this._indexlastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
 
 
-            switch (this._indexCurentphase)
+            switch (this._indexCurrentphase)
             {
                 case 1:
                     gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
@@ -1579,7 +1579,7 @@ namespace KarateGeek.guis
                     break;
                 case Strings.fugugo:
 
-                    if (this._indexCurentphase % 2 == 1)
+                    if (this._indexCurrentphase % 2 == 1)
                     {
                         kumiteSys = new KumiteSystem(this, gm);
                     }
@@ -1621,7 +1621,31 @@ namespace KarateGeek.guis
 
         public void advanceAthlites()
         {
-
+            Game gm = null;
+            switch (this._indexCurrentphase)
+            {
+                case 1:
+                    gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 2:
+                    gm = tournament.games4.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 3:
+                    gm = tournament.games8.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 4:
+                    gm = tournament.games16.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 5:
+                    gm = tournament.games32.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 6:
+                    gm = tournament.games64.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+                case 7:
+                    gm = tournament.games128.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    break;
+            }
             switch (tournament.gameType)
             {
                 case Strings.indKata:
@@ -1629,13 +1653,69 @@ namespace KarateGeek.guis
                     switch (tournament.judgingType)
                     {
                         case Strings.flag:
+                            //gm.gameId
+                            Athlete winner = this.getKataIndVersusWinner(gm.gameId);
+                            switch (this._indexCurrentphase)
+                            {
+                                case 1:
+                                    tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 2:
+                                    tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 3:
+                                    tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 4:
+                                    tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 5:
+                                    tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 6:
+                                    tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 7:
+                                    tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                            }
 
 
                             break;
                         case Strings.score:
+                            DataTable dt = new CoreDatabaseConnection().Query("SELECT * FROM games where phase = '" + this._indexCurrentphase + "' and is_finished = false ;").Tables[0];
+                            if (dt.Rows.Count == 0)
+                            {
+                                List<Athlete> winners = this.getKataIndSinglePositioning();
+ 
+                                switch (this._indexCurrentphase)
+                                {
+                                    case 1:
+                                        tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                        break;
+                                    case 2:
+                                        tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                        break;
+                                    case 3:
+                                        tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                        break;
+                                    case 4:
+                                        tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                        break;
+                                    case 5:
+                                        tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                        break;
+                                    case 6:
+                                        tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                        break;
+                                    case 7:
+                                        tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                        break;
+                                }
 
-
+                            }
                             break;
+
                     }
 
                     break;
@@ -1646,7 +1726,7 @@ namespace KarateGeek.guis
                     break;
                 case Strings.fugugo:
 
-                    if (this._indexCurentphase % 2 == 1)
+                    if (this._indexCurrentphase % 2 == 1)
                     {
 
 
