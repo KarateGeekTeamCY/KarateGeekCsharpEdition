@@ -129,7 +129,7 @@ namespace KarateGeek.guis
 
         #region game loading functions
 
-        private void loadGames()
+        public void loadGames()
         {
             if (this.tournament.isInd)
                 loadIndevidual();
@@ -1638,6 +1638,7 @@ namespace KarateGeek.guis
         public void advanceAthlites()
         {
             Game gm = null;
+            Athlete winner = null;
             switch (this._indexCurrentphase)
             {
                 case 1:
@@ -1670,7 +1671,7 @@ namespace KarateGeek.guis
                     {
                         case Strings.flag:
                             //gm.gameId
-                            Athlete winner = this.getKataIndVersusWinner(gm.gameId);
+                            winner = this.getKataIndVersusWinner(gm.gameId);
                             switch (this._indexCurrentphase)
                             {
                                 case 1:
@@ -1736,7 +1737,31 @@ namespace KarateGeek.guis
 
                     break;
                 case Strings.indKumite:
-
+                            winner = this.getKumiteIndVersusWinner(gm.gameId);
+                            switch (this._indexCurrentphase)
+                            {
+                                case 1:
+                                    tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 2:
+                                    tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 3:
+                                    tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 4:
+                                    tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 5:
+                                    tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 6:
+                                    tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                                case 7:
+                                    tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    break;
+                            }
 
 
                     break;

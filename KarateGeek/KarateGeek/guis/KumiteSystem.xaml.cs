@@ -19,13 +19,19 @@ namespace KarateGeek.guis
     /// <summary>
     /// Interaction logic for KumiteSystem.xaml
     /// </summary>
+    /// 
+
     public partial class KumiteSystem : Window
     {
 
         #region private declarations
 
-        private Window _sender;
         private string _gameId;
+        private string _leftAthleteId = null;
+        private string _rightAthleteId = null;
+        private string _leftAthleteTeamId = null;
+        private string _rightAthleteTeamId = null;
+
 
 
         private int pointsIndex = 0;
@@ -34,7 +40,10 @@ namespace KarateGeek.guis
         private bool replaceFlag = false;
         private int toReplaceIndex = -1;
         private Point toReplacePoint;
-
+        private Game game;
+        private int scoreLeft = 0;
+        private int scoreRight = 0;
+        private EventSupport sender;
 
 
 
@@ -42,11 +51,12 @@ namespace KarateGeek.guis
 
 
 
-        public KumiteSystem(Window sender, Game game)
+        public KumiteSystem(EventSupport sender, Game game)
         {
 
             InitializeComponent();
-            this._sender = sender;
+            this.game = game;
+            this.sender = sender;
             //this._gameId = gameId;
             this._LoadData();
             this.Show();
@@ -54,9 +64,15 @@ namespace KarateGeek.guis
 
         private void _LoadData()
         {
+            this.competitorA.Text = this.game.participants.ElementAt(0).firstName + " " + this.game.participants.ElementAt(0).lastName;
+            this.competitorB.Text = this.game.participants.ElementAt(1).firstName + " " + this.game.participants.ElementAt(1).lastName;
+            this._gameId = this.game.gameId;
 
+            this._leftAthleteId = this.game.participants.ElementAt(0).id;
+            this._rightAthleteId = this.game.participants.ElementAt(1).id;
 
-
+            this._leftAthleteTeamId = this.game.participants.ElementAt(0).teamId;
+            this._rightAthleteTeamId = this.game.participants.ElementAt(1).teamId;
         }
 
 
@@ -283,20 +299,31 @@ namespace KarateGeek.guis
 
             //listBoxHistory = new ListBox();
             List<string> temp = new List<string>();
-            
+
+            scoreLeft = 0;
+            scoreRight = 0;
+
             foreach (Point p in _pointsHistory)
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append(p.time);
                 sb.Append(": ");
 
-                if (p.side == "right")
-                    sb.Append("Comp. B -> ");
-                else
-                    sb.Append("Comp. A -> ");
 
+                if (p.side == "right")
+                {
+                    scoreRight += p.points;
+                    sb.Append("Comp. B -> ");
+                }
+                else
+                {
+                    scoreLeft += p.points;
+                    sb.Append("Comp. A -> ");
+                }
                 sb.Append(p.description);
                 sb.Append("\n");
+                scoreA.Text = scoreLeft.ToString();
+                scoreB.Text = scoreRight.ToString();
                 historyIndex++;
                 temp.Add(sb.ToString());
             }
@@ -364,7 +391,53 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+            foreach (Point p in _pointsHistory)
+            {
+                if (p.side == "left")
+                {
+                    if (_leftAthleteTeamId == "")
+                    {
+                        conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ("
+                            + _gameId + ","
+                            + _leftAthleteId + ","
+                            + p.points + ", '"
+                            + p.description + "'); ");
+                    }
+                    else
+                    {
+                        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ("
+                            + _gameId + ","
+                            + _leftAthleteId + ", "
+                            + _leftAthleteTeamId + ","
+                            + p.points + ", '"
+                            + p.description + "'); ");
+                    }
+                }
+                else
+                {
+                    if (_rightAthleteTeamId == "")
+                    {
+                        conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
+                            + _gameId + "','"
+                            + _rightAthleteId + "','"
+                            + p.points + "', '"
+                            + p.description + "'); ");
+                    }
+                    else
+                    {
+                        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
+                            + _gameId + "','"
+                            + _rightAthleteId + "', '"
+                            + _rightAthleteTeamId + "', '"
+                            + p.points + "', '"
+                            + p.description + "'); ");
+                    }
 
+                }
+            }
+            this.sender.loadGames();
+            this.Close();
         }
 
         #endregion
