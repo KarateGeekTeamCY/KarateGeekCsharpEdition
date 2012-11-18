@@ -45,10 +45,10 @@ namespace KarateGeek.guis
 
         private void btnPersonManagement_Click(object sender, RoutedEventArgs e)
         {
-            PersonManagement pm = new PersonManagement();
+            PersonManagement pm = new PersonManagement(this);
             pm.Activate();
 
-            this.Close();
+            this.Hide();
             pm.Show();
 
         }
@@ -102,33 +102,37 @@ namespace KarateGeek.guis
         /* Do not just remove this code; it's a usage example for the lottery class. */
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
-            LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 1); // use 1 to test kata
+            LotteryChooser lc = new LotteryChooser();
+            lc.Activate();
+            this.Hide();
+            lc.Show();
+            //LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 1); // use 1 to test kata
 
-            // Some silly test code:
-            Debug.WriteLine("Our first try:");
-            lg.shuffle();
-            foreach(var element in lg.getLottery())
-                Debug.WriteLine("Athlete number: " + element);
+            //// Some silly test code:
+            //Debug.WriteLine("Our first try:");
+            //lg.shuffle();
+            //foreach(var element in lg.getLottery())
+            //    Debug.WriteLine("Athlete number: " + element);
 
-            Debug.WriteLine("Our second try:");
-            lg.shuffle();
-            foreach (var element in lg.getLottery())
-                Debug.WriteLine("Athlete number: " + element);
+            //Debug.WriteLine("Our second try:");
+            //lg.shuffle();
+            //foreach (var element in lg.getLottery())
+            //    Debug.WriteLine("Athlete number: " + element);
 
-            Debug.WriteLine("Our third try, randomise MORE:");
-            lg.randomisationFactor = 4000; //!!
-            lg.shuffle();
-            foreach (var element in lg.getLottery())
-                Debug.WriteLine("Athlete number: " + element);
+            //Debug.WriteLine("Our third try, randomise MORE:");
+            //lg.randomisationFactor = 4000; //!!
+            //lg.shuffle();
+            //foreach (var element in lg.getLottery())
+            //    Debug.WriteLine("Athlete number: " + element);
 
-            // This might write to the DB:
-            //lg.confirmLottery(doCommit: true);   // this will commit
-            //lg.confirmLottery(doCommit: false);  // this will rollback (default value)
-            lg.confirmLottery();
+            //// This might write to the DB:
+            ////lg.confirmLottery(doCommit: true);   // this will commit
+            ////lg.confirmLottery(doCommit: false);  // this will rollback (default value)
+            //lg.confirmLottery();
 
-            // printing lottery to the console, now from the database (THIS IS JUST AN EXAMPLE/TEST):
-            new LotteryGenConnection().printTournamentGameTable(tournamentId: 1);
-            new LotteryGenConnection().printTournamentGameTableWithNames(tournamentId: 1);
+            //// printing lottery to the console, now from the database (THIS IS JUST AN EXAMPLE/TEST):
+            //new LotteryGenConnection().printTournamentGameTable(tournamentId: 1);
+            //new LotteryGenConnection().printTournamentGameTableWithNames(tournamentId: 1);
         }
 
         private void btnReports_Click(object sender, RoutedEventArgs e)

@@ -86,10 +86,11 @@ namespace KarateGeek.guis
         //arxizi me #region <name>
         //lai telion me #endregion
         //
+        private Window sender;
 
-
-        public PersonManagement()
+        public PersonManagement(Window sender)
         {
+            this.sender = sender;
             //auto anoigei to parathiro sto kentro tis othonis
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             //here should be the loading of the locations and clubs and countries
@@ -487,10 +488,8 @@ namespace KarateGeek.guis
 
         private void btnABack_Click(object sender, RoutedEventArgs e)
         {
-            MainMenu menu = new MainMenu();
-            menu.Activate();
+            this.sender.Show();
             this.Close();
-            menu.Show();
         }
 
         private void btnASave_Click(object sender, RoutedEventArgs e)
@@ -509,7 +508,7 @@ namespace KarateGeek.guis
 
                 athleteConnection.InsertNewAthlete(_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
                 MessageBox.Show("Succesfully saved!");
-                PersonManagement pm = new PersonManagement();
+                PersonManagement pm = new PersonManagement(this);
                 pm.Activate();
                 pm.Show();
                 this.Close();
@@ -524,7 +523,7 @@ namespace KarateGeek.guis
             if (athleteConnection.deleteAthlete(_personId))
             {
                 MessageBox.Show("Succesfully deleted!");
-                PersonManagement pm = new PersonManagement();
+                PersonManagement pm = new PersonManagement(this);
                 pm.Activate();
                 pm.Show();
                 this.Close();
@@ -532,7 +531,7 @@ namespace KarateGeek.guis
             else
             {
                 MessageBox.Show("Cannot be deleted because of tournament participation!");
-                PersonManagement pm = new PersonManagement();
+                PersonManagement pm = new PersonManagement(this);
                 pm.Activate();
                 pm.Show();
                 this.Close();
@@ -885,10 +884,9 @@ namespace KarateGeek.guis
 
         private void btnJBack_Click(object sender, RoutedEventArgs e)
         {
-            MainMenu menu = new MainMenu();
-            menu.Activate();
+           
+            this.sender.Show();
             this.Close();
-            menu.Show();
         }
 
         private void btnJSave_Click(object sender, RoutedEventArgs e)
@@ -909,7 +907,7 @@ namespace KarateGeek.guis
 
                 judgeConnection.InsertNewJudge(_judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK, _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
                 MessageBox.Show("Succesfully saved!");
-                PersonManagement pm = new PersonManagement();
+                PersonManagement pm = new PersonManagement(this);
                 pm.Activate();
                 pm.Show();
                 this.Hide();
@@ -922,7 +920,7 @@ namespace KarateGeek.guis
             if (judgeConnection.deleteJudge(_personId))
             {
                 MessageBox.Show("Succesfully deleted!");
-                PersonManagement pm = new PersonManagement();
+                PersonManagement pm = new PersonManagement(this);
                 pm.Activate();
                 pm.Show();
                 this.Close();
@@ -930,7 +928,7 @@ namespace KarateGeek.guis
             else
             {
                 MessageBox.Show("Cannot be deleted because of tournament participation!");
-                PersonManagement pm = new PersonManagement();
+                PersonManagement pm = new PersonManagement(this);
                 pm.Activate();
                 pm.Show();
                 this.Close();

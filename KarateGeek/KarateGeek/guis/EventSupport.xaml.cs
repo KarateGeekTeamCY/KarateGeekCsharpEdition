@@ -1688,30 +1688,30 @@ namespace KarateGeek.guis
                             {
                                 List<Athlete> winners = this.getKataIndSinglePositioning();
  
-                                switch (this._indexCurrentphase)
-                                {
-                                    case 1:
-                                        tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                        break;
-                                    case 2:
-                                        tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                        break;
-                                    case 3:
-                                        tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                        break;
-                                    case 4:
-                                        tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                        break;
-                                    case 5:
-                                        tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                        break;
-                                    case 6:
-                                        tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                        break;
-                                    case 7:
-                                        tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                        break;
-                                }
+                                //switch (this._indexCurrentphase)
+                                //{
+                                //    case 1:
+                                //        tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                //        break;
+                                //    case 2:
+                                //        tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                //        break;
+                                //    case 3:
+                                //        tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                //        break;
+                                //    case 4:
+                                //        tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                //        break;
+                                //    case 5:
+                                //        tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                //        break;
+                                //    case 6:
+                                //        tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                //        break;
+                                //    case 7:
+                                //        tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                //        break;
+                                //}
 
                             }
                             break;
