@@ -38,11 +38,13 @@ namespace KarateGeek.lottery
         public LotteryGen_Expo_Ind(int tournamentId)
             : base(tournamentId)// calling base constructor first
         {
-            this.randomisationFactor = 1200; // overriding base constructor assignment and using a very large value
+            this.randomisationFactor = 1500; // overriding base constructor assignment and using a very large value
         }
 
-        public override void shuffle(int tries){}
-        public override List<long> getLottery() { return null; }
+        //public override void shuffle(int tries) { }
+        //public override List<long> getLottery() { return null; }
+        public override void shuffle(int tries) { base.shuffle(); }
+        public override List<long> getLottery() { return base.getLottery(); }
     }
     #endregion
 
@@ -67,8 +69,8 @@ namespace KarateGeek.lottery
             
         }
 
-        /** All the following code was moved to the base class (and changed there to become a
-         *  bit more generic). It will be replaced by overridden/tweaked methods.             **/
+        /** All the code of the following region was moved to the base class (and changed there
+         *  to become a bit more generic). It will be replaced by overridden/tweaked methods.   **/
         #region deprecated code (moved to the base class LotteryGenerator and slightly modified there)
         ///* produces a new randomization [It would be less ugly with more LINQ usage!] */
         //public override void shuffle(int tries = 2) // a default value of 2 seems OK - we don't want infinite recursion!
@@ -122,10 +124,7 @@ namespace KarateGeek.lottery
         //}
         #endregion
 
-        public override List<long> getLottery()
-        {
-            return base.getLottery();
-        }
+        public override List<long> getLottery() { return base.getLottery(); }
 
     }
     #endregion
@@ -139,7 +138,7 @@ namespace KarateGeek.lottery
         /** Class fields/properties: **/
 
         protected override List<Tuple<long, int>> scoreList {   // here it's a team scoreList
-            get { return new TeamHelper(tournamentId).getTeamScoreList(athleteScoreList); }
+            get { return new TeamHelper(tournamentId, athleteScoreList).getTeamScoreList(); }
         }
 
 
@@ -158,7 +157,8 @@ namespace KarateGeek.lottery
         }
 
 
-        public override List<long> getLottery() { return null; }
+        //public override List<long> getLottery() { return null; }
+        public override List<long> getLottery() { return base.getLottery(); }
     }
     #endregion
 
@@ -171,7 +171,7 @@ namespace KarateGeek.lottery
         /** Class fields/properties: **/
 
         protected override List<Tuple<long, int>> scoreList {   // here it's a team scoreList
-            get { return new TeamHelper(tournamentId).getTeamScoreList(athleteScoreList); }
+            get { return new TeamHelper(tournamentId, athleteScoreList).getTeamScoreList(); }
         }
 
 

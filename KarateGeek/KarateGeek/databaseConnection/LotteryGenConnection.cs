@@ -13,10 +13,10 @@ namespace KarateGeek.databaseConnection
 {
     class LotteryGenConnection : CoreDatabaseConnection
     {
-        public List<long> tournamentParticipants(long tournamentId)
+        public List<long> tournamentParticipatingAthletes(long tournamentId) // was named "tournamentParticipants()"
         {
-            String sql = "SELECT athlete_id FROM tournament_participations WHERE tournament_id = '"
-                         + tournamentId + "' ;";
+            String sql = "SELECT athlete_id FROM tournament_participations WHERE tournament_id = "
+                         + tournamentId + " ;";
 
             DataTable dt = this.Query(sql).Tables[0];
 
@@ -34,11 +34,44 @@ namespace KarateGeek.databaseConnection
             for (int index = 0; index < dt.Rows.Count; ++index)
                 L.Add(long.Parse(dt.Rows[index][0].ToString()));
 
-            Debug.WriteLine("Tournament participants in List<long> :");
+            Debug.WriteLine("Tournament participants (athletes) in List<long> :");
             foreach(long element in L) //debug
                 Debug.WriteLine(element);
 
             return L;
+        }
+
+
+        public List<long> tournamentParticipatingAthletesOfTeam(long tournamentId, long teamId) /* needs more testing */
+        {
+            String sql = "SELECT athlete_id FROM tournament_participations WHERE tournament_id = "
+                         + tournamentId + " AND team_id = " + teamId + ";";
+
+            DataTable dt = this.Query(sql).Tables[0];
+
+            List<long> L = new List<long>();
+
+            //foreach(var row in dt.Rows)
+            //    L.Add(long.Parse(row[0].ToString()));
+            for (int index = 0; index < dt.Rows.Count; ++index)
+                L.Add(long.Parse(dt.Rows[index][0].ToString()));
+
+            Debug.WriteLine("Getting tournament participants of team #{0} :", teamId);
+            foreach(long element in L) //debug
+                Debug.WriteLine(element);
+
+            return L;
+        }
+
+
+        public long getTeamOfAthlete(long tournamentId, long athleteId) // returns teamId
+        {
+            String sql = "SELECT team_id FROM tournament_participations"
+                       + " WHERE tournament_id = " + tournamentId + " AND athlete_id = " + athleteId + " ;";
+
+            String teamId = this.Query(sql).Tables[0].Rows[0][0].ToString();
+
+            return long.Parse(teamId); // if null, what?!?!
         }
 
 
@@ -97,10 +130,6 @@ namespace KarateGeek.databaseConnection
 
         public int getNumOfGoodPlacements(long athleteId, int place, string generalGameType, bool official, bool sameType = true)
         {
-            /* Limitation: This method gets wins in tournaments of exactly the same type. It should also take into
-             * account other types of kata/kumite... (eg. for enbu it should also get the score of "regular" kata)
-             */
-
             String sql = "SELECT * FROM tournament_participations WHERE athlete_id = " + athleteId
                        + " AND ranking = " + place
                        + " AND tournament_id IN (SELECT tournaments.id"
@@ -157,25 +186,16 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        public long getTeamOfAthlete(long tournamentId, long athleteId) // returns teamId
-        {
-            /* TODO: TEST THIS SQL QUERY STRING AGAIN! */
-            String sql = "SELECT team_id FROM tournament_participations"
-                       + " WHERE tournament_id = " + tournamentId + " AND athlete_id = " + athleteId + " ;";
-
-            String teamId = this.Query(sql).Tables[0].Rows[0][0].ToString();
-
-            return long.Parse(teamId); // if null, what?
-        }
-
-
-        /* Writes a tournament pair to the database (important: it should be "private" to ensure atomicity).
+        /* Writes a tournament pair to the database (important: this method should be
+         * "private" to ensure atomicity).
          * 
          * CONVENTION: For semi-complete pairs, the caller provides a negative athlete id.
          *
          * Specifically, we use -1 for !is_ready pairs and -2 for is_ready "pairs".
          * The latter are just single athlete participations, or single team
          * participations (reusing the same code for the DB transaction).                 */
+        /* BTW, this method uses "control coupling": We know it's bad, but here it allows
+         * reusing our custom transaction implementation...                               */
         private void writeTournamentPair(long id1, long id2, int phase, int position, long tournamentId)
         {
             Debug.Assert(id1 >= -1 && id2 >= -2);
