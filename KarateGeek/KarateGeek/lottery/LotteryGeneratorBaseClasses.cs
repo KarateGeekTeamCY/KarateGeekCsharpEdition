@@ -88,7 +88,7 @@ namespace KarateGeek.lottery
             this.confirmed = new LotteryGenConnection().getTournamentLotteryStateReady(tournamentId);
 
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
-            this.athleteList = new LotteryGenConnection().tournamentParticipants(tournamentId);
+            this.athleteList = new LotteryGenConnection().tournamentParticipatingAthletes(tournamentId);
 
             List<Tuple<long, int>> tmp = new List<Tuple<long,int>>();
 
@@ -179,7 +179,7 @@ namespace KarateGeek.lottery
 
             /* past achievements: */
             for (int pos = 1; pos <= 4; ++pos)
-                scoreAccu += (int) (
+                scoreAccu += (int) ( // 16 SQL queries for each athlete, perhaps a candidate for optimisation (stored procedures?)
                                        conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: true,  sameType: true)  * rankingWeight[pos]
                                      + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: false, sameType: true)  * rankingWeight[pos] * unofficialMultiplier
                                      + conn.getNumOfGoodPlacements(athleteId, pos, generalGameTypeSQL, official: true,  sameType: false) * rankingWeight[pos] * otherTypeMultiplier
@@ -264,6 +264,16 @@ namespace KarateGeek.lottery
         protected abstract List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants);
 
 
+        /* The following method is designed (?) to be overriden, if needed, by child classes (team cases?).
+         * I'll probably change the structure used by getPairsToCommit(), writeAllTournamentPairs() etc. to
+         * something like List<Tuple<List<long>, int, int>>, though, because not all cases are "pairs"...
+         */
+        protected List<Tuple<long, long, int, int>> getPairsToCommit(List<long> Lott)
+        {
+            return getPairs(Lott).Concat(getEmptyPairs(Lott.Count)).ToList();
+        }
+
+
         public void confirmLottery(bool doCommit = false) // writes current lottery to the database, atomically!
         {
             if (this.confirmed)
@@ -271,17 +281,16 @@ namespace KarateGeek.lottery
 
             LotteryGenConnection conn = new LotteryGenConnection();
             List<long> L = this.getLottery();
-            List<Tuple<long, long, int, int>> allPairs = getPairs(L).Concat(getEmptyPairs(L.Count)).ToList();
+            List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L);
 
             { // Debug info
-                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + allPairs);
-                foreach (var i in allPairs)
+                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + PairsToCommit);
+                foreach (var i in PairsToCommit)
                     Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
                         i.Item1, i.Item2, i.Item3, i.Item4);
             }
 
-            /* the doCommit flag (named parameter) will be changed to "true" after some testing */
-            this.confirmed = conn.writeAllTournamentPairs(allPairs, tournamentId, doCommit: doCommit);
+            this.confirmed = conn.writeAllTournamentPairs(PairsToCommit, tournamentId, doCommit: doCommit);
             conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);
             // we could make "confirmed" a property, so that the setter does this automatically :)
         }
@@ -300,16 +309,18 @@ namespace KarateGeek.lottery
             /** Class fields/properties: **/
 
             private readonly List<Tuple<long, int>> athleteScoreList;
-            private readonly int tournamentId;
+            private readonly long tournamentId;
 
             /** Class methods: **/
 
-            public TeamHelper(int tournamentId) // constructor of the abstract class
+            public TeamHelper(long tournamentId, List<Tuple<long, int>> athleteScoreList) // constructor of the abstract class
             {
                 this.tournamentId = tournamentId;
+                this.athleteScoreList = athleteScoreList;
             }
 
-            public List<Tuple<long, int>> getTeamScoreList(List<Tuple<long, int>> athleteScoreList) // was static!
+            //public List<Tuple<long, int>> getTeamScoreList(List<Tuple<long, int>> athleteScoreList) /* was static! */
+            public List<Tuple<long, int>> getTeamScoreList()
             {
                 LotteryGenConnection conn = new LotteryGenConnection();
                 /** pseudocode:
@@ -339,6 +350,13 @@ namespace KarateGeek.lottery
 
                 return L;
             }
+
+
+            public List<long> getAthletesOfTeam(long teamId)
+            {
+                return new LotteryGenConnection().tournamentParticipatingAthletesOfTeam(this.tournamentId, teamId);
+            }
+
         }
         #endregion
     }
