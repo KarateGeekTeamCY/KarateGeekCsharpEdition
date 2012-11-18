@@ -506,7 +506,7 @@ namespace KarateGeek.guis
             if (checkFields("athlete"))
             {
 
-                athleteConnection.InsertNewAthlete(_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
+                athleteConnection.InsertNewAthlete(_personId ,_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
                 MessageBox.Show("Succesfully saved!");
                 PersonManagement pm = new PersonManagement(this);
                 pm.Activate();
