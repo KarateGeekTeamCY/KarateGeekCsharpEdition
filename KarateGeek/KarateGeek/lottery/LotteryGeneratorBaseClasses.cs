@@ -39,7 +39,7 @@ namespace KarateGeek.lottery
      * USING A (SIMPLIFIED) FACTORY-LIKE DESIGN PATTERN: LotteryGenerator
      * is an abstract base class providing the aforementioned three methods
      * and is extended by LotteryGen_Expo_Ind, LotteryGen_Versus_Ind,
-     * LotteryGen_Expo_Team and LotteryGen_Versus_Team;
+     * LotteryGen_Expo_Sync and LotteryGen_Versus_Team;
      * LotteryGeneratorFactory mainly has a "factory method" that chooses
      * which one of the above should be instatiated, based on DB data.
      * 
@@ -48,7 +48,7 @@ namespace KarateGeek.lottery
      * between LotteryGenerator and the aforementioned 4, LotteryGen_Versus
      * and LotteryGen_Expo. They provide different getPairs() implem/tions.
      * 
-     * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!
+     * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!                                //TODO: UPDATE COMMENTS
      */
 
     #region abstract base class LotteryGenerator
@@ -261,7 +261,7 @@ namespace KarateGeek.lottery
         protected abstract List<Tuple<long, long, int, int>> getPairs(List<long> Participants);
 
 
-        protected abstract List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants);
+        protected abstract List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants); // ALWAYS RETURNS GAMES!! Participants might be teams.
 
 
         /* The following method is designed (?) to be overriden, if needed, by child classes (team cases?).
@@ -270,11 +270,11 @@ namespace KarateGeek.lottery
          */
         protected List<Tuple<long, long, int, int>> getPairsToCommit(List<long> Lott)
         {
-            return getPairs(Lott).Concat(getEmptyPairs(Lott.Count)).ToList();
+            return getPairs(Lott).Concat(getEmptyPairs(Lott.Count)).ToList(); // BUG FOUND: Lott.Count is always for athletes, it should be for teams for team games??? EDIT: Bullshit, delete this comment, probably not a bug
         }
 
 
-        public void confirmLottery(bool doCommit = false) // writes current lottery to the database, atomically!
+        public virtual void confirmLottery(bool doCommit = false) // writes current lottery to the database, atomically!
         {
             if (this.confirmed)
                 throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore.");
@@ -338,7 +338,12 @@ namespace KarateGeek.lottery
 
                 foreach (var ath in athleteScoreList) {
                     long teamId = conn.getTeamOfAthlete(tournamentId, ath.Item1);
-                    Tuple<long, int> old = L.First(t => t.Item1 == teamId);
+                    Tuple<long, int> old;
+                    try {
+                        old = L.First(t => t.Item1 == teamId);
+                    }catch (Exception e){
+                        old = null;
+                    }
 
                     if (old == null) // team not yet in the list
                         L.Add(new Tuple<long, int>(teamId, ath.Item2));
@@ -354,7 +359,13 @@ namespace KarateGeek.lottery
 
             public List<long> getAthletesOfTeam(long teamId)
             {
-                return new LotteryGenConnection().tournamentParticipatingAthletesOfTeam(this.tournamentId, teamId);
+                return getAthletesOfTeam(teamId, this.tournamentId);
+            }
+
+
+            public static List<long> getAthletesOfTeam(long teamId, long tournamentId)
+            {
+                return new LotteryGenConnection().tournamentParticipatingAthletesOfTeam(tournamentId, teamId);
             }
 
         }

@@ -247,7 +247,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        public bool writeAllTournamentGameSets(List<Tuple<List<long>, bool, int, int>> Sets, bool isReady, long tournamentId, bool doCommit) /* untested */
+        public bool writeAllTournamentGameSets(List<Tuple<List<long>, bool, int, int>> Sets, long tournamentId, bool doCommit) /* untested */
         {
             this.NonQuery("BEGIN;");
 
