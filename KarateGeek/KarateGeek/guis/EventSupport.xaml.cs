@@ -22,7 +22,7 @@ namespace KarateGeek.guis
     {
 
 
-        #region private declaretions
+        #region private declarations
 
         private Window _sender;
 
