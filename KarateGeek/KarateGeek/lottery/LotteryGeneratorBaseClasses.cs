@@ -408,10 +408,13 @@ namespace KarateGeek.lottery
         {
             List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
 
-            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
+            int numOfPhases = (int) Math.Ceiling(Math.Log(numOfParticipants, 2));
 
-            for (int phase = numOfPhases - 2; phase >= 0; --phase)  // numOfPhases - 2 ?
-                for (int position = 1; position <= Math.Pow(2, phase); ++position)
+            //for (int phase = numOfPhases - 2; phase >= 0; --phase)  // numOfPhases - 2 ?
+            //    for (int position = 1; position <= Math.Pow(2, phase); ++position)
+            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+            for (int phase = numOfPhases - 1; phase >= 0; --phase)  // numOfPhases - 2 ?
+                for (int position = 1; position <= Math.Pow(2, phase + 2); ++position)
                     emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
 
             return emptyPairs;

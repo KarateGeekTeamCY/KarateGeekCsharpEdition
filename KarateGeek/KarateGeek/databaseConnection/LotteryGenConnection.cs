@@ -234,6 +234,37 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        private void writeTournamentGameSet(List<long> idList, bool isReady, int phase, int position, long tournamentId) /* untested */
+        {
+            String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
+                             + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
+
+            this.NonQuery(writegame);
+
+            foreach (var id in idList)
+                if (id >= 0) this.NonQuery("INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+                                    + "VALUES ( " + id + ", NULL, ( SELECT currval('games_id_seq') ));");
+        }
+
+
+        public bool writeAllTournamentGameSets(List<Tuple<List<long>, bool, int, int>> Sets, bool isReady, long tournamentId, bool doCommit) /* untested */
+        {
+            this.NonQuery("BEGIN;");
+
+            foreach (var set in Sets)
+                writeTournamentGameSet(set.Item1, set.Item2, set.Item3, set.Item4, tournamentId);
+
+            if (doCommit)
+            {
+                return this.NonQuery("COMMIT;"); // supposed to return true if successful (currently it's always true)
+            }
+            else
+            {
+                this.NonQuery("ROLLBACK;"); // very useful for checking syntax etc.
+                return false;               // always false, since we didn't write anything
+            }
+        }
+
         /** The following methods aren't strictly related to lotteries, and might be moved elsewhere: **/
 
 

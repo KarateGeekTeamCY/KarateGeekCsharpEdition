@@ -31,7 +31,7 @@ namespace KarateGeek.lottery
              * the flag system, so it's a "versus" type tournament.) I'm not sure about teamKata... */
             switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
             {
-                case Strings.indKata: if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
+                case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
                                              lg = new LotteryGen_Versus_Ind(tournamentId);
                                          else // score system
                                              lg = new LotteryGen_Expo_Ind(tournamentId);
