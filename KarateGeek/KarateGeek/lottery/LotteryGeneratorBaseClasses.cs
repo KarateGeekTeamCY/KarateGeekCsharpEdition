@@ -198,6 +198,8 @@ namespace KarateGeek.lottery
             for (int i = 0; i < age && i < 18; ++i)
                 scoreAccu += ageFactor;
 
+            Debug.WriteLine("Score of athlete{0,6} is{1,6}:", athleteId , scoreAccu);
+
 
             return scoreAccu;
         }

@@ -361,7 +361,7 @@ namespace KarateGeek.databaseConnection
 
             Console.WriteLine("Athlete \"ready\" participations (with their names), sorted by phase, then position:");
             for (int row = 0; row < dt.Rows.Count; ++row)
-                Console.WriteLine("first_name: {0,4}  fathers_name: {1,4}  last_name: {2,4}  phase:{3,2}  position:{4,2}  "
+                Console.WriteLine("first_name: {0,16}  fathers_name: {1,16}  last_name: {2,16}  phase:{3,2}  position:{4,2}  "
                                  + "is_ready:{5,6}  is_finished:{6,6}",
                                   dt.Rows[row][0], dt.Rows[row][1], dt.Rows[row][2], dt.Rows[row][3],
                                   dt.Rows[row][4], dt.Rows[row][5], dt.Rows[row][6]);

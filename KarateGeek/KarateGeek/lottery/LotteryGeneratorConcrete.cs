@@ -149,7 +149,7 @@ namespace KarateGeek.lottery
          public LotteryGen_Expo_Sync(int tournamentId, int athletesPerTeam)
             : base(tournamentId)// calling base constructor first
         {
-            this.randomisationFactor = 2000; // overriding base constructor assignment and using a very large value
+            this.randomisationFactor = 650; // overriding base constructor assignment and using a very large value  EDIT: rethink about randomisationFactor
 
             this.athletesPerTeam = athletesPerTeam;
         }

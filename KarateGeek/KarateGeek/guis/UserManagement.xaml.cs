@@ -32,10 +32,12 @@ namespace KarateGeek.guis
         private int userId=-1;
         private bool person = false;
         private bool eventMan = false;
-        private bool eventSup = false;
         private bool lottery = false;
+        private bool eventSup = false;
+        private bool clubMan = false;
+        private bool userMan = false;
         private bool reports = false;
-        private bool settings = false;
+        
         private DataTable filteredUsers;
         private List<ListData> userNameListForAutoComplete;
         private UserConnection userConnection = new UserConnection();
@@ -68,7 +70,7 @@ namespace KarateGeek.guis
             }else{
                 userConnection.updateUser(userId, this.userName, this.pass1,
                 this.person, this.eventMan, this.lottery, this.eventSup,
-                this.reports, this.settings);
+                this.reports, this.userMan);
               
                 MessageBox.Show("Succesfully updated!");
             }
@@ -113,7 +115,7 @@ namespace KarateGeek.guis
             else {
                 userConnection.insertNewUser(this.userName, this.pass1,
                 this.person, this.eventMan, this.lottery, this.eventSup,
-                this.reports, this.settings);
+                this.reports, this.userMan);
                 MessageBox.Show("Succesfully saved!");
             }
 
@@ -159,15 +161,22 @@ namespace KarateGeek.guis
             this.eventSup = (bool)this.chbEventSup.IsChecked;
         }
 
+        private void chbClubMan_Checked(object sender, RoutedEventArgs e)
+        {
+            this.clubMan = (bool)this.chbClubMan.IsChecked;
+        }
+
+        private void chbUserMan_Checked(object sender, RoutedEventArgs e)
+        {
+            this.userMan = (bool)this.chbUserMan.IsChecked;
+        }
+
         private void chbReportsMan_Checked(object sender, RoutedEventArgs e)
         {
             this.reports = (bool)this.chbReportsMan.IsChecked;
         }
 
-        private void chbSettings_Checked(object sender, RoutedEventArgs e)
-        {
-            this.settings = (bool)this.chbSettings.IsChecked;
-        }
+       
 
         #endregion
 
@@ -257,7 +266,7 @@ namespace KarateGeek.guis
                     this.chbLoteryMan.IsChecked = (bool)filteredUsers.Rows[index][5];
                     this.chbEventSup.IsChecked = (bool)filteredUsers.Rows[index][6];
                     this.chbReportsMan.IsChecked = (bool)filteredUsers.Rows[index][7];
-                    this.chbSettings.IsChecked = (bool)filteredUsers.Rows[index][8];
+                   // this.chbSettings.IsChecked = (bool)filteredUsers.Rows[index][8];
                    
                 }
                 txtUserName.TextChanged += new TextChangedEventHandler(txtUserName_TextChanged);
@@ -265,6 +274,7 @@ namespace KarateGeek.guis
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
+       
         
     }
 }

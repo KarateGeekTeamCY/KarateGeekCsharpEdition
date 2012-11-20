@@ -32,6 +32,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -113,26 +114,34 @@
                       Unchecked="chbEventSup_Checked"/>
             
 
-            <Label Content="Reports"
+           
+            <Label Content="Club Management"
                    Grid.Column="1"
                    Grid.Row="9"/>
-            <CheckBox Name="chbReportsMan"
+            <CheckBox Name="chbClubMan"
                       Grid.Column="2"
                       Grid.Row="9"
-                      VerticalAlignment="Center" 
-                      Checked="chbReportsMan_Checked" 
-                      Unchecked="chbReportsMan_Checked"/>
-
-            <Label Content="Settings"
+                      VerticalAlignment="Center"
+                      Checked="chbClubMan_Checked"
+                      Unchecked="chbClubMan_Checked"/>
+            <Label Content="User Management"
                    Grid.Column="1"
                    Grid.Row="10"/>
-            <CheckBox Name="chbSettings"
+            <CheckBox Name="chbUserMan"
                       Grid.Column="2"
                       Grid.Row="10"
                       VerticalAlignment="Center" 
-                      Checked="chbSettings_Checked"
-                      Unchecked="chbSettings_Checked"/>
-            
+                      Checked="chbUserMan_Checked"
+                      Unchecked="chbUserMan_Checked"/>
+            <Label Content="Reports"
+                   Grid.Column="1"
+                   Grid.Row="11"/>
+            <CheckBox Name="chbReportsMan"
+                      Grid.Column="2"
+                      Grid.Row="11"
+                      VerticalAlignment="Center"
+                      Checked="chbReportsMan_Checked"
+                      Unchecked="chbReportsMan_Checked"/>
             <ListBox Name="uSuggestionList"
                      Grid.Column="2" 
                      Grid.Row="0" 
