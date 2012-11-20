@@ -424,7 +424,12 @@ namespace KarateGeek.lottery
             //for (int phase = numOfPhases - 2; phase >= 0; --phase)  // numOfPhases - 2 ?
             //    for (int position = 1; position <= Math.Pow(2, phase); ++position)
             //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-            for (int phase = numOfPhases - 1; phase >= 0; --phase)  // numOfPhases - 2 ?
+
+            //for (int phase = numOfPhases - 1; phase >= 0; --phase)
+            //    for (int position = 1; position <= Math.Pow(2, phase + 2); ++position)
+            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+            for (int phase = numOfPhases - 3; phase >= 0; --phase)
                 for (int position = 1; position <= Math.Pow(2, phase + 2); ++position)
                     emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
 

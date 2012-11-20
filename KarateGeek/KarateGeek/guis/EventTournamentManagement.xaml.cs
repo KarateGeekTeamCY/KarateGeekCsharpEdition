@@ -539,7 +539,7 @@ namespace KarateGeek.guis
                             selectedParticipants.Add(new List<AthleteData>());
                         }
 
-                        cmbTteamsNumber.SelectedIndex = 1;
+                        cmbTteamsNumber.SelectedIndex = teamsNum-1;
                     }
 
                     for (int i = 0; i < this.cmbTGame.Items.Count; i++)
@@ -1105,6 +1105,19 @@ namespace KarateGeek.guis
                         i++;
                     }
                     break;
+                case (Strings.synchronized):
+                    foreach (List<AthleteData> list in selectedParticipants)
+                    {
+                        _tournamentTeamId = participantConnection.InsertNewTeam(4, i, _tournamentId);
+                        foreach (AthleteData participant in list)
+                        {
+                            ds = athleteConnection.findAthlete(participant.id);
+                            rank = ds.Tables[0].Rows[0][1].ToString();
+                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, 4, _tournamentTeamId);
+                        }
+                        i++;
+                    }
+                    break;
             }
         }
 
@@ -1163,6 +1176,19 @@ namespace KarateGeek.guis
                 showPossibleParticipants();
             }
             else if ((bool)TrdButtonTeam.IsChecked)
+            {
+                List<AthleteData> list = new List<AthleteData>();
+
+                foreach (Object item in lbTparticipants.SelectedItems)
+                {
+                    selectedParticipants.ElementAt(_tournamentTeam).Add((AthleteData)item);
+
+                    possibleParticipants.RemoveAt(lbTparticipants.Items.IndexOf(item));
+                }
+                showSelectedParticipantsT(_tournamentTeam);
+                showPossibleParticipants();
+            }
+            else if ((bool)TrdButtonSync.IsChecked)
             {
                 List<AthleteData> list = new List<AthleteData>();
 

@@ -82,7 +82,11 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            lg.confirmLottery(true);
+            lg.confirmLottery(doCommit: true);
+            LotteryChooser lc = new LotteryChooser(this.sender);
+            lc.Activate();
+            this.Close();
+            lc.Show();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

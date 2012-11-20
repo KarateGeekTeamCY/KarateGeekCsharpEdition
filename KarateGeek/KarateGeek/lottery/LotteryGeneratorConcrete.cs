@@ -172,10 +172,18 @@ namespace KarateGeek.lottery
 
             LotteryGenConnection conn = new LotteryGenConnection();
             List<long> L = this.getLottery();
-            List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L);
 
-            foreach (var team in PairsToCommit)
+            //List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L); //getPairs(L) instead of getPairsToCommit(L) ??
+
+            List<Tuple<long, long, int, int>> fullPairs = getPairs(L);
+            List<Tuple<long, long, int, int>> emptyPairs = getEmptyPairs(L.Count);
+
+
+            foreach (var team in fullPairs)
                 Sets.Add(new Tuple<List<long>, bool, int, int>(TeamHelper.getAthletesOfTeam(team.Item1, this.tournamentId), true, team.Item3, team.Item4));
+
+            foreach (var team in emptyPairs)
+                Sets.Add(new Tuple<List<long>, bool, int, int>(TeamHelper.getAthletesOfTeam(team.Item1, this.tournamentId), false, team.Item3, team.Item4));
 
             this.confirmed = conn.writeAllTournamentGameSets(Sets, tournamentId, doCommit: doCommit);
             conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);

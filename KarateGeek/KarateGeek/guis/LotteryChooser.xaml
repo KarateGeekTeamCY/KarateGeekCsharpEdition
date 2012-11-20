@@ -1,7 +1,8 @@
 ﻿<Window x:Class="KarateGeek.guis.LotteryChooser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="LotteryChooser" Height="600" Width="600">
+        Title="LotteryChooser" Height="600" Width="600"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

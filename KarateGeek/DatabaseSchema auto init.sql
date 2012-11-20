@@ -683,16 +683,16 @@ VALUES (11, 1, (SELECT rank FROM athletes WHERE id = 11), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (12, 1, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
 -- 'Street Fighter'
-INSERT INTO team_tournament_participations (tournament_id)
-VALUES (2);
-INSERT INTO team_tournament_participations (tournament_id)
-VALUES (2);
-INSERT INTO team_tournament_participations (tournament_id)
-VALUES (2);
-INSERT INTO team_tournament_participations (tournament_id)
-VALUES (2);
-INSERT INTO team_tournament_participations (tournament_id)
-VALUES (2);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (0, 2);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (1, 2);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (2, 2);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (3, 2);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (4, 2);
 
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 1
 VALUES (0, 2, (SELECT rank FROM athletes WHERE id = 0), NULL, 1 );
