@@ -36,7 +36,7 @@ namespace KarateGeek
         public List<Game> games128 { get; set; }
 
         public List<Athlete> participants { get; set; }
-        public List<team> teams { get; set; }
+        public List<Team> teams { get; set; }
 
 
         public Tournament(string tournamentId)
@@ -48,7 +48,7 @@ namespace KarateGeek
             this.load();
         }
 
-        private void load()
+        public void load()
         {
             sql = "SELECT * FROM tournaments WHERE id = '" + this.id + "';";
             DataTable temp = Query(sql).Tables[0];
@@ -172,7 +172,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.teams.Add(new team((string)dr[0]));
+                this.teams.Add(new Team((string)dr[0]));
             }
 
             #endregion load participants and teams if exist

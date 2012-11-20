@@ -32,6 +32,9 @@ namespace KarateGeek
         public string country { get; set; }
         public string clubId { get; set; }
         public string clubName { get; set; }
+        public string teamId { get; set; }
+
+
 
         private string _ranking;
         public string ranking
@@ -78,7 +81,10 @@ namespace KarateGeek
 
             sql = "select * from tournament_participations where athlete_id = '" + this.id + "' and tournament_id = '" + this.tournamentId + "'; ";
             temp = Query(sql).Tables[0];
-            this.ranking = (string)temp.Rows[0][4].ToString();
+
+
+            this.teamId = temp.Rows[0][1].ToString();
+            this.ranking = temp.Rows[0][4].ToString();
         }
 
         private void update()

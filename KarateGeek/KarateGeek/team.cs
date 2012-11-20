@@ -6,7 +6,7 @@ using System.Data;
 
 namespace KarateGeek
 {
-    public class team : KarateGeek.databaseConnection.CoreDatabaseConnection
+    public class Team : KarateGeek.databaseConnection.CoreDatabaseConnection
     {
         private string sql;
 
@@ -26,7 +26,7 @@ namespace KarateGeek
 
         public List<Athlete> participants { get; set; }
 
-        public team(string id)
+        public Team(string id)
         {
             this.id = id;
             this.participants = new List<Athlete>();
