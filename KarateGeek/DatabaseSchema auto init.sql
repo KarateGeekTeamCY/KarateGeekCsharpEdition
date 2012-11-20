@@ -592,7 +592,7 @@ INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  p
 VALUES ('athl7' , 'athl7_father' , 'athl7_last', '02-10-2000' , 'FEMALE', '99123145' , null , 'athl7@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl8' , 'athl8_father' , 'athl8_last', '02-10-2008' , 'MALE', '98133146' , null , 'athl8@gmail.com' , '0');
+VALUES ('athl8' , 'athl8_father' , 'athl8_last', '02-10-2006' , 'MALE', '98133146' , null , 'athl8@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('athl9' , 'athl9_father' , 'athl9_last', '02-10-1962' , 'MALE', '98123246' , null , 'athl9@gmail.com' , '0');
@@ -629,12 +629,12 @@ INSERT INTO athletes (id, rank, club_id ) VALUES ('1', 'Black  –  2nd dan', '1
 INSERT INTO athletes (id, rank, club_id ) VALUES ('2', 'Black  –  1st dan', NULL );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('3', 'Blue   –  2nd kyu', '3'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('4', 'White/Red – 8th dan', '2' );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('5', 'Green  –  3th kyu', '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('5', 'Green  –  3rd kyu', '1'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('6', 'Red    –  9th dan', NULL );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('7', 'Blue   –  2nd kyu', '2'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('8', 'White/Red – 8th dan', '1' );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('9', 'Black  –  3rd dan', '2' );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('10', 'Green  –  3th kyu', '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('10', 'Green  –  3rd kyu', '1'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('11', 'Red    –  9th dan', '3' );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('12', 'Blue   –  2nd kyu', NULL  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('13', 'White/Red – 8th dan', '3' );

@@ -84,7 +84,7 @@ namespace KarateGeek
         public const string syncKata   = prefixSync + gameTypeDelim + suffixKata;
         public const string indKumite  = prefixInd  + gameTypeDelim + suffixKumite; // points
         public const string teamKumite = prefixTeam + gameTypeDelim + suffixKumite; // points
-        public const string enbu       = prefixInd  + gameTypeDelim + suffixEnbu;   // score
+        public const string enbu       = prefixSync + gameTypeDelim + suffixEnbu;   // score
         public const string fugugo     = prefixInd  + gameTypeDelim + suffixFugugo; // points/flag
 
         public const string individual   = prefixInd;   // for compatibility

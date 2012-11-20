@@ -150,7 +150,7 @@ namespace KarateGeek.guis
             //ages
             cmbTAgeFrom.Items.Add("From");
             cmbTAgeTo.Items.Add("To");
-            for (int i = 5; i <= 60; i++)
+            for (int i = 5; i <= 80; i++)
             {
                 cmbTAgeFrom.Items.Add(i.ToString());
                 cmbTAgeTo.Items.Add(i.ToString());
@@ -1089,18 +1089,18 @@ namespace KarateGeek.guis
                     {
                         ds = athleteConnection.findAthlete(participant.id);
                         rank = ds.Tables[0].Rows[0][1].ToString();
-                        participantConnection.InsertNewParticipantI(participant.id, _tournamentId, rank, 4);
+                        participantConnection.InsertNewParticipantI(participant.id, _tournamentId, rank);
                     }
                     break;
                 case (Strings.team):
                     foreach (List<AthleteData> list in selectedParticipants)
                     {
-                        _tournamentTeamId = participantConnection.InsertNewTeam(4, i, _tournamentId);
+                        _tournamentTeamId = participantConnection.InsertNewTeam(i, _tournamentId);
                         foreach (AthleteData participant in list)
                         {
                             ds = athleteConnection.findAthlete(participant.id);
                             rank = ds.Tables[0].Rows[0][1].ToString();
-                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, 4, _tournamentTeamId);
+                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, _tournamentTeamId);
                         }
                         i++;
                     }
@@ -1108,12 +1108,12 @@ namespace KarateGeek.guis
                 case (Strings.synchronized):
                     foreach (List<AthleteData> list in selectedParticipants)
                     {
-                        _tournamentTeamId = participantConnection.InsertNewTeam(4, i, _tournamentId);
+                        _tournamentTeamId = participantConnection.InsertNewTeam(i, _tournamentId);
                         foreach (AthleteData participant in list)
                         {
                             ds = athleteConnection.findAthlete(participant.id);
                             rank = ds.Tables[0].Rows[0][1].ToString();
-                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, 4, _tournamentTeamId);
+                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, _tournamentTeamId);
                         }
                         i++;
                     }

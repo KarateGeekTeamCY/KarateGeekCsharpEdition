@@ -83,6 +83,10 @@ namespace KarateGeek.guis
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             lg.confirmLottery(doCommit: true);
+
+            //temp
+            new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
+
             LotteryChooser lc = new LotteryChooser(this.sender);
             lc.Activate();
             this.Close();
