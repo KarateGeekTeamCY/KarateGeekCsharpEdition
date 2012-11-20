@@ -41,11 +41,10 @@ namespace KarateGeek.guis
             }
 
             this.sender = sender;
-            //string node = "┏━━━━━━━━━━━━━━━━┓\n" +
-            //            "┃onoma athliti ┣\n" +
-            //            "┕━━━━━━━━━━━━━━━━┛\n" +
-            //            " ╺╺╺╺╺╺╺╺";
-            //terminal.Text = node;
+            string node = "┌───────────────┐\n" +
+                          "│ onoma athliti ├────\n" +
+                          "└───────────────┘\n";
+            terminal.Content = node;
             
             
         }
