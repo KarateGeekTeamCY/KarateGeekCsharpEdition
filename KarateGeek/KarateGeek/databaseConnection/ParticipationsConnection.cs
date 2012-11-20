@@ -10,36 +10,33 @@ namespace KarateGeek.databaseConnection
     {
         DataTable participantIDT = new DataTable();
 
-        public void InsertNewParticipantI(int athlete_id, int tournament_id , string rank , int position)
+        public void InsertNewParticipantI(int athlete_id, int tournament_id , string rank)
         {
 
-            string sql = "insert into tournament_participations ( athlete_id, tournament_id , rank_at_time , ranking, team_id ) values ( '"
+            string sql = "insert into tournament_participations ( athlete_id, tournament_id, rank_at_time) values ( '"
                 + athlete_id + "', '"
                 + tournament_id + "', '"
-                + rank + "', '"
-                + position + "', null );";
+                + rank + "' );";
 
             this.NonQuery(sql);
         }
 
-        public void InsertNewParticipantT(int athlete_id, int tournament_id, string rank, int position , int team)
+        public void InsertNewParticipantT(int athlete_id, int tournament_id, string rank, int team)
         {
 
-            string sql = "insert into tournament_participations ( athlete_id, tournament_id , rank_at_time , ranking, team_id ) values ( '"
+            string sql = "insert into tournament_participations ( athlete_id, tournament_id , rank_at_time, team_id ) values ( '"
                 + athlete_id + "', '"
                 + tournament_id + "', '"
                 + rank + "', '"
-                + position + "', '"
                 + team + "');";
 
             this.NonQuery(sql);
         }
 
-        public int InsertNewTeam(int ranking, int team , int tournament_id)
+        public int InsertNewTeam(int team , int tournament_id)
         {
             DataSet dr;
-            string sql = "insert into team_tournament_participations ( ranking , team ,tournament_id ) values ( '"
-                + ranking + "', '"
+            string sql = "insert into team_tournament_participations (  team ,tournament_id ) values ( '"
                 + team + "', '"
                 + tournament_id + "');";
 

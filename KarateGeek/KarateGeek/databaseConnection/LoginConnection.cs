@@ -17,9 +17,11 @@ namespace KarateGeek.databaseConnection
         protected bool personMngPerm;
         protected bool eventMngPerm;
         protected bool lotteryPerm;
-        protected bool gameSupPerm;
+        protected bool eventSupPerm;
+        protected bool clubMngPerm;
+        protected bool userMngPerm;
         protected bool reportsPerm;
-        protected bool settingsPerm;
+        
 
         //na valete ton constructor se sxolio meta tin prwti fora ektelesis
 
@@ -57,9 +59,10 @@ namespace KarateGeek.databaseConnection
             this.personMngPerm = (bool)dr.Tables[0].Rows[0][3];
             this.eventMngPerm = (bool)dr.Tables[0].Rows[0][4];
             this.lotteryPerm = (bool)dr.Tables[0].Rows[0][5];
-            this.gameSupPerm = (bool)dr.Tables[0].Rows[0][6];
-            this.reportsPerm = (bool)dr.Tables[0].Rows[0][7];
-            this.settingsPerm = (bool)dr.Tables[0].Rows[0][8];
+            this.eventSupPerm = (bool)dr.Tables[0].Rows[0][6];
+            this.clubMngPerm = (bool)dr.Tables[0].Rows[0][7];
+            this.userMngPerm = (bool)dr.Tables[0].Rows[0][8];
+            this.reportsPerm = (bool)dr.Tables[0].Rows[0][9];
         }
 
         public bool getPersonMngPerm()
@@ -77,9 +80,19 @@ namespace KarateGeek.databaseConnection
             return lotteryPerm;
         }
 
-        public bool getGameSupPerm()
+        public bool getEventSupPerm()
         {
-            return gameSupPerm;
+            return eventSupPerm;
+        }
+
+        public bool getClubMngPerm()
+        {
+            return clubMngPerm;
+        }
+
+        public bool getUserMngPerm()
+        {
+            return userMngPerm;
         }
 
         public bool getReportsPerm()
@@ -87,9 +100,5 @@ namespace KarateGeek.databaseConnection
             return reportsPerm;
         }
 
-        public bool getSettingsPerm()
-        {
-            return settingsPerm;
-        }
     }
 }

@@ -80,17 +80,21 @@ namespace KarateGeek.guis
             {
                 menu.btnLottery.IsEnabled = true;
             }
-            if (lgConn.getGameSupPerm())
+            if (lgConn.getEventSupPerm())
             {
                 menu.btnEventSupport.IsEnabled = true;
+            }
+            if (lgConn.getClubMngPerm())
+            {
+                menu.btnClubmanagement.IsEnabled = true;
+            }
+            if (lgConn.getUserMngPerm())
+            {
+                menu.btnUserManagement.IsEnabled = true;
             }
             if (lgConn.getReportsPerm())
             {
                 menu.btnReports.IsEnabled = true;
-            }
-            if (lgConn.getSettingsPerm())
-            {
-                menu.btnUserManagement.IsEnabled = true;
             }
         }
     }

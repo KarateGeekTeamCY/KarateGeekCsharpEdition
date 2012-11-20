@@ -42,12 +42,12 @@ namespace KarateGeek
         public const string rank01 = "White  –  6th kyu";     // TODO: change "static readonly" to "const"??
         public const string rank02 = "Yellow –  5th kyu";
         public const string rank03 = "Orange –  4th kyu";
-        public const string rank04 = "Green  –  3th kyu";
+        public const string rank04 = "Green  –  3rd kyu";
         public const string rank05 = "Blue   –  2nd kyu";
         public const string rank06 = "Brown  –  1st kyu";
         public const string rank07 = "Black  –  1st dan";
         public const string rank08 = "Black  –  2nd dan";
-        public const string rank09 = "Black  –  3th dan";
+        public const string rank09 = "Black  –  3rd dan";
         public const string rank10 = "Black  –  4th dan";
         public const string rank11 = "Black  –  5th dan";
         public const string rank12 = "White/Red – 6th dan";
@@ -84,7 +84,7 @@ namespace KarateGeek
         public const string syncKata   = prefixSync + gameTypeDelim + suffixKata;
         public const string indKumite  = prefixInd  + gameTypeDelim + suffixKumite; // points
         public const string teamKumite = prefixTeam + gameTypeDelim + suffixKumite; // points
-        public const string enbu       = prefixInd  + gameTypeDelim + suffixEnbu;   // score
+        public const string enbu       = prefixSync + gameTypeDelim + suffixEnbu;   // score
         public const string fugugo     = prefixInd  + gameTypeDelim + suffixFugugo; // points/flag
 
         public const string individual   = prefixInd;   // for compatibility
