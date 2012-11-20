@@ -68,7 +68,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <TextBox Name="terminal"
+                <Label Name="terminal"
                        FontFamily="Lucida Console"
                        
                        Grid.ColumnSpan="2"
