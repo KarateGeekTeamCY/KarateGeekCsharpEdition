@@ -1480,54 +1480,72 @@ namespace KarateGeek.guis
         //
         // TEAM
         //
-        private List<team> getKataTeamIndPositioning()
+        private List<Team> getKataTeamIndPositioning(string phase)
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select game_participations.team_id, sum(mean_score) from team_tournament_participations join game_participations on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participations.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' group by game_participations.team_id ORDER BY sum(mean_score) DESC ;";
+            sql = "select game_participations.team_id, sum(mean_score) from "
+                + "team_tournament_participations join game_participations "
+                + "on team_tournament_participations.id = game_participations.team_id "
+                + "join game_score on team_tournament_participations.id = game_score.team_id where tournament_id = '"
+                + this.tournament.id + "' and game.phase = '"
+                + phase + "' group by game_participations.team_id ORDER BY sum(mean_score) DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            List<team> teams = new List<team>();
+            List<Team> teams = new List<Team>();
 
             foreach (DataRow dr in temp.Rows)
-                teams.Add(new team((string)dr[0]));
+                teams.Add(new Team((string)dr[0]));
 
             return teams;
         }
 
-        private team getKumiteTeamWinner(string gameId)
+        private Team getKumiteTeamWinner(Game game)
         {
+
+            string phase, teamA, teamB;
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select team_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_flag.game_id where game_id = '" + gameId + "' group by (game_participations.team_id) ;";
+            sql = "select team_id from games join game_participations gp on game.id = gp.game_id where game_id = '" + game.gameId + "';";
             DataTable temp = conn.Query(sql).Tables[0];
+
+            phase = game.phase;
+            teamA = temp.Rows[0][0].ToString();
+            teamB = temp.Rows[1][0].ToString();
+
+
+            sql = "select team_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_flag.game_id where phase = '"
+                + phase + "' and team_id = '"
+                + teamA + "' OR team_id = '"
+                + teamB + "'  group by (game_participations.team_id) ;";
+            temp = conn.Query(sql).Tables[0];
 
 
             if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
-                return new team((string)temp.Rows[0][0]);
+                return new Team((string)temp.Rows[0][0]);
             else
-                return new team((string)temp.Rows[1][0]);
+                return new Team((string)temp.Rows[1][0]);
         }
 
         //
         // SYNCRONIZED
         //
-        private List<team> getSyncKataWinner(string gameId)
+        private List<Team> getSyncKataWinner(string gameId)
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
             sql = "select game_participations.team_id, mean_score from team_tournament_participations join game_participacions on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participation.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            List<team> teams = new List<team>();
+            List<Team> teams = new List<Team>();
 
             foreach (DataRow dr in temp.Rows)
-                teams.Add(new team((string)dr[0]));
+                teams.Add(new Team((string)dr[0]));
 
             return teams;
         }
 
-        private List<team> getEmbuWinner(string gameId)
+        private List<Team> getEmbuWinner(string gameId)
         {
             return this.getSyncKataWinner(gameId);
         }
@@ -1633,38 +1651,54 @@ namespace KarateGeek.guis
         }
 
 
-
-
         public void advanceAthlites()
         {
+
+            //
+            //  finding the last game
+            //
+
+
             Game gm = null;
             Athlete winner = null;
+            int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
+
             switch (this._indexCurrentphase)
             {
+
+                case 0:
+                    gm = tournament.games2.ElementAt(gameIndex);
+                    break;
                 case 1:
-                    gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    gm = tournament.games4.ElementAt(gameIndex);
                     break;
                 case 2:
-                    gm = tournament.games4.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    gm = tournament.games8.ElementAt(gameIndex);
                     break;
                 case 3:
-                    gm = tournament.games8.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    gm = tournament.games16.ElementAt(gameIndex);
                     break;
                 case 4:
-                    gm = tournament.games16.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    gm = tournament.games32.ElementAt(gameIndex);
                     break;
                 case 5:
-                    gm = tournament.games32.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    gm = tournament.games64.ElementAt(gameIndex);
                     break;
                 case 6:
-                    gm = tournament.games64.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 7:
-                    gm = tournament.games128.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                    gm = tournament.games128.ElementAt(gameIndex);
                     break;
             }
+
+
+            //
+            //  start taking the deferent cases of the games 
+            //
+
+
             switch (tournament.gameType)
             {
+                #region indevidual kata flag and point
+
                 case Strings.indKata:
 
                     switch (tournament.judgingType)
@@ -1675,138 +1709,425 @@ namespace KarateGeek.guis
                             switch (this._indexCurrentphase)
                             {
                                 case 1:
-                                    tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
                                     break;
                                 case 2:
-                                    tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
                                     break;
                                 case 3:
-                                    tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
                                     break;
                                 case 4:
-                                    tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
                                     break;
                                 case 5:
-                                    tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
                                     break;
                                 case 6:
-                                    tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 7:
-                                    tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
+                                    tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
                                     break;
                             }
 
 
                             break;
                         case Strings.score:
+
                             DataTable dt = new CoreDatabaseConnection().Query("SELECT * FROM games where phase = '" + this._indexCurrentphase + "' and is_finished = false ;").Tables[0];
+
                             if (dt.Rows.Count == 0)
                             {
                                 List<Athlete> winners = this.getKataIndSinglePositioning();
+                                int phaseIndex = 0;
+                                switch (this._indexCurrentphase)
+                                {
+                                    case 1:
+                                        foreach (Athlete kataAth in winners)
+                                        {
+                                            if (phaseIndex < 4)
+                                            {
 
-                                //switch (this._indexCurrentphase)
-                                //{
-                                //    case 1:
-                                //        tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                //        break;
-                                //    case 2:
-                                //        tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                //        break;
-                                //    case 3:
-                                //        tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                //        break;
-                                //    case 4:
-                                //        tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                //        break;
-                                //    case 5:
-                                //        tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                //        break;
-                                //    case 6:
-                                //        tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                //        break;
-                                //    case 7:
-                                //        tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                //        break;
-                                //}
 
+                                            }
+                                            else
+                                            {
+
+                                            }
+
+                                        }
+
+
+
+                                        break;
+                                    case 2:
+
+                                        foreach (Athlete kataAth in winners)
+                                        {
+                                            if (phaseIndex < 4)
+                                            {
+                                                tournament.games4.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                            }
+
+                                            phaseIndex++;
+                                        }
+
+                                        break;
+                                    case 3:
+                                        foreach (Athlete kataAth in winners)
+                                        {
+                                            if (phaseIndex < 8)
+                                            {
+                                                tournament.games8.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                            }
+
+                                            phaseIndex++;
+                                        } break;
+                                    case 4:
+
+
+                                        foreach (Athlete kataAth in winners)
+                                        {
+                                            if (phaseIndex < 16)
+                                            {
+                                                tournament.games16.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                            }
+
+                                            phaseIndex++;
+                                        }
+
+                                        break;
+                                    case 5:
+                                        foreach (Athlete kataAth in winners)
+                                        {
+                                            if (phaseIndex < 32)
+                                            {
+                                                tournament.games32.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                            }
+
+                                            phaseIndex++;
+                                        }
+
+
+                                        break;
+                                    case 6:
+                                        foreach (Athlete kataAth in winners)
+                                        {
+                                            if (phaseIndex < 64)
+                                            {
+                                                tournament.games64.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                            }
+
+                                            phaseIndex++;
+                                        }
+
+                                        break;
+                                }
                             }
                             break;
 
                     }
 
                     break;
+                #endregion indevidual kata end region
+
+                #region indevidual kumite
+
                 case Strings.indKumite:
-                            winner = this.getKumiteIndVersusWinner(gm.gameId);
-                            switch (this._indexCurrentphase)
-                            {
-                                case 1:
-                                    tournament.games2.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 2:
-                                    tournament.games4.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 3:
-                                    tournament.games8.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 4:
-                                    tournament.games16.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 5:
-                                    tournament.games32.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 6:
-                                    tournament.games64.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 7:
-                                    tournament.games128.ElementAt((int)Math.Ceiling(this._indexCurrentphase / 2.0)).AddParticipant(winner.id);
-                                    break;
-                            }
+
+                    winner = this.getKumiteIndVersusWinner(gm.gameId);
+
+                    switch (this._indexCurrentphase)
+                    {
+                        case 1:
+                            tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                            break;
+                        case 2:
+                            tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                            break;
+                        case 3:
+                            tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                            break;
+                        case 4:
+                            tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                            break;
+                        case 5:
+                            tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                            break;
+                        case 6:
+                            tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                            break;
+                    }
+
 
 
                     break;
+
+                #endregion indevidual kumite end region
+
+                #region fugugo bothe judging kame phases
+
+
                 case Strings.fugugo:
 
                     if (this._indexCurrentphase % 2 == 1)
-                    {
+                    {   //
+                        // kata phase
+                        //
 
+                        List<Athlete> winners = this.getKataIndSinglePositioning();
+                        int phaseIndex = 0;
+                        switch (this._indexCurrentphase)
+                        {
+                            case 1:
+                                foreach (Athlete kataAth in winners)
+                                {
+                                    if (phaseIndex < 4)
+                                    {
+                                        tournament.games4.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+
+                                }
+
+
+
+                                break;
+                            case 2:
+
+                                foreach (Athlete kataAth in winners)
+                                {
+                                    if (phaseIndex < 4)
+                                    {
+                                        tournament.games4.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                }
+
+                                break;
+                            case 3:
+                                foreach (Athlete kataAth in winners)
+                                {
+                                    if (phaseIndex < 8)
+                                    {
+                                        tournament.games8.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                } break;
+                            case 4:
+
+
+                                foreach (Athlete kataAth in winners)
+                                {
+                                    if (phaseIndex < 16)
+                                    {
+                                        tournament.games16.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                }
+
+                                break;
+                            case 5:
+                                foreach (Athlete kataAth in winners)
+                                {
+                                    if (phaseIndex < 32)
+                                    {
+                                        tournament.games32.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                }
+
+
+                                break;
+                            case 6:
+                                foreach (Athlete kataAth in winners)
+                                {
+                                    if (phaseIndex < 64)
+                                    {
+                                        tournament.games64.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                }
+
+                                break;
+                        }
 
                     }
                     else
+                    {   //
+                        // kumite phase
+                        //
+
+
+
+                        winner = this.getKumiteIndVersusWinner(gm.gameId);
+
+                        switch (this._indexCurrentphase)
+                        {
+                            case 1:
+                                tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 2:
+                                tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 3:
+                                tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 4:
+                                tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 5:
+                                tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 6:
+                                tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                        }
+                    }
+
+
+
+
+                    break;
+
+                #endregion fugugo bothe judging kame phases end region
+
+                #region team kata
+
+                case Strings.teamKata:
+                    CoreDatabaseConnection conn = new CoreDatabaseConnection();
+                    string teamId = gm.participants.ElementAt(0).teamId;
+
+
+
+                    DataTable temp = new CoreDatabaseConnection().Query("SELECT * FROM games where phase = '" + this._indexCurrentphase + "' and is_finished = false ;").Tables[0];
+
+                    if (temp.Rows.Count == 0)
                     {
+                        List<Team> teamKataWinners = this.getKataTeamIndPositioning(""+_indexCurrentphase);
+                        int phaseIndex = 0;
+                        switch (this._indexCurrentphase)
+                        {
+                            
+                            case 1:
+
+                                foreach (Team kataAth in teamKataWinners)
+                                {
+                                    if (phaseIndex < 4)
+                                    {
+                                        tournament.games4.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                }
+
+                                break;
+                            case 2:
+                                foreach (Team kataAth in teamKataWinners)
+                                {
+                                    if (phaseIndex < 8)
+                                    {
+                                        tournament.games8.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                } break;
+                            case 3:
 
 
+                                foreach (Team kataAth in teamKataWinners)
+                                {
+                                    if (phaseIndex < 16)
+                                    {
+                                        tournament.games16.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
 
+                                    phaseIndex++;
+                                }
+
+                                break;
+                            case 4:
+                                foreach (Team kataAth in teamKataWinners)
+                                {
+                                    if (phaseIndex < 32)
+                                    {
+                                        tournament.games32.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                }
+
+
+                                break;
+                            case 5:
+                                foreach (Team kataAth in teamKataWinners)
+                                {
+                                    if (phaseIndex < 64)
+                                    {
+                                        tournament.games64.ElementAt(phaseIndex).AddParticipant(kataAth.id);
+                                    }
+
+                                    phaseIndex++;
+                                }
+
+                                break;
+                        }
                     }
 
                     break;
-                case Strings.teamKata:
+
+                #endregion team kata end region
+
+                #region team kumite
 
 
-
-                    break;
                 case Strings.teamKumite:
 
-                    if (this._currentGames.ElementAt(this.listBoxCurrentGameList.SelectedIndex) == "Click to add game members.")
+                    conn = new CoreDatabaseConnection();
+                    teamId = gm.participants.ElementAt(0).teamId;
+
+                    temp = conn.Query("select * from games join game_participants games.id = game_participants.game_id where team_id = '" + teamId + "' and is_finished = true ").Tables[0];
+                    if (temp.Rows.Count == 3)
                     {
+                        Team kumiteTeamWinner = this.getKumiteTeamWinner(gm);
+                        conn = new CoreDatabaseConnection();
+                        int firstPos = (int)conn.Query("select position from games join game participations gp on games.id = gp.game_id where team_id = '"
+                            + teamId + "' order by position ASC ; ").Tables[0].Rows[0][0];
 
+                        if (firstPos % 2 != 0)
+                            firstPos -= 3;
 
+                        int nextPhaseFirstPos = firstPos / 3;
 
-                    }
-                    else
-                    {
-
-
-
+                        for (int i = 0; i < 3; i++)
+                        {
+                            conn.NonQuery("insert into game_participations (team_id, game_id) values ( '"+teamId+"', () ) ;");
+                        }
                     }
 
                     break;
+
+                #endregion team kumite end region
+
+                #region sync kata
+
+
                 case Strings.syncKata:
 
 
 
 
                     break;
+
+                #endregion synk kata end region
+
+                #region embu
+
+
                 case Strings.enbu:
 
 
@@ -1814,41 +2135,9 @@ namespace KarateGeek.guis
 
 
                     break;
+
+                #endregion embu end region
             }
-
-
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
