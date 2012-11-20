@@ -30,7 +30,7 @@ namespace KarateGeek.guis
         private string pass2 = "";
 
         private int userId=-1;
-        private bool person = false;
+        private bool personMan = false;
         private bool eventMan = false;
         private bool lottery = false;
         private bool eventSup = false;
@@ -69,14 +69,11 @@ namespace KarateGeek.guis
                 return;
             }else{
                 userConnection.updateUser(userId, this.userName, this.pass1,
-                this.person, this.eventMan, this.lottery, this.eventSup,
-                this.reports, this.userMan);
-              
+                this.personMan, this.eventMan, this.lottery, this.eventSup,
+                this.clubMan, this.userMan, this.reports);
+
                 MessageBox.Show("Succesfully updated!");
             }
-
-            
-
         }
 
         private void btnSaveAsNew_Click(object sender, RoutedEventArgs e)
@@ -89,15 +86,7 @@ namespace KarateGeek.guis
                 return;
             }
 
-            if (pass1.Equals(""))
-            {
-                string result = MessageBox.Show("You didn't choose any valid password, please try again.", "No password!",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information).ToString();
-                return;
-            }
-
-            if (pass2.Equals(""))
+            if (pass1.Equals("") || pass2.Equals(""))
             {
                 string result = MessageBox.Show("You didn't choose any valid password, please try again.", "No password!",
                     MessageBoxButton.OK,
@@ -107,21 +96,17 @@ namespace KarateGeek.guis
 
             if (pass1 != pass2)
             {
-                string result = MessageBox.Show("The second password didn't much the firs one, please try again.", "Password mismuch!",
+                string result = MessageBox.Show("The second password didn't much the first one, please try again.", "Password mismuch!",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information).ToString();
                 return;
             }
             else {
                 userConnection.insertNewUser(this.userName, this.pass1,
-                this.person, this.eventMan, this.lottery, this.eventSup,
-                this.reports, this.userMan);
+                this.personMan, this.eventMan, this.lottery, this.eventSup,
+                this.clubMan , this.userMan , this.reports);
                 MessageBox.Show("Succesfully saved!");
             }
-
-
-               
-
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -143,7 +128,7 @@ namespace KarateGeek.guis
 
         private void chbPersonMan_Checked(object sender, RoutedEventArgs e)
         {
-            this.person = (bool)this.chbPersonMan.IsChecked;
+            this.personMan = (bool)this.chbPersonMan.IsChecked;
         }
 
         private void chbEventMan_Checked(object sender, RoutedEventArgs e)
@@ -265,9 +250,9 @@ namespace KarateGeek.guis
                     this.chbEventMan.IsChecked = (bool)filteredUsers.Rows[index][4];
                     this.chbLoteryMan.IsChecked = (bool)filteredUsers.Rows[index][5];
                     this.chbEventSup.IsChecked = (bool)filteredUsers.Rows[index][6];
-                    this.chbReportsMan.IsChecked = (bool)filteredUsers.Rows[index][7];
-                   // this.chbSettings.IsChecked = (bool)filteredUsers.Rows[index][8];
-                   
+                    this.chbClubMan.IsChecked = (bool)filteredUsers.Rows[index][7];
+                    this.chbUserMan.IsChecked = (bool)filteredUsers.Rows[index][8];
+                    this.chbReportsMan.IsChecked = (bool)filteredUsers.Rows[index][9];                         
                 }
                 txtUserName.TextChanged += new TextChangedEventHandler(txtUserName_TextChanged);
             }

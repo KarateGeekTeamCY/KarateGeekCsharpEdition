@@ -95,7 +95,7 @@
                         Grid.Column="1" 
                         Grid.Row="7" 
                         Margin="5" 
-                        Click="btnReports_Click" />
+                        Click="btnReports_Click" IsEnabled="False"/>
 
             </Grid>
 

@@ -1175,31 +1175,29 @@ namespace KarateGeek.guis
                 showSelectedParticipantsI();
                 showPossibleParticipants();
             }
-            else if ((bool)TrdButtonTeam.IsChecked)
+            else if ((bool)TrdButtonTeam.IsChecked || (bool)TrdButtonSync.IsChecked)
             {
-                List<AthleteData> list = new List<AthleteData>();
-
-                foreach (Object item in lbTparticipants.SelectedItems)
+                if (teamsNum >= 2)
                 {
-                    selectedParticipants.ElementAt(_tournamentTeam).Add((AthleteData)item);
+                    List<AthleteData> list = new List<AthleteData>();
 
-                    possibleParticipants.RemoveAt(lbTparticipants.Items.IndexOf(item));
+                    foreach (Object item in lbTparticipants.SelectedItems)
+                    {
+                        selectedParticipants.ElementAt(_tournamentTeam).Add((AthleteData)item);
+
+                        possibleParticipants.RemoveAt(lbTparticipants.Items.IndexOf(item));
+                    }
+                    showSelectedParticipantsT(_tournamentTeam);
+                    showPossibleParticipants();
                 }
-                showSelectedParticipantsT(_tournamentTeam);
-                showPossibleParticipants();
+                else
+                {
+                    MessageBox.Show("Select Number of Teams first!");
+                }
             }
-            else if ((bool)TrdButtonSync.IsChecked)
+            else
             {
-                List<AthleteData> list = new List<AthleteData>();
-
-                foreach (Object item in lbTparticipants.SelectedItems)
-                {
-                    selectedParticipants.ElementAt(_tournamentTeam).Add((AthleteData)item);
-
-                    possibleParticipants.RemoveAt(lbTparticipants.Items.IndexOf(item));
-                }
-                showSelectedParticipantsT(_tournamentTeam);
-                showPossibleParticipants();
+                MessageBox.Show("Please select Game Type!");
             }
         }
 
@@ -1219,6 +1217,21 @@ namespace KarateGeek.guis
                 showPossibleParticipants();
                 showSelectedParticipantsI();
             }
+            else if ((bool)TrdButtonTeam.IsChecked || (bool)TrdButtonSync.IsChecked)
+            {
+                AthleteData participant = new AthleteData();
+
+                foreach (Object item in lbTTeams.SelectedItems)
+                {
+                    participant = (AthleteData)item;
+                    selectedParticipants.ElementAt(_tournamentTeam).RemoveAt(lbTTeams.Items.IndexOf(item));
+                    possibleParticipants.Add(participant);
+
+                }
+                showPossibleParticipants();
+                showSelectedParticipantsT(_tournamentTeam);
+            }
+
         }
 
 

@@ -28,26 +28,27 @@ namespace KarateGeek.databaseConnection
 
 
         public void insertNewUser(string username, string password,
-            bool personManagement, bool eventManagement, bool lottery, bool gameSupport, bool reports, bool settings)
+            bool personManagement, bool eventManagement, bool lottery, bool eventSupport, bool clubManagement , bool userManagement, bool reports)
         {
             password = cr.cryptography(password);
 
-            sql = "insert into users(username ,password, person_management, event_management , lottery , game_support , reports , settings) values ('" +
+            sql = "insert into users(username ,password, person_management, event_management , lottery , event_support , club_management , user_management , reports) values ('" +
                     username + "' , '" +
                     password + "' , '" +
                     personManagement + "' , '" +
                     eventManagement + "' , '" +
                     lottery + "' , '" +
-                    gameSupport + "' , '" +
-                    reports + "' , '" +
-                    settings + "');";
+                    eventSupport + "' , '" +
+                    clubManagement + "' , '" +
+                    userManagement + "' , '" +
+                    reports + "');";
 
             this.NonQuery(sql);
 
         }
 
         public string updateUser(int userId, string username, string password,
-            bool personManagement, bool eventManagement, bool lottery, bool gameSupport, bool reports, bool settings)
+            bool personManagement, bool eventManagement, bool lottery, bool eventSupport, bool clubManagement, bool userManagement, bool reports)
         {
 
             if (password == "")
@@ -57,9 +58,10 @@ namespace KarateGeek.databaseConnection
                 "person_management = '" + personManagement + "', " +
                 "event_management = '" + eventManagement + "', " +
                 "lottery = '" + lottery + "', " +
-                "game_support = '" + gameSupport + "', " +
-                "reports = '" + reports + "', " +
-                "settings = '" + settings + "' where id = '" + userId + "' ;";
+                "event_support = '" + eventSupport + "', " +
+                "club_management = '" + clubManagement + "', " +
+                "user_management = '" + userManagement + "', " +
+                "reports = '" + reports + "' where id = '" + userId + "' ;";
 
                 this.NonQuery(sql);
 
@@ -74,9 +76,10 @@ namespace KarateGeek.databaseConnection
                 "person_management = '" + personManagement + "', " +
                 "event_management = '" + eventManagement + "', " +
                 "lottery = '" + lottery + "', " +
-                "game_support = '" + gameSupport + "', " +
-                "reports = '" + reports + "', " +
-                "settings = '" + settings + "' where id = '" + userId + "' ;";
+                "event_support = '" + eventSupport + "', " +
+                "club_management = '" + clubManagement + "', " +
+                "user_management = '" + userManagement + "', " +
+                "reports = '" + reports + "' where id = '" + userId + "' ;";
 
                 this.NonQuery(sql);
             }
