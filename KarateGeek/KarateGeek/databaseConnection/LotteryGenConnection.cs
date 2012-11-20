@@ -243,7 +243,10 @@ namespace KarateGeek.databaseConnection
 
             foreach (var id in idList)
                 if (id >= 0) this.NonQuery("INSERT INTO game_participations (athlete_id, team_id, game_id ) "
-                                    + "VALUES ( " + id + ", NULL, ( SELECT currval('games_id_seq') ));");
+                                         + "VALUES ( " + id + ", "
+                                                  + "( SELECT team_id FROM tournament_participations WHERE athlete_id = " + id + " AND tournament_id = " + tournamentId + " ),"
+                                                  + "( SELECT currval('games_id_seq') )"
+                                                + ");");
         }
 
 
