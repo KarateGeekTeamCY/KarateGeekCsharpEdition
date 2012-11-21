@@ -19,7 +19,7 @@ namespace KarateGeek.lottery
 {
 
     /* Implementation of classes LotteryGen_Expo_Ind, LotteryGen_Versus_Ind,
-     * LotteryGen_Expo_Team and LotteryGen_Versus_Team starts here:          */
+     * LotteryGen_Expo_Sync and LotteryGen_Versus_Team starts here:          */
 
 
     #region concrete class LotteryGen_Expo_Ind : LotteryGen_Expo
@@ -131,8 +131,8 @@ namespace KarateGeek.lottery
 
 
 
-    #region concrete class LotteryGen_Expo_Team : LotteryGen_Expo
-    class LotteryGen_Expo_Team : LotteryGen_Expo
+    #region concrete class LotteryGen_Expo_Sync : LotteryGen_Expo
+    class LotteryGen_Expo_Sync : LotteryGen_Expo
     {
 
         /** Class fields/properties: **/
@@ -141,13 +141,17 @@ namespace KarateGeek.lottery
             get { return new TeamHelper(tournamentId, athleteScoreList).getTeamScoreList(); }
         }
 
+        protected readonly int athletesPerTeam;
+
 
         /** Class methods: **/
 
-         public LotteryGen_Expo_Team(int tournamentId)
+         public LotteryGen_Expo_Sync(int tournamentId, int athletesPerTeam)
             : base(tournamentId)// calling base constructor first
         {
-            this.randomisationFactor = 2000; // overriding base constructor assignment and using a very large value
+            this.randomisationFactor = 650; // overriding base constructor assignment and using a very large value  EDIT: rethink about randomisationFactor
+
+            this.athletesPerTeam = athletesPerTeam;
         }
 
         
@@ -158,7 +162,127 @@ namespace KarateGeek.lottery
 
 
         //public override List<long> getLottery() { return null; }
+
+        public override void confirmLottery(bool doCommit = false) // writes current lottery to the database, atomically!
+        {
+            if (this.confirmed)
+                throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore.");
+
+            List<Tuple<List<long>, bool, int, int>> Sets = new List<Tuple<List<long>, bool, int, int>>();
+
+            LotteryGenConnection conn = new LotteryGenConnection();
+            List<long> L = this.getLottery();
+
+            //List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L); //getPairs(L) instead of getPairsToCommit(L) ??
+
+            List<Tuple<long, long, int, int>> fullPairs = getPairs(L);
+            List<Tuple<long, long, int, int>> emptyPairs = getEmptyPairs(L.Count);
+
+
+            foreach (var team in fullPairs)
+                Sets.Add(new Tuple<List<long>, bool, int, int>(TeamHelper.getAthletesOfTeam(team.Item1, this.tournamentId), true, team.Item3, team.Item4));
+
+            foreach (var team in emptyPairs)
+                Sets.Add(new Tuple<List<long>, bool, int, int>(TeamHelper.getAthletesOfTeam(team.Item1, this.tournamentId), false, team.Item3, team.Item4));
+
+            this.confirmed = conn.writeAllTournamentGameSets(Sets, tournamentId, doCommit: doCommit);
+            conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);
+            // we could make "confirmed" a property, so that the setter does this automatically :)
+        }
+    }
+    #endregion
+
+
+
+    #region concrete class LotteryGen_Expo_Team : LotteryGen_Expo
+    class LotteryGen_Expo_Team : LotteryGen_Expo
+    {
+
+        /** Class fields/properties: **/
+
+        protected override List<Tuple<long, int>> scoreList
+        {   // here it's a team scoreList
+            get { return new TeamHelper(tournamentId, athleteScoreList).getTeamScoreList(); }
+        }
+
+
+        /** Class methods: **/
+
+        public LotteryGen_Expo_Team(int tournamentId)
+            : base(tournamentId)// calling base constructor first
+        {
+            this.randomisationFactor = 2000; // overriding base constructor assignment and using a very large value
+        }
+
+
+        public override void shuffle(int tries)
+        {
+            base.shuffle(0);                    // disable club constraint checking
+        }
+
+
+        //public override List<long> getLottery() { return null; }
         public override List<long> getLottery() { return base.getLottery(); }
+
+        //also see base class
+        //protected override List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
+        //{
+        //    List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long, long, int, int>>();
+
+        //    int phase = (int)Math.Ceiling(Math.Log(Participants.Count, 2)) - 2;
+        //    int pos = 1;
+
+        //    foreach (var id in this.getLottery())
+        //    {
+        //        Pairs.Add(new Tuple<long, long, int, int>(id, -2, phase, pos));
+        //        ++pos;
+        //    }
+
+        //    return Pairs;
+        //}
+
+
+        protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)  //TODO: Reduce code duplication with base class
+        {
+            List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
+
+            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
+
+            for (int phase = numOfPhases - 1; phase >= 0; --phase)
+                for (int position = 1; position <= Math.Pow(2, phase + 2) * 3; ++position) // * 3
+                    emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+            return emptyPairs;
+        }
+
+
+        //public override void confirmLottery(bool doCommit = false) // writes current lottery to the database, atomically!   //TODO: MOVE TO BASE CLASS ALONG WITH SYNC TEAM's IMPLEMENTATION
+        //{
+        //    if (this.confirmed)
+        //        throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore.");
+
+        //    List<Tuple<List<long>, bool, int, int>> Sets = new List<Tuple<List<long>, bool, int, int>>();
+
+        //    LotteryGenConnection conn = new LotteryGenConnection();
+        //    List<long> L = this.getLottery();
+
+        //    //List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L); //getPairs(L) instead of getPairsToCommit(L) ??
+
+        //    List<Tuple<long, long, int, int>> fullPairs = getPairs(L);
+        //    List<Tuple<long, long, int, int>> emptyPairs = getEmptyPairs(L.Count);
+
+
+        //    foreach (var team in fullPairs)
+        //        Sets.Add(new Tuple<List<long>, bool, int, int>(TeamHelper.getAthletesOfTeam(team.Item1, this.tournamentId), true, team.Item3, team.Item4));
+
+        //    foreach (var team in emptyPairs)
+        //        Sets.Add(new Tuple<List<long>, bool, int, int>(TeamHelper.getAthletesOfTeam(team.Item1, this.tournamentId), false, team.Item3, team.Item4));
+
+        //    this.confirmed = conn.writeAllTournamentGameSets(Sets, tournamentId, doCommit: doCommit);
+        //    conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);
+        //    // we could make "confirmed" a property, so that the setter does this automatically :)
+        //}
+
     }
     #endregion
 

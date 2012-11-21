@@ -150,7 +150,7 @@ namespace KarateGeek.guis
             //ages
             cmbTAgeFrom.Items.Add("From");
             cmbTAgeTo.Items.Add("To");
-            for (int i = 5; i <= 60; i++)
+            for (int i = 5; i <= 80; i++)
             {
                 cmbTAgeFrom.Items.Add(i.ToString());
                 cmbTAgeTo.Items.Add(i.ToString());
@@ -539,7 +539,7 @@ namespace KarateGeek.guis
                             selectedParticipants.Add(new List<AthleteData>());
                         }
 
-                        cmbTteamsNumber.SelectedIndex = 1;
+                        cmbTteamsNumber.SelectedIndex = teamsNum-1;
                     }
 
                     for (int i = 0; i < this.cmbTGame.Items.Count; i++)
@@ -1089,18 +1089,31 @@ namespace KarateGeek.guis
                     {
                         ds = athleteConnection.findAthlete(participant.id);
                         rank = ds.Tables[0].Rows[0][1].ToString();
-                        participantConnection.InsertNewParticipantI(participant.id, _tournamentId, rank, 4);
+                        participantConnection.InsertNewParticipantI(participant.id, _tournamentId, rank);
                     }
                     break;
                 case (Strings.team):
                     foreach (List<AthleteData> list in selectedParticipants)
                     {
-                        _tournamentTeamId = participantConnection.InsertNewTeam(4, i, _tournamentId);
+                        _tournamentTeamId = participantConnection.InsertNewTeam(i, _tournamentId);
                         foreach (AthleteData participant in list)
                         {
                             ds = athleteConnection.findAthlete(participant.id);
                             rank = ds.Tables[0].Rows[0][1].ToString();
-                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, 4, _tournamentTeamId);
+                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, _tournamentTeamId);
+                        }
+                        i++;
+                    }
+                    break;
+                case (Strings.synchronized):
+                    foreach (List<AthleteData> list in selectedParticipants)
+                    {
+                        _tournamentTeamId = participantConnection.InsertNewTeam(i, _tournamentId);
+                        foreach (AthleteData participant in list)
+                        {
+                            ds = athleteConnection.findAthlete(participant.id);
+                            rank = ds.Tables[0].Rows[0][1].ToString();
+                            participantConnection.InsertNewParticipantT(participant.id, _tournamentId, rank, _tournamentTeamId);
                         }
                         i++;
                     }
@@ -1162,18 +1175,29 @@ namespace KarateGeek.guis
                 showSelectedParticipantsI();
                 showPossibleParticipants();
             }
-            else if ((bool)TrdButtonTeam.IsChecked)
+            else if ((bool)TrdButtonTeam.IsChecked || (bool)TrdButtonSync.IsChecked)
             {
-                List<AthleteData> list = new List<AthleteData>();
-
-                foreach (Object item in lbTparticipants.SelectedItems)
+                if (teamsNum >= 2)
                 {
-                    selectedParticipants.ElementAt(_tournamentTeam).Add((AthleteData)item);
+                    List<AthleteData> list = new List<AthleteData>();
 
-                    possibleParticipants.RemoveAt(lbTparticipants.Items.IndexOf(item));
+                    foreach (Object item in lbTparticipants.SelectedItems)
+                    {
+                        selectedParticipants.ElementAt(_tournamentTeam).Add((AthleteData)item);
+
+                        possibleParticipants.RemoveAt(lbTparticipants.Items.IndexOf(item));
+                    }
+                    showSelectedParticipantsT(_tournamentTeam);
+                    showPossibleParticipants();
                 }
-                showSelectedParticipantsT(_tournamentTeam);
-                showPossibleParticipants();
+                else
+                {
+                    MessageBox.Show("Select Number of Teams first!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select Game Type!");
             }
         }
 
@@ -1193,6 +1217,21 @@ namespace KarateGeek.guis
                 showPossibleParticipants();
                 showSelectedParticipantsI();
             }
+            else if ((bool)TrdButtonTeam.IsChecked || (bool)TrdButtonSync.IsChecked)
+            {
+                AthleteData participant = new AthleteData();
+
+                foreach (Object item in lbTTeams.SelectedItems)
+                {
+                    participant = (AthleteData)item;
+                    selectedParticipants.ElementAt(_tournamentTeam).RemoveAt(lbTTeams.Items.IndexOf(item));
+                    possibleParticipants.Add(participant);
+
+                }
+                showPossibleParticipants();
+                showSelectedParticipantsT(_tournamentTeam);
+            }
+
         }
 
 

@@ -205,9 +205,9 @@ namespace KarateGeek.databaseConnection
             String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
                              + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
             String writepair_first  = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
-                                    + "VALUES ( " + id1 + ", NULL, ( SELECT currval('games_id_seq') ));";
+                                    + "VALUES ( " + id1 + ", ( SELECT team_id FROM tournament_participations WHERE athlete_id = " + id1 + " AND tournament_id = " + tournamentId + " ), ( SELECT currval('games_id_seq') ));";
             String writepair_second = "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
-                                    + "VALUES ( " + id2 + ", NULL, ( SELECT currval('games_id_seq') ));";
+                                    + "VALUES ( " + id2 + ", ( SELECT team_id FROM tournament_participations WHERE athlete_id = " + id2 + " AND tournament_id = " + tournamentId + " ), ( SELECT currval('games_id_seq') ));";
 
             if (id1 >= -1 || id2 >= -1) this.NonQuery(writegame);
             if (id1 >= 0) this.NonQuery(writepair_first);
@@ -233,6 +233,40 @@ namespace KarateGeek.databaseConnection
             }
         }
 
+
+        private void writeTournamentGameSet(List<long> idList, bool isReady, int phase, int position, long tournamentId) /* untested */
+        {
+            String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
+                             + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
+
+            this.NonQuery(writegame);
+
+            foreach (var id in idList)
+                if (id >= 0) this.NonQuery("INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+                                         + "VALUES ( " + id + ", "
+                                                  + "( SELECT team_id FROM tournament_participations WHERE athlete_id = " + id + " AND tournament_id = " + tournamentId + " ),"
+                                                  + "( SELECT currval('games_id_seq') )"
+                                                + ");");
+        }
+
+
+        public bool writeAllTournamentGameSets(List<Tuple<List<long>, bool, int, int>> Sets, long tournamentId, bool doCommit) /* untested */
+        {
+            this.NonQuery("BEGIN;");
+
+            foreach (var set in Sets)
+                writeTournamentGameSet(set.Item1, set.Item2, set.Item3, set.Item4, tournamentId);
+
+            if (doCommit)
+            {
+                return this.NonQuery("COMMIT;"); // supposed to return true if successful (currently it's always true)
+            }
+            else
+            {
+                this.NonQuery("ROLLBACK;"); // very useful for checking syntax etc.
+                return false;               // always false, since we didn't write anything
+            }
+        }
 
         /** The following methods aren't strictly related to lotteries, and might be moved elsewhere: **/
 
@@ -330,7 +364,7 @@ namespace KarateGeek.databaseConnection
 
             Console.WriteLine("Athlete \"ready\" participations (with their names), sorted by phase, then position:");
             for (int row = 0; row < dt.Rows.Count; ++row)
-                Console.WriteLine("first_name: {0,4}  fathers_name: {1,4}  last_name: {2,4}  phase:{3,2}  position:{4,2}  "
+                Console.WriteLine("first_name: {0,16}  fathers_name: {1,16}  last_name: {2,16}  phase:{3,2}  position:{4,2}  "
                                  + "is_ready:{5,6}  is_finished:{6,6}",
                                   dt.Rows[row][0], dt.Rows[row][1], dt.Rows[row][2], dt.Rows[row][3],
                                   dt.Rows[row][4], dt.Rows[row][5], dt.Rows[row][6]);

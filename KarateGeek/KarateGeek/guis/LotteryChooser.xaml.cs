@@ -41,6 +41,12 @@ namespace KarateGeek.guis
             }
 
             this.sender = sender;
+            string node = "┌───────────────┐\n" +
+                          "│ onoma athliti ├────\n" +
+                          "└───────────────┘\n";
+            terminal.Content = node;
+            
+            
         }
 
         private void cboEventCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -65,6 +71,7 @@ namespace KarateGeek.guis
 
             lg = LotteryGeneratorFactory.Create(tournamentId);
             lg.shuffle();
+
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
@@ -74,7 +81,15 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            lg.confirmLottery(true);
+            lg.confirmLottery(doCommit: true);
+
+            //temp
+            new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
+
+            LotteryChooser lc = new LotteryChooser(this.sender);
+            lc.Activate();
+            this.Close();
+            lc.Show();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
