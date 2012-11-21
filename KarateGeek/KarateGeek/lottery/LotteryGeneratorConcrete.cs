@@ -186,7 +186,7 @@ namespace KarateGeek.lottery
 
         public override void shuffle(int tries)
         {
-            base.shuffle(0);                    // disable club constraint checking
+            base.shuffle(0);                    // disable club constraint checking ;)
         }
 
 
