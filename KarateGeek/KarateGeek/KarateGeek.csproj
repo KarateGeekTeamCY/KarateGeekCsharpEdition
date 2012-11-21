@@ -163,7 +163,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Strings.cs" />
-    <Compile Include="team.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="Tournament.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -196,9 +196,6 @@
     </Compile>
     <Compile Include="guis\NewCity.xaml.cs">
       <DependentUpon>NewCity.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="guis\NewClub.xaml.cs">
-      <DependentUpon>NewClub.xaml</DependentUpon>
     </Compile>
     <Compile Include="guis\PersonManagement.xaml.cs">
       <DependentUpon>PersonManagement.xaml</DependentUpon>
@@ -283,10 +280,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\NewCity.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="guis\NewClub.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
