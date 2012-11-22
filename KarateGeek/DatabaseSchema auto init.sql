@@ -611,7 +611,7 @@ INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  p
 VALUES ('athl13' , 'athl13_father' , 'athl13_last', '02-10-2002' , 'MALE', '98133146' , null , 'athl13@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl14' , 'athl14_father' , 'athl14_last', '22-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
+VALUES ('athl14' , 'athl14_father' , 'athl14_last', '10-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
 
 
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,

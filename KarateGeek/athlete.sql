@@ -1,4 +1,6 @@
-﻿create or replace view athlete_view as 
+﻿drop view athlete_view;
+
+create or replace view athlete_view as 
 select persons.id as persons_id, 
 first_name,last_name,
 fathers_name,
