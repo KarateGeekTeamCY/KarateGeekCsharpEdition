@@ -40,6 +40,10 @@ namespace KarateGeek.guis
         private Boolean _judgeDchooseWhite;
         private Boolean _judgeEchooseWhite;
 
+        private Game _game;
+        private Tournament _tournament;
+
+
         private string _gameId = "";
         private string _turnamentId = "";
         private string _participationId = "";
@@ -68,18 +72,37 @@ namespace KarateGeek.guis
         {
             InitializeComponent();
 
-            darkGray.Setters.Add(new Setter(Button.BackgroundProperty , Brushes.Gray));
-            this.reda.Style = darkGray ;
+            this._sender = sender;
+            this._game = gm;
+            this._tournament = new Tournament(this._game.tournamentId);       
 
-            lightGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.LightGray));
+
+
+            this.darkGray.Setters.Add(new Setter(Button.BackgroundProperty , Brushes.Gray));
+            this.lightGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.LightGray));
+
+
+            this.reda.Style = lightGray;
+            this.redb.Style = lightGray;
+            this.redc.Style = lightGray;
+            this.redd.Style = lightGray;
+            this.rede.Style = lightGray;
+
+
             this.whitea.Style = lightGray;
+            this.whiteb.Style = lightGray;
+            this.whitec.Style = lightGray;
+            this.whited.Style = lightGray;
+            this.whitee.Style = lightGray;
 
-
-            _sender = sender;
-
+            //
+            //  to be removed
+            //
             //this._turnamentId = turnamentId;
             this._gameId = gm.gameId;
             //this._isTeam = isTeam;
+            //
+            //
 
             this._loadDataTables();
 
@@ -92,8 +115,6 @@ namespace KarateGeek.guis
                 this.eventJudgePickerE.Items.Add("" + dr[1] + " " + dr[2]);
             }
 
-
-            string gametype = this._DTgame.Rows[0][4].ToString();
 
             TournamentGameParticipationsConnection tourparconn = new TournamentGameParticipationsConnection();
             this._DTparticipations = tourparconn.GetParticipation(_gameId).Tables[0];
