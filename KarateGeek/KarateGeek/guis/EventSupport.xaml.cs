@@ -98,6 +98,8 @@ namespace KarateGeek.guis
             }
 
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
+
+            //this.Show();
         }
 
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -921,14 +923,17 @@ namespace KarateGeek.guis
                     {
                         Athlete A = gm.participants.ElementAt(0);
                         Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                        this.listBoxCurrentGameList.Items.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                     }
                     else
                     {
-                        current.Add("Click to add game members.");
+                        this.listBoxCurrentGameList.Items.Add("Click to add game members.");
                     }
                 }
-                this.listBoxCurrentGameList.ItemsSource = current;
+                //this.listBoxCurrentGameList.SetBinding(current); 
+                //this.listBoxCurrentGameList.Items.a
+
+                //this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
                 //next Phase
@@ -941,14 +946,14 @@ namespace KarateGeek.guis
                     {
                         Athlete A = gm.participants.ElementAt(0);
                         Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                        this.listBoxNextGameList.Items.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                     }
                     else
                     {
-                        current.Add("Click to add game members.");
+                        this.listBoxNextGameList.Items.Add("Click to add game members.");
                     }
                 }
-                this.listBoxNextGameList.ItemsSource = future;
+                //this.listBoxNextGameList.ItemsSource = future;
 
             }
             else if (this.tournament.games2.Count != 0 && (!this.tournament.games2.Last().isFinished))
@@ -1643,7 +1648,7 @@ namespace KarateGeek.guis
                     break;
                 case Strings.teamKumite:
 
-                    if (this._currentGames.ElementAt(this.listBoxCurrentGameList.SelectedIndex) == "Click to add game members.")
+                    if (this.listBoxCurrentGameList.SelectedItem == "Click to add game members.")
                     {
                         KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
                     }

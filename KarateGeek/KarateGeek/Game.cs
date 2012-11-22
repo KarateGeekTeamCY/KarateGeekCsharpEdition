@@ -92,20 +92,20 @@ namespace KarateGeek
         public void Update()
         {
             sql = "UPDATE games SET is_ready = '" + this.isReady + "', " +
-                "is_finished = '" + this.isFinished + "' WHERE game_id = '" + this.gameId + "'; ";
+                "is_finished = '" + this.isFinished + "' WHERE id = '" + this.gameId + "'; ";
             this.NonQuery(sql);
 
 
             for (int i = 0; i < this.numOfParticipants; i++)
             {
-                sql = "select * from game_participants where game_id = '" + this.gameId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ; ";
+                sql = "select * from game_participations where game_id = '" + this.gameId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ; ";
 
 
                 int exist = this.Query(sql).Tables[0].Rows.Count;
                 if (exist == 0)
                 {
                     
-                     sql = "select * from tournament_participations where tournament_id = '" + this.tournamentId + "', and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
+                     sql = "select * from tournament_participations where tournament_id = '" + this.tournamentId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
                     DataTable temp = Query(sql).Tables[0];
 
                     if (temp.Rows.Count == 0)

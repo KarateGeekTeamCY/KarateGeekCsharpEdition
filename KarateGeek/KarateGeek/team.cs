@@ -12,7 +12,7 @@ namespace KarateGeek
 
         public string id { get; set; }
         public string tournamentId { get; set; }
-        
+
         private string _ranking;
         public string ranking
         {
@@ -40,27 +40,39 @@ namespace KarateGeek
             DataTable temp = Query(sql).Tables[0];
 
             this.id = id;
-            this.ranking = (string)temp.Rows[0][1];
-            this.tournamentId = (string)temp.Rows[0][3];
+            if (temp.Rows[0][1] == null)
+            {
+                this.ranking = "128";
+            }
+            else
+            {
+                this.ranking = temp.Rows[0][1].ToString();
+            }
+            this.tournamentId = temp.Rows[0][3].ToString(); ;
 
-            sql = "SELECT * FROM tournament_participations where tournament_id '" + this.tournamentId 
+            sql = "SELECT * FROM tournament_participations where tournament_id = '" + this.tournamentId
                 + "' AND team_id = '" + this.id + "' ; ";
 
             temp = Query(sql).Tables[0];
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.participants.Add(new Athlete((string)dr[0], this.tournamentId));
+                this.participants.Add(new Athlete(dr[0].ToString(), this.tournamentId));
             }
         }
 
 
         private void update()
         {
-            sql = "UPDATE team_tournament_participations SET ranking = '" + _ranking
-                + "' WHERE id = '" + this.id
-                + "' AND tournament_id ='" + this.tournamentId + "' ; ";
-            this.NonQuery(sql);
+            if (this._ranking != "")
+            {
+                sql = "UPDATE team_tournament_participations SET ranking = '" + _ranking
+                    + "' WHERE id = '" + this.id
+                    + "' AND tournament_id ='" + this.tournamentId + "' ; ";
+                this.NonQuery(sql);
+
+            }
+
         }
 
 

@@ -169,10 +169,12 @@ namespace KarateGeek
 
             sql = "SELECT * FROM team_tournament_participations where tournament_id = '" + this.id + "';";
             temp = this.Query(sql).Tables[0];
+            this.teams = new List<Team>();
+
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.teams.Add(new Team((string)dr[0]));
+                this.teams.Add(new Team(dr[0].ToString()));
             }
 
             #endregion load participants and teams if exist
