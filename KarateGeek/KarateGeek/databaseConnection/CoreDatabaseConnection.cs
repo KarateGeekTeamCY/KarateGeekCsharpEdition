@@ -29,6 +29,7 @@ namespace KarateGeek.databaseConnection
                     //{ /* temporary (and UGLY) hack to test remote DB with different schema name... */
                     //    NpgsqlCommand comm = _conn.CreateCommand();
                     //    comm.CommandText = "SET search_path TO schema_v1;";
+                    //    comm.CommandText = "SET DateStyle TO Euro;";
                     //    _conn.Open();
                     //    comm.ExecuteNonQuery();
                     //}

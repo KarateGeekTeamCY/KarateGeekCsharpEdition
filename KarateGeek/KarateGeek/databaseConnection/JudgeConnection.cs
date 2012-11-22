@@ -17,10 +17,32 @@ namespace KarateGeek.databaseConnection
            string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
            string rank, string judge_class)
         {
-            AddressConnection addConn = new AddressConnection();
-            string addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
+            DataTable dt;
+            string addressId = null;
+            string judgeId = null;
 
-            this._InsertJudge(personId, rank, judge_class);
+            if (personId == -1)
+            {
+                AddressConnection addConn = new AddressConnection();
+                addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
+                judgeId = insertNewPerson(firstName, lastName, fathersName, sex, dateOfBirth, primaryPhoneNo, secondaryPhoneNo, email, addressId);
+                this._InsertJudge(personId, rank, judge_class);
+
+            }
+            else if (personId >= 0)
+            {
+                string sql = "select id from persons natural join athletes where id = " + personId + ";";
+                dt = this.Query(sql).Tables[0];
+                if (dt.Rows.Count == 0)
+                {
+                    this._InsertJudge(personId, rank, judge_class);
+                }
+                else
+                {
+
+                }
+            }
+           
 
             return personId.ToString();
         }

@@ -40,7 +40,7 @@ namespace KarateGeek.guis
         //
 
         private AthleteConnection athleteConnection;
-        private int _personId;
+        private int _personId = -1;
         private string _athleteFirstName = null;
         private string _athleteLastName = null;
         private string _athleteFathersName = null;
@@ -503,15 +503,23 @@ namespace KarateGeek.guis
 
         private void btnASaveNew_Click(object sender, RoutedEventArgs e)
         {
+            bool insertAthlete;
             if (checkFields("athlete"))
             {
-
-                athleteConnection.InsertNewAthlete(_personId ,_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
-                MessageBox.Show("Succesfully saved!");
-                PersonManagement pm = new PersonManagement(this);
-                pm.Activate();
-                pm.Show();
-                this.Close();
+                
+                insertAthlete = athleteConnection.InsertNewAthlete(_personId ,_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
+                if (insertAthlete)
+                {
+                    MessageBox.Show("Succesfully saved!");
+                    PersonManagement pm = new PersonManagement(this);
+                    pm.Activate();
+                    pm.Show();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("The athlete ");
+                }
             }
 
         }
@@ -1106,6 +1114,11 @@ namespace KarateGeek.guis
                 jSuggestionList.Visibility = Visibility.Collapsed;
                 jSuggestionList.ItemsSource = null;
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
 
      

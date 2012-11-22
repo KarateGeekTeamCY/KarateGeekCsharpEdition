@@ -41,8 +41,9 @@ namespace KarateGeek.lottery
                 case Strings.fugugo:     lg = new LotteryGen_Versus_Ind(tournamentId);
                                          break;
 
-                case Strings.teamKata:   lg = new LotteryGen_Expo_Ind(tournamentId);    // !!
+                case Strings.teamKata:   lg = new LotteryGen_Expo_Team(tournamentId);
                                          break;
+
                 case Strings.enbu:       lg = new LotteryGen_Expo_Sync(tournamentId, 2);
                                          break;
 

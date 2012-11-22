@@ -149,7 +149,7 @@ namespace KarateGeek.lottery
          public LotteryGen_Expo_Sync(int tournamentId, int athletesPerTeam)
             : base(tournamentId)// calling base constructor first
         {
-            this.randomisationFactor = 650; // overriding base constructor assignment and using a very large value  EDIT: rethink about randomisationFactor
+            this.randomisationFactor = 800;     // overriding base constructor assignment and using a large value  EDIT: rethink about randomisationFactor
 
             this.athletesPerTeam = athletesPerTeam;
         }
@@ -211,7 +211,7 @@ namespace KarateGeek.lottery
         public LotteryGen_Expo_Team(int tournamentId)
             : base(tournamentId)// calling base constructor first
         {
-            this.randomisationFactor = 2000; // overriding base constructor assignment and using a very large value
+            this.randomisationFactor = 800;     // overriding base constructor assignment and using a large value
         }
 
 
@@ -225,11 +225,30 @@ namespace KarateGeek.lottery
         public override List<long> getLottery() { return base.getLottery(); }
 
 
+        protected override List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
+        {
+            List<Tuple<long, long, int, int>> Pairs = new List<Tuple<long, long, int, int>>();
+
+            int phase = (int)Math.Ceiling(Math.Log(Participants.Count, 2)) - 2;
+            int pos = 1;
+
+            /* OUCH!!!! With this double for-loop, the logic of list building differs from other classes.
+             * Revert this change and override confirmLottery() instead?                                 */
+            foreach (var teamId in this.getLottery())
+                foreach (var athleteId in TeamHelper.getAthletesOfTeam(teamId, this.tournamentId)) {
+                    Pairs.Add(new Tuple<long, long, int, int>(athleteId, -2, phase, pos));
+                    ++pos;
+                }
+
+            return Pairs;
+        }
+
+
         protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)  //TODO: Reduce code duplication with base class
         {
             List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
 
-            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
+            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants / 3, 2));
 
             for (int phase = numOfPhases - 1; phase >= 0; --phase)
                 for (int position = 1; position <= Math.Pow(2, phase + 2) * 3; ++position) // * 3
@@ -265,11 +284,44 @@ namespace KarateGeek.lottery
 
         public override void shuffle(int tries)
         {
-            base.shuffle(0);                    // disable club constraint checking
+            base.shuffle(0);                    // disable club constraint checking ;)
         }
 
 
         public override List<long> getLottery() { return null; }
+
+        /* EXPERIMENTAL AND TOTALLY UNTESTED METHOD, inspired from the one in the LotteryGen_Expo_Team class: */
+        protected override List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
+        {
+            List<Tuple<long, long, int, int>> teamPairs = base.getPairs(Participants);
+            List<Tuple<long, long, int, int>> athletePairs = new List<Tuple<long, long, int, int>>();
+
+            int phase = (int)Math.Ceiling(Math.Log(Participants.Count, 2)) - 2;
+            int pos = 1;
+
+            foreach (var teamPair in teamPairs) // FIXME: INCOMPLETE (and using only Item1 is WRONG, because it might be negative but Item2 positive)
+                foreach (var athleteId in TeamHelper.getAthletesOfTeam(teamPair.Item1, this.tournamentId)) {
+                    athletePairs.Add(new Tuple<long, long, int, int>(athleteId, -2, phase, pos));
+                    ++pos;
+                }
+
+            return athletePairs;
+        }
+
+        /* EXPERIMENTAL AND TOTALLY UNTESTED METHOD, inspired from the one in the * class: */
+        //protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
+        //{
+        //    List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
+
+        //    int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants / 3, 2));
+
+        //    for (int phase = numOfPhases - 1; phase >= 0; --phase)
+        //        for (int position = 1; position <= Math.Pow(2, phase + 2) * 3; ++position) // * 3
+        //            emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+        //    return emptyPairs;
+        //}
+
     }
     #endregion
 
