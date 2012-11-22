@@ -10,20 +10,45 @@ namespace KarateGeek.databaseConnection
     class AthleteConnection : PersonConnection
     {
         DataTable athletes = new DataTable();
-        
 
-        public string InsertNewAthlete(int personId , string firstName, string lastName, string fathersName, string sex,
+
+        public bool InsertNewAthlete(int personId, string firstName, string lastName, string fathersName, string sex,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
-           string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City, 
+           string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
            string rank, string localClubId)
         {
-            AddressConnection addConn = new AddressConnection();
-            string addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City,  addressPostalCode, countryCode);
+            DataTable dt;
+            string addressId = null;
+            string athleteId = null;
+            bool athleteInsertion = false;
 
-            this._InsertAthlete(personId.ToString(), rank, localClubId);
+            if (personId == -1)
+            {
+                AddressConnection addConn = new AddressConnection();
+                addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
+                athleteId = insertNewPerson(firstName, lastName, fathersName, sex, dateOfBirth, primaryPhoneNo, secondaryPhoneNo, email, addressId);
+                _InsertAthlete(athleteId, rank, localClubId);
 
-            return personId.ToString();
+                athleteInsertion = true;
+
+            }
+            else if (personId >= 0)
+            {
+                string sql = "select id from persons natural join athletes where id = " + personId + ";";
+                dt = this.Query(sql).Tables[0];
+                if (dt.Rows.Count == 0)
+                {
+                    _InsertAthlete(personId.ToString(), rank, localClubId);
+                    athleteInsertion = true;
+                }
+                else
+                {
+                    athleteInsertion = false;
+                }
+                
+            }
+            return athleteInsertion;
         }
 
 
@@ -71,7 +96,7 @@ namespace KarateGeek.databaseConnection
             sql = "select address_id from persons where id = '" + id + "'; ";
 
             dr = this.Query(sql);
-            int addressId = int.Parse(dr.Tables[0].Rows[0][0].ToString()); 
+            int addressId = int.Parse(dr.Tables[0].Rows[0][0].ToString());
 
             this.updatePerson(id, firstName, lastName, fathersName, sex, dateOfBirth,
             primaryPhoneNo, secondaryPhoneNo, email, addressId);
@@ -82,16 +107,17 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
-        public bool deleteAthlete(int id){
+        public bool deleteAthlete(int id)
+        {
             JudgeConnection judgeConnection = new JudgeConnection();
             TournamentConnection tournamentConnection = new TournamentConnection();
             DataSet ds;
             DataSet ds2;
             string sql = null;
-           
+
 
             ds = judgeConnection.findJudge(id);
-            
+
             sql = "select * from tournament_participations where athlete_id='" + id + "';";
             ds2 = this.Query(sql);
             if (ds2.Tables[0].Rows.Count == 0)
@@ -160,7 +186,7 @@ namespace KarateGeek.databaseConnection
 
             DataSet temp = Query(sql);
             return temp.Tables[0];
-        
+
         }
 
 
