@@ -70,7 +70,7 @@
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
                    HorizontalContentAlignment="Center"
-                   FontSize="18"
+                   FontSize="16"
                    Grid.Row="3"/>
            
 

@@ -330,7 +330,7 @@ namespace KarateGeek.databaseConnection
 
         public DataTable getTournamentGameTableWithNames(long tournamentId, bool isFinished = false, bool isReady = true)
         {
-            String sql = "SELECT first_name, fathers_name, last_name, phase, position, is_ready, is_finished"
+            String sql =  "SELECT first_name, fathers_name, last_name, phase, position, is_ready, is_finished"
                        + " FROM persons INNER JOIN (SELECT *"
                        +                         "  FROM games LEFT OUTER JOIN game_participations"
                        +                         "  ON games.id = game_participations.game_id"
@@ -370,6 +370,14 @@ namespace KarateGeek.databaseConnection
                                  + "is_ready:{5,6}  is_finished:{6,6}",
                                   dt.Rows[row][0], dt.Rows[row][1], dt.Rows[row][2], dt.Rows[row][3],
                                   dt.Rows[row][4], dt.Rows[row][5], dt.Rows[row][6]);
+        }
+
+        public void removeAthleteIdsFromTournamentParticipations(long tournamentId)
+        {
+            String sql = "UPDATE game_participations SET athlete_id = NULL "
+                       + "WHERE game_id IN (SELECT id FROM games WHERE tournament_id = " + tournamentId + " );";
+
+            this.NonQuery(sql);
         }
 
     }
