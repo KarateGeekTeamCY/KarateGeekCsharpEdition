@@ -54,10 +54,13 @@
 -- begin transaction:
 BEGIN;
 
-DROP SCHEMA IF EXISTS public CASCADE;      -- WARNING: This also deletes all tables!
+DROP SCHEMA IF EXISTS public CASCADE;       -- WARNING: This also deletes all tables!
 
 CREATE SCHEMA public;
 
+SET search_path TO public;                  -- "public" is the default schema anyway
+SET DateStyle TO European;                  -- "European" is a synonym for the "DMY" format...
+-- DateStyle needs to be set for some installations of Postgres, for some reason (8.x versions?)
 
 --
 -- TABLE creation:
@@ -107,7 +110,7 @@ CREATE TABLE clubs (
     email           VARCHAR(50),
     logo            BYTEA,          -- "binary string" data type
     address_id      INTEGER         REFERENCES addresses( id ),
-    country_code    CHAR(2)         DEFAULT 'CY'  REFERENCES countries(code),
+    country_code    CHAR(2)         DEFAULT 'CY' REFERENCES countries(code),
     PRIMARY KEY (id)
 );
 
@@ -129,7 +132,7 @@ CREATE TABLE persons (
 
 
 CREATE TABLE athletes (
-    id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION, -- not CASCADE!
+    id              INTEGER         REFERENCES persons(id) ON DELETE NO ACTION, -- not CASCADE!
     rank            VARCHAR(50)     NOT NULL,
     club_id         INTEGER         REFERENCES clubs(id),   -- this was "NOT NULL" initially
     PRIMARY KEY(id)
@@ -137,7 +140,7 @@ CREATE TABLE athletes (
 
 
 CREATE TABLE judges (
-    id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
+    id              INTEGER         REFERENCES persons(id) ON DELETE NO ACTION,
     rank            VARCHAR(50)     NOT NULL,
     class           CHAR(1)         NOT NULL,
     PRIMARY KEY(id)
@@ -193,7 +196,7 @@ CREATE TABLE games (
     id              SERIAL,
     phase           INTEGER         NOT NULL,
     position        INTEGER         NOT NULL,
-    tournament_id   INTEGER         REFERENCES tournaments(id),
+    tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     is_ready        BOOLEAN         NOT NULL DEFAULT false,
     is_finished     BOOLEAN         NOT NULL DEFAULT false,
 
@@ -212,9 +215,9 @@ CREATE TABLE team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
-    athlete_id      INTEGER         REFERENCES athletes(id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id),
-    tournament_id   INTEGER         REFERENCES tournaments(id),
+    athlete_id      INTEGER         REFERENCES athletes(id) ON DELETE NO ACTION, -- ?
+    team_id         INTEGER         REFERENCES team_tournament_participations(id) ON DELETE CASCADE,
+    tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
 
@@ -227,8 +230,8 @@ CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio
                                         -- gia omadiko (versus) 6 (OR 4, anepisima)
     id              SERIAL,
     athlete_id      INTEGER         REFERENCES athletes (id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id),
-    game_id         INTEGER         REFERENCES games (id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
+    game_id         INTEGER         REFERENCES games (id) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
 
@@ -237,7 +240,7 @@ CREATE TABLE game_points(
     id              SERIAL,
     game_id         INTEGER         REFERENCES games(id),
     athlete_id      INTEGER         REFERENCES athletes(id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
     technical_point         INTEGER,
     technical_point_desc    VARCHAR(50),
@@ -299,7 +302,7 @@ COMMIT;
 
 
 --
--- Initialisation with data
+-- Initialisation with data (for testing purposes; only the list of countries will remain in the release version)
 --
 
 
@@ -569,7 +572,7 @@ INSERT INTO clubs (name, address_id, country_code) VALUES ('Fight''n''Fitness', 
 
 
 INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
+VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'MALE', '99123144' , null , 'email@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('athl1' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'MALE', '99123145' , null , 'athl1@gmail.com' , '0');
@@ -649,10 +652,10 @@ INSERT INTO events (name, date, location_id)
 VALUES ('Big Event', current_date, 0);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Iron Fist Tournament', 'male', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
+VALUES ('Iron Fist Tournament', 'MALE', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter', 'male', 1, 99, 'Blue   –  2nd kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
+VALUES ('Street Fighter', 'MALE', 1, 99, 'Blue   –  2nd kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
 
 
 -- A NULL "position" means that the match hasn't taken place yet
@@ -742,7 +745,7 @@ COMMIT;
 
 
 ANALYSE;
--- From the PostreSQL documentation:
+-- From the PostgreSQL documentation:
 --
 -- ANALYZE collects statistics about the contents of tables in the database, and stores the
 -- results in the pg_statistic system catalog. Subsequently, the query planner uses these
@@ -751,3 +754,4 @@ ANALYSE;
 -- With no parameter, ANALYZE examines every table in the current database. With a parameter,
 -- ANALYZE examines only that table. It is further possible to give a list of column names, in
 -- which case only the statistics for those columns are collected.
+
