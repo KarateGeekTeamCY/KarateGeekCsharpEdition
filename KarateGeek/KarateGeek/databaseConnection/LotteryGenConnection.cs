@@ -330,7 +330,7 @@ namespace KarateGeek.databaseConnection
 
         public DataTable getTournamentGameTableWithNames(long tournamentId, bool isFinished = false, bool isReady = true)
         {
-            String sql = "SELECT first_name, fathers_name, last_name, phase, position, is_ready, is_finished"
+            String sql =  "SELECT first_name, fathers_name, last_name, phase, position, is_ready, is_finished"
                        + " FROM persons INNER JOIN (SELECT *"
                        +                         "  FROM games LEFT OUTER JOIN game_participations"
                        +                         "  ON games.id = game_participations.game_id"

@@ -59,9 +59,6 @@ namespace KarateGeek.lottery
                                          break;
             }
 
-            /* For now (!) only create LotteryGen_Versus_Ind objects... */
-            //lg = new LotteryGen_Versus_Ind(tournamentId);
-
             Debug.Assert(lg != null);
 
             return lg;
