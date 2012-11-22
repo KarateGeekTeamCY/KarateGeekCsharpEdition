@@ -372,5 +372,13 @@ namespace KarateGeek.databaseConnection
                                   dt.Rows[row][4], dt.Rows[row][5], dt.Rows[row][6]);
         }
 
+        public void removeAthleteIdsFromTournamentParticipations(long tournamentId)
+        {
+            String sql = "UPDATE game_participations SET athlete_id = NULL "
+                       + "WHERE game_id IN (SELECT id FROM games WHERE tournament_id = " + tournamentId + " );";
+
+            this.NonQuery(sql);
+        }
+
     }
 }

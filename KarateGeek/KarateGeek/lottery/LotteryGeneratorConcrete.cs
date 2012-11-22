@@ -288,7 +288,7 @@ namespace KarateGeek.lottery
         }
 
 
-        public override List<long> getLottery() { return null; }
+        public override List<long> getLottery() { return base.getLottery(); }
 
         /* EXPERIMENTAL AND TOTALLY UNTESTED METHOD, inspired from the one in the LotteryGen_Expo_Team class: */
         protected override List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
@@ -296,55 +296,37 @@ namespace KarateGeek.lottery
             List<Tuple<long, long, int, int>> teamPairs = base.getPairs(Participants);
             List<Tuple<long, long, int, int>> athletePairs = new List<Tuple<long, long, int, int>>();
 
-            int phase = (int)Math.Ceiling(Math.Log(Participants.Count, 2)) - 2; // THIS LINES CRASHES, BECAUSE GetLottery() SOMEHOW RETURNS NULL!
+            int phase = (int)Math.Ceiling(Math.Log(Participants.Count, 2)) - 3; // THIS LINES CRASHES, BECAUSE GetLottery() SOMEHOW RETURNS NULL!
             int pos = 1;
-
-            /* FIXME: INCOMPLETE (and using only Item1 is WRONG, because it might be negative but Item2 positive) */
-            //foreach (var teamPair in teamPairs)
-            //    foreach (var athleteId in TeamHelper.getAthletesOfTeam(teamPair.Item1, this.tournamentId)) {
-            //        athletePairs.Add(new Tuple<long, long, int, int>(athleteId, -1, phase, pos));
-            //        ++pos;
-            //    }
 
             /* Normally we would use (-1, -1) to write only empty !isReady pairs, but actually writing down the
              * real pairs is easier (!). The reason is that we cannot pass teamId to the database easily (as is)...
+             * 
+             * So, we do it this way and then call a modified version of confirmLottery() to clean up athlete_id's.
              *
-             * BTW, the order of athletes (which decides the pairings) is the one of the DB query...                */
+             * BTW, the order of athletes (which would decide the pairings) is the one of the DB query...           */
             foreach (var teamPair in teamPairs){
                 if (teamPair.Item1 >= 0 && teamPair.Item2 >= 0) { // FIXME: there are hardcoded values here (3 athletes/team)
                     var t1 = TeamHelper.getAthletesOfTeam(teamPair.Item1, this.tournamentId);
                     var t2 = TeamHelper.getAthletesOfTeam(teamPair.Item2, this.tournamentId);
-                    for (int i = 0; i <= 3; ++i)
-                        athletePairs.Add(new Tuple<long, long, int, int>(t1.ElementAt(i), t2.ElementAt(i), phase, pos));
+                    for (int i = 0; i < 3; ++i)
+                        athletePairs.Add(new Tuple<long, long, int, int>(t1.ElementAt(i), t2.ElementAt(i), teamPair.Item3, (teamPair.Item4 - 1) * 3 + i + 1)); // FIXME: position parameter is wrong!
                 }
                 else if (teamPair.Item1 >= 0) {
                     var t1 = TeamHelper.getAthletesOfTeam(teamPair.Item1, this.tournamentId);
-                    for (int i = 0; i <= 3; ++i)
-                        athletePairs.Add(new Tuple<long, long, int, int>(t1.ElementAt(i), -1, phase, pos));
+                    for (int i = 0; i < 3; ++i)
+                        athletePairs.Add(new Tuple<long, long, int, int>(t1.ElementAt(i), -1, teamPair.Item3, (teamPair.Item4 - 1) * 3 + i + 1));
                 }
                 else if (teamPair.Item1 >= 0) {
                     var t2 = TeamHelper.getAthletesOfTeam(teamPair.Item2, this.tournamentId);
-                    for (int i = 0; i <= 3; ++i)
-                        athletePairs.Add(new Tuple<long, long, int, int>(-1, t2.ElementAt(i), phase, pos));
+                    for (int i = 0; i < 3; ++i)
+                        athletePairs.Add(new Tuple<long, long, int, int>(-1, t2.ElementAt(i), teamPair.Item3, (teamPair.Item4 - 1) * 3 + i + 1));
                 }
             }
 
             return athletePairs;
         }
 
-        /* EXPERIMENTAL AND TOTALLY UNTESTED METHOD, inspired from the one in the * class: */
-        //protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
-        //{
-        //    List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
-
-        //    int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants / 3, 2));
-
-        //    for (int phase = numOfPhases - 1; phase >= 0; --phase)
-        //        for (int position = 1; position <= Math.Pow(2, phase + 2) * 3; ++position) // * 3
-        //            emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-
-        //    return emptyPairs;
-        //}
 
         protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
         {
@@ -353,10 +335,24 @@ namespace KarateGeek.lottery
             int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants / 3, 2));
 
             for (int phase = numOfPhases - 1; phase >= 0; --phase)
-                for (int position = 1; position <= Math.Pow(2, phase + 2) * 3; ++position) // * 3
+                for (int position = 1; position <= Math.Pow(2, phase) * 3; ++position) // * 3
                     emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
 
             return emptyPairs;
+        }
+
+
+        public override void confirmLottery(bool doCommit = false)
+        {
+            base.confirmLottery(doCommit);
+
+            /* Important fix for the special case of Team Kumite...
+             * (because the order of the athletes in a team is not known in advance)
+             *
+             * Unfortunately it's even more messy to implement in the main DB transaction
+             * (but it gets called immediately after and executes instantaneously).
+             */
+            new LotteryGenConnection().removeAthleteIdsFromTournamentParticipations(this.tournamentId);
         }
 
     }
