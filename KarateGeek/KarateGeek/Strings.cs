@@ -117,6 +117,7 @@ namespace KarateGeek
         public const string keikoku    = "KEI-KOKU";
         public const string tento      = "TEN-TO";
         public const string doctorStop = "DOCTOR STOP";
+        public const string bychoice   = "BY_CHOICE";
 
 
         //
