@@ -20,7 +20,7 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class ChooseWinner : Window
     {
-        private Window _sender;
+        private EventSupport _sender;
         private Game _game;
         private Tournament _tournament;
         private bool _isTeam;
@@ -33,7 +33,7 @@ namespace KarateGeek.guis
 
 
 
-        public ChooseWinner(Window sender, Game game, Tournament tournament)
+        public ChooseWinner(EventSupport sender, Game game, Tournament tournament)
         {
             InitializeComponent();
             this._sender = sender;
@@ -103,6 +103,9 @@ namespace KarateGeek.guis
                             + "1" + "', '"
                             + Strings.bychoice + "'); ");
             }
+
+            this.Close();
+            
         }
 
         private void btnAthleteBisWinner_Click(object sender, RoutedEventArgs e)
@@ -127,6 +130,13 @@ namespace KarateGeek.guis
                             + "1" + "', '"
                             + Strings.bychoice + "'); ");
             }
+
+            this._sender.update();
+            this.Close();
+
         }
+
+
+
     }
 }

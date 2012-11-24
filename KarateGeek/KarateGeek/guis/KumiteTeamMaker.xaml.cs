@@ -64,7 +64,7 @@ namespace KarateGeek.guis
             athsA = conn.Query(sb.ToString()).Tables[0];
 
             foreach (DataRow dr in athsA.Rows)
-                listA.Add((string)dr[1] + " " + (string)dr[2]);
+                listA.Add((string)dr[1].ToString() + " " + (string)dr[2].ToString());
 
 
 
@@ -80,7 +80,7 @@ namespace KarateGeek.guis
             athsB = conn.Query(sb.ToString()).Tables[0];
 
             foreach (DataRow dr in athsB.Rows)
-                listB.Add((string)dr[1] + " " + (string)dr[2]);
+                listB.Add((string)dr[1].ToString() + " " + (string)dr[2].ToString());
 
 
             this.listBoxTeamA.ItemsSource = listA;
@@ -113,8 +113,8 @@ namespace KarateGeek.guis
             if (aFlag && bFlag)
             {
                 string result = MessageBox.Show("Are you sure you want to assign "
-                    + (string)athsA.Rows[this.listBoxTeamA.SelectedIndex][1] + " " + (string)athsA.Rows[this.listBoxTeamA.SelectedIndex][2]
-                    + " to " + (string)athsB.Rows[this.listBoxTeamB.SelectedIndex][1] + "" + (string)athsB.Rows[this.listBoxTeamB.SelectedIndex][2] + " in this game?", "Pair ready!",
+                    + (string)athsA.Rows[this.listBoxTeamA.SelectedIndex][1].ToString() + " " + (string)athsA.Rows[this.listBoxTeamA.SelectedIndex][2].ToString()
+                    + " to " + (string)athsB.Rows[this.listBoxTeamB.SelectedIndex][1].ToString() + "" + (string)athsB.Rows[this.listBoxTeamB.SelectedIndex][2].ToString() + " in this game?", "Pair ready!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
 

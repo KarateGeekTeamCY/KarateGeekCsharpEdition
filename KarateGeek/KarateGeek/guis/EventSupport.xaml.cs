@@ -677,7 +677,56 @@ namespace KarateGeek.guis
 
         private void loadTamVersus()
         {
-            if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            string sql;
+            bool phase128Done, phase64Done, phase32Done, phase16Done, phase8Done, phase4Done, phase2Done;
+
+
+            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '6' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase128Done = false;
+            else
+                phase128Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '5' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase64Done = false;
+            else
+                phase64Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '4' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase32Done = false;
+            else
+                phase32Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '3' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase16Done = false;
+            else
+                phase16Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '2' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase8Done = false;
+            else
+                phase8Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '1' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase4Done = false;
+            else
+                phase4Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '0' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase2Done = false;
+            else
+                phase2Done = true;
+
+
+
+            if (this.tournament.games128.Count != 0 && (!phase128Done))
             {
                 this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
@@ -725,7 +774,7 @@ namespace KarateGeek.guis
 
 
             }
-            else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
+            else if (this.tournament.games64.Count != 0 && (!phase64Done))
             {
                 this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
@@ -771,7 +820,7 @@ namespace KarateGeek.guis
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
+            else if (this.tournament.games32.Count != 0 && (!phase32Done))
             {
                 this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
@@ -817,7 +866,7 @@ namespace KarateGeek.guis
                 this.listBoxNextGameList.ItemsSource = future;
 
             }
-            else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
+            else if (this.tournament.games16.Count != 0 && (!phase16Done))
             {
                 this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
@@ -862,7 +911,7 @@ namespace KarateGeek.guis
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
+            else if (this.tournament.games8.Count != 0 && (!phase8Done))
             {
                 this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
@@ -898,16 +947,16 @@ namespace KarateGeek.guis
                     {
                         Athlete A = gm.participants.ElementAt(0);
                         Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                        future.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                     }
                     else
                     {
-                        current.Add("Click to add game members.");
+                        future.Add("Click to add game members.");
                     }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
+            else if (this.tournament.games4.Count != 0 && (!phase4Done))
             {
                 this._indexCurrentphase = 1;
                 this._indexNextPhase = 0;
@@ -916,6 +965,8 @@ namespace KarateGeek.guis
                 // current phase
                 //
                 List<string> current = new List<string>();
+                //this.listBoxCurrentGameList.Items = new ItemCollection();
+
 
                 foreach (Game gm in tournament.games4)
                 {
@@ -923,22 +974,22 @@ namespace KarateGeek.guis
                     {
                         Athlete A = gm.participants.ElementAt(0);
                         Athlete B = gm.participants.ElementAt(1);
-                        this.listBoxCurrentGameList.Items.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+
+
+                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                     }
                     else
                     {
-                        this.listBoxCurrentGameList.Items.Add("Click to add game members.");
+                        current.Add("Click to add game members.");
                     }
                 }
-                //this.listBoxCurrentGameList.SetBinding(current); 
-                //this.listBoxCurrentGameList.Items.a
-
-                //this.listBoxCurrentGameList.ItemsSource = current;
+                this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
                 //next Phase
                 //
                 List<string> future = new List<string>();
+                //this.listBoxCurrentGameList.Items = new ItemCollection();
 
                 foreach (Game gm in tournament.games2)
                 {
@@ -946,17 +997,17 @@ namespace KarateGeek.guis
                     {
                         Athlete A = gm.participants.ElementAt(0);
                         Athlete B = gm.participants.ElementAt(1);
-                        this.listBoxNextGameList.Items.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                        future.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                     }
                     else
                     {
-                        this.listBoxNextGameList.Items.Add("Click to add game members.");
+                        future.Add("Click to add game members.");
                     }
                 }
-                //this.listBoxNextGameList.ItemsSource = future;
+                this.listBoxNextGameList.ItemsSource = future;
 
             }
-            else if (this.tournament.games2.Count != 0 && (!this.tournament.games2.Last().isFinished))
+            else if (this.tournament.games2.Count != 0 && (!phase2Done))
             {
                 this._indexCurrentphase = 0;
                 this._indexNextPhase = -1;
@@ -1458,7 +1509,7 @@ namespace KarateGeek.guis
             List<Athlete> aths = new List<Athlete>();
 
             foreach (DataRow dr in temp.Rows)
-                aths.Add(new Athlete((string)dr[0], this.tournament.id));
+                aths.Add(new Athlete((string)dr[0].ToString(), this.tournament.id));
 
             return aths;
         }
@@ -1473,20 +1524,28 @@ namespace KarateGeek.guis
             sql = "select * from game_participacions join game_flag on game_participacions.game_id = game_flag.game_id where game_id = '" + gameId + "' ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            return new Athlete((string)temp.Rows[0][0], this.tournament.id);
+            return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
         }
 
-        private Athlete getKumiteIndVersusWinner(string gameId)
+        public Athlete getKumiteIndVersusWinner(string gameId)
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
             sql = "select athlete_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_points.game_id where game_id = '" + gameId + "' group by (game_participations.athlete_id) ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
-                return new Athlete((string)temp.Rows[0][0], this.tournament.id);
+            if ((int)temp.Rows[0][1] == (int)temp.Rows[1][1])
+            {
+                ChooseWinner getwin = new ChooseWinner(this, new Game(gameId), this.tournament);
+            }
             else
-                return new Athlete((string)temp.Rows[1][0], this.tournament.id);
+            {
+                if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
+                    return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
+                else
+                    return new Athlete((string)temp.Rows[1][0].ToString(), this.tournament.id);
+            }
+            return null;
         }
 
 
@@ -1511,7 +1570,7 @@ namespace KarateGeek.guis
             List<Team> teams = new List<Team>();
 
             foreach (DataRow dr in temp.Rows)
-                teams.Add(new Team((string)dr[0]));
+                teams.Add(new Team((string)dr[0].ToString()));
 
             return teams;
         }
@@ -1530,7 +1589,7 @@ namespace KarateGeek.guis
             teamB = temp.Rows[1][0].ToString();
 
 
-            sql = "select team_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_point.game_id where phase = '"
+            sql = "select team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_point.game_id where phase = '"
                 + phase + "' and team_id = '"
                 + teamA + "' OR team_id = '"
                 + teamB + "'  group by (game_participations.team_id) ;";
@@ -1541,9 +1600,9 @@ namespace KarateGeek.guis
             //
 
             if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
-                return new Team((string)temp.Rows[0][0]);
+                return new Team((string)temp.Rows[0][0].ToString());
             else
-                return new Team((string)temp.Rows[1][0]);
+                return new Team((string)temp.Rows[1][0].ToString());
         }
 
         //
@@ -1559,7 +1618,7 @@ namespace KarateGeek.guis
             List<Team> teams = new List<Team>();
 
             foreach (DataRow dr in temp.Rows)
-                teams.Add(new Team((string)dr[0]));
+                teams.Add(new Team((string)dr[0].ToString()));
 
             return teams;
         }
@@ -1672,6 +1731,17 @@ namespace KarateGeek.guis
                         kataSys = new KataSystem(this, gm);
                         break;
                 }
+
+
+
+        }
+
+        public void update()
+        {
+            this.tournament.load();
+            this.advanceAthlites();
+            this.tournament.load();
+            this.loadGames();
         }
 
 
@@ -1878,51 +1948,52 @@ namespace KarateGeek.guis
 
                     winner = this.getKumiteIndVersusWinner(gm.gameId);
 
-                    switch (this._indexCurrentphase)
-                    {
-                        case 1:
+                    if (winner != null)
+                        switch (this._indexCurrentphase)
+                        {
+                            case 1:
 
-                            if (firstPhase == _indexCurrentphase)
-                                gameIndex += firstGame - 1;
+                                if (firstPhase == _indexCurrentphase)
+                                    gameIndex += firstGame - 1;
 
-                            tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                            break;
-                        case 2:
+                                tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 2:
 
-                            if (firstPhase == _indexCurrentphase)
-                                gameIndex += firstGame - 1; ;
+                                if (firstPhase == _indexCurrentphase)
+                                    gameIndex += firstGame - 1; ;
 
-                            tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                            break;
-                        case 3:
+                                tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 3:
 
-                            if (firstPhase == _indexCurrentphase)
-                                gameIndex += firstGame - 1;
+                                if (firstPhase == _indexCurrentphase)
+                                    gameIndex += firstGame - 1;
 
-                            tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                            break;
-                        case 4:
+                                tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 4:
 
-                            if (firstPhase == _indexCurrentphase)
-                                gameIndex += firstGame - 1;
+                                if (firstPhase == _indexCurrentphase)
+                                    gameIndex += firstGame - 1;
 
-                            tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                            break;
-                        case 5:
+                                tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 5:
 
-                            if (firstPhase == _indexCurrentphase)
-                                gameIndex += firstGame - 1;
+                                if (firstPhase == _indexCurrentphase)
+                                    gameIndex += firstGame - 1;
 
-                            tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                            break;
-                        case 6:
+                                tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                            case 6:
 
-                            if (firstPhase == _indexCurrentphase)
-                                gameIndex += firstGame - 1;
+                                if (firstPhase == _indexCurrentphase)
+                                    gameIndex += firstGame - 1;
 
-                            tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                            break;
-                    }
+                                tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
+                                break;
+                        }
 
 
 
