@@ -22,6 +22,7 @@ namespace KarateGeek.guis
         private bool aFlag = false, bFlag = false;
         private DataTable athsA, athsB;
         private string gamePartIdA, gamePartIdB;
+
         private Game game;
         private EventSupport sender;
 
@@ -121,6 +122,7 @@ namespace KarateGeek.guis
                 {
                     save();
                     this.sender.Visibility = System.Windows.Visibility.Visible;
+                    this.sender.tournament.load();
                     this.sender.loadGames();
                     this.Close();
                 }

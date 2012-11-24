@@ -36,7 +36,7 @@ namespace KarateGeek.guis
 
         private bool _firstLoad = true;
 
-        private Tournament tournament;
+        public Tournament tournament;
 
         private TournamentConnection _tournamentConn = new TournamentConnection();
         private EventConnection _eventConn = new EventConnection();
@@ -1522,7 +1522,7 @@ namespace KarateGeek.guis
             string phase, teamA, teamB;
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select team_id from games join game_participations gp on game.id = gp.game_id where game_id = '" + game.gameId + "';";
+            sql = "select team_id from games join game_participations gp on games.id = gp.game_id where game_id = '" + game.gameId + "';";
             DataTable temp = conn.Query(sql).Tables[0];
 
             phase = game.phase;
@@ -1610,64 +1610,68 @@ namespace KarateGeek.guis
             KumiteSystem kumiteSys;
             FlagSystem flagSys;
 
-
-            switch (tournament.gameType)
+            if (gm.isFinished)
             {
-                case Strings.indKata:
-
-                    switch (tournament.judgingType)
-                    {
-                        case Strings.flag:
-                            flagSys = new FlagSystem(this, gm);
-                            break;
-                        case Strings.score:
-                            kataSys = new KataSystem(this, gm);
-                            break;
-                    }
-
-                    break;
-                case Strings.indKumite:
-
-                    kumiteSys = new KumiteSystem(this, gm);
-
-                    break;
-                case Strings.fugugo:
-
-                    if (this._indexCurrentphase % 2 == 0)
-                    {
-                        kumiteSys = new KumiteSystem(this, gm);
-                    }
-                    else
-                    {
-                        kataSys = new KataSystem(this, gm);
-                    }
-
-                    break;
-                case Strings.teamKata:
-                    kataSys = new KataSystem(this, gm);
-                    break;
-                case Strings.teamKumite:
-
-                    if (this.listBoxCurrentGameList.SelectedItem == "Click to add game members.")
-                    {
-                        KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
-                    }
-                    else
-                    {
-                        kumiteSys = new KumiteSystem(this, gm);
-                    }
-
-                    break;
-                case Strings.syncKata:
-
-                    kataSys = new KataSystem(this, gm);
-
-                    break;
-                case Strings.enbu:
-
-                    kataSys = new KataSystem(this, gm);
-                    break;
+                MessageBox.Show("This game have already played!", "Already played", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+            else
+                switch (tournament.gameType)
+                {
+                    case Strings.indKata:
+
+                        switch (tournament.judgingType)
+                        {
+                            case Strings.flag:
+                                flagSys = new FlagSystem(this, gm);
+                                break;
+                            case Strings.score:
+                                kataSys = new KataSystem(this, gm);
+                                break;
+                        }
+
+                        break;
+                    case Strings.indKumite:
+
+                        kumiteSys = new KumiteSystem(this, gm);
+
+                        break;
+                    case Strings.fugugo:
+
+                        if (this._indexCurrentphase % 2 == 0)
+                        {
+                            kumiteSys = new KumiteSystem(this, gm);
+                        }
+                        else
+                        {
+                            kataSys = new KataSystem(this, gm);
+                        }
+
+                        break;
+                    case Strings.teamKata:
+                        kataSys = new KataSystem(this, gm);
+                        break;
+                    case Strings.teamKumite:
+
+                        if (this.listBoxCurrentGameList.SelectedItem == "Click to add game members.")
+                        {
+                            KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
+                        }
+                        else
+                        {
+                            kumiteSys = new KumiteSystem(this, gm);
+                        }
+
+                        break;
+                    case Strings.syncKata:
+
+                        kataSys = new KataSystem(this, gm);
+
+                        break;
+                    case Strings.enbu:
+
+                        kataSys = new KataSystem(this, gm);
+                        break;
+                }
         }
 
 
@@ -2156,7 +2160,7 @@ namespace KarateGeek.guis
                     conn = new CoreDatabaseConnection();
                     teamId = gm.participants.ElementAt(0).teamId;
 
-                    temp = conn.Query("select * from games join game_participants games.id = game_participants.game_id where team_id = '" + teamId + "' and is_finished = true ").Tables[0];
+                    temp = conn.Query("select * from games join game_participations on games.id = game_participations.game_id where team_id = '" + teamId + "' and is_finished = true ").Tables[0];
                     if (temp.Rows.Count == 3)
                     {
                         Team kumiteTeamWinner = this.getKumiteTeamWinner(gm);

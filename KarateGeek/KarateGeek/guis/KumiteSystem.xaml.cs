@@ -374,6 +374,7 @@ namespace KarateGeek.guis
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
 
+
         }
 
         private void btnPause_Click(object sender, RoutedEventArgs e)
@@ -433,6 +434,15 @@ namespace KarateGeek.guis
 
                 }
             }
+
+
+            this.game.isFinished = true;
+
+
+            this.sender.tournament.load();
+            this.sender.advanceAthlites();
+            this.sender.tournament.load();
+
             this.sender.loadGames();
             this.Close();
         }

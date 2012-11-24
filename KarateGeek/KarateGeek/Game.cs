@@ -20,8 +20,38 @@ namespace KarateGeek
 
         public List<Athlete> participants { get; set; }
 
-        public bool isReady { get; set; }
-        public bool isFinished { get; set; }
+
+        private bool _isReady;
+
+        public bool isReady
+        {
+            get
+            {
+                return _isReady;
+            }
+            set
+            {
+                _isReady = value;
+                this.Update();
+            }
+        }
+
+        private bool _isFinished;
+
+        public bool isFinished
+        {
+            get
+            {
+                return _isFinished;
+            }
+            set
+            {
+                _isFinished = value;
+                this.Update();
+            }
+        }
+
+
         public int numOfParticipants { get; set; }
 
 
@@ -70,8 +100,8 @@ namespace KarateGeek
             this.position = (string)temp.Rows[0][2].ToString();
             this.tournamentId = (string)temp.Rows[0][3].ToString();
 
-            this.isReady = (bool)temp.Rows[0][4];
-            this.isFinished = (bool)temp.Rows[0][5];
+            this._isReady = (bool)temp.Rows[0][4];
+            this._isFinished = (bool)temp.Rows[0][5];
 
             this.eventId = (string)temp.Rows[0][15].ToString();
 
@@ -104,8 +134,8 @@ namespace KarateGeek
                 int exist = this.Query(sql).Tables[0].Rows.Count;
                 if (exist == 0)
                 {
-                    
-                     sql = "select * from tournament_participations where tournament_id = '" + this.tournamentId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
+
+                    sql = "select * from tournament_participations where tournament_id = '" + this.tournamentId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
                     DataTable temp = Query(sql).Tables[0];
 
                     if (temp.Rows.Count == 0)
