@@ -214,6 +214,10 @@ namespace KarateGeek.guis
 
         private void loadIndevidualVersus()
         {
+
+            Athlete A;
+            Athlete B;
+
             if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
             {
                 this._indexCurrentphase = 6;
@@ -227,8 +231,8 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games128)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
                     current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -240,9 +244,24 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    switch (gm.participants.Count)
+                    {
+                        case 0:
+                            current.Add("Empty...");
+
+                            break;
+                        case 1:
+                            A = gm.participants.ElementAt(0);
+                            //Athlete B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+
+                            break;
+                        case 2:
+                            A = gm.participants.ElementAt(0);
+                            B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                            break;
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -261,8 +280,8 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
                     current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -274,9 +293,24 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    switch (gm.participants.Count)
+                    {
+                        case 0:
+                            current.Add("Empty...");
+
+                            break;
+                        case 1:
+                            A = gm.participants.ElementAt(0);
+                            //Athlete B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+
+                            break;
+                        case 2:
+                            A = gm.participants.ElementAt(0);
+                            B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                            break;
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -292,8 +326,8 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
                     current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -305,9 +339,24 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    switch (gm.participants.Count)
+                    {
+                        case 0:
+                            current.Add("Empty...");
+
+                            break;
+                        case 1:
+                            A = gm.participants.ElementAt(0);
+                            //Athlete B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+
+                            break;
+                        case 2:
+                            A = gm.participants.ElementAt(0);
+                            B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                            break;
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -324,8 +373,8 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
                     current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -337,9 +386,24 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    switch (gm.participants.Count)
+                    {
+                        case 0:
+                            current.Add("Empty...");
+
+                            break;
+                        case 1:
+                            A = gm.participants.ElementAt(0);
+                            //Athlete B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+
+                            break;
+                        case 2:
+                            A = gm.participants.ElementAt(0);
+                            B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                            break;
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -355,8 +419,8 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
                     current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -368,9 +432,25 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    switch (gm.participants.Count)
+                    {
+                        case 0:
+                           
+                            current.Add("Empty...");
+
+                            break;
+                        case 1:
+                            A = gm.participants.ElementAt(0);
+                            //Athlete B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+
+                            break;
+                        case 2:
+                            A = gm.participants.ElementAt(0);
+                            B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                            break;
+                    }
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -386,8 +466,8 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
                     current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -399,21 +479,22 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games2)
                 {
-                    Athlete A;
-                    Athlete B;
                     switch (gm.participants.Count)
                     {
                         case 0:
-                            future.Add("...\nVS\n...");
+                            current.Add("Empty...");
+
                             break;
                         case 1:
                             A = gm.participants.ElementAt(0);
-                            future.Add(A.lastName + " " + A.firstName + "\nVS\n...");
+                            //Athlete B = gm.participants.ElementAt(1);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+
                             break;
                         case 2:
                             A = gm.participants.ElementAt(0);
                             B = gm.participants.ElementAt(1);
-                            future.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                             break;
                     }
 
@@ -434,8 +515,8 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games2)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
                     current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
