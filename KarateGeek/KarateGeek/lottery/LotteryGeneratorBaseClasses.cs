@@ -29,26 +29,27 @@ namespace KarateGeek.lottery
      * - Sort the List (athleteScoreList) by score and return a new
      *   List<int>. That List will be used by the reporting tools.
      *
-     * - The class LotteryGenerator will have a constructor that takes
-     *   a tournament id and three publicly accessible methods:
+     * - The class LotteryGenerator has a constructor that takes a
+     *   tournament id and three publicly accessible methods:
      *   shuffle(), which produces a new randomisation, getLottery(),
      *   which returns it, and confirmLottery(), which writes to the DB.
+     *   (A fourth public method might be added, printLottery(), using
+     *    getLottery() to correctly initialise the LotteryPrinter class and
+     *    pretty-print the lottery to the screen...)
      * - It must take into account team sports.
      * 
      * 
      * USING A (SIMPLIFIED) FACTORY-LIKE DESIGN PATTERN: LotteryGenerator
      * is an abstract base class providing the aforementioned three methods
      * and is extended by LotteryGen_Expo_Ind, LotteryGen_Versus_Ind,
-     * LotteryGen_Expo_Sync and LotteryGen_Versus_Team;
+     * LotteryGen_Expo_Sync, LotteryGen_Expo_Team and LotteryGen_Versus_Team;
      * LotteryGeneratorFactory mainly has a "factory method" that chooses
      * which one of the above should be instatiated, based on DB data.
      * 
      * LotteryGenerator cannot be instatiated, but has a useful constructor
      * inherited by the others. Also, there are 2 more abstract classes
-     * between LotteryGenerator and the aforementioned 4, LotteryGen_Versus
+     * between LotteryGenerator and the aforementioned 5, LotteryGen_Versus
      * and LotteryGen_Expo. They provide different getPairs() implem/tions.
-     * 
-     * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!                                //TODO: UPDATE COMMENTS
      */
 
     #region abstract base class LotteryGenerator
