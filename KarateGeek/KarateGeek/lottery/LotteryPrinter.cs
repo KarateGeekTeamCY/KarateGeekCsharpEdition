@@ -110,7 +110,9 @@ namespace KarateGeek.lottery
             foreach (char[] line in bigBox)
                 sb.Append(line).Append('\n');
 
-            return sb.ToString();
+            return sb.ToString();               // When using this as a GUI label, the first underscore
+                                                // always gets printed with the following character on top
+                                                // of it. This is a .NET bug (?), not ours. sb is 100% OK.
         }
 
     }

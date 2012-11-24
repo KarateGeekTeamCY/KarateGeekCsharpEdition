@@ -49,7 +49,7 @@ namespace KarateGeek.lottery
 
         private char[][] box = null;    // "jagged array" as a 2D character buffer, set by the constructor
 
-        private const int defaultWidth = 8;    // not counting the margin, so with the margin it's 20 chars
+        private const int defaultWidth = 18;    // not counting the margin, so with the margin it's 20 chars
                                                 // and with the "──┐├──" part it's 25 (!) chars
 
         public readonly BoxTypeLeft  typeLeft;
@@ -165,19 +165,29 @@ namespace KarateGeek.lottery
 
 
         private StringBuilder Formatted(string athlete)
-        {          
-            int len = Math.Min(athlete.Length, boxWidth);
-            string athName = athlete.Substring(0, len);
+        {
+            /* int len = Math.Min(athlete.Length, boxWidth);
+             * string athName = athlete.Substring(0, len);
+             * 
+             * Cool trick, but I prefer the alternative implementation bellow this comment:
+             */
 
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < (boxWidth - len) / 2; ++i)
-                sb.Append(' ');
+            if (athlete.Length > boxWidth) {
 
-            sb.Append(athName);
+                sb.Append(athlete.Substring(0, boxWidth - 1)).Append('…');
 
-            for (int i = 0; i < (boxWidth - len + 1) / 2; ++i)
-                sb.Append(' ');
+            } else { // boxWidth >= athlete.Length
+
+                for (int i = 0; i < (boxWidth - athlete.Length) / 2; ++i)
+                    sb.Append(' ');
+
+                sb.Append(athlete);
+
+                for (int i = 0; i < (boxWidth - athlete.Length + 1) / 2; ++i)
+                    sb.Append(' ');
+            }
 
             Debug.Assert(sb.Length == boxWidth);
 

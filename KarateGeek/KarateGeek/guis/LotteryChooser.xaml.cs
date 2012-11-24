@@ -52,6 +52,7 @@ namespace KarateGeek.guis
 
             //terminal.Content = node;
             terminal.Content = null;
+            terminal.FontSize = 10;
         }
 
         private void cboEventCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
