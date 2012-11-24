@@ -605,7 +605,7 @@ INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  p
 VALUES ('athl10' , 'athl10_father' , 'athl10_last', '02-10-1989' , 'MALE', '98123145' , null , 'athl10@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl11' , 'athl11_father' , 'athl1_last', '02-12-1991' , 'MALE', '98123146' , null , 'athl11@gmail.com' , '0');
+VALUES ('athl11' , 'athl11_father' , 'athl11_last', '02-12-1991' , 'MALE', '98123146' , null , 'athl11@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('athl12' , 'athl12_father' , 'athl12_last', '12-10-2000' , 'FEMALE', '99123145' , null , 'athl12@gmail.com' , '0');

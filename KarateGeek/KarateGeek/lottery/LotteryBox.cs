@@ -49,7 +49,7 @@ namespace KarateGeek.lottery
 
         private char[][] box = null;    // "jagged array" as a 2D character buffer, set by the constructor
 
-        private const int defaultWidth = 18;    // not counting the margin, so with the margin it's 20 chars
+        private const int defaultWidth = 8;    // not counting the margin, so with the margin it's 20 chars
                                                 // and with the "──┐├──" part it's 25 (!) chars
 
         public readonly BoxTypeLeft  typeLeft;
@@ -67,14 +67,20 @@ namespace KarateGeek.lottery
 
         public int realHeight{  // the REAL height of the whole box, for now (boxHeight + 2)
                                 // maybe useful for whoever creates LotteryBox instances (eg. LotteryPrinter)...
-            get { return boxHeight + 2;
+            get {
+                  return boxHeight + 2;
                 }
         }
 
-        public int realWidth{   // the REAL width of the whole box, either (boxWidth + 2) or (boxWidth + 7)
+        public int realWidth{   // the REAL width of the whole box
                                 // maybe useful for whoever creates LotteryBox instances (eg. LotteryPrinter)...
-            get { if (this.typeRight == BoxTypeRight.unconnected) return boxWidth + 2; 
-                  else return boxWidth + 7; // 5 characters are needed for the "──┐├──" part...
+            get { 
+                  int acc = boxWidth + 2;
+                  if (this.typeLeft == BoxTypeLeft.connected)
+                      acc += 3; // 3 extra characters are needed for the "├──┤" part...
+                  if (this.typeRight != BoxTypeRight.unconnected)
+                      acc += 5; // 5 extra characters are needed for the "├──┐├──" part...
+                  return acc;
                 }
         }
 
@@ -100,7 +106,9 @@ namespace KarateGeek.lottery
             char[][] tmpBox = new char[this.realHeight][];
             StringBuilder sb = new StringBuilder(); // "sb" gets .Clear()ed after building every line of the tmpBox...
 
-            tmpBox[0] = sb.Append('┌').Append('─', this.boxWidth).Append('┐').ToString().ToCharArray();
+            sb.Append('┌').Append('─', this.boxWidth).Append('┐');
+            if (typeRight == BoxTypeRight.connected_up) sb.Append("  │");
+            tmpBox[0] = sb.ToString().ToCharArray();
             sb.Clear();
 
             int line = 1;                           // "line" and "mid" are used in the foreach loop
@@ -108,7 +116,7 @@ namespace KarateGeek.lottery
 
             foreach (var athlete in team) {
                 if (line == mid && typeLeft == BoxTypeLeft.connected)
-                    sb.Append('┤');
+                    sb.Append("├──┤");
                 else
                     sb.Append('│');
 
@@ -143,12 +151,14 @@ namespace KarateGeek.lottery
             }
 
 
-            Debug.Assert(line == boxHeight - 1);
-            tmpBox[boxHeight - 1] = sb.Append('└').Append('─', this.boxWidth).Append('┘').ToString().ToCharArray();
+            Debug.Assert(line == realHeight - 1);
+            sb.Append('└').Append('─', this.boxWidth).Append('┘');
+            if (typeRight == BoxTypeRight.connected_down) sb.Append("  │");
+            tmpBox[realHeight - 1] = sb.ToString().ToCharArray();
             //sb.Clear();
 
-            foreach(var ln in tmpBox)
-                Debug.Assert(ln.Length == boxWidth + 2 || ln.Length == boxWidth + 7); // ?
+            //foreach(var ln in tmpBox)
+            //    Debug.Assert(ln.Length <= realWidth + 1); // ?!
 
             return tmpBox;
         }
@@ -177,6 +187,15 @@ namespace KarateGeek.lottery
 
         public char[][] get()       // returns the constructed LotteryBox
         {
+            { //Debugging block
+                StringBuilder sb = new StringBuilder();
+                foreach (char[] line in box)
+                    sb.Append(line).Append('\n');
+
+                Debug.WriteLine("This LotteryBox object has the following contents (use a mono font!):\n"
+                    + sb.ToString());
+            }
+
             return box;
         }
 

@@ -268,12 +268,12 @@ namespace KarateGeek.lottery
 
 
         /* The following method is designed (?) to be overriden, if needed, by child classes (team cases?).
-         * I'll probably change the structure used by getPairsToCommit(), writeAllTournamentPairs() etc. to
-         * something like List<Tuple<List<long>, int, int>>, though, because not all cases are "pairs"...
+         * I should probably change the structure used by getPairsToCommit(), writeAllTournamentPairs() etc.
+         * to something like List<Tuple<List<long>, int, int>>, though, because not all cases are "pairs"...
          */
         protected List<Tuple<long, long, int, int>> getPairsToCommit(List<long> Lott)
         {
-            return getPairs(Lott).Concat(getEmptyPairs(Lott.Count)).ToList(); // BUG FOUND: Lott.Count is always for athletes, it should be for teams for team games??? EDIT: Bullshit, delete this comment, probably not a bug
+            return getPairs(Lott).Concat(getEmptyPairs(Lott.Count)).ToList();
         }
 
 
@@ -514,8 +514,6 @@ namespace KarateGeek.lottery
              * 
              *  ** There might be a smarter way to do it! (using Lists?!) **
              */
-
-            /* Crude and untested first version: */
 
             int len = Participants.Count;
             int numOfPhases = (int) Math.Ceiling(Math.Log(len, 2));
