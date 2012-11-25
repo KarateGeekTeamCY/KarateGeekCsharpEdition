@@ -20,8 +20,6 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class EventSupport : Window
     {
-
-
         #region private declarations
 
         private Window _sender;
@@ -53,7 +51,6 @@ namespace KarateGeek.guis
 
 
         #endregion private declaretions
-
 
         public EventSupport(Window sender)
         {
@@ -113,7 +110,6 @@ namespace KarateGeek.guis
             //todo finf the first phase check the length 
         }
 
-
         #region buttons
 
         private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
@@ -127,7 +123,6 @@ namespace KarateGeek.guis
         }
 
         #endregion
-
 
         #region game loading functions
 
@@ -1573,7 +1568,6 @@ namespace KarateGeek.guis
 
         #endregion game loading functions
 
-
         #region winner checks
         //
         // INDIVIDUAL
@@ -1715,7 +1709,14 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select game_participations.team_id, mean_score from team_tournament_participations join game_participations on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participations.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
+            sql = "SELECT game_participations.team_id, mean_score "
+                + "from team_tournament_participations join "
+                + "game_participations on team_tournament_participations.id = game_participations.team_id join "
+                + "game_score on team_tournament_participations.id = game_score.team_id join "
+                + "games on games.id = game_score.game_id "
+                + "where games.tournament_id = '" + this.tournament.id
+                + "' AND phase = '" + this._indexCurrentphase
+                + "' ORDER BY mean_score DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Team> teams = new List<Team>();
@@ -1731,7 +1732,6 @@ namespace KarateGeek.guis
             return this.getSyncKataWinner(gameId);
         }
         #endregion winner checks
-
 
         //
         // game starting functionality
@@ -1846,7 +1846,6 @@ namespace KarateGeek.guis
             this.tournament.load();
             this.loadGames();
         }
-
 
         public void advanceAthlites()
         {
@@ -2391,7 +2390,8 @@ namespace KarateGeek.guis
                                     positionIndex = 0;
                                     foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        tournament.games2.ElementAt(positionIndex).AddParticipant(ath.id);
+                                        if (positionIndex < 4)
+                                            tournament.games2.ElementAt(positionIndex).AddParticipant(ath.id);
                                         positionIndex++;
                                     }
 
@@ -2402,13 +2402,12 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (8))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 8)
                                             tournament.games4.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
 
@@ -2418,13 +2417,12 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (16))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 16)
                                             tournament.games8.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
 
@@ -2433,13 +2431,12 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (32))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 32)
                                             tournament.games16.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
 
@@ -2448,13 +2445,12 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (64))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 64)
                                             tournament.games32.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
 
@@ -2490,14 +2486,14 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (4))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 4)
                                             tournament.games2.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
+
                                 }
 
                                 break;
@@ -2505,13 +2501,12 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (8))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 8)
                                             tournament.games4.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
 
@@ -2521,13 +2516,12 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (16))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 16)
                                             tournament.games8.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
 
@@ -2536,13 +2530,12 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (32))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 32)
                                             tournament.games16.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
 
@@ -2551,20 +2544,20 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (64))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
+                                        if (positionIndex < 64)
                                             tournament.games32.ElementAt(positionIndex).AddParticipant(ath.id);
-                                            positionIndex++;
-                                        }
+                                        positionIndex++;
                                     }
                                 }
-
                                 break;
                         }
-                    }
 
+
+
+                    }
                     break;
 
                 #endregion embu end region
