@@ -20,65 +20,113 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class PersonManagement : Window
     {
+        #region definitions
         //
         //application specific variables
         //
         private DataSet cities;
         private DataSet countries;
-        private DataSet filteredAthletes;
-        private DataSet filteredJudges;
+        private DataSet newFilteredAthletes;
+        private DataSet editFilteredAthletes;
+        private DataSet newFilteredJudges;
+        private DataSet editFilteredJudges;
         private DataSet clubs;
-        private AddressConnection addressConnection;
-        private CountryConnection countryConnection;
+        private AddressConnection addressConnection = new AddressConnection();
+        private CountryConnection countryConnection = new CountryConnection();
         private PersonConnection personsConnection = new PersonConnection();
         private ClubConnection clubConnection = new ClubConnection();
-        List<ListData> athleteNameListForAutoComplete;
-        List<ListData> judgeNameListForAutoComplete;
+        List<ListData> newAthleteNameListForAutoComplete;
+        List<ListData> editAthleteNameListForAutoComplete;
+        List<ListData> newJudgeNameListForAutoComplete;
+        List<ListData> editJudgeNameListForAutoComplete;
+        private bool newAthleteMode = true;
+        private bool newJudgeMode = true;
 
         //
         //athlete specific variables
         //
 
-        private AthleteConnection athleteConnection;
-        private int _personId = -1;
-        private string _athleteFirstName = null;
-        private string _athleteLastName = null;
-        private string _athleteFathersName = null;
-        private string _athleteSex = null;
-        private string _athleteFirstPhone = null;
-        private string _athleteSecondPhone = null;
-        private string _athleteEmail = null;
-        private string _athleteAddress = null;
-        private string _athleteAddressNum = null;
-        private string _athleteTK = null;
-        private string _athleteCity = null;
-        private string _athleteCountryCode = null;
-        private string _athleteRank = null;
-        private string _athleteClubId = null;
-        private DateTime _athleteDateOfBirth;
+        //New athlete variables
+        private AthleteConnection athleteConnection = new AthleteConnection();
+        private int _newPersonId = -1;
+        private string _newAthleteFirstName = null;
+        private string _newAthleteLastName = null;
+        private string _newAthleteFathersName = null;
+        private string _newAthleteSex = null;
+        private string _newAthleteFirstPhone = null;
+        private string _newAthleteSecondPhone = null;
+        private string _newAthleteEmail = null;
+        private string _newAthleteAddress = null;
+        private string _newAthleteAddressNum = null;
+        private string _newAthleteTK = null;
+        private string _newAthleteCity = null;
+        private string _newAthleteCountryCode = null;
+        private string _newAthleteRank = null;
+        private string _newAthleteClubId = null;
+        private DateTime _newAthleteDateOfBirth;
+
+        //Edit athlete variables
+
+        private int _editPersonId = -1;
+        private string _editAthleteFirstName = null;
+        private string _editAthleteLastName = null;
+        private string _editAthleteFathersName = null;
+        private string _editAthleteSex = null;
+        private string _editAthleteFirstPhone = null;
+        private string _editAthleteSecondPhone = null;
+        private string _editAthleteEmail = null;
+        private string _editAthleteAddress = null;
+        private string _editAthleteAddressNum = null;
+        private string _editAthleteTK = null;
+        private string _editAthleteCity = null;
+        private string _editAthleteCountryCode = null;
+        private string _editAthleteRank = null;
+        private string _editAthleteClubId = null;
+        private DateTime _editAthleteDateOfBirth;
+
+
 
 
         //
         //judge specific variables
-        //
-        // afta mpori na allaksoun katalila mixali aplos sta etimasa
-        //
-        private JudgeConnection judgeConnection;
-        private string _judgeFirstName = null;
-        private string _judgeLastName = null;
-        private string _judgeFathersName = null;
-        private string _judgeSex = null;
-        private string _judgeFirstPhone = null;
-        private string _judgeSecondPhone = null;
-        private string _judgeEmail = null;
-        private string _judgeAddress = null;
-        private string _judgeAddressNum = null;
-        private string _judgeTK = null;
-        private string _judgeCity = null;
-        private string _judgeCountryCode = null;
-        private string _judgeRank = null;
-        private string _judgeClass = null;
-        private DateTime _judgeDateOfBirth;
+        // 
+
+        //new judge variables
+        private JudgeConnection judgeConnection = new JudgeConnection();
+        private int _newJudgeId = -1;
+        private string _newJudgeFirstName = null;
+        private string _newJudgeLastName = null;
+        private string _newJudgeFathersName = null;
+        private string _newJudgeSex = null;
+        private string _newJudgeFirstPhone = null;
+        private string _newJudgeSecondPhone = null;
+        private string _newJudgeEmail = null;
+        private string _newJudgeAddress = null;
+        private string _newJudgeAddressNum = null;
+        private string _newJudgeTK = null;
+        private string _newJudgeCity = null;
+        private string _newJudgeCountryCode = null;
+        private string _newJudgeRank = null;
+        private string _newJudgeClass = null;
+        private DateTime _newJudgeDateOfBirth;
+
+        //edit judge variables
+        private int _editJudgeId = -1;
+        private string _editJudgeFirstName = null;
+        private string _editJudgeLastName = null;
+        private string _editJudgeFathersName = null;
+        private string _editJudgeSex = null;
+        private string _editJudgeFirstPhone = null;
+        private string _editJudgeSecondPhone = null;
+        private string _editJudgeEmail = null;
+        private string _editJudgeAddress = null;
+        private string _editJudgeAddressNum = null;
+        private string _editJudgeTK = null;
+        private string _editJudgeCity = null;
+        private string _editJudgeCountryCode = null;
+        private string _editJudgeRank = null;
+        private string _editJudgeClass = null;
+        private DateTime _editJudgeDateOfBirth;
 
 
         //
@@ -95,121 +143,162 @@ namespace KarateGeek.guis
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             //here should be the loading of the locations and clubs and countries
             InitializeComponent();
-
-            athleteConnection = new AthleteConnection();
-            judgeConnection = new JudgeConnection();
-            //
-            //NOTE
-            //
-            //mixali listeners vaze katefthian apo to xaml oxi karfota mesa ston kodika
-            //
-            //athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
-            //prostetoume cities oses theloume
-
-
-
-            countryConnection = new CountryConnection();
+            
+            //prosthetoume tis xwres kai arxikopoioume stin kipro
             this.countries = countryConnection.GetCountries();
 
             foreach (DataRow dr in countries.Tables[0].Rows)
             {
-                cmbACountryChooses.Items.Add(dr[1].ToString());
-                cmbJCountryChooses.Items.Add(dr[1].ToString());
+                cmbNewACountryChooses.Items.Add(dr[1].ToString());
+                cmbNewJCountryChooses.Items.Add(dr[1].ToString());
+                cmbEditACountryChooses.Items.Add(dr[1].ToString());
+                cmbEditJCountryChooses.Items.Add(dr[1].ToString());
             }
-            cmbACountryChooses.SelectedIndex = 54;
-            cmbJCountryChooses.SelectedIndex = 54;
+            cmbNewACountryChooses.SelectedIndex = 54;
+            cmbNewJCountryChooses.SelectedIndex = 54;
+            cmbEditACountryChooses.SelectedIndex = 54;
+            cmbEditJCountryChooses.SelectedIndex = 54;
 
             this.athleteUpdateCities("CY");
 
 
 
-            //prosthetoume athlete_rank
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank04);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank05);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank06);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank07);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank08);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank09);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank10);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank11);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank12);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank13);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank14);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank15);
-            cmbAthleteRankChooses.Items.Add(KarateGeek.Strings.rank16);
+            //prosthetoume athlete_rank gia new athlete
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank04);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank05);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank06);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank07);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank08);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank09);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank10);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank11);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank12);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank13);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank14);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank15);
+            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank16);
 
-            cmbAthleteRankChooses.SelectedIndex = 0;
+            cmbNewAthleteRankChooses.SelectedIndex = 0;
 
-            //string s = Strings.ranks.rank01.ToString(); ;
+            //prosthetoume athlete_rank gia edit athlete
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank04);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank05);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank06);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank07);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank08);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank09);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank10);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank11);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank12);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank13);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank14);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank15);
+            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank16);
 
-            //prosthetoume judge class
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank04);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank05);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank06);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank07);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank08);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank09);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank10);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank11);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank12);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank13);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank14);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank15);
-            cmbJudgeRankChooses.Items.Add(KarateGeek.Strings.rank16);
+            cmbEditAthleteRankChooses.SelectedIndex = 0;
+
+
+            //prosthetoume judge class gia new judge
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank04);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank05);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank06);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank07);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank08);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank09);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank10);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank11);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank12);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank13);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank14);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank15);
+            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank16);
 
 
 
-            cmbJudgeRankChooses.SelectedIndex = 0;
+            cmbNewJudgeRankChooses.SelectedIndex = 0;
 
-            //prosthetoume clubs
+            //prosthetoume judge class gia edit judge
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank04);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank05);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank06);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank07);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank08);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank09);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank10);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank11);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank12);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank13);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank14);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank15);
+            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank16);
+
+
+
+            cmbEditJudgeRankChooses.SelectedIndex = 0;
+
+            //prosthetoume clubs gia new athlete
             this.clubs = clubConnection.GetClubs();
 
             foreach (DataRow dr in clubs.Tables[0].Rows)
             {
-                cmbAClubChooses.Items.Add(dr[1]);
+                cmbNewAClubChooses.Items.Add(dr[1]);
 
 
             }
-            cmbAClubChooses.SelectedIndex = 0;
-            //cmbAClubChooses.Items.Add("Pro Kata Club (P.K.C.)");
+            cmbNewAClubChooses.SelectedIndex = 0;
 
-            //cmbAClubChooses.Items.Add("Allo Club");
+            //prosthetoume clubs gia edit athlete
+            this.clubs = clubConnection.GetClubs();
 
-            //prosthetoume judge classes
-            cmbJClassChooses.Items.Add("A");
-            cmbJClassChooses.Items.Add("B");
-            cmbJClassChooses.SelectedIndex = 0;
+            foreach (DataRow dr in clubs.Tables[0].Rows)
+            {
+                cmbEditAClubChooses.Items.Add(dr[1]);
+
+
+            }
+            cmbEditAClubChooses.SelectedIndex = 0;
+           
+
+            //prosthetoume judge classes gia new judge
+            cmbNewJClassChooses.Items.Add("A");
+            cmbNewJClassChooses.Items.Add("B");
+            cmbNewJClassChooses.SelectedIndex = 0;
+
+            //prosthetoume judge classes gia edit judge
+            cmbEditJClassChooses.Items.Add("A");
+            cmbEditJClassChooses.Items.Add("B");
+            cmbEditJClassChooses.SelectedIndex = 0;
 
 
         }
 
+        #endregion
         //private Boolean nameflag = true;
 
 
-        #region athlete specific code
+        #region new athlete
 
+        #region autocomplete
 
-
-        private void athleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            athleteList();
-        }
-
-
-
-        private List<ListData> AthletesfilterNames()
+        private List<ListData> newAthletesfilterNames()
         {
             List<ListData> list = new List<ListData>();
 
-            this.filteredAthletes = personsConnection.findSimilar(this.athleteFirstName.Text);
+            this.newFilteredAthletes = personsConnection.similarPersonsNotInAthletes(this.NewAthleteFirstName.Text);
 
-            foreach (DataRow dr in filteredAthletes.Tables[0].Rows)
+            foreach (DataRow dr in newFilteredAthletes.Tables[0].Rows)
             {
                 ListData suggestion = new ListData();
                 suggestion.id = int.Parse(dr[0].ToString());
@@ -217,13 +306,11 @@ namespace KarateGeek.guis
                 list.Add(suggestion);
             }
             return list;
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            //this.sugestionList.ItemsSource = list;
         }
 
 
 
-        private void aSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void NewASuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string name = null;
             string sex = null;
@@ -240,50 +327,50 @@ namespace KarateGeek.guis
             DataSet ds2;
             DataSet ds3;
 
-            if (aSuggestionList.ItemsSource != null)
+            if (NewASuggestionList.ItemsSource != null)
             {
-                aSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
-                athleteFirstName.TextChanged -= new TextChangedEventHandler(athleteFirstName_TextChanged);
+                NewASuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                NewAthleteFirstName.TextChanged -= new TextChangedEventHandler(NewAthleteFirstName_TextChanged);
 
-                index = aSuggestionList.SelectedIndex;
+                index = NewASuggestionList.SelectedIndex;
 
-                if (aSuggestionList.SelectedIndex != -1)
+                if (NewASuggestionList.SelectedIndex != -1)
                 {
-                    ListData item = (ListData)aSuggestionList.SelectedItem;
-                    _personId = item.id;
-                    ds2 = athleteConnection.findAthlete(_personId);
-                    ds3 = athleteConnection.findAthleteClub(_personId);
+                    ListData item = (ListData)NewASuggestionList.SelectedItem;
+                    _newPersonId = item.id;
+                    ds2 = athleteConnection.findAthlete(_newPersonId);
+                    ds3 = athleteConnection.findAthleteClub(_newPersonId);
 
-                    name = aSuggestionList.SelectedItem.ToString();
-                    sex = filteredAthletes.Tables[0].Rows[index][4].ToString();
+                    name = NewASuggestionList.SelectedItem.ToString();
+                    sex = newFilteredAthletes.Tables[0].Rows[index][4].ToString();
 
-                    address_id = int.Parse(filteredAthletes.Tables[0].Rows[index][9].ToString());
+                    address_id = int.Parse(newFilteredAthletes.Tables[0].Rows[index][9].ToString());
 
-                    this.athleteFirstName.Text = filteredAthletes.Tables[0].Rows[index][1].ToString();
-                    this._athleteFirstName = this.athleteFirstName.Text;
-                    this.athleteLastName.Text = filteredAthletes.Tables[0].Rows[index][2].ToString();
-                    this.athleteFatherName.Text = filteredAthletes.Tables[0].Rows[index][3].ToString();
+                    this.NewAthleteFirstName.Text = newFilteredAthletes.Tables[0].Rows[index][1].ToString();
+                    this._newAthleteFirstName = this.NewAthleteFirstName.Text;
+                    this.NewAthleteLastName.Text = newFilteredAthletes.Tables[0].Rows[index][2].ToString();
+                    this.NewAthleteFatherName.Text = newFilteredAthletes.Tables[0].Rows[index][3].ToString();
 
                     if (sex.Equals("male"))
                     {
-                        this.ArdButton1.IsChecked = true;
+                        this.NewArdButton1.IsChecked = true;
                     }
                     else
                     {
-                        this.ArdButton2.IsChecked = true;
+                        this.NewArdButton2.IsChecked = true;
                     }
 
-                    this.athleteDateOfBirth.SelectedDate = (DateTime)filteredAthletes.Tables[0].Rows[index][5];
-                    this.athleteFirstPhone.Text = filteredAthletes.Tables[0].Rows[index][6].ToString();
-                    this.athleteSecondPhone.Text = filteredAthletes.Tables[0].Rows[index][7].ToString();
-                    this.athleteEmail.Text = filteredAthletes.Tables[0].Rows[index][8].ToString();
+                    this.NewAthleteDateOfBirth.SelectedDate = (DateTime)newFilteredAthletes.Tables[0].Rows[index][5];
+                    this.NewAthleteFirstPhone.Text = newFilteredAthletes.Tables[0].Rows[index][6].ToString();
+                    this.NewAthleteSecondPhone.Text = newFilteredAthletes.Tables[0].Rows[index][7].ToString();
+                    this.NewAthleteEmail.Text = newFilteredAthletes.Tables[0].Rows[index][8].ToString();
 
 
                     ds = addressConnection.getAddress(address_id);
 
-                    this.athleteStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
-                    this.athleteAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
-                    this.athleteTK.Text = ds.Tables[0].Rows[0][4].ToString();
+                    this.NewAthleteStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
+                    this.NewAthleteAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
+                    this.NewAthleteTK.Text = ds.Tables[0].Rows[0][4].ToString();
 
                     string athCity = ds.Tables[0].Rows[0][3].ToString();
                     int ix = ds.Tables[0].Columns.Count;
@@ -300,9 +387,9 @@ namespace KarateGeek.guis
 
 
 
-                    for (int i = 0; i < this.cmbACountryChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbNewACountryChooses.Items.Count; i++)
                     {
-                        if (athCountry.Equals(cmbACountryChooses.Items[i].ToString()))
+                        if (athCountry.Equals(cmbNewACountryChooses.Items[i].ToString()))
                         {
                             country_position = i;
                             break;
@@ -310,36 +397,36 @@ namespace KarateGeek.guis
                     }
 
 
-                    this.cmbACountryChooses.SelectedIndex = country_position;
+                    this.cmbNewACountryChooses.SelectedIndex = country_position;
 
 
                     CityConnection cityConnection = new CityConnection();
                     DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(athCity));
                     athCity = cityNa.Tables[0].Rows[0][0].ToString();
 
-                    for (int i = 0; i < this.cmbAthleteCityChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbNewAthleteCityChooses.Items.Count; i++)
                     {
-                        if (athCity.Equals(cmbAthleteCityChooses.Items[i].ToString()))
+                        if (athCity.Equals(cmbNewAthleteCityChooses.Items[i].ToString()))
                         {
                             city_position = i;
                             break;
                         }
                     }
-                    this.cmbAthleteCityChooses.SelectedIndex = city_position;
+                    this.cmbNewAthleteCityChooses.SelectedIndex = city_position;
 
                     if (ds2.Tables[0].Rows.Count > 0)
                     {
                         rank = ds2.Tables[0].Rows[0][1].ToString();
                         //vriskei tin zwni pou exei o kathenas se poia thesi einai
-                        for (int i = 0; i < cmbAthleteRankChooses.Items.Count; i++)
+                        for (int i = 0; i < cmbNewAthleteRankChooses.Items.Count; i++)
                         {
-                            if (rank.Equals(cmbAthleteRankChooses.Items[i]))
+                            if (rank.Equals(cmbNewAthleteRankChooses.Items[i]))
                             {
                                 rank_position = i;
                                 break;
                             }
                         }
-                        this.cmbAthleteRankChooses.SelectedIndex = rank_position;
+                        this.cmbNewAthleteRankChooses.SelectedIndex = rank_position;
 
                     }
 
@@ -348,91 +435,140 @@ namespace KarateGeek.guis
 
                         club = ds3.Tables[0].Rows[0][4].ToString();
                         //vriskei to club pou einai o kathenas
-                        for (int i = 0; i < cmbAClubChooses.Items.Count; i++)
+                        for (int i = 0; i < cmbNewAClubChooses.Items.Count; i++)
                         {
-                            if (club.Equals(cmbAClubChooses.Items[i]))
+                            if (club.Equals(cmbNewAClubChooses.Items[i]))
                             {
                                 club_position = i;
                                 break;
                             }
                         }
-                        this.cmbAClubChooses.SelectedIndex = club_position;
+                        this.cmbNewAClubChooses.SelectedIndex = club_position;
                     }
                 }
-                athleteFirstName.TextChanged += new TextChangedEventHandler(athleteFirstName_TextChanged);
+                NewAthleteFirstName.TextChanged += new TextChangedEventHandler(NewAthleteFirstName_TextChanged);
             }
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
 
-        private void athleteLastName_TextChanged(object sender, TextChangedEventArgs e)
+
+
+        private void newAthleteList()
         {
-            _athleteLastName = athleteLastName.Text;
+            _newAthleteFirstName = NewAthleteFirstName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            newAthleteNameListForAutoComplete = this.newAthletesfilterNames();
+
+            foreach (ListData item in newAthleteNameListForAutoComplete)
+            {
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                NewASuggestionList.ItemsSource = autoList;
+                NewASuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (NewAthleteFirstName.Text.Equals(""))
+            {
+                NewASuggestionList.Visibility = Visibility.Collapsed;
+                NewASuggestionList.ItemsSource = null;
+            }
+            else
+            {
+                NewASuggestionList.Visibility = Visibility.Collapsed;
+                NewASuggestionList.ItemsSource = null;
+            }
+        }
+
+        #endregion
+
+
+        private void NewAthleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = NewAthleteFirstName.Text;
+
+
+            if (string.IsNullOrEmpty(name) == true)
+            {
+                initializeNewAthlete();
+            }
+            
+            newAthleteList();
+        }
+
+
+        private void NewAthleteLastName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _newAthleteLastName = NewAthleteLastName.Text;
 
         }
 
 
-        private void athleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewAthleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _athleteFathersName = athleteFatherName.Text;
+            _newAthleteFathersName = NewAthleteFatherName.Text;
 
         }
 
 
-        private void athleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void NewAthleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _athleteDateOfBirth = athleteDateOfBirth.SelectedDate.Value;
+            _newAthleteDateOfBirth = NewAthleteDateOfBirth.SelectedDate.Value;
+        }
+
+        
+        private void NewAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _newAthleteFirstPhone = NewAthleteFirstPhone.Text;
         }
 
 
-        private void athleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewAthleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _athleteFirstPhone = athleteFirstPhone.Text;
+            _newAthleteSecondPhone = NewAthleteSecondPhone.Text;
         }
 
 
-        private void athleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewAthleteEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _athleteSecondPhone = athleteSecondPhone.Text;
+            _newAthleteEmail = NewAthleteEmail.Text;
         }
 
 
-        private void athleteEmail_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewAthleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _athleteEmail = athleteEmail.Text;
+            _newAthleteAddress = NewAthleteStreetName.Text;
         }
 
 
-        private void athleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewAthleteAddressNum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _athleteAddress = athleteStreetName.Text;
+            _newAthleteAddressNum = NewAthleteAddressNum.Text;
         }
 
-
-        private void athleteAddressNum_TextChanged(object sender, TextChangedEventArgs e)
+        private void NewAthleteTK_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _athleteAddressNum = athleteAddressNum.Text;
+            _newAthleteTK = NewAthleteTK.Text;
         }
 
-        private void athleteTK_TextChanged(object sender, TextChangedEventArgs e)
+        private void cmbNewACityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _athleteTK = athleteTK.Text;
+            int index = cmbNewAthleteCityChooses.SelectedIndex;
+            if (index < cmbNewAthleteCityChooses.Items.Count && index != -1)
+                _newAthleteCity = cmbNewAthleteCityChooses.Items[index].ToString();
         }
 
-        private void cmbACityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbNewACountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbAthleteCityChooses.SelectedIndex;
-            if (index < cmbAthleteCityChooses.Items.Count && index != -1)
-                _athleteCity = cmbAthleteCityChooses.Items[index].ToString();
-        }
-
-        private void cmbACountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int index = cmbACountryChooses.SelectedIndex;
+            int index = cmbNewACountryChooses.SelectedIndex;
             //athlete_country = cmbACountryChooses.Items[index].ToString();
-            _athleteCountryCode = countries.Tables[0].Rows[index][0].ToString();
+            _newAthleteCountryCode = countries.Tables[0].Rows[index][0].ToString();
             //setCountryCode(athlete_country);
-            this.athleteUpdateCities(_athleteCountryCode);
+            this.athleteUpdateCities(_newAthleteCountryCode);
         }
 
 
@@ -443,116 +579,82 @@ namespace KarateGeek.guis
 
             //cmbACityChooses = new ComboBox();
 
-            int count = cmbAthleteCityChooses.Items.Count;
+            int count = cmbNewAthleteCityChooses.Items.Count;
             for (int i = 0; i < count; i++)
             {
-                cmbAthleteCityChooses.Items.RemoveAt(0);
+                cmbNewAthleteCityChooses.Items.RemoveAt(0);
             }
 
             foreach (DataRow dr in cities.Tables[0].Rows)
             {
-                cmbAthleteCityChooses.Items.Add(dr[1].ToString());
+                cmbNewAthleteCityChooses.Items.Add(dr[1].ToString());
             }
-            cmbAthleteCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+            cmbNewAthleteCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
 
-            cmbAthleteCityChooses.Items.Refresh();
-
-
-
-
+            cmbNewAthleteCityChooses.Items.Refresh();
         }
 
 
 
-        private void cmbARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbNewARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbAthleteRankChooses.SelectedIndex;
-            _athleteRank = cmbAthleteRankChooses.Items[index].ToString();
+            int index = cmbNewAthleteRankChooses.SelectedIndex;
+            _newAthleteRank = cmbNewAthleteRankChooses.Items[index].ToString();
         }
 
-        private void cmbAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbNewAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbAClubChooses.SelectedIndex;
-            _athleteClubId = clubs.Tables[0].Rows[index][0].ToString();
+            int index = cmbNewAClubChooses.SelectedIndex;
+            _newAthleteClubId = clubs.Tables[0].Rows[index][0].ToString();
         }
 
-        private void ArdButton1_Checked(object sender, RoutedEventArgs e)
+        private void NewArdButton1_Checked(object sender, RoutedEventArgs e)
         {
-            _athleteSex = "male";
+            _newAthleteSex = "male";
         }
 
-        private void ArdButton2_Checked(object sender, RoutedEventArgs e)
+        private void NewArdButton2_Checked(object sender, RoutedEventArgs e)
         {
-            _athleteSex = "female";
+            _newAthleteSex = "female";
         }
 
-        private void btnABack_Click(object sender, RoutedEventArgs e)
+        #region buttons
+        private void btnNewABack_Click(object sender, RoutedEventArgs e)
         {
             this.sender.Show();
             this.Close();
         }
 
-        private void btnASave_Click(object sender, RoutedEventArgs e)
-        {
-            if (checkFields("athlete"))
-            {
-                athleteConnection.UpdateAthlete(_personId, _athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
-                MessageBox.Show("Succesfully saved!");
-            }
-        }
-
-        private void btnASaveNew_Click(object sender, RoutedEventArgs e)
+        private void btnNewASave_Click(object sender, RoutedEventArgs e)
         {
             bool insertAthlete;
-            if (checkFields("athlete"))
+            if (checkFields("athlete" , true))
             {
-                
-                insertAthlete = athleteConnection.InsertNewAthlete(_personId ,_athleteFirstName, _athleteLastName, _athleteFathersName, _athleteSex, _athleteDateOfBirth, _athleteFirstPhone, _athleteSecondPhone, _athleteEmail, _athleteAddress, _athleteAddressNum, _athleteTK, _athleteCountryCode, _athleteCity, _athleteRank, _athleteClubId);
+
+                insertAthlete = athleteConnection.InsertNewAthlete(_newPersonId, _newAthleteFirstName, _newAthleteLastName, _newAthleteFathersName, _newAthleteSex, _newAthleteDateOfBirth, _newAthleteFirstPhone, _newAthleteSecondPhone, _newAthleteEmail, _newAthleteAddress, _newAthleteAddressNum, _newAthleteTK, _newAthleteCountryCode, _newAthleteCity, _newAthleteRank, _newAthleteClubId);
                 if (insertAthlete)
                 {
                     MessageBox.Show("Succesfully saved!");
-                    PersonManagement pm = new PersonManagement(this);
-                    pm.Activate();
-                    pm.Show();
-                    this.Close();
+                    initializeNewAthlete();
                 }
                 else
                 {
-                    MessageBox.Show("The athlete ");
+                    MessageBox.Show("Error. Athlete not succesfully saved!");
                 }
             }
-
+            
+            
         }
 
-
-        private void btnAthleteDelete_Click(object sender, RoutedEventArgs e)
-        {
-
-            if (athleteConnection.deleteAthlete(_personId))
-            {
-                MessageBox.Show("Succesfully deleted!");
-                PersonManagement pm = new PersonManagement(this);
-                pm.Activate();
-                pm.Show();
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Cannot be deleted because of tournament participation!");
-                PersonManagement pm = new PersonManagement(this);
-                pm.Activate();
-                pm.Show();
-                this.Close();
-            }
-
-        }
+        #endregion
+      
 
 
 
 
-        //
+        
         // dead code alla asto kalou kakou
-        //
+        
         //private void setCountryCode(string country)
         //{
         //    if (country.Equals("Cyprus"))
@@ -573,37 +675,17 @@ namespace KarateGeek.guis
         //
         #endregion
 
+        #region edit athlete
 
-        #region judge specific code
+        #region autocomplete
 
-
-
-
-
-
-
-
-
-
-
-
-
-        private void judgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            judgeList();
-        }
-
-
-
-        private List<ListData> JudgefilterNames()
+        private List<ListData> editAthletesfilterNames()
         {
             List<ListData> list = new List<ListData>();
 
-            this.filteredJudges = personsConnection.findSimilar(this.judgeFirstName.Text);
+            this.editFilteredAthletes = personsConnection.similarAthletes(this.EditAthleteFirstName.Text);
 
-
-
-            foreach (DataRow dr in filteredJudges.Tables[0].Rows)
+            foreach (DataRow dr in editFilteredAthletes.Tables[0].Rows)
             {
                 ListData suggestion = new ListData();
                 suggestion.id = int.Parse(dr[0].ToString());
@@ -611,78 +693,71 @@ namespace KarateGeek.guis
                 list.Add(suggestion);
             }
             return list;
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            //this.sugestionList.ItemsSource = list;
         }
 
 
 
-        private void jSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void EditASuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string name = null;
             string sex = null;
             string rank = null;
+            string club = null;
+            int rank_position = 0;
+            int club_position = 0;
             int country_position = 0;
             int city_position = 0;
-            string judge_class = null;
-            int rank_position = 0;
-            int class_position = 0;
+            int index;
             int address_id;
-
             addressConnection = new AddressConnection();
             DataSet ds;
             DataSet ds2;
             DataSet ds3;
 
-            if (jSuggestionList.ItemsSource != null)
+            if (EditASuggestionList.ItemsSource != null)
             {
-                jSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
-                judgeFirstName.TextChanged -= new TextChangedEventHandler(judgeFirstName_TextChanged);
+                EditASuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                EditAthleteFirstName.TextChanged -= new TextChangedEventHandler(EditAthleteFirstName_TextChanged);
 
-                int index = jSuggestionList.SelectedIndex;
+                index = EditASuggestionList.SelectedIndex;
 
-                if (jSuggestionList.SelectedIndex != -1)
+                if (EditASuggestionList.SelectedIndex != -1)
                 {
-                    ListData item = (ListData)jSuggestionList.SelectedItem;
-                    _personId = item.id;
-                    ds2 = judgeConnection.findJudge(_personId);
-                    ds3 = athleteConnection.findAthlete(_personId);
+                    ListData item = (ListData)EditASuggestionList.SelectedItem;
+                    _editPersonId = item.id;
+                    ds2 = athleteConnection.findAthlete(_editPersonId);
+                    ds3 = athleteConnection.findAthleteClub(_editPersonId);
 
-                    name = jSuggestionList.SelectedItem.ToString();
-                    sex = filteredJudges.Tables[0].Rows[index][4].ToString();
+                    name = EditASuggestionList.SelectedItem.ToString();
+                    sex = editFilteredAthletes.Tables[0].Rows[index][4].ToString();
 
-                    address_id = int.Parse(filteredJudges.Tables[0].Rows[index][9].ToString());
+                    address_id = int.Parse(editFilteredAthletes.Tables[0].Rows[index][9].ToString());
 
-                    //
-                    //giati mazoxizese re mike??
-                    //
-                    //this.athleteFirstName.Text = name.Substring(0, name.IndexOf(" "));
-                    //
-
-                    this.judgeFirstName.Text = filteredJudges.Tables[0].Rows[index][1].ToString();
-                    this._judgeFirstName = this.judgeFirstName.Text;
-                    this.judgeLastName.Text = filteredJudges.Tables[0].Rows[index][2].ToString();
-                    this.judgeFatherName.Text = filteredJudges.Tables[0].Rows[index][3].ToString();
+                    this.EditAthleteFirstName.Text = editFilteredAthletes.Tables[0].Rows[index][1].ToString();
+                    this._editAthleteFirstName = this.EditAthleteFirstName.Text;
+                    this.EditAthleteLastName.Text = editFilteredAthletes.Tables[0].Rows[index][2].ToString();
+                    this.EditAthleteFatherName.Text = editFilteredAthletes.Tables[0].Rows[index][3].ToString();
 
                     if (sex.Equals("male"))
                     {
-                        this.JrdButton1.IsChecked = true;
+                        this.EditArdButton1.IsChecked = true;
                     }
                     else
                     {
-                        this.JrdButton2.IsChecked = true;
+                        this.EditArdButton2.IsChecked = true;
                     }
 
-                    this.judgeDateOfBirth.SelectedDate = (DateTime)filteredJudges.Tables[0].Rows[index][5];
-                    this.judgeFirstPhone.Text = filteredJudges.Tables[0].Rows[index][6].ToString();
-                    this.judgeSecondPhone.Text = filteredJudges.Tables[0].Rows[index][7].ToString();
-                    this.judgeEmail.Text = filteredJudges.Tables[0].Rows[index][8].ToString();
+                    this.EditAthleteDateOfBirth.SelectedDate = (DateTime)editFilteredAthletes.Tables[0].Rows[index][5];
+                    this.EditAthleteFirstPhone.Text = editFilteredAthletes.Tables[0].Rows[index][6].ToString();
+                    this.EditAthleteSecondPhone.Text = editFilteredAthletes.Tables[0].Rows[index][7].ToString();
+                    this.EditAthleteEmail.Text = editFilteredAthletes.Tables[0].Rows[index][8].ToString();
+
 
                     ds = addressConnection.getAddress(address_id);
 
-                    this.judgeStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
-                    this.judgeAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
-                    this.judgeTK.Text = ds.Tables[0].Rows[0][4].ToString();
+                    this.EditAthleteStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
+                    this.EditAthleteAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
+                    this.EditAthleteTK.Text = ds.Tables[0].Rows[0][4].ToString();
 
                     string athCity = ds.Tables[0].Rows[0][3].ToString();
                     int ix = ds.Tables[0].Columns.Count;
@@ -699,9 +774,9 @@ namespace KarateGeek.guis
 
 
 
-                    for (int i = 0; i < this.cmbACountryChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbEditACountryChooses.Items.Count; i++)
                     {
-                        if (athCountry.Equals(cmbACountryChooses.Items[i].ToString()))
+                        if (athCountry.Equals(cmbEditACountryChooses.Items[i].ToString()))
                         {
                             country_position = i;
                             break;
@@ -709,22 +784,395 @@ namespace KarateGeek.guis
                     }
 
 
-                    this.cmbJCountryChooses.SelectedIndex = country_position;
+                    this.cmbEditACountryChooses.SelectedIndex = country_position;
 
 
                     CityConnection cityConnection = new CityConnection();
                     DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(athCity));
                     athCity = cityNa.Tables[0].Rows[0][0].ToString();
 
-                    for (int i = 0; i < this.cmbAthleteCityChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbEditAthleteCityChooses.Items.Count; i++)
                     {
-                        if (athCity.Equals(cmbAthleteCityChooses.Items[i].ToString()))
+                        if (athCity.Equals(cmbEditAthleteCityChooses.Items[i].ToString()))
                         {
                             city_position = i;
                             break;
                         }
                     }
-                    this.cmbJCityChooses.SelectedIndex = city_position;
+                    this.cmbEditAthleteCityChooses.SelectedIndex = city_position;
+
+                    if (ds2.Tables[0].Rows.Count > 0)
+                    {
+                        rank = ds2.Tables[0].Rows[0][1].ToString();
+                        //vriskei tin zwni pou exei o kathenas se poia thesi einai
+                        for (int i = 0; i < cmbEditAthleteRankChooses.Items.Count; i++)
+                        {
+                            if (rank.Equals(cmbEditAthleteRankChooses.Items[i]))
+                            {
+                                rank_position = i;
+                                break;
+                            }
+                        }
+                        this.cmbEditAthleteRankChooses.SelectedIndex = rank_position;
+
+                    }
+
+                    if (ds3.Tables[0].Rows.Count > 0)
+                    {
+
+                        club = ds3.Tables[0].Rows[0][4].ToString();
+                        //vriskei to club pou einai o kathenas
+                        for (int i = 0; i < cmbEditAClubChooses.Items.Count; i++)
+                        {
+                            if (club.Equals(cmbEditAClubChooses.Items[i]))
+                            {
+                                club_position = i;
+                                break;
+                            }
+                        }
+                        this.cmbEditAClubChooses.SelectedIndex = club_position;
+                    }
+                }
+                EditAthleteFirstName.TextChanged += new TextChangedEventHandler(EditAthleteFirstName_TextChanged);
+            }
+            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+
+
+
+        private void editAthleteList()
+        {
+            _editAthleteFirstName = EditAthleteFirstName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            editAthleteNameListForAutoComplete = this.editAthletesfilterNames();
+
+            foreach (ListData item in editAthleteNameListForAutoComplete)
+            {
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                EditASuggestionList.ItemsSource = autoList;
+                EditASuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+            else if (EditAthleteFirstName.Text.Equals(""))
+            {
+                EditASuggestionList.Visibility = Visibility.Collapsed;
+                EditASuggestionList.ItemsSource = null;
+            }
+            else
+            {
+                EditASuggestionList.Visibility = Visibility.Collapsed;
+                EditASuggestionList.ItemsSource = null;
+            }
+        }
+
+        #endregion
+
+
+        private void EditAthleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            editAthleteList();
+        }
+
+
+        private void EditAthleteLastName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteLastName = EditAthleteLastName.Text;
+
+        }
+
+
+        private void EditAthleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteFathersName = EditAthleteFatherName.Text;
+
+        }
+
+
+        private void EditAthleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _editAthleteDateOfBirth = EditAthleteDateOfBirth.SelectedDate.Value;
+        }
+
+
+        private void EditAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteFirstPhone = EditAthleteFirstPhone.Text;
+        }
+
+
+        private void EditAthleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteSecondPhone = EditAthleteSecondPhone.Text;
+        }
+
+        private void EditAthleteEmail_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteEmail = EditAthleteEmail.Text;
+        }
+
+        private void EditAthleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteAddress = EditAthleteStreetName.Text;
+        }
+
+        private void EditAthleteAddressNum_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteAddressNum = EditAthleteAddressNum.Text;
+        }
+
+        private void EditAthleteTK_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editAthleteTK = EditAthleteTK.Text;
+        }
+
+        private void cmbEditACityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditAthleteCityChooses.SelectedIndex;
+            if (index < cmbEditAthleteCityChooses.Items.Count && index != -1)
+                _editAthleteCity = cmbEditAthleteCityChooses.Items[index].ToString();
+        }
+
+        private void cmbEditACountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditACountryChooses.SelectedIndex;
+            //athlete_country = cmbACountryChooses.Items[index].ToString();
+            _editAthleteCountryCode = countries.Tables[0].Rows[index][0].ToString();
+            //setCountryCode(athlete_country);
+            this.editAthleteUpdateCities(_editAthleteCountryCode);
+        }
+
+        private void editAthleteUpdateCities(string countryCode)
+        {
+            CityConnection citiesconn = new CityConnection();
+            this.cities = citiesconn.GetCities(countryCode);
+
+            //cmbACityChooses = new ComboBox();
+
+            int count = cmbEditAthleteCityChooses.Items.Count;
+            for (int i = 0; i < count; i++)
+            {
+                cmbEditAthleteCityChooses.Items.RemoveAt(0);
+            }
+
+            foreach (DataRow dr in cities.Tables[0].Rows)
+            {
+                cmbEditAthleteCityChooses.Items.Add(dr[1].ToString());
+            }
+            cmbEditAthleteCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+
+            cmbEditAthleteCityChooses.Items.Refresh();
+
+
+
+
+        }
+
+        private void cmbEditARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditAthleteRankChooses.SelectedIndex;
+            _editAthleteRank = cmbEditAthleteRankChooses.Items[index].ToString();
+        }
+
+        private void cmbEditAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditAClubChooses.SelectedIndex;
+            _editAthleteClubId = clubs.Tables[0].Rows[index][0].ToString();
+        }
+
+        private void EditArdButton1_Checked(object sender, RoutedEventArgs e)
+        {
+            _editAthleteSex = "male";
+        }
+
+        private void EditArdButton2_Checked(object sender, RoutedEventArgs e)
+        {
+            _editAthleteSex = "female";
+        }
+
+        #region buttons
+        private void btnEditABack_Click(object sender, RoutedEventArgs e)
+        {
+            this.sender.Show();
+            this.Close();
+        }
+
+
+        private void btnEditASave_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkFields("athlete" , false))
+            {
+                athleteConnection.UpdateAthlete(_editPersonId, _editAthleteFirstName, _editAthleteLastName, _editAthleteFathersName, _editAthleteSex, _editAthleteDateOfBirth, _editAthleteFirstPhone, _editAthleteSecondPhone, _editAthleteEmail, _editAthleteAddress, _editAthleteAddressNum, _editAthleteTK, _editAthleteCountryCode, _editAthleteCity, _editAthleteRank, _editAthleteClubId);
+                MessageBox.Show("Succesfully saved!");
+                initializeEditAthlete();
+            }
+        }
+
+
+        private void btnEditADelete_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (athleteConnection.deleteAthlete(_editPersonId))
+            {
+                MessageBox.Show("Succesfully deleted!");
+                initializeEditAthlete();
+            }
+            else
+            {
+                MessageBox.Show("Cannot be deleted because of tournament participation!");
+                PersonManagement pm = new PersonManagement(this);
+                pm.Activate();
+                pm.Show();
+                this.Close();
+            }
+
+        }
+        #endregion
+
+        #endregion
+
+
+        #region new judge
+
+        private void newJudgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = newJudgeFirstName.Text;
+
+
+            if (string.IsNullOrEmpty(name) == true)
+            {
+                initializeNewJudge();
+            }
+            newJudgeList();
+        }
+
+
+
+        private List<ListData> newJudgefiltersNames()
+        {
+            List<ListData> list = new List<ListData>();
+
+            this.newFilteredJudges = personsConnection.similarPersonsNotInJudges(this.newJudgeFirstName.Text);
+
+            foreach (DataRow dr in newFilteredJudges.Tables[0].Rows)
+            {
+                ListData suggestion = new ListData();
+                suggestion.id = int.Parse(dr[0].ToString());
+                suggestion.name = dr[1].ToString() + " " + dr[2].ToString();
+                list.Add(suggestion);
+            }
+            return list;
+        }
+
+        #region autocomplete
+
+        private void newJSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string name = null;
+            string sex = null;
+            string rank = null;
+            int country_position = 0;
+            int city_position = 0;
+            string judge_class = null;
+            int rank_position = 0;
+            int class_position = 0;
+            int address_id;
+
+            addressConnection = new AddressConnection();
+            DataSet ds;
+            DataSet ds2;
+            DataSet ds3;
+
+            if (newJSuggestionList.ItemsSource != null)
+            {
+                newJSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                newJudgeFirstName.TextChanged -= new TextChangedEventHandler(newJudgeFirstName_TextChanged);
+
+                int index = newJSuggestionList.SelectedIndex;
+
+                if (newJSuggestionList.SelectedIndex != -1)
+                {
+                    ListData item = (ListData)newJSuggestionList.SelectedItem;
+                    _newJudgeId = item.id;
+                    ds2 = judgeConnection.findJudge(_newPersonId);
+                    ds3 = athleteConnection.findAthlete(_newPersonId);
+
+                    name = newJSuggestionList.SelectedItem.ToString();
+                    sex = newFilteredJudges.Tables[0].Rows[index][4].ToString();
+
+                    address_id = int.Parse(newFilteredJudges.Tables[0].Rows[index][9].ToString());
+
+                    this.newJudgeFirstName.Text = newFilteredJudges.Tables[0].Rows[index][1].ToString();
+                    this._newJudgeFirstName = this.newJudgeFirstName.Text;
+                    this.newJudgeLastName.Text = newFilteredJudges.Tables[0].Rows[index][2].ToString();
+                    this.newJudgeFatherName.Text = newFilteredJudges.Tables[0].Rows[index][3].ToString();
+
+                    if (sex.Equals("male"))
+                    {
+                        this.newJrdButton1.IsChecked = true;
+                    }
+                    else
+                    {
+                        this.newJrdButton2.IsChecked = true;
+                    }
+
+                    this.newJudgeDateOfBirth.SelectedDate = (DateTime)newFilteredJudges.Tables[0].Rows[index][5];
+                    this.newJudgeFirstPhone.Text = newFilteredJudges.Tables[0].Rows[index][6].ToString();
+                    this.newJudgeSecondPhone.Text = newFilteredJudges.Tables[0].Rows[index][7].ToString();
+                    this.newJudgeEmail.Text = newFilteredJudges.Tables[0].Rows[index][8].ToString();
+
+                    ds = addressConnection.getAddress(address_id);
+
+                    this.newJudgeStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
+                    this.newJudgeAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
+                    this.newJudgeTK.Text = ds.Tables[0].Rows[0][4].ToString();
+
+                    string athCity = ds.Tables[0].Rows[0][3].ToString();
+                    int ix = ds.Tables[0].Columns.Count;
+                    string athCountry = ds.Tables[0].Rows[0][5].ToString();
+
+
+                    //
+                    //the fix for the country selection error
+                    //
+                    CountryConnection countryconn = new CountryConnection();
+                    DataSet countriname = countryconn.getCountryNameByCode(athCountry);
+                    athCountry = countriname.Tables[0].Rows[0][0].ToString();
+
+
+
+
+                    for (int i = 0; i < this.cmbNewACountryChooses.Items.Count; i++)
+                    {
+                        if (athCountry.Equals(cmbNewACountryChooses.Items[i].ToString()))
+                        {
+                            country_position = i;
+                            break;
+                        }
+                    }
+
+
+                    this.cmbNewJCountryChooses.SelectedIndex = country_position;
+
+
+                    CityConnection cityConnection = new CityConnection();
+                    DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(athCity));
+                    athCity = cityNa.Tables[0].Rows[0][0].ToString();
+
+                    for (int i = 0; i < this.cmbNewAthleteCityChooses.Items.Count; i++)
+                    {
+                        if (athCity.Equals(cmbNewAthleteCityChooses.Items[i].ToString()))
+                        {
+                            city_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbNewJCityChooses.SelectedIndex = city_position;
 
 
                     if (ds2.Tables[0].Rows.Count > 0)
@@ -734,28 +1182,28 @@ namespace KarateGeek.guis
                         judge_class = ds2.Tables[0].Rows[0][2].ToString();
 
                         //vriskei tin zwni pou exei o kathenas se poia thesi einai
-                        for (int i = 0; i < cmbJudgeRankChooses.Items.Count; i++)
+                        for (int i = 0; i < cmbNewJudgeRankChooses.Items.Count; i++)
                         {
-                            if (rank.Equals(cmbJudgeRankChooses.Items[i]))
+                            if (rank.Equals(cmbNewJudgeRankChooses.Items[i]))
                             {
                                 rank_position = i;
                                 break;
                             }
                         }
-                        this.cmbJudgeRankChooses.SelectedIndex = rank_position;
+                        this.cmbNewJudgeRankChooses.SelectedIndex = rank_position;
 
 
 
 
-                        for (int i = 0; i < cmbJClassChooses.Items.Count; i++)
+                        for (int i = 0; i < cmbNewJClassChooses.Items.Count; i++)
                         {
-                            if (judge_class.Equals(cmbJClassChooses.Items[i]))
+                            if (judge_class.Equals(cmbNewJClassChooses.Items[i]))
                             {
                                 class_position = i;
                                 break;
                             }
                         }
-                        this.cmbJClassChooses.SelectedIndex = class_position;
+                        this.cmbNewJClassChooses.SelectedIndex = class_position;
 
                     }
                     else if (ds3.Tables[0].Rows.Count > 0)
@@ -763,87 +1211,119 @@ namespace KarateGeek.guis
                         rank = ds3.Tables[0].Rows[0][1].ToString();
 
                         //vriskei tin zwni pou exei o kathenas se poia thesi einai
-                        for (int i = 0; i < cmbJudgeRankChooses.Items.Count; i++)
+                        for (int i = 0; i < cmbNewJudgeRankChooses.Items.Count; i++)
                         {
-                            if (rank.Equals(cmbJudgeRankChooses.Items[i]))
+                            if (rank.Equals(cmbNewJudgeRankChooses.Items[i]))
                             {
                                 rank_position = i;
                                 break;
                             }
                         }
-                        this.cmbJudgeRankChooses.SelectedIndex = rank_position;
+                        this.cmbNewJudgeRankChooses.SelectedIndex = rank_position;
                     }
 
                 }
-                judgeFirstName.TextChanged += new TextChangedEventHandler(judgeFirstName_TextChanged);
+                newJudgeFirstName.TextChanged += new TextChangedEventHandler(newJudgeFirstName_TextChanged);
             }
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
 
 
-
-
-
-        private void judgeLastName_TextChanged(object sender, TextChangedEventArgs e)
+        private void newJudgeList()
         {
-            _judgeLastName = judgeLastName.Text;
+            _newJudgeFirstName = newJudgeFirstName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            newJudgeNameListForAutoComplete = this.newJudgefiltersNames();
+
+            foreach (ListData item in newJudgeNameListForAutoComplete)
+            {
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                newJSuggestionList.ItemsSource = autoList;
+                newJSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+
+
+            else if (newJudgeFirstName.Text.Equals(""))
+            {
+                newJSuggestionList.Visibility = Visibility.Collapsed;
+                newJSuggestionList.ItemsSource = null;
+            }
+
+
+            else
+            {
+                newJSuggestionList.Visibility = Visibility.Collapsed;
+                newJSuggestionList.ItemsSource = null;
+            }
         }
 
-        private void judgeFatherName_TextChanged(object sender, TextChangedEventArgs e)
+        #endregion
+
+        private void newJudgeLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeFathersName = judgeFatherName.Text;
+            _newJudgeLastName = newJudgeLastName.Text;
         }
 
-        private void judgeDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void newJudgeFatherName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeDateOfBirth = judgeDateOfBirth.SelectedDate.Value;
+            _newJudgeFathersName = newJudgeFatherName.Text;
         }
 
-        private void judgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
+        private void newJudgeDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _judgeFirstPhone = judgeFirstPhone.Text;
+            _newJudgeDateOfBirth = newJudgeDateOfBirth.SelectedDate.Value;
         }
 
-        private void judgeSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
+        private void newJudgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeSecondPhone = judgeSecondPhone.Text;
+            _newJudgeFirstPhone = newJudgeFirstPhone.Text;
         }
 
-        private void judgeEmail_TextChanged(object sender, TextChangedEventArgs e)
+        private void newJudgeSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeEmail = judgeEmail.Text;
+            _newJudgeSecondPhone = newJudgeSecondPhone.Text;
         }
 
-        private void judgeStreetName_TextChanged(object sender, TextChangedEventArgs e)
+        private void newJudgeEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeAddress = judgeStreetName.Text;
+            _newJudgeEmail = newJudgeEmail.Text;
         }
 
-        private void judgeAddressNum_TextChanged(object sender, TextChangedEventArgs e)
+        private void newJudgeStreetName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeAddressNum = judgeAddressNum.Text;
+            _newJudgeAddress = newJudgeStreetName.Text;
         }
 
-        private void judgeTK_TextChanged(object sender, TextChangedEventArgs e)
+        private void newJudgeAddressNum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _judgeTK = judgeTK.Text;
+            _newJudgeAddressNum = newJudgeAddressNum.Text;
         }
 
-        private void cmbJCityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void newJudgeTK_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int index = cmbJCityChooses.SelectedIndex;
-            if (index < cmbJCityChooses.Items.Count && index != -1)
-                _judgeCity = cmbJCityChooses.Items[index].ToString();
+            _newJudgeTK = newJudgeTK.Text;
         }
 
-        private void cmbJCountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbNewJCityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbJCountryChooses.SelectedIndex;
+            int index = cmbNewJCityChooses.SelectedIndex;
+            if (index < cmbNewJCityChooses.Items.Count && index != -1)
+                _newJudgeCity = cmbNewJCityChooses.Items[index].ToString();
+        }
+
+        private void cmbNewJCountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbNewJCountryChooses.SelectedIndex;
             //athlete_country = cmbACountryChooses.Items[index].ToString();
-            _judgeCountryCode = countries.Tables[0].Rows[index][0].ToString();
+            _newJudgeCountryCode = countries.Tables[0].Rows[index][0].ToString();
             //setCountryCode(athlete_country);
-            this.judgeUpdateCities(_judgeCountryCode);
+            this.judgeUpdateCities(_newJudgeCountryCode);
         }
 
         private void judgeUpdateCities(string countryCode)
@@ -853,79 +1333,439 @@ namespace KarateGeek.guis
 
             //cmbACityChooses = new ComboBox();
 
-            int count = cmbJCityChooses.Items.Count;
+            int count = cmbNewJCityChooses.Items.Count;
             for (int i = 0; i < count; i++)
             {
-                cmbJCityChooses.Items.RemoveAt(0);
+                cmbNewJCityChooses.Items.RemoveAt(0);
             }
 
             foreach (DataRow dr in cities.Tables[0].Rows)
             {
-                cmbJCityChooses.Items.Add(dr[1].ToString());
+                cmbNewJCityChooses.Items.Add(dr[1].ToString());
             }
-            cmbJCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+            cmbNewJCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
 
-            cmbJCityChooses.Items.Refresh();
+            cmbNewJCityChooses.Items.Refresh();
         }
 
-        private void JrdButton1_Checked(object sender, RoutedEventArgs e)
+        private void newJrdButton1_Checked(object sender, RoutedEventArgs e)
         {
-            _judgeSex = "male";
+            _newJudgeSex = "male";
         }
 
-        private void JrdButton2_Checked(object sender, RoutedEventArgs e)
+        private void newJrdButton2_Checked(object sender, RoutedEventArgs e)
         {
-            _judgeSex = "female";
+            _newJudgeSex = "female";
         }
 
-        private void cmbJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbNewJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbJudgeRankChooses.SelectedIndex;
-            _judgeRank = cmbAthleteRankChooses.Items[index].ToString();
+            int index = cmbNewJudgeRankChooses.SelectedIndex;
+            _newJudgeRank = cmbNewAthleteRankChooses.Items[index].ToString();
         }
 
-        private void cmbJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbNewJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbJClassChooses.SelectedIndex;
-            _judgeClass = cmbJClassChooses.Items[index].ToString();
+            int index = cmbNewJClassChooses.SelectedIndex;
+            _newJudgeClass = cmbNewJClassChooses.Items[index].ToString();
         }
 
-        private void btnJBack_Click(object sender, RoutedEventArgs e)
+        #region buttons
+        private void btnNewJBack_Click(object sender, RoutedEventArgs e)
         {
            
             this.sender.Show();
             this.Close();
         }
 
-        private void btnJSave_Click(object sender, RoutedEventArgs e)
+        private void btnNewJSave_Click(object sender, RoutedEventArgs e)
         {
-            if (checkFields("judge"))
+            bool judgeInsert;
+            if (checkFields("judge" , true))
             {
-                judgeConnection = new JudgeConnection();
-                judgeConnection.UpdateJudge(_personId, _judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK, _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
-                MessageBox.Show("Succesfully saved!");
+
+                judgeInsert = judgeConnection.InsertNewJudge(_newJudgeId, _newJudgeFirstName, _newJudgeLastName, _newJudgeFathersName, _newJudgeSex, _newJudgeDateOfBirth, _newJudgeFirstPhone, _newJudgeSecondPhone, _newJudgeEmail, _newJudgeAddress, _newJudgeAddressNum, _newJudgeTK, _newJudgeCountryCode, _newJudgeCity, _newJudgeRank, _newJudgeClass);
+                if (judgeInsert)
+                {
+                    MessageBox.Show("Succesfully saved!");
+                    PersonManagement pm = new PersonManagement(this.sender);
+                    pm.Activate();
+                    pm.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Error. Judge not succesfully inserted");
+                }
+
+            }
+            
+        }
+
+        #endregion
+
+
+
+
+
+        #endregion
+
+
+        #region edit judge
+
+
+        private void editJudgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            editJudgeList();
+        }
+
+
+
+        private List<ListData> editJudgefiltersNames()
+        {
+            List<ListData> list = new List<ListData>();
+
+            this.editFilteredJudges = personsConnection.similarJudges(this.editJudgeFirstName.Text);
+
+            foreach (DataRow dr in editFilteredJudges.Tables[0].Rows)
+            {
+                ListData suggestion = new ListData();
+                suggestion.id = int.Parse(dr[0].ToString());
+                suggestion.name = dr[1].ToString() + " " + dr[2].ToString();
+                list.Add(suggestion);
+            }
+            return list;
+        }
+
+        #region autocomplete
+
+        private void editJSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string name = null;
+            string sex = null;
+            string rank = null;
+            int country_position = 0;
+            int city_position = 0;
+            string judge_class = null;
+            int rank_position = 0;
+            int class_position = 0;
+            int address_id;
+
+            addressConnection = new AddressConnection();
+            DataSet ds;
+            DataSet ds2;
+            DataSet ds3;
+
+            if (editJSuggestionList.ItemsSource != null)
+            {
+                editJSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
+                editJudgeFirstName.TextChanged -= new TextChangedEventHandler(editJudgeFirstName_TextChanged);
+
+                int index = editJSuggestionList.SelectedIndex;
+
+                if (editJSuggestionList.SelectedIndex != -1)
+                {
+                    ListData item = (ListData)editJSuggestionList.SelectedItem;
+                    _editJudgeId = item.id;
+                    ds2 = judgeConnection.findJudge(_editPersonId);
+                    ds3 = athleteConnection.findAthlete(_editPersonId);
+
+                    name = editJSuggestionList.SelectedItem.ToString();
+                    sex = editFilteredJudges.Tables[0].Rows[index][4].ToString();
+
+                    address_id = int.Parse(editFilteredJudges.Tables[0].Rows[index][9].ToString());
+
+                    this.editJudgeFirstName.Text = editFilteredJudges.Tables[0].Rows[index][1].ToString();
+                    this._editJudgeFirstName = this.editJudgeFirstName.Text;
+                    this.editJudgeLastName.Text = editFilteredJudges.Tables[0].Rows[index][2].ToString();
+                    this.editJudgeFatherName.Text = editFilteredJudges.Tables[0].Rows[index][3].ToString();
+
+                    if (sex.Equals("male"))
+                    {
+                        this.editJrdButton1.IsChecked = true;
+                    }
+                    else
+                    {
+                        this.editJrdButton2.IsChecked = true;
+                    }
+
+                    this.editJudgeDateOfBirth.SelectedDate = (DateTime)editFilteredJudges.Tables[0].Rows[index][5];
+                    this.editJudgeFirstPhone.Text = editFilteredJudges.Tables[0].Rows[index][6].ToString();
+                    this.editJudgeSecondPhone.Text = editFilteredJudges.Tables[0].Rows[index][7].ToString();
+                    this.editJudgeEmail.Text = editFilteredJudges.Tables[0].Rows[index][8].ToString();
+
+                    ds = addressConnection.getAddress(address_id);
+
+                    this.editJudgeStreetName.Text = ds.Tables[0].Rows[0][1].ToString();
+                    this.editJudgeAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
+                    this.editJudgeTK.Text = ds.Tables[0].Rows[0][4].ToString();
+
+                    string athCity = ds.Tables[0].Rows[0][3].ToString();
+                    int ix = ds.Tables[0].Columns.Count;
+                    string athCountry = ds.Tables[0].Rows[0][5].ToString();
+
+
+                    //
+                    //the fix for the country selection error
+                    //
+                    CountryConnection countryconn = new CountryConnection();
+                    DataSet countriname = countryconn.getCountryNameByCode(athCountry);
+                    athCountry = countriname.Tables[0].Rows[0][0].ToString();
+
+
+
+
+                    for (int i = 0; i < this.cmbEditACountryChooses.Items.Count; i++)
+                    {
+                        if (athCountry.Equals(cmbEditACountryChooses.Items[i].ToString()))
+                        {
+                            country_position = i;
+                            break;
+                        }
+                    }
+
+
+                    this.cmbEditJCountryChooses.SelectedIndex = country_position;
+
+
+                    CityConnection cityConnection = new CityConnection();
+                    DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(athCity));
+                    athCity = cityNa.Tables[0].Rows[0][0].ToString();
+
+                    for (int i = 0; i < this.cmbEditAthleteCityChooses.Items.Count; i++)
+                    {
+                        if (athCity.Equals(cmbEditAthleteCityChooses.Items[i].ToString()))
+                        {
+                            city_position = i;
+                            break;
+                        }
+                    }
+                    this.cmbEditJCityChooses.SelectedIndex = city_position;
+
+
+                    if (ds2.Tables[0].Rows.Count > 0)
+                    {
+
+                        rank = ds2.Tables[0].Rows[0][1].ToString();
+                        judge_class = ds2.Tables[0].Rows[0][2].ToString();
+
+                        //vriskei tin zwni pou exei o kathenas se poia thesi einai
+                        for (int i = 0; i < cmbEditJudgeRankChooses.Items.Count; i++)
+                        {
+                            if (rank.Equals(cmbEditJudgeRankChooses.Items[i]))
+                            {
+                                rank_position = i;
+                                break;
+                            }
+                        }
+                        this.cmbEditJudgeRankChooses.SelectedIndex = rank_position;
+
+
+
+
+                        for (int i = 0; i < cmbEditJClassChooses.Items.Count; i++)
+                        {
+                            if (judge_class.Equals(cmbEditJClassChooses.Items[i]))
+                            {
+                                class_position = i;
+                                break;
+                            }
+                        }
+                        this.cmbEditJClassChooses.SelectedIndex = class_position;
+
+                    }
+                    else if (ds3.Tables[0].Rows.Count > 0)
+                    {
+                        rank = ds3.Tables[0].Rows[0][1].ToString();
+
+                        //vriskei tin zwni pou exei o kathenas se poia thesi einai
+                        for (int i = 0; i < cmbEditJudgeRankChooses.Items.Count; i++)
+                        {
+                            if (rank.Equals(cmbEditJudgeRankChooses.Items[i]))
+                            {
+                                rank_position = i;
+                                break;
+                            }
+                        }
+                        this.cmbEditJudgeRankChooses.SelectedIndex = rank_position;
+                    }
+
+                }
+                editJudgeFirstName.TextChanged += new TextChangedEventHandler(editJudgeFirstName_TextChanged);
             }
         }
-        private void btnJSaveNew_Click(object sender, RoutedEventArgs e)
+
+
+
+        private void editJudgeList()
         {
-            if (checkFields("judge"))
+            _editJudgeFirstName = editJudgeFirstName.Text;
+            List<ListData> autoList = new List<ListData>();
+            autoList.Clear();
+
+            editJudgeNameListForAutoComplete = this.editJudgefiltersNames();
+
+            foreach (ListData item in editJudgeNameListForAutoComplete)
+            {
+                autoList.Add(item);
+            }
+
+            if (autoList.Count > 0)
+            {
+                editJSuggestionList.ItemsSource = autoList;
+                editJSuggestionList.Visibility = System.Windows.Visibility.Visible;
+            }
+
+
+            else if (editJudgeFirstName.Text.Equals(""))
+            {
+                editJSuggestionList.Visibility = Visibility.Collapsed;
+                editJSuggestionList.ItemsSource = null;
+            }
+
+
+            else
+            {
+                editJSuggestionList.Visibility = Visibility.Collapsed;
+                editJSuggestionList.ItemsSource = null;
+            }
+        }
+
+        #endregion
+
+        private void editJudgeLastName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeLastName = editJudgeLastName.Text;
+        }
+
+        private void editJudgeFatherName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeFathersName = editJudgeFatherName.Text;
+        }
+
+        private void editJudgeDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _editJudgeDateOfBirth = editJudgeDateOfBirth.SelectedDate.Value;
+        }
+
+        private void editJudgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeFirstPhone = editJudgeFirstPhone.Text;
+        }
+
+        private void editJudgeSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeSecondPhone = editJudgeSecondPhone.Text;
+        }
+
+        private void editJudgeEmail_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeEmail = editJudgeEmail.Text;
+        }
+
+        private void editJudgeStreetName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeAddress = editJudgeStreetName.Text;
+        }
+
+        private void editJudgeAddressNum_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeAddressNum = editJudgeAddressNum.Text;
+        }
+
+        private void editJudgeTK_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _editJudgeTK = editJudgeTK.Text;
+        }
+
+        private void cmbEditJCityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditJCityChooses.SelectedIndex;
+            if (index < cmbEditJCityChooses.Items.Count && index != -1)
+                _editJudgeCity = cmbEditJCityChooses.Items[index].ToString();
+        }
+
+        private void cmbEditJCountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditJCountryChooses.SelectedIndex;
+            //athlete_country = cmbACountryChooses.Items[index].ToString();
+            _editJudgeCountryCode = countries.Tables[0].Rows[index][0].ToString();
+            //setCountryCode(athlete_country);
+            this.editJudgeUpdateCities(_editJudgeCountryCode);
+        }
+
+        private void editJudgeUpdateCities(string countryCode)
+        {
+            CityConnection citiesconn = new CityConnection();
+            this.cities = citiesconn.GetCities(countryCode);
+
+            //cmbACityChooses = new ComboBox();
+
+            int count = cmbEditJCityChooses.Items.Count;
+            for (int i = 0; i < count; i++)
+            {
+                cmbEditJCityChooses.Items.RemoveAt(0);
+            }
+
+            foreach (DataRow dr in cities.Tables[0].Rows)
+            {
+                cmbEditJCityChooses.Items.Add(dr[1].ToString());
+            }
+            cmbEditJCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+
+            cmbEditJCityChooses.Items.Refresh();
+        }
+
+        private void editJrdButton1_Checked(object sender, RoutedEventArgs e)
+        {
+            _editJudgeSex = "male";
+        }
+
+        private void editJrdButton2_Checked(object sender, RoutedEventArgs e)
+        {
+            _editJudgeSex = "female";
+        }
+
+        private void cmbEditJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditJudgeRankChooses.SelectedIndex;
+            _editJudgeRank = cmbEditAthleteRankChooses.Items[index].ToString();
+        }
+
+        private void cmbEditJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbEditJClassChooses.SelectedIndex;
+            _editJudgeClass = cmbEditJClassChooses.Items[index].ToString();
+        }
+
+        #region buttons
+        private void btnEditJBack_Click(object sender, RoutedEventArgs e)
+        {
+
+            this.sender.Show();
+            this.Close();
+        }
+
+        private void btnEditJSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (checkFields("judge" , false))
             {
                 judgeConnection = new JudgeConnection();
-
-
-                judgeConnection.InsertNewJudge(_personId, _judgeFirstName, _judgeLastName, _judgeFathersName, _judgeSex, _judgeDateOfBirth, _judgeFirstPhone, _judgeSecondPhone, _judgeEmail, _judgeAddress, _judgeAddressNum, _judgeTK, _judgeCountryCode, _judgeCity, _judgeRank, _judgeClass);
+                judgeConnection.UpdateJudge(_editJudgeId, _editJudgeFirstName, _editJudgeLastName, _editJudgeFathersName, _editJudgeSex, _editJudgeDateOfBirth, _editJudgeFirstPhone, _editJudgeSecondPhone, _editJudgeEmail, _editJudgeAddress, _editJudgeAddressNum, _editJudgeTK, _editJudgeCountryCode, _editJudgeCity, _editJudgeRank, _editJudgeClass);
                 MessageBox.Show("Succesfully saved!");
+
                 PersonManagement pm = new PersonManagement(this.sender);
                 pm.Activate();
                 pm.Show();
                 this.Hide();
             }
+
         }
 
-        private void btnJDelete_Click(object sender, RoutedEventArgs e)
+        private void btnEditJDelete_Click(object sender, RoutedEventArgs e)
         {
             judgeConnection = new JudgeConnection();
-            if (judgeConnection.deleteJudge(_personId))
+            if (judgeConnection.deleteJudge(_editJudgeId))
             {
                 MessageBox.Show("Succesfully deleted!");
                 PersonManagement pm = new PersonManagement(this.sender);
@@ -942,99 +1782,169 @@ namespace KarateGeek.guis
                 this.Close();
             }
 
-            
-            
+
+
         }
-
-
-
-
-
-
-
-
-
-
         #endregion
-
+        #endregion
 
         #region checks
 
 
-        private bool checkFields(string person)
+        private bool checkFields(string person , bool newMode)
         {
             if (person.Equals("athlete"))
             {
-                if (_athleteFirstName == null)
+                if (newMode)
                 {
-                    errorMessage("First Name");
-                    return false;
-                }
-                else if (_athleteLastName == null)
-                {
-                    errorMessage("Last Name");
-                    return false;
-                }
-                else if (_athleteSex == null)
-                {
-                    errorMessage("Sex");
-                    return false;
-                }
-                else if (_athleteFirstPhone == null)
-                {
-                    errorMessage("Phone Num.");
-                    return false;
-                }
-                else if (_athleteEmail == null)
-                {
-                    errorMessage("Email");
-                    return false;
-                }
-                else if (_athleteAddress == null)
-                {
-                    errorMessage("Address");
-                    return false;
+                    if (_newAthleteFirstName == null)
+                    {
+                        errorMessage("First Name");
+                        return false;
+                    }
+                    else if (_newAthleteLastName == null)
+                    {
+                        errorMessage("Last Name");
+                        return false;
+                    }
+                    else if (_newAthleteSex == null)
+                    {
+                        errorMessage("Sex");
+                        return false;
+                    }
+                    else if (_newAthleteFirstPhone == null)
+                    {
+                        errorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (_newAthleteEmail == null)
+                    {
+                        errorMessage("Email");
+                        return false;
+                    }
+                    else if (_newAthleteAddress == null)
+                    {
+                        errorMessage("Address");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
                 else
                 {
-                    return true;
+                    if (_editAthleteFirstName == null)
+                    {
+                        errorMessage("First Name");
+                        return false;
+                    }
+                    else if (_editAthleteLastName == null)
+                    {
+                        errorMessage("Last Name");
+                        return false;
+                    }
+                    else if (_editAthleteSex == null)
+                    {
+                        errorMessage("Sex");
+                        return false;
+                    }
+                    else if (_editAthleteFirstPhone == null)
+                    {
+                        errorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (_editAthleteEmail == null)
+                    {
+                        errorMessage("Email");
+                        return false;
+                    }
+                    else if (_editAthleteAddress == null)
+                    {
+                        errorMessage("Address");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
             else
             {
-                if (_judgeFirstName == null)
+                if (newMode)
                 {
-                    errorMessage("First Name");
-                    return false;
-                }
-                else if (_judgeLastName == null)
-                {
-                    errorMessage("Last Name");
-                    return false;
-                }
-                else if (_judgeSex == null)
-                {
-                    errorMessage("Sex");
-                    return false;
-                }
-                else if (_judgeFirstPhone == null)
-                {
-                    errorMessage("Phone Num.");
-                    return false;
-                }
-                else if (_judgeEmail == null)
-                {
-                    errorMessage("Email");
-                    return false;
-                }
-                else if (_judgeAddress == null)
-                {
-                    errorMessage("Address");
-                    return false;
+                    if (_newJudgeFirstName == null)
+                    {
+                        errorMessage("First Name");
+                        return false;
+                    }
+                    else if (_newJudgeLastName == null)
+                    {
+                        errorMessage("Last Name");
+                        return false;
+                    }
+                    else if (_newJudgeSex == null)
+                    {
+                        errorMessage("Sex");
+                        return false;
+                    }
+                    else if (_newJudgeFirstPhone == null)
+                    {
+                        errorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (_newJudgeEmail == null)
+                    {
+                        errorMessage("Email");
+                        return false;
+                    }
+                    else if (_newJudgeAddress == null)
+                    {
+                        errorMessage("Address");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
                 else
                 {
-                    return true;
+                    if (_editJudgeFirstName == null)
+                    {
+                        errorMessage("First Name");
+                        return false;
+                    }
+                    else if (_editJudgeLastName == null)
+                    {
+                        errorMessage("Last Name");
+                        return false;
+                    }
+                    else if (_editJudgeSex == null)
+                    {
+                        errorMessage("Sex");
+                        return false;
+                    }
+                    else if (_editJudgeFirstPhone == null)
+                    {
+                        errorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (_editJudgeEmail == null)
+                    {
+                        errorMessage("Email");
+                        return false;
+                    }
+                    else if (_editJudgeAddress == null)
+                    {
+                        errorMessage("Address");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -1048,80 +1958,94 @@ namespace KarateGeek.guis
         }
         #endregion
 
-      
 
-
-
-        private void athleteList()
+        #region helping methods
+        private void initializeNewAthlete()
         {
-            _athleteFirstName = athleteFirstName.Text;
-            List<ListData> autoList = new List<ListData>();
-            autoList.Clear();
-
-            athleteNameListForAutoComplete = this.AthletesfilterNames();
-
-            foreach (ListData item in athleteNameListForAutoComplete)
-            {
-                autoList.Add(item);
-            }
-
-            if (autoList.Count > 0)
-            {
-                aSuggestionList.ItemsSource = autoList;
-                aSuggestionList.Visibility = System.Windows.Visibility.Visible;
-            }
-            else if (athleteFirstName.Text.Equals(""))
-            {
-                aSuggestionList.Visibility = Visibility.Collapsed;
-                aSuggestionList.ItemsSource = null;
-            }
-            else
-            {
-                aSuggestionList.Visibility = Visibility.Collapsed;
-                aSuggestionList.ItemsSource = null;
-            }
+            NewAthleteFirstName.Text = null;
+            NewAthleteLastName.Text = null;
+            NewAthleteFatherName.Text = null;
+            NewArdButton1.IsChecked = false;
+            NewArdButton2.IsChecked = false;
+            NewAthleteFirstPhone.Text = null;
+            NewAthleteSecondPhone.Text = null;
+            NewAthleteEmail.Text = null;
+            NewAthleteStreetName.Text = null;
+            NewAthleteAddressNum.Text = null;
+            NewAthleteTK.Text = null;
+            cmbNewACountryChooses.SelectedIndex = 54;
+            cmbNewAthleteRankChooses.SelectedIndex = 0;
+            cmbNewAClubChooses.SelectedIndex = 0; 
         }
 
-        private void judgeList()
+        private void initializeEditAthlete()
         {
-            _judgeFirstName = judgeFirstName.Text;
-            List<ListData> autoList = new List<ListData>();
-            autoList.Clear();
-
-            judgeNameListForAutoComplete = this.JudgefilterNames();
-
-            foreach (ListData item in judgeNameListForAutoComplete)
-            {
-                autoList.Add(item);
-            }
-
-            if (autoList.Count > 0)
-            {
-                jSuggestionList.ItemsSource = autoList;
-                jSuggestionList.Visibility = System.Windows.Visibility.Visible;
-            }
-
-
-            else if (judgeFirstName.Text.Equals(""))
-            {
-                jSuggestionList.Visibility = Visibility.Collapsed;
-                jSuggestionList.ItemsSource = null;
-            }
-
-
-            else
-            {
-                jSuggestionList.Visibility = Visibility.Collapsed;
-                jSuggestionList.ItemsSource = null;
-            }
+            EditAthleteFirstName.Text = null;
+            EditAthleteLastName.Text = null;
+            EditAthleteFatherName.Text = null;
+            EditArdButton1.IsChecked = false;
+            EditArdButton2.IsChecked = false;
+            EditAthleteFirstPhone.Text = null;
+            EditAthleteSecondPhone.Text = null;
+            EditAthleteEmail.Text = null;
+            EditAthleteStreetName.Text = null;
+            EditAthleteAddressNum.Text = null;
+            EditAthleteTK.Text = null;
+            cmbEditACountryChooses.SelectedIndex = 54;
+            cmbEditAthleteRankChooses.SelectedIndex = 0;
+            cmbEditAClubChooses.SelectedIndex = 0; 
         }
+
+        private void initializeNewJudge()
+        {
+            newJudgeFirstName.Text = null;
+            newJudgeLastName.Text = null;
+            newJudgeFatherName.Text = null;
+            newJrdButton1.IsChecked = false;
+            newJrdButton2.IsChecked = false;
+            newJudgeFirstPhone.Text = null;
+            newJudgeSecondPhone.Text = null;
+            newJudgeEmail.Text = null;
+            newJudgeStreetName.Text = null;
+            newJudgeAddressNum.Text = null;
+            newJudgeTK.Text = null;
+            cmbNewJCountryChooses.SelectedIndex = 54;
+            cmbNewJudgeRankChooses.SelectedIndex = 0;
+            cmbNewJClassChooses.SelectedIndex = 0;
+        }
+
+        private void initializeEditJudge()
+        {
+            editJudgeFirstName.Text = null;
+            editJudgeLastName.Text = null;
+            editJudgeFatherName.Text = null;
+            editJrdButton1.IsChecked = false;
+            editJrdButton2.IsChecked = false;
+            editJudgeFirstPhone.Text = null;
+            editJudgeSecondPhone.Text = null;
+            editJudgeEmail.Text = null;
+            editJudgeStreetName.Text = null;
+            editJudgeAddressNum.Text = null;
+            editJudgeTK.Text = null;
+            cmbEditJCountryChooses.SelectedIndex = 54;
+            cmbEditJudgeRankChooses.SelectedIndex = 0;
+            cmbEditJClassChooses.SelectedIndex = 0;
+        }
+
+        #endregion
+
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
 
-     
+       
+
+      
+
+        
 
     }
 }

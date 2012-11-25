@@ -21,20 +21,20 @@
 
 
 
-            <TabItem Name="AthleteTap" 
-                     Header="Athlete management">
+            <TabItem Name="NewAthleteTap" 
+                     Header="New Athlete">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
-                
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -48,40 +48,42 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="4*"/>
-                        <ColumnDefinition Width="6*"/>
-                        <ColumnDefinition Width="*"/>
-                        
-                    </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
 
                         <Label Content="First name"
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="athleteFirstName" 
+                        <TextBox Name="NewAthleteFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
                                VerticalAlignment="Center" 
-                                 TextChanged="athleteFirstName_TextChanged"  />
-                    
+                               TextChanged="NewAthleteFirstName_TextChanged"  />
+
                         <Label Content="Last name"
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="athleteLastName" 
+                        <TextBox Name="NewAthleteLastName" 
                                Grid.Row="2"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="athleteLastName_TextChanged"/>
+                               VerticalAlignment="Center"
+                               TextChanged="NewAthleteLastName_TextChanged"/>
                         <Label Content="Fathers name"
                                Grid.Row="3"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="athleteFatherName" 
+                        <TextBox Name="NewAthleteFatherName" 
                                Grid.Row="3"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="athleteFathersName_TextChanged"/>
+                               VerticalAlignment="Center" 
+                               TextChanged="NewAthleteFathersName_TextChanged"/>
 
                         <Label Content="Sex"
                                Grid.Row="4"
@@ -89,59 +91,65 @@
                                VerticalAlignment="Center"/>
                         <Grid Grid.Column="2"
                               Grid.Row="4">
-                            
+
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            
-                            <RadioButton Name="ArdButton1"
+
+                            <RadioButton Name="NewArdButton1"
                                          Content="male" 
                                          Grid.Column="0"
                                          VerticalAlignment="Center"
-                                         Margin="5" Checked="ArdButton1_Checked" />
-                            <RadioButton Name="ArdButton2"
+                                         Margin="5" 
+                                         Checked="NewArdButton1_Checked" />
+                            <RadioButton Name="NewArdButton2"
                                          Content="female" 
                                          Grid.Column="1"
                                          VerticalAlignment="Center"
-                                         Margin="5" Checked="ArdButton2_Checked" />
+                                         Margin="5"
+                                         Checked="NewArdButton2_Checked" />
                         </Grid>
 
                         <Label Content="Date of birth"
                                Grid.Column="1"
                                Grid.Row="5"
                                VerticalAlignment="Center"/>
-                        <DatePicker Name="athleteDateOfBirth" 
+                        <DatePicker Name="NewAthleteDateOfBirth" 
                                 Grid.Column="2"
                                 Grid.Row="5"
-                                    VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center" SelectedDateChanged="athleteDateOfBirth_SelectedDateChanged" />
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                SelectedDateChanged="NewAthleteDateOfBirth_SelectedDateChanged" />
 
                         <Label Content="Phone num."
                                Grid.Row="6"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="athleteFirstPhone" 
+                        <TextBox Name="NewAthleteFirstPhone" 
                                Grid.Row="6"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="athleteFirstPhone_TextChanged" />
+                               VerticalAlignment="Center"
+                               TextChanged="NewAthleteFirstPhone_TextChanged" />
 
                         <Label Content="Secondary phone num."
                                Grid.Row="7"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="athleteSecondPhone" 
+                        <TextBox Name="NewAthleteSecondPhone" 
                                Grid.Row="7"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="athleteSecondPhone_TextChanged" />
+                               VerticalAlignment="Center"
+                               TextChanged="NewAthleteSecondPhone_TextChanged" />
                         <Label Content="Email"
                                Grid.Row="8"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="athleteEmail" 
+                        <TextBox Name="NewAthleteEmail" 
                                Grid.Row="8"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="athleteEmail_TextChanged" />
+                               VerticalAlignment="Center" 
+                               TextChanged="NewAthleteEmail_TextChanged" />
 
                         <Label Content="Address"
                                Grid.Row="9"
@@ -149,9 +157,11 @@
                                VerticalAlignment="Center"/>
                         <Grid Grid.Column="2"
                               Grid.Row="9">
-                            <TextBox Name="athleteStreetName"
-                                     Grid.Column="0" VerticalAlignment="Center" TextChanged="athleteStreetName_TextChanged" />
-                                          
+                            <TextBox Name="NewAthleteStreetName"
+                                     Grid.Column="0" 
+                                     VerticalAlignment="Center" 
+                                     TextChanged="NewAthleteStreetName_TextChanged" />
+
                         </Grid>
                         <Grid Grid.Column="2"
                               Grid.Row="10">
@@ -167,68 +177,80 @@
                                    Grid.Column="0"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                            <TextBox Name="athleteAddressNum" 
+                            <TextBox Name="NewAthleteAddressNum" 
                                      Grid.Column="1"
-                                         VerticalAlignment="Center" TextChanged="athleteAddressNum_TextChanged" />
+                                     VerticalAlignment="Center" 
+                                     TextChanged="NewAthleteAddressNum_TextChanged" />
                             <Label Content="T.K."
                                    Margin="10,0,0,0"
                                    Grid.Column="2"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                            <TextBox Name="athleteTK" 
+                            <TextBox Name="NewAthleteTK" 
                                      Grid.Column="3"
-                                     VerticalAlignment="Center" TextChanged="athleteTK_TextChanged" />
+                                     VerticalAlignment="Center" 
+                                     TextChanged="NewAthleteTK_TextChanged" />
                         </Grid>
                         <Label Content="City"
                                Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbAthleteCityChooses"
+                        <ComboBox Name="cmbNewAthleteCityChooses"
                                   Grid.Row="11"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbACityChooses_SelectionChanged">
-                           
+                                  SelectionChanged="cmbNewACityChooses_SelectionChanged">
+
                         </ComboBox>
 
                         <Label Content="Country"
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbACountryChooses"
+                        <ComboBox Name="cmbNewACountryChooses"
                                   Grid.Row="12"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbACountryChooses_SelectionChanged">
-                           
+                                  SelectionChanged="cmbNewACountryChooses_SelectionChanged">
+
                         </ComboBox>
 
                         <Label Content="Rank"
                                Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbAthleteRankChooses"
+                        <ComboBox Name="cmbNewAthleteRankChooses"
                                   Grid.Row="13"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbARankChooses_SelectionChanged">
-                            
+                                  SelectionChanged="cmbNewARankChooses_SelectionChanged">
+
                         </ComboBox>
 
                         <Label Content="Club"
                                Grid.Row="14"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbAClubChooses"
+                        <ComboBox Name="cmbNewAClubChooses"
                                   Grid.Row="14"
                                   Grid.Column="2"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbAClubChooses_SelectionChanged">
+                                  SelectionChanged="cmbNewAClubChooses_SelectionChanged">
                         </ComboBox>
 
 
-                        <ListBox Name="aSuggestionList" Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top"  SelectionChanged="aSuggestionList_SelectionChanged" Visibility="Collapsed" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}"/>                       
-                    
+                        <ListBox Name="NewASuggestionList" 
+                                 Grid.Column="2" 
+                                 Grid.Row="1" 
+                                 Margin="0,25,0,0" 
+                                 Grid.RowSpan="4" 
+                                 VerticalAlignment="Top"  
+                                 SelectionChanged="NewASuggestionList_SelectionChanged" 
+                                 Visibility="Collapsed" 
+                                 DisplayMemberPath="name" 
+                                 SelectedValuePath="id" 
+                                 ItemsSource="{Binding}"/>
+
 
 
 
@@ -244,22 +266,16 @@
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Name="btnABack"
+                        <Button Name="btnNewABack"
                                 Content="Back"
-                                Grid.Column="1"
-                                Margin="10" Click="btnABack_Click" />
-                        <Button Name="btnASave"
-                                Content="Save"
                                 Grid.Column="2"
-                                Margin="10" Click="btnASave_Click" />
-                        <Button Name="btnASaveNew"
-                                Content="Save as new"
+                                Margin="10" 
+                                Click="btnNewABack_Click" />
+                        <Button Name="btnNewASave"
+                                Content="Save"
                                 Grid.Column="3"
-                                Margin="10" Click="btnASaveNew_Click" />
-                        <Button Name="btnADelete"
-                                Content="Delete"
-                                Grid.Column="4"
-                                Margin="10" Click="btnAthleteDelete_Click" />
+                                Margin="10" 
+                                Click="btnNewASave_Click"/>
 
 
 
@@ -267,145 +283,155 @@
                     </Grid>
 
                 </Grid>
-               
+
 
 
             </TabItem>
-            
-            
-            
-            <TabItem Name="judgeTap" Header="Judge management">
 
-                    
-                    <Grid>
+
+
+            <TabItem Name="EditAthleteTap" 
+                     Header="Edit Athlete">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid >
                         <Grid.RowDefinitions>
                             <RowDefinition/>
-                            <RowDefinition Height="50"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid >
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-
-                            <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
-                                <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="6*"/>
-                                <ColumnDefinition Width="*"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="*"/>
 
-                            </Grid.ColumnDefinitions>
+                        </Grid.ColumnDefinitions>
 
-                            <Label Content="First name"
+                        <Label Content="First name"
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <TextBox Name="judgeFirstName" 
+                        <TextBox Name="EditAthleteFirstName" 
                                Grid.Row="1"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="judgeFirstName_TextChanged"  />
-                            <Label Content="Last name"
+                               VerticalAlignment="Center" 
+                               TextChanged="EditAthleteFirstName_TextChanged"  />
+
+                        <Label Content="Last name"
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <TextBox Name="judgeLastName" 
+                        <TextBox Name="EditAthleteLastName" 
                                Grid.Row="2"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="judgeLastName_TextChanged" />
+                               VerticalAlignment="Center"
+                               TextChanged="EditAthleteLastName_TextChanged"/>
                         <Label Content="Fathers name"
                                Grid.Row="3"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="judgeFatherName" 
+                        <TextBox Name="EditAthleteFatherName" 
                                Grid.Row="3"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="judgeFatherName_TextChanged" />
+                               VerticalAlignment="Center" 
+                               TextChanged="EditAthleteFathersName_TextChanged"/>
+
                         <Label Content="Sex"
                                Grid.Row="4"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <Grid Grid.Column="2"
+                        <Grid Grid.Column="2"
                               Grid.Row="4">
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <RadioButton
-                                         Name="JrdButton1"
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton Name="EditArdButton1"
                                          Content="male" 
                                          Grid.Column="0"
                                          VerticalAlignment="Center"
-                                         Margin="5" Checked="JrdButton1_Checked" />
-                                <RadioButton 
-                                        Name="JrdButton2"     
-                                    Content="female" 
+                                         Margin="5" 
+                                         Checked="EditArdButton1_Checked" />
+                            <RadioButton Name="EditArdButton2"
+                                         Content="female" 
                                          Grid.Column="1"
                                          VerticalAlignment="Center"
-                                         Margin="5" Checked="JrdButton2_Checked" />
-                            </Grid>
+                                         Margin="5"
+                                         Checked="EditArdButton2_Checked" />
+                        </Grid>
 
                         <Label Content="Date of birth"
                                Grid.Column="1"
                                Grid.Row="5"
                                VerticalAlignment="Center"/>
-                        <DatePicker Name="judgeDateOfBirth" 
+                        <DatePicker Name="EditAthleteDateOfBirth" 
                                 Grid.Column="2"
                                 Grid.Row="5"
-                                    VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center" SelectedDateChanged="judgeDateOfBirth_SelectedDateChanged" />
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                SelectedDateChanged="EditAthleteDateOfBirth_SelectedDateChanged" />
 
                         <Label Content="Phone num."
                                Grid.Row="6"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <TextBox Name="judgeFirstPhone" 
+                        <TextBox Name="EditAthleteFirstPhone" 
                                Grid.Row="6"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="judgeFirstPhone_TextChanged" />
+                               VerticalAlignment="Center"
+                               TextChanged="EditAthleteFirstPhone_TextChanged" />
 
-                            <Label Content="Secondary phone num."
+                        <Label Content="Secondary phone num."
                                Grid.Row="7"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <TextBox Name="judgeSecondPhone" 
+                        <TextBox Name="EditAthleteSecondPhone" 
                                Grid.Row="7"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="judgeSecondPhone_TextChanged" />
+                               VerticalAlignment="Center"
+                               TextChanged="EditAthleteSecondPhone_TextChanged" />
                         <Label Content="Email"
                                Grid.Row="8"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        
-                            <TextBox Name="judgeEmail" 
+                        <TextBox Name="EditAthleteEmail" 
                                Grid.Row="8"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="judgeEmail_TextChanged" />
+                               VerticalAlignment="Center" 
+                               TextChanged="EditAthleteEmail_TextChanged" />
 
                         <Label Content="Address"
                                Grid.Row="9"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <Grid Grid.Column="2"
+                        <Grid Grid.Column="2"
                               Grid.Row="9">
-                                <TextBox Name="judgeStreetName"
-                                     VerticalAlignment="Center" TextChanged="judgeStreetName_TextChanged" />
-                            </Grid>
+                            <TextBox Name="EditAthleteStreetName"
+                                     Grid.Column="0" 
+                                     VerticalAlignment="Center" 
+                                     TextChanged="EditAthleteStreetName_TextChanged" />
+
+                        </Grid>
                         <Grid Grid.Column="2"
                               Grid.Row="10">
 
@@ -420,115 +446,655 @@
                                    Grid.Column="0"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                            <TextBox Name="judgeAddressNum" 
+                            <TextBox Name="EditAthleteAddressNum" 
                                      Grid.Column="1"
-                                         VerticalAlignment="Center" TextChanged="judgeAddressNum_TextChanged" />
+                                     VerticalAlignment="Center" 
+                                     TextChanged="EditAthleteAddressNum_TextChanged" />
                             <Label Content="T.K."
                                    Margin="10,0,0,0"
                                    Grid.Column="2"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                            <TextBox Name="judgeTK" 
+                            <TextBox Name="EditAthleteTK" 
                                      Grid.Column="3"
-                                     VerticalAlignment="Center" TextChanged="judgeTK_TextChanged" />
+                                     VerticalAlignment="Center" 
+                                     TextChanged="EditAthleteTK_TextChanged" />
                         </Grid>
                         <Label Content="City"
                                Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <ComboBox Name="cmbJCityChooses"
+                        <ComboBox Name="cmbEditAthleteCityChooses"
                                   Grid.Row="11"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbJCityChooses_SelectionChanged">
-                     
-                            </ComboBox>
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditACityChooses_SelectionChanged">
 
-                            <Label Content="Country"
+                        </ComboBox>
+
+                        <Label Content="Country"
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <ComboBox Name="cmbJCountryChooses"
+                        <ComboBox Name="cmbEditACountryChooses"
                                   Grid.Row="12"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbJCountryChooses_SelectionChanged">
-                              
-                            </ComboBox>
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditACountryChooses_SelectionChanged">
 
-                            <Label Content="Rank"
+                        </ComboBox>
+
+                        <Label Content="Rank"
                                Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <ComboBox Name="cmbJudgeRankChooses"
+                        <ComboBox Name="cmbEditAthleteRankChooses"
                                   Grid.Row="13"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbJRankChooses_SelectionChanged">
-                               
-                            </ComboBox>
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditARankChooses_SelectionChanged">
 
-                            <Label Content="Class"
+                        </ComboBox>
+
+                        <Label Content="Club"
                                Grid.Row="14"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <ComboBox Name="cmbJClassChooses"
+                        <ComboBox Name="cmbEditAClubChooses"
                                   Grid.Row="14"
                                   Grid.Column="2"
-                                  Margin="0,3,0,3" SelectionChanged="cmbJClassChooses_SelectionChanged">
-                               
-                            </ComboBox>
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditAClubChooses_SelectionChanged">
+                        </ComboBox>
 
-                        <ListBox Name="jSuggestionList" 
+
+                        <ListBox Name="EditASuggestionList" 
                                  Grid.Column="2" 
-                                 Grid.Row="2" 
-                                 Grid.RowSpan="3" 
+                                 Grid.Row="1" 
+                                 Margin="0,25,0,0" 
+                                 Grid.RowSpan="4" 
                                  VerticalAlignment="Top"  
-                                 SelectionChanged="jSuggestionList_SelectionChanged" 
-                                 Visibility="Collapsed" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}"/>
+                                 SelectionChanged="EditASuggestionList_SelectionChanged" 
+                                 Visibility="Collapsed" 
+                                 DisplayMemberPath="name" 
+                                 SelectedValuePath="id" 
+                                 ItemsSource="{Binding}"  />
+
+
 
 
 
 
                     </Grid>
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Name="btnJBack"
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="btnEditABack"
                                 Content="Back"
                                 Grid.Column="1"
-                                Margin="10" Click="btnJBack_Click" />
-                            <Button Name="btnJSave"
+                                Margin="10" 
+                                Click="btnEditABack_Click" />
+                        <Button Name="btnEditASave"
                                 Content="Save"
                                 Grid.Column="2"
-                                Margin="10" Click="btnJSave_Click" />
-                            <Button Name="btnJSaveNew"
-                                Content="Save as new"
-                                Grid.Column="3"
-                                Margin="10" Click="btnJSaveNew_Click" />
-                            <Button Name="btnJDelete"
+                                Margin="10" 
+                                Click="btnEditASave_Click"/>
+                        <Button Name="btnEditADelete"
                                 Content="Delete"
-                                Grid.Column="4"
-                                Margin="10" Click="btnJDelete_Click" />
+                                Grid.Column="3"
+                                Margin="10" 
+                                Click="btnEditADelete_Click"/>
 
 
-
-
-                        </Grid>
 
                     </Grid>
 
+                </Grid>
 
 
 
-                </TabItem>
-        
-        
+            </TabItem>
+
+            <TabItem Name="NewJudgeTap" 
+                     Header="New Judge">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+
+                        <Label Content="First name"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="newJudgeFirstName" 
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="newJudgeFirstName_TextChanged"  />
+                        <Label Content="Last name"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="newJudgeLastName" 
+                               Grid.Row="2"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="newJudgeLastName_TextChanged" />
+                        <Label Content="Fathers name"
+                               Grid.Row="3"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="newJudgeFatherName" 
+                               Grid.Row="3"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="newJudgeFatherName_TextChanged" />
+                        <Label Content="Sex"
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <Grid Grid.Column="2"
+                              Grid.Row="4">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <RadioButton
+                                         Name="newJrdButton1"
+                                         Content="male" 
+                                         Grid.Column="0"
+                                         VerticalAlignment="Center"
+                                         Margin="5" 
+                                         Checked="newJrdButton1_Checked" />
+                            <RadioButton 
+                                        Name="newJrdButton2"     
+                                        Content="female" 
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Margin="5" 
+                                        Checked="newJrdButton2_Checked" />
+                        </Grid>
+
+                        <Label Content="Date of birth"
+                               Grid.Column="1"
+                               Grid.Row="5"
+                               VerticalAlignment="Center"/>
+                        <DatePicker Name="newJudgeDateOfBirth" 
+                                Grid.Column="2"
+                                Grid.Row="5"
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center" 
+                                SelectedDateChanged="newJudgeDateOfBirth_SelectedDateChanged" />
+
+                        <Label Content="Phone num."
+                               Grid.Row="6"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="newJudgeFirstPhone" 
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="newJudgeFirstPhone_TextChanged" />
+
+                        <Label Content="Secondary phone num."
+                               Grid.Row="7"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="newJudgeSecondPhone" 
+                               Grid.Row="7"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="newJudgeSecondPhone_TextChanged" />
+                        <Label Content="Email"
+                               Grid.Row="8"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+
+                        <TextBox Name="newJudgeEmail" 
+                               Grid.Row="8"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="newJudgeEmail_TextChanged" />
+
+                        <Label Content="Address"
+                               Grid.Row="9"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <Grid Grid.Column="2"
+                              Grid.Row="9">
+                            <TextBox Name="newJudgeStreetName"
+                                     VerticalAlignment="Center"
+                                     TextChanged="newJudgeStreetName_TextChanged" />
+                        </Grid>
+                        <Grid Grid.Column="2"
+                              Grid.Row="10">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Num."
+                              
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="newJudgeAddressNum" 
+                                     Grid.Column="1"
+                                     VerticalAlignment="Center" 
+                                     TextChanged="newJudgeAddressNum_TextChanged" />
+                            <Label Content="T.K."
+                                   Margin="10,0,0,0"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="newJudgeTK" 
+                                     Grid.Column="3"
+                                     VerticalAlignment="Center" 
+                                     TextChanged="newJudgeTK_TextChanged" />
+                        </Grid>
+                        <Label Content="City"
+                               Grid.Row="11"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbNewJCityChooses"
+                                  Grid.Row="11"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbNewJCityChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <Label Content="Country"
+                               Grid.Row="12"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbNewJCountryChooses"
+                                  Grid.Row="12"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbNewJCountryChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <Label Content="Rank"
+                               Grid.Row="13"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbNewJudgeRankChooses"
+                                  Grid.Row="13"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbNewJRankChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <Label Content="Class"
+                               Grid.Row="14"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbNewJClassChooses"
+                                  Grid.Row="14"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbNewJClassChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <ListBox Name="newJSuggestionList" 
+                                 Grid.Column="2" 
+                                 Grid.Row="1" 
+                                 Grid.RowSpan="4" 
+                                 VerticalAlignment="Top"
+                                 Margin="0,25,0,0"
+                                 SelectionChanged="newJSuggestionList_SelectionChanged" 
+                                 Visibility="Collapsed" 
+                                 DisplayMemberPath="name" 
+                                 SelectedValuePath="id" 
+                                 ItemsSource="{Binding}"/>
+
+
+
+
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="btnNewJBack"
+                                Content="Back"
+                                Grid.Column="2"
+                                Margin="10" 
+                                Click="btnNewJBack_Click" />
+                        <Button Name="btnNewJSave"
+                                Content="Save"
+                                Grid.Column="3"
+                                Margin="10" Click="btnNewJSave_Click"/>
+
+
+
+
+                    </Grid>
+
+                </Grid>
+
+
+
+
+            </TabItem>
+
+
+            <TabItem Name="EditJudgeTap" 
+                     Header="Edit Judge">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+
+                        <Label Content="First name"
+                               Grid.Row="1"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="editJudgeFirstName" 
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editJudgeFirstName_TextChanged"  />
+                        <Label Content="Last name"
+                               Grid.Row="2"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="editJudgeLastName" 
+                               Grid.Row="2"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editJudgeLastName_TextChanged" />
+                        <Label Content="Fathers name"
+                               Grid.Row="3"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="editJudgeFatherName" 
+                               Grid.Row="3"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editJudgeFatherName_TextChanged" />
+                        <Label Content="Sex"
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <Grid Grid.Column="2"
+                              Grid.Row="4">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <RadioButton
+                                         Name="editJrdButton1"
+                                         Content="male" 
+                                         Grid.Column="0"
+                                         VerticalAlignment="Center"
+                                         Margin="5" 
+                                         Checked="editJrdButton1_Checked" />
+                            <RadioButton 
+                                        Name="editJrdButton2"     
+                                        Content="female" 
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Margin="5" 
+                                        Checked="editJrdButton2_Checked" />
+                        </Grid>
+
+                        <Label Content="Date of birth"
+                               Grid.Column="1"
+                               Grid.Row="5"
+                               VerticalAlignment="Center"/>
+                        <DatePicker Name="editJudgeDateOfBirth" 
+                                Grid.Column="2"
+                                Grid.Row="5"
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center" 
+                                SelectedDateChanged="editJudgeDateOfBirth_SelectedDateChanged" />
+
+                        <Label Content="Phone num."
+                               Grid.Row="6"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="editJudgeFirstPhone" 
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editJudgeFirstPhone_TextChanged" />
+
+                        <Label Content="Secondary phone num."
+                               Grid.Row="7"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <TextBox Name="editJudgeSecondPhone" 
+                               Grid.Row="7"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editJudgeSecondPhone_TextChanged" />
+                        <Label Content="Email"
+                               Grid.Row="8"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+
+                        <TextBox Name="editJudgeEmail" 
+                               Grid.Row="8"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editJudgeEmail_TextChanged" />
+
+                        <Label Content="Address"
+                               Grid.Row="9"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <Grid Grid.Column="2"
+                              Grid.Row="9">
+                            <TextBox Name="editJudgeStreetName"
+                                     VerticalAlignment="Center"
+                                     TextChanged="editJudgeStreetName_TextChanged" />
+                        </Grid>
+                        <Grid Grid.Column="2"
+                              Grid.Row="10">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Num."
+                              
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="editJudgeAddressNum" 
+                                     Grid.Column="1"
+                                     VerticalAlignment="Center" 
+                                     TextChanged="editJudgeAddressNum_TextChanged" />
+                            <Label Content="T.K."
+                                   Margin="10,0,0,0"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                            <TextBox Name="editJudgeTK" 
+                                     Grid.Column="3"
+                                     VerticalAlignment="Center" 
+                                     TextChanged="editJudgeTK_TextChanged" />
+                        </Grid>
+                        <Label Content="City"
+                               Grid.Row="11"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbEditJCityChooses"
+                                  Grid.Row="11"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditJCityChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <Label Content="Country"
+                               Grid.Row="12"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbEditJCountryChooses"
+                                  Grid.Row="12"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditJCountryChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <Label Content="Rank"
+                               Grid.Row="13"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbEditJudgeRankChooses"
+                                  Grid.Row="13"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditJRankChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <Label Content="Class"
+                               Grid.Row="14"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbEditJClassChooses"
+                                  Grid.Row="14"
+                                  Grid.Column="2"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditJClassChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <ListBox Name="editJSuggestionList" 
+                                 Grid.Column="2" 
+                                 Grid.Row="1" 
+                                 Grid.RowSpan="4" 
+                                 VerticalAlignment="Top"
+                                 Margin="0,25,0,0"
+                                 SelectionChanged="editJSuggestionList_SelectionChanged" 
+                                 Visibility="Collapsed" 
+                                 DisplayMemberPath="name" 
+                                 SelectedValuePath="id" 
+                                 ItemsSource="{Binding}"/>
+
+
+
+
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="3*"/>
+                            
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="btnEditJBack"
+                                Content="Back"
+                                Grid.Column="1"
+                                Margin="10" 
+                                Click="btnNewJBack_Click" />
+                        <Button Name="btnEditJSave"
+                                Content="Save"
+                                Grid.Column="2"
+                                Margin="10" Click="btnEditJSave_Click"/>
+                        <Button Name="btnEditJDelete"
+                                Content="Delete"
+                                Grid.Column="3"
+                                Margin="10" Click="btnEditJDelete_Click"/>
+
+
+
+                    </Grid>
+
+                </Grid>
+
+
+
+
+            </TabItem>
+
+
         </TabControl>
-       
+
     </Grid>
 </Window>
 

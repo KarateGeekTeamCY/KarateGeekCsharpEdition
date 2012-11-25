@@ -19,12 +19,12 @@
                HorizontalContentAlignment="Center"
                Width="Auto"/>
 
-        <TabControl Grid.Row="1">
+        <TabControl Name="eventManagemntTabs" Grid.Row="1">
 
 
 
-            <TabItem Name="eventTab" 
-                     Header="Event management">
+            <TabItem Name="newEventTab" 
+                     Header="New Event">
 
 
                 <Grid Name="upperAndLowerGrid">
@@ -34,7 +34,7 @@
                     </Grid.RowDefinitions>
                     <Grid Name="infogrid">
 
-                        <Grid Name="informationGrid">
+                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -58,73 +58,53 @@
                                        Grid.Row="1"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
-                            <TextBox Name="eventName"
+                            <TextBox Name="newEventName"
                                          Grid.Row="1"
                                          Grid.Column="2"
-                                    
-                                         Margin="0,3,0,3" TextChanged="eventName_TextChanged" />
+                                         Margin="0,3,0,3"
+                                         TextChanged="newEventName_TextChanged" />
 
                             <Label Content="Date" 
                                        Grid.Row="2"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
 
-                            <DatePicker Name="eventDate"
+                            <DatePicker Name="newEventDate"
                                             Grid.Row="2"
                                             Grid.Column="2"
-                                            Margin="0,3,0,3" SelectedDateChanged="eventDatePicker_SelectedDateChanged" />
+                                            Margin="0,3,0,3" 
+                                           SelectedDateChanged="newEventDatePicker_SelectedDateChanged" />
                             <Label Content="Location" 
                                        Grid.Row="3"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"
                                                             />
-                            <TextBox Name="eventLocation"
+                            <TextBox Name="newEventLocation"
                                          Grid.Row="3"
                                          Grid.Column="2"
-                                         
-                                         Margin="0,3,0,3" TextChanged="eventLocation_TextChanged" />
-                            <Label Content="City"
-                               Grid.Row="4"
-                               Grid.Column="3"
-                               VerticalAlignment="Center"
-                               Margin="15,0,0,0"    />
-                            <ComboBox Name="cmbECityChooses"
-                                            Grid.Row="4"
-                                            Grid.Column="4"
-                                            Margin="0,3,0,3" SelectionChanged="cmbECityChooses_SelectionChanged">
-                                <ComboBoxItem Name="Nicosia" 
-                                                  Content="Nicosia"
-                                                  IsSelected="True"/>
-                            </ComboBox>
-                            <Label Content="Country"
-                               Grid.Row="3"
-                               Grid.Column="3"
-                               VerticalAlignment="Center"
-                                   Margin="15,0,0,0"/>
-                            <ComboBox Name="cmbECountryChooses"
-                                            Grid.Row="3"
-                                            Grid.Column="4"
-                                            Margin="0,3,0,3" SelectionChanged="cmbECountryChooses_SelectionChanged">
-
-                            </ComboBox>
+                                         Margin="0,3,0,3" 
+                                         TextChanged="newEventLocation_TextChanged" />
+                            
                             <Label Content="Phone num."
                                Grid.Row="4"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <TextBox Name="eventPhone" 
+                            <TextBox Name="newEventPhone" 
                                Grid.Row="4"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="eventPhone_TextChanged" />
+                               VerticalAlignment="Center" 
+                               TextChanged="newEventPhone_TextChanged" />
 
 
                             <Label Content="Email"
                                Grid.Row="5"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                            <TextBox Name="eventEmail" 
+                            <TextBox Name="newEventEmail" 
                                Grid.Row="5"
                                Grid.Column="2"
-                               VerticalAlignment="Center" TextChanged="eventEmail_TextChanged" />
+                               VerticalAlignment="Center" 
+                               TextChanged="newEventEmail_TextChanged" />
 
                             <Label Content="Address"
                                Grid.Row="1"
@@ -134,8 +114,9 @@
                                Margin="15,0,0,0"/>
                             <Grid Grid.Column="4"
                               Grid.Row="1">
-                                <TextBox Name="eventAddress"
-                                     Grid.Column="0" VerticalAlignment="Center" TextChanged="eventAddress_TextChanged" />
+                                <TextBox Name="newEventAddress"
+                                     Grid.Column="0" VerticalAlignment="Center" 
+                                         TextChanged="newEventAddress_TextChanged" />
 
                             </Grid>
                             <Grid Grid.Column="4"
@@ -152,29 +133,58 @@
                                    Grid.Column="0"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                                <TextBox Name="eventAddressNum" 
-                                     Grid.Column="1"
-                                         VerticalAlignment="Center" TextChanged="eventAddressNum_TextChanged" />
+                                <TextBox Name="newEventAddressNum" 
+                                         Grid.Column="1"
+                                         VerticalAlignment="Center"
+                                         TextChanged="newEventAddressNum_TextChanged" />
                                 <Label Content="T.K."
                                    Margin="10,0,0,0"
                                    Grid.Column="2"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Left"/>
-                                <TextBox Name="eventPCode" 
+                                <TextBox Name="newEventPCode" 
                                      Grid.Column="3"
-                                     VerticalAlignment="Center" TextChanged="eventPCode_TextChanged" />
+                                     VerticalAlignment="Center" TextChanged="newEventPCode_TextChanged" />
                             </Grid>
+                            <Label Content="City"
+                               Grid.Row="4"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                               Margin="15,0,0,0"    />
+                            <ComboBox Name="cmbNewECityChooses"
+                                            Grid.Row="4"
+                                            Grid.Column="4"
+                                            Margin="0,3,0,3" 
+                                           SelectionChanged="cmbNewECityChooses_SelectionChanged">
+                                <ComboBoxItem
+                                                  Content="Nicosia"
+                                                  IsSelected="True"/>
+                            </ComboBox>
+                            <Label Content="Country"
+                               Grid.Row="3"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                                   Margin="15,0,0,0"/>
+                            <ComboBox Name="cmbNewECountryChooses"
+                                            Grid.Row="3"
+                                            Grid.Column="4"
+                                            Margin="0,3,0,3" 
+                                           SelectionChanged="cmbNewECountryChooses_SelectionChanged">
+
+                            </ComboBox>
                             <Label Content="Official"
                                Grid.Row="5"
                                Grid.Column="3"
                                VerticalAlignment="Center"
                                Margin="15,0,0,0"    />
-                            <CheckBox Name="eventOfficial"
+                            <CheckBox Name="newEventOfficial"
                                       Grid.Row="5"
                                       Grid.Column="4"
-                                      VerticalAlignment="Center" IsChecked="True" Checked="eventOfficial_Checked" Unchecked="eventOfficial_Checked"/>
-                            <ListBox Name="eSuggestionList" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Top" Margin="0,25,0,0" Visibility="Collapsed" SelectionChanged="eSuggestionList_SelectionChanged" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}" />
-                        </Grid>
+                                      VerticalAlignment="Center" 
+                                      IsChecked="True" 
+                                      Checked="newEventOfficial_Checked" 
+                                      Unchecked="newEventOfficial_Checked"/>
+                            </Grid>
 
 
 
@@ -201,26 +211,18 @@
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnEBack"
+                            <Button Name="btnNewEBack"
                                         Content="Back"
-                                        Grid.Column="1"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnEBack_Click" />
-                            <Button Name="btnESave"
-                                        Content="Save"
                                         Grid.Column="2"
                                         Margin="5"
-                                        VerticalAlignment="Center" Click="btnESave_Click" />
-                            <Button Name="btnESaveNew"
-                                        Content="Save as new"
+                                        VerticalAlignment="Center" 
+                                        Click="btnNewEBack_Click" />
+                            <Button Name="btnNewESave"
+                                        Content="Save"
                                         Grid.Column="3"
                                         Margin="5"
-                                        VerticalAlignment="Center" Click="btnESaveNew_Click" />
-                            <Button Name="btnEDelete"
-                                        Content="Delete"
-                                        Grid.Column="4"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnEDelete_Click" />
+                                        VerticalAlignment="Center" 
+                                        Click="btnNewESave_Click" />
                         </Grid>
 
                     </Grid>
@@ -229,7 +231,234 @@
 
             </TabItem>
 
-            <TabItem Name="tournamentTap" Header="Tournament management">
+
+            <TabItem Name="editEventTab" 
+                     Header="Edit Event">
+
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="Name" 
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"/>
+                            <TextBox Name="editEventName"
+                                         Grid.Row="1"
+                                         Grid.Column="2"
+                                         Margin="0,3,0,3" 
+                                         TextChanged="editEventName_TextChanged" />
+
+                            <Label Content="Date" 
+                                       Grid.Row="2"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"/>
+
+                            <DatePicker Name="editEventDate"
+                                            Grid.Row="2"
+                                            Grid.Column="2"
+                                            Margin="0,3,0,3" 
+                                            SelectedDateChanged="editEventDatePicker_SelectedDateChanged" />
+                            <Label Content="Location" 
+                                       Grid.Row="3"
+                                       Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                                            />
+                            <TextBox Name="editEventLocation"
+                                         Grid.Row="3"
+                                         Grid.Column="2"
+                                         Margin="0,3,0,3" 
+                                         TextChanged="editEventLocation_TextChanged" />
+                            <Label Content="City"
+                               Grid.Row="4"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                               Margin="15,0,0,0"    />
+                            <ComboBox Name="cmbEditECityChooses"
+                                            Grid.Row="4"
+                                            Grid.Column="4"
+                                            Margin="0,3,0,3" 
+                                            SelectionChanged="cmbEditECityChooses_SelectionChanged">
+                                <ComboBoxItem 
+                                                  Content="Nicosia"
+                                                  IsSelected="True"/>
+                            </ComboBox>
+                            <Label Content="Country"
+                               Grid.Row="3"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                                   Margin="15,0,0,0"/>
+                            <ComboBox Name="cmbEditECountryChooses"
+                                            Grid.Row="3"
+                                            Grid.Column="4"
+                                            Margin="0,3,0,3" 
+                                            SelectionChanged="cmbEditECountryChooses_SelectionChanged">
+
+                            </ComboBox>
+                            <Label Content="Phone num."
+                               Grid.Row="4"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <TextBox Name="editEventPhone" 
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editEventPhone_TextChanged" />
+
+
+                            <Label Content="Email"
+                               Grid.Row="5"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                            <TextBox Name="editEventEmail" 
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               VerticalAlignment="Center" 
+                               TextChanged="editEventEmail_TextChanged" />
+
+                            <Label Content="Address"
+                               Grid.Row="1"
+                               Grid.Column="3"
+                               
+                               VerticalAlignment="Center"
+                               Margin="15,0,0,0"/>
+                            <Grid Grid.Column="4"
+                              Grid.Row="1">
+                                <TextBox Name="editEventAddress"
+                                        Grid.Column="0" 
+                                         VerticalAlignment="Center" 
+                                         TextChanged="editEventAddress_TextChanged" />
+
+                            </Grid>
+                            <Grid Grid.Column="4"
+                              Grid.Row="2">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Num."
+                              
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                                <TextBox Name="editEventAddressNum" 
+                                     Grid.Column="1"
+                                         VerticalAlignment="Center" 
+                                         TextChanged="editEventAddressNum_TextChanged" />
+                                <Label Content="T.K."
+                                   Margin="10,0,0,0"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"/>
+                                <TextBox Name="editEventPCode" 
+                                     Grid.Column="3"
+                                     VerticalAlignment="Center" 
+                                         TextChanged="editEventPCode_TextChanged" />
+                            </Grid>
+                            <Label Content="Official"
+                               Grid.Row="5"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                               Margin="15,0,0,0"    />
+                            <CheckBox Name="editEventOfficial"
+                                      Grid.Row="5"
+                                      Grid.Column="4"
+                                      VerticalAlignment="Center" 
+                                      IsChecked="True" 
+                                      Checked="editEventOfficial_Checked" 
+                                      Unchecked="editEventOfficial_Checked"/>
+                            <ListBox Name="editESuggestionList" 
+                                     Grid.Column="2" 
+                                     Grid.Row="1" 
+                                     Grid.RowSpan="3" 
+                                     VerticalAlignment="Top" 
+                                     Margin="0,25,0,0" 
+                                     Visibility="Collapsed" 
+                                     SelectionChanged="editESuggestionList_SelectionChanged" 
+                                     DisplayMemberPath="name" 
+                                     SelectedValuePath="id" 
+                                     ItemsSource="{Binding}" />
+                        </Grid>
+
+
+
+
+
+                    </Grid>
+
+
+                    <Grid  Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <TextBox 
+                                 BorderThickness="1"
+                                 />
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Name="btnEditEBack"
+                                        Content="Back"
+                                        Grid.Column="1"
+                                        Margin="5"
+                                        VerticalAlignment="Center" 
+                                        Click="btnEditEBack_Click" />
+                            <Button Name="btnEditESave"
+                                        Content="Save"
+                                        Grid.Column="2"
+                                        Margin="5"
+                                        VerticalAlignment="Center"
+                                        Click="btnEditESave_Click" />
+                           
+                            <Button Name="btnEditEDelete"
+                                        Content="Delete"
+                                        Grid.Column="3"
+                                        Margin="5"
+                                        VerticalAlignment="Center" Click="btnEditEDelete_Click" />
+                        </Grid>
+
+                    </Grid>
+
+                </Grid>
+
+            </TabItem>
+
+
+            <TabItem Name="editTournamentTap" Header="Edit Tournament">
 
 
                 <Grid>
@@ -238,7 +467,7 @@
                         <RowDefinition Height="3*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Name="upper">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition/>
@@ -257,17 +486,20 @@
                                 <Label Content="Event"
                                        VerticalAlignment="Center"
                                        Margin="5"/>
-                                <ComboBox Name="cmbTEventChooser"
+                                <ComboBox Name="cmbEditTEventChooser"
                                           Grid.Column="1"
                                           Margin="5"
-                                          VerticalAlignment="Center" SelectionChanged="cmbTEventChooser_SelectionChanged" />
+                                          VerticalAlignment="Center" 
+                                          SelectionChanged="cmbEditTEventChooser_SelectionChanged" />
                             </Grid>
                             
                             
-                            <TextBox Name="eventInfo"
+                            <TextBox Name="editEventInfo"
                                      Grid.Row="1" 
                                      Height="Auto"
-                                     Margin="5" IsEnabled="True" IsReadOnly="True" />
+                                     Margin="5" 
+                                     IsEnabled="True" 
+                                     IsReadOnly="True" />
                             
                         </Grid>
                         <Grid Grid.Column="1">
@@ -295,12 +527,13 @@
                                        Grid.Row="0"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
-                                <TextBox Name="tbTName"
+                                <TextBox Name="tbEditTName"
                                          Grid.Row="0"
                                          Grid.Column="2"
                                          Margin="0,5,0,5"
                                          VerticalAlignment="Center"
-                                         Grid.ColumnSpan="2" TextChanged="tbTName_TextChanged" />
+                                         Grid.ColumnSpan="2" 
+                                         TextChanged="tbEditTName_TextChanged" />
 
                                 <Label Content="Sex"
                                        Grid.Column="1"
@@ -311,20 +544,22 @@
                                             Grid.ColumnSpan="2"
                                             Orientation="Horizontal"
                                            >
-                                    <RadioButton Name="TrdButtonMale"
+                                    <RadioButton Name="EditTrdButtonMale"
                                              Content="Male"
                                              Width="90"
                                              Grid.Row="1"
                                              VerticalAlignment="Center"
                                                 
-                                             Margin="5" Checked="TrdButtonMale_Checked" />
-                                    <RadioButton Name="TrdButtonFemale"
+                                             Margin="5" 
+                                             Checked="EditTrdButtonMale_Checked" />
+                                    <RadioButton Name="EditTrdButtonFemale"
                                              Content="Female"
                                              
                                              Grid.Row="1"
                                              VerticalAlignment="Center"
                                              Width="90"
-                                             Margin="5" Checked="TrdButtonFemale_Checked" />
+                                             Margin="5" 
+                                             Checked="EditTrdButtonFemale_Checked" />
 
                                 </StackPanel>
                                    
@@ -333,21 +568,24 @@
                                        Grid.Row="2"
                                        VerticalAlignment="Center"/>
 
-                                <ComboBox Name="cmbTAgeFrom"
+                                <ComboBox Name="cmbEditTAgeFrom"
                                           
                                            Grid.Column="2"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"
-                                       Margin="5,0,5,0" SelectionChanged="cmbTAgeFrom_SelectionChanged" MaxDropDownHeight="128">
+                                       Margin="5,0,5,0" 
+                                       SelectionChanged="cmbEditTAgeFrom_SelectionChanged" 
+                                       MaxDropDownHeight="128">
                                    
                                 </ComboBox>
 
-                                <ComboBox Name="cmbTAgeTo"
-                                          
+                                <ComboBox Name="cmbEditTAgeTo"
                                            Grid.Column="3"
-                                       Grid.Row="2"
-                                       VerticalAlignment="Center"
-                                       Margin="5,0,5,0" SelectionChanged="cmbTAgeTo_SelectionChanged" MaxDropDownHeight="128">
+                                            Grid.Row="2"
+                                            VerticalAlignment="Center"
+                                            Margin="5,0,5,0" 
+                                            SelectionChanged="cmbEditTAgeTo_SelectionChanged" 
+                                            MaxDropDownHeight="128">
                                     
                                 </ComboBox>
 
@@ -360,21 +598,23 @@
                                        Grid.Row="3"
                                        VerticalAlignment="Center"/>
 
-                                <ComboBox Name="cmbTLevelFrom"
-                                          
+                                <ComboBox Name="cmbEditTLevelFrom"
                                            Grid.Column="2"
-                                       Grid.Row="3"
-                                       VerticalAlignment="Center"
-                                       Margin="5,0,5,0" SelectionChanged="cmbTLevelFrom_SelectionChanged" MaxDropDownHeight="128">
+                                            Grid.Row="3"
+                                            VerticalAlignment="Center"
+                                            Margin="5,0,5,0" 
+                                          SelectionChanged="cmbEditTLevelFrom_SelectionChanged" 
+                                          MaxDropDownHeight="128">
                                     
                                 </ComboBox>
 
-                                <ComboBox Name="cmbTLevelTo"
-                                          
+                                <ComboBox Name="cmbEditTLevelTo"
                                            Grid.Column="3"
-                                       Grid.Row="3"
-                                       VerticalAlignment="Center"
-                                       Margin="5,0,5,0" SelectionChanged="cmbTLevelTo_SelectionChanged" MaxDropDownHeight="128">
+                                           Grid.Row="3"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0,5,0" 
+                                           SelectionChanged="cmbEditTLevelTo_SelectionChanged" 
+                                           MaxDropDownHeight="128">
                                     
                                 </ComboBox>
 
@@ -391,25 +631,27 @@
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <RadioButton Name="TrdButtonIndiv"
+                                    <RadioButton Name="EditTrdButtonIndiv"
                                     Content="Individual"
                                              Grid.Column="0"
                                              Grid.Row="4"
                                              VerticalAlignment="Center"
                                              Margin="5" 
-                                             Checked="TrdButtonIndiv_Checked" />
-                                    <RadioButton Name="TrdButtonTeam"
+                                             Checked="EditTrdButtonIndiv_Checked" />
+                                    <RadioButton Name="EditTrdButtonTeam"
                                     Content="Team"
                                              Grid.Column="1"
                                              Grid.Row="4"
                                              VerticalAlignment="Center"
-                                             Margin="5" Checked="TrdButtonTeam_Checked" />
-                                    <RadioButton Name="TrdButtonSync"
+                                             Margin="5" 
+                                             Checked="EditTrdButtonTeam_Checked" />
+                                    <RadioButton Name="EditTrdButtonSync"
                                     Content="Sync"
                                              Grid.Column="2"
                                              Grid.Row="4"
                                              VerticalAlignment="Center"
-                                             Margin="5" Checked="TrdButtonSync_Checked" />
+                                             Margin="5" 
+                                             Checked="EditTrdButtonSync_Checked" />
                                 </Grid>
                                    
                                 <Label 
@@ -418,25 +660,38 @@
                                        Grid.Row="5"
                                        VerticalAlignment="Center"/>
 
-                                <ComboBox Name="cmbTGame"
+                                <ComboBox Name="cmbEditTGame"
                                            Grid.Column="2"
-                                       Grid.Row="5"
-                                       VerticalAlignment="Center"
-                                       Margin="5,0,5,0"
-                                          Grid.ColumnSpan="2" SelectionChanged="cmbTGame_SelectionChanged" />
+                                           Grid.Row="5"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0,5,0"
+                                           Grid.ColumnSpan="2" 
+                                           SelectionChanged="cmbEditTGame_SelectionChanged" />
                                 <Label 
                                     Content="Scoring system"
                                        Grid.Column="1"
                                        Grid.Row="6"
                                        VerticalAlignment="Center"/>
 
-                                <ComboBox Name="cmbTJudging"
+                                <ComboBox Name="cmbEditTJudging"
                                        Grid.Column="2"
                                        Grid.Row="6"
                                        VerticalAlignment="Center"
                                        Margin="5,0,5,0"
-                                       Grid.ColumnSpan="2" SelectionChanged="cmbTJudging_SelectionChanged" />
-                                <ListBox Name="tSuggestionList" Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0,26,0,0" Visibility="Collapsed" SelectionChanged="tSuggestionList_SelectionChanged" DisplayMemberPath="name" SelectedValuePath="id" ItemsSource="{Binding}"/>
+                                       Grid.ColumnSpan="2" 
+                                       SelectionChanged="cmbEditTJudging_SelectionChanged" />
+                                <ListBox Name="editTSuggestionList" 
+                                         Grid.Column="2" 
+                                         Grid.Row="0" 
+                                         Grid.RowSpan="3" 
+                                         Grid.ColumnSpan="2" 
+                                         VerticalAlignment="Top" 
+                                         Margin="0,26,0,0" 
+                                         Visibility="Collapsed" 
+                                         SelectionChanged="editTSuggestionList_SelectionChanged" 
+                                         DisplayMemberPath="name" 
+                                         SelectedValuePath="id" 
+                                         ItemsSource="{Binding}"/>
                                 
                             </Grid>
                             
@@ -475,11 +730,15 @@
                                        HorizontalAlignment="Center"
                                        Grid.Row="0"
                                        Grid.Column="1" Background="#FFDEDEDE" />
-                                <ListBox Name="lbTparticipants"
+                            <ListBox Name="lbEditTparticipants"
                                          Grid.Row="1"
                                          Grid.Column="1" 
                                          Margin="0,0,5,0"
-                                         IsEnabled="True"  DisplayMemberPath="athlete_name" SelectedValuePath="id" ItemsSource="{Binding}"  SelectionMode="Multiple"  />
+                                         IsEnabled="True"  
+                                         DisplayMemberPath="athlete_name" 
+                                         SelectedValuePath="id" 
+                                         ItemsSource="{Binding}"  
+                                         SelectionMode="Multiple"  />
                                 <Label Name="AddParticipant"
                                        Grid.Row="0"
                                        Grid.Column="3"
@@ -497,22 +756,27 @@
                                     <RowDefinition Height="2*"/>
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Button Name="btaddParticipant"
+                                <Button Name="bteditAddParticipant"
                                         Grid.Row="1"
                                         Content=">>"
                                         VerticalAlignment="Bottom"
                                         Margin="0,0,0,5"
-                                        HorizontalAlignment="Center" Click="btaddParticipant_Click" />
-                                <Button Name="btdeleteParticipant"
+                                        HorizontalAlignment="Center" 
+                                        Click="bteditAddParticipant_Click" />
+                                <Button Name="bteditDeleteParticipant"
                                         Grid.Row="2"
                                         Content=">>"
                                         VerticalAlignment="Top"
                                         Margin="0,5,0,0"
-                                        HorizontalAlignment="Center" Click="btdeleteParticipant_Click" />
+                                        HorizontalAlignment="Center" 
+                                        Click="bteditDeleteParticipant_Click" />
 
                             </Grid>
                             
-                            <Grid Grid.Row="1" Grid.Column="3"  Name="teamGrid" Margin="5,0,0,0" Visibility="Hidden">
+                            <Grid Grid.Row="1" Grid.Column="3"  
+                                  Name="editTeamGrid" 
+                                  Margin="5,0,0,0" 
+                                  Visibility="Hidden">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="6*"/>
@@ -521,27 +785,39 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
-                                <ComboBox Name="cmbTteamsNumber"
+                                <ComboBox Name="cmbEditTteamsNumber"
                                           Grid.Column="0"
                                           VerticalAlignment="Center"
-                                          Margin="5,0,5,0" SelectionChanged="cmbTteamsNumber_SelectionChanged" />
-                                <ComboBox Name="cmbTteamSelection"
+                                          Margin="5,0,5,0" 
+                                          SelectionChanged="cmbEditTteamsNumber_SelectionChanged" />
+                                <ComboBox Name="cmbEditTteamSelection"
                                           Grid.Column="1"
                                           VerticalAlignment="Center"
-                                          Margin="5,0,2,0" SelectionChanged="cmbTteamSelection_SelectionChanged" />
-                                <ListBox Name="lbTTeams"
+                                          Margin="5,0,2,0" 
+                                          SelectionChanged="cmbEditTteamSelection_SelectionChanged" />
+                                <ListBox Name="lbEditTTeams"
                                          Grid.Row="1"
                                          Grid.ColumnSpan="2"
-                                         Margin="5,5,2,0" IsEnabled="True"  DisplayMemberPath="athlete_name" SelectedValuePath="id" ItemsSource="{Binding}" SelectionMode="Multiple"/>
+                                         Margin="5,5,2,0" 
+                                         IsEnabled="True"  
+                                         DisplayMemberPath="athlete_name" 
+                                         SelectedValuePath="id" 
+                                         ItemsSource="{Binding}" 
+                                         SelectionMode="Multiple"/>
                                 
                             </Grid>
                             
-                            <Grid Grid.Row="1" Grid.Column="3" Name="individualGrid" Margin="5,0,0,0" Visibility="Visible">
+                            <Grid Grid.Row="1" Grid.Column="3" 
+                                  Name="editIndividualGrid" Margin="5,0,0,0" Visibility="Visible">
 
-                                <ListBox Name="lbTSelectedParticipants"
+                                <ListBox Name="lbEditTSelectedParticipants"
                                          Grid.Row="1"
                                          Margin="5,0,0,0" 
-                                          IsEnabled="True"  DisplayMemberPath="athlete_name" SelectedValuePath="id" ItemsSource="{Binding}" SelectionMode="Multiple"/>
+                                          IsEnabled="True"  
+                                         DisplayMemberPath="athlete_name" 
+                                         SelectedValuePath="id" 
+                                         ItemsSource="{Binding}" 
+                                         SelectionMode="Multiple"/>
                             </Grid>
 
 
@@ -556,28 +832,18 @@
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Name="btnTBack"
+                            <Button Name="btnEditTBack"
                                         Content="Back"
                                         Grid.Column="1"
                                         Margin="5"
-                                        VerticalAlignment="Center" Click="btnTBack_Click" />
-                            <Button Name="btnTSave"
+                                        VerticalAlignment="Center" 
+                                        Click="btnEditTBack_Click" />
+                            <Button Name="btnEditTSave"
                                         Content="Save"
                                         Grid.Column="2"
                                         Margin="5"
-                                        VerticalAlignment="Center" Click="btnTSave_Click" />
-                            <Button Name="btnTSaveNew"
-                                        Content="Save as new"
-                                        Grid.Column="3"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnTSaveNew_Click" />
-                            <Button Name="btnTDelete"
-                                        Content="Delete"
-                                        Grid.Column="4"
-                                        Margin="5"
-                                        VerticalAlignment="Center" Click="btnTDelete_Click" />
-
-
+                                        VerticalAlignment="Center" 
+                                        Click="btnEditTSave_Click" />
                         </Grid>
 
                     </Grid>

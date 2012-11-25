@@ -18,7 +18,6 @@ namespace KarateGeek.databaseConnection
            string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
            string rank, string localClubId)
         {
-            DataTable dt;
             string addressId = null;
             string athleteId = null;
             bool athleteInsertion = false;
@@ -31,23 +30,13 @@ namespace KarateGeek.databaseConnection
                 _InsertAthlete(athleteId, rank, localClubId);
 
                 athleteInsertion = true;
-
             }
-            else if (personId >= 0)
+            else
             {
-                string sql = "select id from persons natural join athletes where id = " + personId + ";";
-                dt = this.Query(sql).Tables[0];
-                if (dt.Rows.Count == 0)
-                {
-                    _InsertAthlete(personId.ToString(), rank, localClubId);
-                    athleteInsertion = true;
-                }
-                else
-                {
-                    athleteInsertion = false;
-                }
-                
+                _InsertAthlete(personId.ToString(), rank, localClubId);
+                athleteInsertion = true;
             }
+
             return athleteInsertion;
         }
 

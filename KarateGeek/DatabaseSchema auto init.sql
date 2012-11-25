@@ -91,7 +91,7 @@ CREATE TABLE addresses (
 
 
 CREATE TABLE locations (
-    id              INTEGER         REFERENCES addresses(id),
+    id              INTEGER         REFERENCES addresses(id) on delete cascade,
     name            VARCHAR(80),
     phone           CHAR(15),       -- E.164 standard
     email           VARCHAR(50),
