@@ -2384,74 +2384,76 @@ namespace KarateGeek.guis
                         switch (this._indexCurrentphase)
                         {
                             case 1:
-
+                                positionIndex = 0;
                                 foreach (Team kataTeam in winners)
                                 {
-                                    positionIndex = 0;
-                                    foreach (Athlete ath in kataTeam.participants)
-                                    {
-                                        if (positionIndex < 4)
-                                            tournament.games2.ElementAt(positionIndex).AddParticipant(ath.id);
-                                        positionIndex++;
-                                    }
 
+                                    if (positionIndex < 4)
+                                        foreach (Athlete ath in kataTeam.participants)
+                                        {
+                                            tournament.games2.ElementAt(positionIndex).AddParticipant(ath.id);
+                                        }
+                                    positionIndex++;
                                 }
 
                                 break;
                             case 2:
 
+                               positionIndex = 0;
                                 foreach (Team kataTeam in winners)
                                 {
-                                    positionIndex = 0;
-                                    foreach (Athlete ath in kataTeam.participants)
-                                    {
-                                        if (positionIndex < 8)
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(ath.id);
-                                        positionIndex++;
-                                    }
-                                }
 
+                                    if (positionIndex < 8)
+                                        foreach (Athlete ath in kataTeam.participants)
+                                        {
+                                            tournament.games4.ElementAt(positionIndex).AddParticipant(ath.id);
+                                        }
+                                    positionIndex++;
+                                }
 
                                 break;
                             case 3:
 
+                                positionIndex = 0;
                                 foreach (Team kataTeam in winners)
                                 {
-                                    positionIndex = 0;
-                                    foreach (Athlete ath in kataTeam.participants)
-                                    {
-                                        if (positionIndex < 16)
+
+                                    if (positionIndex < 16)
+                                        foreach (Athlete ath in kataTeam.participants)
+                                        {
                                             tournament.games8.ElementAt(positionIndex).AddParticipant(ath.id);
-                                        positionIndex++;
-                                    }
+                                        }
+                                    positionIndex++;
                                 }
 
                                 break;
                             case 4:
 
+                                positionIndex = 0;
                                 foreach (Team kataTeam in winners)
                                 {
-                                    positionIndex = 0;
-                                    foreach (Athlete ath in kataTeam.participants)
-                                    {
-                                        if (positionIndex < 32)
+
+                                    if (positionIndex < 32)
+                                        foreach (Athlete ath in kataTeam.participants)
+                                        {
                                             tournament.games16.ElementAt(positionIndex).AddParticipant(ath.id);
-                                        positionIndex++;
-                                    }
+                                        }
+                                    positionIndex++;
                                 }
 
                                 break;
                             case 5:
 
+                                positionIndex = 0;
                                 foreach (Team kataTeam in winners)
                                 {
-                                    positionIndex = 0;
-                                    foreach (Athlete ath in kataTeam.participants)
-                                    {
-                                        if (positionIndex < 64)
+
+                                    if (positionIndex < 64)
+                                        foreach (Athlete ath in kataTeam.participants)
+                                        {
                                             tournament.games32.ElementAt(positionIndex).AddParticipant(ath.id);
-                                        positionIndex++;
-                                    }
+                                        }
+                                    positionIndex++;
                                 }
 
                                 break;
