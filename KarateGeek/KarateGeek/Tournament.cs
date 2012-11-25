@@ -52,17 +52,17 @@ namespace KarateGeek
         {
             sql = "SELECT * FROM tournaments WHERE id = '" + this.id + "';";
             DataTable temp = Query(sql).Tables[0];
-            this.name = (string)temp.Rows[0][1];
-            this.sex = (string)temp.Rows[0][2];
+            this.name = (string)temp.Rows[0][1].ToString();
+            this.sex = (string)temp.Rows[0][2].ToString();
             this.ageFrom = (int)temp.Rows[0][3];
             this.ageTo = (int)temp.Rows[0][4];
-            this.rankFrom = (string)temp.Rows[0][5];
-            this.rankTo = (string)temp.Rows[0][6];
-            this.gameType = (string)temp.Rows[0][7];
-            this.judgingType = (string)temp.Rows[0][8];
+            this.rankFrom = (string)temp.Rows[0][5].ToString();
+            this.rankTo = (string)temp.Rows[0][6].ToString();
+            this.gameType = (string)temp.Rows[0][7].ToString();
+            this.judgingType = (string)temp.Rows[0][8].ToString();
             this.eventId = (string)temp.Rows[0][9].ToString();
 
-            switch ((string)this.gameType.Split('|')[0])
+            switch ((string)this.gameType.Split('|')[0].ToString())
             {
                 case Strings.individual:
                     this.isInd = true;
@@ -86,7 +86,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games128.Add(new Game((string)dr[0]));
+                this.games128.Add(new Game((string)dr[0].ToString()));
             }
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 6 ORDER BY position ASC;";
@@ -97,7 +97,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games64.Add(new Game((string)dr[0]));
+                this.games64.Add(new Game((string)dr[0].ToString()));
             }
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 5 ORDER BY position ASC;";
@@ -108,7 +108,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games32.Add(new Game((string)dr[0]));
+                this.games32.Add(new Game((string)dr[0].ToString()));
             }
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 4 ORDER BY position ASC;";
@@ -119,7 +119,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games16.Add(new Game((string)dr[0]));
+                this.games16.Add(new Game((string)dr[0].ToString()));
             }
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 3 ORDER BY position ASC;";
@@ -130,7 +130,7 @@ namespace KarateGeek
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.games8.Add(new Game((string)dr[0]));
+                this.games8.Add(new Game((string)dr[0].ToString()));
             }
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 2 ORDER BY position ASC;";
@@ -169,10 +169,12 @@ namespace KarateGeek
 
             sql = "SELECT * FROM team_tournament_participations where tournament_id = '" + this.id + "';";
             temp = this.Query(sql).Tables[0];
+            this.teams = new List<Team>();
+
 
             foreach (DataRow dr in temp.Rows)
             {
-                this.teams.Add(new Team((string)dr[0]));
+                this.teams.Add(new Team(dr[0].ToString()));
             }
 
             #endregion load participants and teams if exist

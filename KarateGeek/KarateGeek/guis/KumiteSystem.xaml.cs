@@ -340,42 +340,40 @@ namespace KarateGeek.guis
 
         private void listBoxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
             this.toReplaceIndex = this.listBoxHistory.SelectedIndex;
 
             if (toReplaceIndex != -1)
             {
-
-
-
-                string result = MessageBox.Show("Do you want to delete this record? If the answer is NO then press No to replace the record or Cancel to continue normally", "Important.",
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Question).ToString();
-
-
-
                 this.toReplacePoint = this._pointsHistory.ElementAt(toReplaceIndex);
 
-                if (result == "Yes")
-                {
-                    this._pointsHistory.Remove(toReplacePoint);
-                    this.updateHistory();
-                }
-
-                if (result == "No")
-                {
-                    this.replaceFlag = true;
-                }
+                Window ync = new YesNoCancelReplacement(this, title: "", content: "Please choose an action:");
+                ync.Activate();
+                ync.Show();
             }
         }
 
+
+        public void yncListener(string ans)
+        {
+            switch (ans) {
+                case "delete":
+                                    this._pointsHistory.Remove(toReplacePoint);
+                                    this.updateHistory();
+                                    break;
+                case "change":
+                                    this.replaceFlag = true;
+                                    break;
+                case "cancel":
+                default:            break;
+            }
+        }
 
 
         #region management buttons
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+
 
         }
 
@@ -436,12 +434,22 @@ namespace KarateGeek.guis
 
                 }
             }
+
+
+            this.game.isFinished = true;
+
+
+            this.sender.tournament.load();
+            this.sender.advanceAthlites();
+            this.sender.tournament.load();
+
             this.sender.loadGames();
             this.Close();
         }
 
         #endregion
 
+       
     }
 
 

@@ -341,9 +341,10 @@ namespace KarateGeek.lottery
                 foreach (var ath in athleteScoreList) {
                     long teamId = conn.getTeamOfAthlete(tournamentId, ath.Item1);
                     Tuple<long, int> old;
+
                     try {
                         old = L.First(t => t.Item1 == teamId);
-                    }catch (Exception e){
+                    } catch (InvalidOperationException e) {
                         old = null;
                     }
 

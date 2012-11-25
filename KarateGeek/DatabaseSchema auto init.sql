@@ -54,10 +54,13 @@
 -- begin transaction:
 BEGIN;
 
-DROP SCHEMA IF EXISTS public CASCADE;      -- WARNING: This also deletes all tables!
+DROP SCHEMA IF EXISTS public CASCADE;       -- WARNING: This also deletes all tables!
 
 CREATE SCHEMA public;
 
+SET search_path TO public;                  -- "public" is the default schema anyway
+SET DateStyle TO European;                  -- "European" is a synonym for the "DMY" format...
+-- DateStyle needs to be set for some installations of Postgres, for some reason (8.x versions?)
 
 --
 -- TABLE creation:
@@ -107,7 +110,7 @@ CREATE TABLE clubs (
     email           VARCHAR(50),
     logo            BYTEA,          -- "binary string" data type
     address_id      INTEGER         REFERENCES addresses( id ),
-    country_code    CHAR(2)         DEFAULT 'CY'  REFERENCES countries(code),
+    country_code    CHAR(2)         DEFAULT 'CY' REFERENCES countries(code),
     PRIMARY KEY (id)
 );
 
@@ -129,15 +132,15 @@ CREATE TABLE persons (
 
 
 CREATE TABLE athletes (
-    id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION, -- not CASCADE!
+    id              INTEGER         REFERENCES persons(id) ON DELETE NO ACTION, -- not CASCADE!
     rank            VARCHAR(50)     NOT NULL,
-    club_id         INTEGER         REFERENCES clubs(id),   -- this was "NOT NULL" initially
+    club_id         INTEGER         NULL REFERENCES clubs(id),  -- this was "NOT NULL" initially
     PRIMARY KEY(id)
 );
 
 
 CREATE TABLE judges (
-    id              INTEGER         REFERENCES persons(id)  ON DELETE NO ACTION,
+    id              INTEGER         REFERENCES persons(id) ON DELETE NO ACTION,
     rank            VARCHAR(50)     NOT NULL,
     class           CHAR(1)         NOT NULL,
     PRIMARY KEY(id)
@@ -193,7 +196,7 @@ CREATE TABLE games (
     id              SERIAL,
     phase           INTEGER         NOT NULL,
     position        INTEGER         NOT NULL,
-    tournament_id   INTEGER         REFERENCES tournaments(id),
+    tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     is_ready        BOOLEAN         NOT NULL DEFAULT false,
     is_finished     BOOLEAN         NOT NULL DEFAULT false,
 
@@ -212,9 +215,9 @@ CREATE TABLE team_tournament_participations (
 
 
 CREATE TABLE tournament_participations (
-    athlete_id      INTEGER         REFERENCES athletes(id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id),
-    tournament_id   INTEGER         REFERENCES tournaments(id),
+    athlete_id      INTEGER         REFERENCES athletes(id) ON DELETE RESTRICT, -- ?
+    team_id         INTEGER         REFERENCES team_tournament_participations(id) ON DELETE CASCADE,
+    tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
 
@@ -226,9 +229,9 @@ CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio
                                         -- gia atomika (parousiasi) 1 entry
                                         -- gia omadiko (versus) 6 (OR 4, anepisima)
     id              SERIAL,
-    athlete_id      INTEGER         REFERENCES athletes (id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id),
-    game_id         INTEGER         REFERENCES games (id),
+    athlete_id      INTEGER         REFERENCES athletes (id) ON DELETE RESTRICT, -- ?
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
+    game_id         INTEGER         REFERENCES games (id) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
 
@@ -237,7 +240,7 @@ CREATE TABLE game_points(
     id              SERIAL,
     game_id         INTEGER         REFERENCES games(id),
     athlete_id      INTEGER         REFERENCES athletes(id),
-    team_id         INTEGER         REFERENCES team_tournament_participations(id),
+    team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
     technical_point         INTEGER,
     technical_point_desc    VARCHAR(50),
@@ -299,7 +302,7 @@ COMMIT;
 
 
 --
--- Initialisation with data
+-- Initialisation with data (for testing purposes; only the list of countries will remain in the release version)
 --
 
 
@@ -569,7 +572,7 @@ INSERT INTO clubs (name, address_id, country_code) VALUES ('Fight''n''Fitness', 
 
 
 INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'male', '99123144' , null , 'email@gmail.com' , '0');
+VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'MALE', '99123144' , null , 'email@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('athl1' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'MALE', '99123145' , null , 'athl1@gmail.com' , '0');
@@ -611,8 +614,19 @@ INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  p
 VALUES ('athl13' , 'athl13_father' , 'athl13_last', '02-10-2002' , 'MALE', '98133146' , null , 'athl13@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl14' , 'athl14_father' , 'athl14_last', '22-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
+VALUES ('athl14' , 'athl14_father' , 'athl14_last', '10-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
 
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl15' , 'athl15_father' , 'athl5_last', '02-12-1961' , 'MALE', '98123416' , null , 'athl15@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl16' , 'athl16_father' , 'athl16_last', '12-10-2001' , 'FEMALE', '97133145' , null , 'athl16@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl17' , 'athl17_father' , 'athl17_last', '02-10-2003' , 'MALE', '98133146' , null , 'athl17@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('athl18' , 'athl18_father' , 'athl18_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl18@gmail.com' , '0');
 
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
 -- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')
@@ -625,21 +639,25 @@ INSERT INTO users (username , password, person_management, event_management , lo
 VALUES ('admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1', '1');
 
 
-INSERT INTO athletes (id, rank, club_id ) VALUES ('0', 'Black  –  1st dan', '1'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('1', 'Black  –  2nd dan', '1'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('2', 'Black  –  1st dan', NULL );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('3', 'Blue   –  2nd kyu', '3'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('4', 'White/Red – 8th dan', '2' );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('5', 'Green  –  3rd kyu', '1'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('6', 'Red    –  9th dan', NULL );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('7', 'Blue   –  2nd kyu', '2'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('8', 'White/Red – 8th dan', '1' );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('9', 'Black  –  3rd dan', '2' );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('10', 'Green  –  3rd kyu', '1'  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('11', 'Red    –  9th dan', '3' );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('12', 'Blue   –  2nd kyu', NULL  );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('13', 'White/Red – 8th dan', '3' );
-INSERT INTO athletes (id, rank, club_id ) VALUES ('14', 'Yellow –  5th kyu', NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('0',  'Black  –  1st dan',   '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('1',  'Black  –  2nd dan',   '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('2',  'Black  –  1st dan',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('3',  'Blue   –  2nd kyu',   '3'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('4',  'White/Red – 8th dan', '2'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('5',  'Green  –  3rd kyu',   '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('6',  'Red    –  9th dan',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('7',  'Blue   –  2nd kyu',   '2'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('8',  'White/Red – 8th dan', '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('9',  'Black  –  3rd dan',   '2'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('10', 'Green  –  3rd kyu',   '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('11', 'Red    –  9th dan',   '3'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('12', 'Blue   –  2nd kyu',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('13', 'White/Red – 8th dan', '3'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('14', 'Yellow –  5th kyu',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('15', 'Black  –  1st dan',   '1'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('16', 'Orange –  4th kyu',   '3'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('17', 'Brown  –  1st kyu',   '2'  );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('18', 'Yellow –  5th kyu',   NULL );
 
 INSERT INTO locations (id, name, phone, email)
 VALUES (0, 'location 1', '77778888', 'loc@locloc.com');
@@ -649,14 +667,20 @@ INSERT INTO events (name, date, location_id)
 VALUES ('Big Event', current_date, 0);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Iron Fist Tournament', 'male', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
+VALUES ('Iron Fist Tournament (Ind. Kumite)', 'MALE', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter', 'male', 1, 99, 'Blue   –  2nd kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
+VALUES ('Street Fighter I (Sync. Kata)', 'MALE', 1, 99, 'White  –  6th kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
 
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Street Fighter II (Team Kata)', 'MALE', 1, 99, 'White  –  6th kyu', 'White/Red – 8th dan', 'TEAM|KATA', 'SCORE', 1);
 
--- A NULL "position" means that the match hasn't taken place yet
--- 'Iron Fist Tournament'
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Street Fighter III (Team Kumite)', 'MALE', 1, 99, 'Yellow –  5th kyu', 'Red    –  10th dan', 'TEAM|KUMITE', 'POINT', 1);
+
+-- A NULL "ranking" means that the match hasn't taken place yet
+
+-- 'Iron Fist Tournament (Ind. Kumite)'
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (0, 1, (SELECT rank FROM athletes WHERE id = 0), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
@@ -683,7 +707,8 @@ INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_tim
 VALUES (11, 1, (SELECT rank FROM athletes WHERE id = 11), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (12, 1, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
--- 'Street Fighter'
+
+-- 'Street Fighter I (Sync. Kata)'
 INSERT INTO team_tournament_participations (team, tournament_id)
 VALUES (0, 2);
 INSERT INTO team_tournament_participations (team, tournament_id)
@@ -726,10 +751,110 @@ VALUES (13, 2, (SELECT rank FROM athletes WHERE id = 13), NULL, 5 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (14, 2, (SELECT rank FROM athletes WHERE id = 14), NULL, 5 );
 
+-- 'Street Fighter II (Team Kata)'
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (0, 3);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (1, 3);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (2, 3);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (3, 3);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (4, 3);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (5, 3);
 
---select * from tournaments;
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 1
+VALUES (0, 3, (SELECT rank FROM athletes WHERE id = 0), NULL, 6 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (1, 3, (SELECT rank FROM athletes WHERE id = 1), NULL, 6 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (2, 3, (SELECT rank FROM athletes WHERE id = 2), NULL, 6 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 2
+VALUES (3, 3, (SELECT rank FROM athletes WHERE id = 3), NULL, 7 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (4, 3, (SELECT rank FROM athletes WHERE id = 4), NULL, 7 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (5, 3, (SELECT rank FROM athletes WHERE id = 5), NULL, 7 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 3
+VALUES (6, 3, (SELECT rank FROM athletes WHERE id = 6), NULL, 8 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 3, (SELECT rank FROM athletes WHERE id = 7), NULL, 8 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (8, 3, (SELECT rank FROM athletes WHERE id = 8), NULL, 8 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 4
+VALUES (9, 3, (SELECT rank FROM athletes WHERE id = 9), NULL, 9 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (10, 3, (SELECT rank FROM athletes WHERE id = 10), NULL, 9 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (11, 3, (SELECT rank FROM athletes WHERE id = 11), NULL, 9 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 5
+VALUES (12, 3, (SELECT rank FROM athletes WHERE id = 12), NULL, 10 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (13, 3, (SELECT rank FROM athletes WHERE id = 13), NULL, 10 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (14, 3, (SELECT rank FROM athletes WHERE id = 14), NULL, 10 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 6
+VALUES (15, 3, (SELECT rank FROM athletes WHERE id = 12), NULL, 11 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (18, 3, (SELECT rank FROM athletes WHERE id = 13), NULL, 11 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (17, 3, (SELECT rank FROM athletes WHERE id = 14), NULL, 11 );
 
---select * from games;
+-- 'Street Fighter III (Team Kumite)'
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (0, 4);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (1, 4);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (2, 4);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (3, 4);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (4, 4);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (5, 4);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (6, 4);
+
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 1
+VALUES (0, 4, (SELECT rank FROM athletes WHERE id = 0), NULL, 12 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (1, 4, (SELECT rank FROM athletes WHERE id = 1), NULL, 12 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (2, 4, (SELECT rank FROM athletes WHERE id = 2), NULL, 12 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 2
+VALUES (3, 4, (SELECT rank FROM athletes WHERE id = 3), NULL, 13 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (4, 4, (SELECT rank FROM athletes WHERE id = 4), NULL, 13 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (5, 4, (SELECT rank FROM athletes WHERE id = 5), NULL, 13 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 3
+VALUES (6, 4, (SELECT rank FROM athletes WHERE id = 6), NULL, 14 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 4, (SELECT rank FROM athletes WHERE id = 7), NULL, 14 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (8, 4, (SELECT rank FROM athletes WHERE id = 8), NULL, 14 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 4
+VALUES (9, 4, (SELECT rank FROM athletes WHERE id = 9), NULL, 15 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (10, 4, (SELECT rank FROM athletes WHERE id = 10), NULL, 15 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (11, 4, (SELECT rank FROM athletes WHERE id = 11), NULL, 15 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 5
+VALUES (12, 4, (SELECT rank FROM athletes WHERE id = 12), NULL, 16 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (18, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 16 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (14, 4, (SELECT rank FROM athletes WHERE id = 14), NULL, 16 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 6
+VALUES (13, 4, (SELECT rank FROM athletes WHERE id = 12), NULL, 17 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (17, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 17 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (15, 4, (SELECT rank FROM athletes WHERE id = 14), NULL, 17 );
+
 
 
 -- rollback transaction (useful for checking syntax):
@@ -742,7 +867,7 @@ COMMIT;
 
 
 ANALYSE;
--- From the PostreSQL documentation:
+-- From the PostgreSQL documentation:
 --
 -- ANALYZE collects statistics about the contents of tables in the database, and stores the
 -- results in the pg_statistic system catalog. Subsequently, the query planner uses these
@@ -751,3 +876,4 @@ ANALYSE;
 -- With no parameter, ANALYZE examines every table in the current database. With a parameter,
 -- ANALYZE examines only that table. It is further possible to give a list of column names, in
 -- which case only the statistics for those columns are collected.
+

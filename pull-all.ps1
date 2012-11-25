@@ -1,10 +1,5 @@
-git checkout master
-git pull
 
-git checkout athina 
-git pull
-
-git checkout nikolas 
+git checkout nikolas-experimental
 git pull
 
 git checkout michael-a 
