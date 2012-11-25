@@ -21,16 +21,14 @@ namespace KarateGeek.lottery
 
 
     /** This class constructs ASCII-art style text "boxes" with unicode line drawing
-     * characters (the "light" ones), suitably formatted... Used by our LotteryPrinter class. */
+     * characters (the "light" ones), suitably formatted... Used by our LotteryPrinter class.
+     *
+     * BTW, the "heavy" variant of the line drawing characters doesn't work very well (seems
+     * impossible to align, even with a monospaced font such as "Consolas").
+     */
     class LotteryBox
     {
-        /* Example of two connected boxes (boxWidth = 18):
-         * 
-         * ┏━━━━━━━━━━┓         // "heavy", boxWidth = 10
-         * ┃  Athlete 1's name ┣━┓
-         * ┗━━━━━━━━━━┛  ┃
-         * 
-         *
+        /* Example of two connected boxes:
          * BTW, the following string can be printed (with a mono font) as a test!
          * 
          *   "┌──────────────────┐\n"   // "light", boxWidth = 18 (light works better!)
@@ -40,8 +38,6 @@ namespace KarateGeek.lottery
            + "┌──────────────────┐  │\n"
            + "│ Athlete 2's name ├──┘\n"
            + "└──────────────────┘\n";
-         * 
-         * 
          * 
          **/
 
@@ -115,16 +111,21 @@ namespace KarateGeek.lottery
             int mid = (team.Count + 1) / 2;
 
             foreach (var athlete in team) {
-                if (line == mid && typeLeft == BoxTypeLeft.connected)
-                    sb.Append("├──┤");
-                else
+
+                if (typeLeft == BoxTypeLeft.unconnected)
                     sb.Append('│');
+                else {      // BoxTypeLeft is connected
+                    if (line != mid)
+                        sb.Append("   │");
+                    else    // (line == mid)
+                        sb.Append("├──┤");
+                }
 
                 sb.Append(Formatted(athlete));
 
                 if (typeRight == BoxTypeRight.unconnected)
                     sb.Append('│');
-                else{
+                else {
                     if (line < mid) {
                         if (typeRight == BoxTypeRight.connected_down)
                             sb.Append('│');
