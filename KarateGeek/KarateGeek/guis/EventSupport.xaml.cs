@@ -118,7 +118,7 @@ namespace KarateGeek.guis
 
         private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
         {
-
+            this.update();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -435,7 +435,7 @@ namespace KarateGeek.guis
                     switch (gm.participants.Count)
                     {
                         case 0:
-                           
+
                             current.Add("Empty...");
 
                             break;
@@ -807,7 +807,7 @@ namespace KarateGeek.guis
 
 
 
-            if (this.tournament.games128.Count != 0 && (!phase128Done))
+            if (this.tournament.games128.Count != 0 && (!this.tournament.phase128Done))
             {
                 this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
@@ -1159,7 +1159,7 @@ namespace KarateGeek.guis
         private void loadKataSyncSingle()
         {
 
-            if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
+            if (this.tournament.games128.Count != 0 && (!this.tournament.phase128Done))
             {
                 this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
@@ -1172,11 +1172,9 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games128)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
@@ -1186,16 +1184,46 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
 
 
             }
-            else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
+            else if (this.tournament.games64.Count != 0 && (!this.tournament.phase64Done))
+            {
+                this._indexCurrentphase = 6;
+                this._indexNextPhase = 5;
+
+
+                //
+                // current phase
+                //
+                List<string> current = new List<string>();
+
+                foreach (Game gm in tournament.games64)
+                {
+                    current.Add(loadTeamParticipants(gm));
+                }
+                this.listBoxCurrentGameList.ItemsSource = null;
+                this.listBoxCurrentGameList.ItemsSource = current;
+
+                //
+                //next Phase
+                //
+                List<string> future = new List<string>();
+
+                foreach (Game gm in tournament.games32)
+                {
+                    future.Add(loadTeamParticipants(gm));
+                }
+                this.listBoxNextGameList.ItemsSource = null;
+                this.listBoxNextGameList.ItemsSource = future;
+
+
+            }
+            else if (this.tournament.games32.Count != 0 && (!this.tournament.phase32Done))
             {
                 this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
@@ -1206,13 +1234,11 @@ namespace KarateGeek.guis
                 //
                 List<string> current = new List<string>();
 
-                foreach (Game gm in tournament.games64)
+                foreach (Game gm in tournament.games32)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
@@ -1220,16 +1246,13 @@ namespace KarateGeek.guis
                 //
                 List<string> future = new List<string>();
 
-                foreach (Game gm in tournament.games32)
+                foreach (Game gm in tournament.games16)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
+            else if (this.tournament.games16.Count != 0 && (!this.tournament.phase16Done))
             {
                 this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
@@ -1239,13 +1262,11 @@ namespace KarateGeek.guis
                 //
                 List<string> current = new List<string>();
 
-                foreach (Game gm in tournament.games32)
+                foreach (Game gm in tournament.games16)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
@@ -1253,17 +1274,15 @@ namespace KarateGeek.guis
                 //
                 List<string> future = new List<string>();
 
-                foreach (Game gm in tournament.games16)
+                foreach (Game gm in tournament.games8)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
 
             }
-            else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
+            else if (this.tournament.games8.Count != 0 && (!this.tournament.phase8Done))
             {
                 this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
@@ -1273,13 +1292,11 @@ namespace KarateGeek.guis
                 //
                 List<string> current = new List<string>();
 
-                foreach (Game gm in tournament.games16)
+                foreach (Game gm in tournament.games8)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
@@ -1287,16 +1304,14 @@ namespace KarateGeek.guis
                 //
                 List<string> future = new List<string>();
 
-                foreach (Game gm in tournament.games8)
+                foreach (Game gm in tournament.games4)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
+            else if (this.tournament.games4.Count != 0 && (!this.tournament.phase4Done))
             {
                 this._indexCurrentphase = 1;
                 this._indexNextPhase = 0;
@@ -1306,13 +1321,11 @@ namespace KarateGeek.guis
                 //
                 List<string> current = new List<string>();
 
-                foreach (Game gm in tournament.games8)
+                foreach (Game gm in tournament.games4)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
@@ -1320,16 +1333,14 @@ namespace KarateGeek.guis
                 //
                 List<string> future = new List<string>();
 
-                foreach (Game gm in tournament.games4)
+                foreach (Game gm in tournament.games2)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
+            else if (this.tournament.games2.Count != 0 && (!this.tournament.phase2Done))
             {
                 this._indexCurrentphase = 0;
                 this._indexNextPhase = -1;
@@ -1339,19 +1350,18 @@ namespace KarateGeek.guis
                 //
                 List<string> current = new List<string>();
 
-                foreach (Game gm in tournament.games4)
+                foreach (Game gm in tournament.games2)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
+                this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
 
                 //
                 // next Phase? no next phase
                 //
                 List<string> future = new List<string>();
+                this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
             }
 
@@ -1364,7 +1374,7 @@ namespace KarateGeek.guis
         private void loadEmbuSyncSingle()
         {
 
-            if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
+            if (this.tournament.games128.Count != 0 && (!this.tournament.phase128Done))
             {
                 this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
@@ -1377,10 +1387,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games128)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1391,19 +1398,16 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
 
             }
-            else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
+            else if (this.tournament.games64.Count != 0 && (!this.tournament.phase64Done))
             {
-                this._indexCurrentphase = 4;
-                this._indexNextPhase = 3;
+                this._indexCurrentphase = 5;
+                this._indexNextPhase = 4;
 
 
                 //
@@ -1413,10 +1417,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1427,14 +1428,39 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
+            else if (this.tournament.games32.Count != 0 && (!this.tournament.phase32Done))
+            {
+                this._indexCurrentphase = 4;
+                this._indexNextPhase = 3;
+
+                //
+                // current phase
+                //
+                List<string> current = new List<string>();
+
+                foreach (Game gm in tournament.games32)
+                {
+                    current.Add(loadTeamParticipants(gm));
+                }
+                this.listBoxCurrentGameList.ItemsSource = current;
+
+                //
+                //next Phase
+                //
+                List<string> future = new List<string>();
+
+                foreach (Game gm in tournament.games16)
+                {
+                    future.Add(loadTeamParticipants(gm));
+                }
+                this.listBoxNextGameList.ItemsSource = future;
+
+            }
+            else if (this.tournament.games16.Count != 0 && (!this.tournament.phase16Done))
             {
                 this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
@@ -1444,46 +1470,9 @@ namespace KarateGeek.guis
                 //
                 List<string> current = new List<string>();
 
-                foreach (Game gm in tournament.games32)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
                 foreach (Game gm in tournament.games16)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
-            {
-                this._indexCurrentphase = 2;
-                this._indexNextPhase = 1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1494,14 +1483,38 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
+            else if (this.tournament.games8.Count != 0 && (!this.tournament.phase8Done))
+            {
+                this._indexCurrentphase = 2;
+                this._indexNextPhase = 1;
+
+                //
+                // current phase
+                //
+                List<string> current = new List<string>();
+
+                foreach (Game gm in tournament.games8)
+                {
+                    current.Add(loadTeamParticipants(gm));
+                }
+                this.listBoxCurrentGameList.ItemsSource = current;
+
+                //
+                //next Phase
+                //
+                List<string> future = new List<string>();
+
+                foreach (Game gm in tournament.games4)
+                {
+                    future.Add(loadTeamParticipants(gm));
+                }
+                this.listBoxNextGameList.ItemsSource = future;
+            }
+            else if (this.tournament.games4.Count != 0 && (!this.tournament.phase4Done))
             {
                 this._indexCurrentphase = 1;
                 this._indexNextPhase = 0;
@@ -1513,10 +1526,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1527,14 +1537,11 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    future.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
-            else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
+            else if (this.tournament.games2.Count != 0 && (!this.tournament.phase2Done))
             {
                 this._indexCurrentphase = 0;
                 this._indexNextPhase = -1;
@@ -1546,10 +1553,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
+                    current.Add(loadTeamParticipants(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1576,6 +1580,22 @@ namespace KarateGeek.guis
         //
 
 
+
+
+        private string loadTeamParticipants(Game game)
+        {
+            string temp = "";
+            if (game.participants.Count == 0)
+            {
+                temp = "Waiting...";
+            }
+            else
+                foreach (Athlete ath in game.participants)
+                {
+                    temp += (ath.lastName + " " + ath.firstName + " - ");
+                }
+            return temp;
+        }
 
         private List<Athlete> getKataIndSinglePositioning()
         {
@@ -1641,11 +1661,13 @@ namespace KarateGeek.guis
             // unchecked sql
             //
             sql = "select game_participations.team_id, sum(mean_score) from "
-                + "team_tournament_participations join game_participations "
+                + "team_tournament_participations "
+                + "join game_participations "
                 + "on team_tournament_participations.id = game_participations.team_id "
-                + "join game_score on team_tournament_participations.id = game_score.team_id where tournament_id = '"
-                + this.tournament.id + "' and game.phase = '"
-                + phase + "' group by game_participations.team_id ORDER BY sum(mean_score) DESC ;";
+                + "join game_score "
+                + "on team_tournament_participations.id = game_score.team_id join games on games.id = game_score.game_id "
+                + "where games.tournament_id = '" + this.tournament.id
+                + "' and games.phase = '" + phase + "' group by game_participations.team_id ORDER BY sum(mean_score) DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Team> teams = new List<Team>();
@@ -1670,9 +1692,9 @@ namespace KarateGeek.guis
             teamB = temp.Rows[1][0].ToString();
 
 
-            sql = "select team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_point.game_id where phase = '"
-                + phase + "' and team_id = '"
-                + teamA + "' OR team_id = '"
+            sql = "select game_participations.team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_points.game_id join games on games.id = game_participations.game_id where phase = '"
+                + phase + "' and game_participations.team_id = '"
+                + teamA + "' OR game_participations.team_id = '"
                 + teamB + "'  group by (game_participations.team_id) ;";
             temp = conn.Query(sql).Tables[0];
 
@@ -1680,7 +1702,7 @@ namespace KarateGeek.guis
             // TODO: create gui to make user set the winner in case of a tie
             //
 
-            if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
+            if (int.Parse(temp.Rows[0][1].ToString()) > int.Parse(temp.Rows[1][1].ToString()))
                 return new Team((string)temp.Rows[0][0].ToString());
             else
                 return new Team((string)temp.Rows[1][0].ToString());
@@ -1693,7 +1715,7 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select game_participations.team_id, mean_score from team_tournament_participations join game_participacions on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participation.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
+            sql = "select game_participations.team_id, mean_score from team_tournament_participations join game_participations on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participations.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Team> teams = new List<Team>();
@@ -1719,31 +1741,31 @@ namespace KarateGeek.guis
             Game gm = null;
             this._indexlastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
 
-
-            switch (this._indexCurrentphase)
-            {
-                case 0:
-                    gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 1:
-                    gm = tournament.games4.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 2:
-                    gm = tournament.games8.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 3:
-                    gm = tournament.games16.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 4:
-                    gm = tournament.games32.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 5:
-                    gm = tournament.games64.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 6:
-                    gm = tournament.games128.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-            }
+            if (this.listBoxCurrentGameList.SelectedIndex != -1)
+                switch (this._indexCurrentphase)
+                {
+                    case 0:
+                        gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 1:
+                        gm = tournament.games4.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 2:
+                        gm = tournament.games8.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 3:
+                        gm = tournament.games16.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 4:
+                        gm = tournament.games32.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 5:
+                        gm = tournament.games64.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 6:
+                        gm = tournament.games128.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                }
 
 
             KataSystem kataSys;
@@ -1837,6 +1859,9 @@ namespace KarateGeek.guis
             Game gm = null;
             Athlete winner = null;
             int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
+
+            if (gameIndex == -1)
+                gameIndex = 1;
 
             switch (this._indexCurrentphase)
             {
@@ -2318,13 +2343,17 @@ namespace KarateGeek.guis
                         Team kumiteTeamWinner = this.getKumiteTeamWinner(gm);
                         conn = new CoreDatabaseConnection();
 
-                        int firstPos = (int)conn.Query("select position from games join game participations gp on games.id = gp.game_id where team_id = '"
+                        int firstPos = (int)conn.Query("select position from games join game_participations gp on games.id = gp.game_id where team_id = '"
                             + teamId + "' order by position ASC ; ").Tables[0].Rows[0][0];
+
+                        firstPos--;
 
                         if (firstPos % 2 != 0)
                             firstPos -= 3;
 
                         int nextPhaseFirstPos = firstPos / 3;
+
+                        nextPhaseFirstPos++;
 
                         for (int i = 0; i < 3; i++)
                         {
@@ -2349,7 +2378,7 @@ namespace KarateGeek.guis
                     if (temp.Rows.Count == 0)
                     {
 
-                        List<Team> winners = this.getKataTeamIndPositioning(this._indexCurrentphase.ToString());
+                        List<Team> winners = this.getSyncKataWinner(this._indexCurrentphase.ToString());
 
                         int positionIndex = 0;
 
@@ -2359,14 +2388,13 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (4 * 3))
+                                    positionIndex = 0;
+                                    foreach (Athlete ath in kataTeam.participants)
                                     {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
+                                        tournament.games2.ElementAt(positionIndex).AddParticipant(ath.id);
+                                        positionIndex++;
                                     }
+
                                 }
 
                                 break;
@@ -2374,11 +2402,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (8 * 3))
+                                    if (positionIndex < (8))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games4.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2390,11 +2418,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (16 * 3))
+                                    if (positionIndex < (16))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games8.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2405,11 +2433,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (32 * 3))
+                                    if (positionIndex < (32))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games16.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2420,17 +2448,19 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (64 * 3))
+                                    if (positionIndex < (64))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games32.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
                                 }
 
                                 break;
+
+
                         }
                     }
 
@@ -2460,11 +2490,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (4 * 2))
+                                    if (positionIndex < (4))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games2.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2475,11 +2505,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (8 * 2))
+                                    if (positionIndex < (8))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games4.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2491,11 +2521,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (16 * 2))
+                                    if (positionIndex < (16))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games8.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2506,11 +2536,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (32 * 2))
+                                    if (positionIndex < (32))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games16.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2521,11 +2551,11 @@ namespace KarateGeek.guis
 
                                 foreach (Team kataTeam in winners)
                                 {
-                                    if (positionIndex < (64 * 2))
+                                    if (positionIndex < (64))
                                     {
                                         foreach (Athlete ath in kataTeam.participants)
                                         {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
+                                            tournament.games32.ElementAt(positionIndex).AddParticipant(ath.id);
                                             positionIndex++;
                                         }
                                     }
@@ -2539,6 +2569,11 @@ namespace KarateGeek.guis
 
                 #endregion embu end region
             }
+
+
+
+
+            // this.update();
         }
     }
 }

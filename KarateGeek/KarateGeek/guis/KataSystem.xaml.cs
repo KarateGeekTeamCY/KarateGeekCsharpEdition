@@ -24,7 +24,7 @@ namespace KarateGeek.guis
 
         #region private declaretions
 
-        private Window _sender;
+        private EventSupport _sender;
 
         private string _judgeAId = "";
         private string _judgeBId = "";
@@ -39,10 +39,12 @@ namespace KarateGeek.guis
         private double _scoreE = 0;
         private double _treamdMean = 0;
 
-        private string _gameId = "";
-        private string _turnamentId = "";
+        private Game _game;
+        private Tournament tour;
+
         private string _participationId = "";
         private bool _isTeam;
+        private bool _isSync;
 
 
         private DataTable _DTjudges;
@@ -51,22 +53,27 @@ namespace KarateGeek.guis
 
 
 
+
+
         #endregion
 
 
 
-        public KataSystem( Window sender, Game gm)
+        public KataSystem(EventSupport sender, Game gm)
         {
             InitializeComponent();
+            this._game = gm;
 
-            _sender = sender;
+            this.tour = new Tournament(_game.tournamentId);
 
-            //this._turnamentId = turnamentId;
-            //this._gameId = gameId;
-            //this._isTeam = isTeam;
+
+            this._isTeam = this.tour.isTeam;
+            this._isSync = this.tour.isSync;
+
+            this._sender = sender;
+
 
             this._loadDataTables();
-
 
             foreach (DataRow dr in _DTjudges.Rows)
             {
@@ -82,17 +89,24 @@ namespace KarateGeek.guis
             string gametype = this._DTgame.Rows[0][4].ToString();
 
             TournamentGameParticipationsConnection tourparconn = new TournamentGameParticipationsConnection();
-            this._DTparticipations = tourparconn.GetParticipation(_gameId).Tables[0];
+            this._DTparticipations = tourparconn.GetParticipation(this._game.gameId).Tables[0];
 
             // getting paeticipant id
-            if (_isTeam)
+            if (_isTeam || _isSync)
                 _participationId = _DTparticipations.Rows[0][1].ToString();
             else
                 _participationId = _DTparticipations.Rows[0][0].ToString();
 
+            this.lblInfo.Content = "";
+            foreach (Athlete ath in this._game.participants)
+            {
+                this.lblInfo.Content += ath.lastName + " " + ath.firstName + " | ";
+
+            }
 
 
-
+            this._sender.Hide();
+            this.Show();
         }
 
 
@@ -101,7 +115,7 @@ namespace KarateGeek.guis
         private string _loadDataTables()
         {
             GameConnection gameconn = new GameConnection();
-            this._DTgame = gameconn.GetGameById(this._gameId).Tables[0];
+            this._DTgame = gameconn.GetGameById(this._game.gameId).Tables[0];
 
             JudgeConnection judgeconn = new JudgeConnection();
             this._DTjudges = judgeconn.GetJudges().Tables[0];
@@ -114,39 +128,39 @@ namespace KarateGeek.guis
 
         private void _computeMean()
         {
-            double smaller = 0, larger = 10; ;
+            double smaller = 10, larger = 0;
 
             if (smaller > _scoreA)
                 smaller = _scoreA;
             if (larger < _scoreA)
-                larger = +_scoreA;
+                larger = _scoreA;
 
             if (smaller > _scoreB)
                 smaller = _scoreB;
             if (larger < _scoreB)
-                larger = +_scoreB;
+                larger = _scoreB;
 
             if (smaller > _scoreC)
                 smaller = _scoreC;
             if (larger < _scoreC)
-                larger = +_scoreC;
+                larger = _scoreC;
 
             if (smaller > _scoreD)
                 smaller = _scoreD;
             if (larger < _scoreD)
-                larger = +_scoreD;
+                larger = _scoreD;
 
             if (smaller > _scoreE)
                 smaller = _scoreE;
             if (larger < _scoreE)
-                larger = +_scoreE;
+                larger = _scoreE;
 
-            this.lblSmallestScore.Content = this.lblSmallestScore.Content + " = " + smaller;
-            this.lblLargestScore.Content = this.lblLargestScore.Content + " = " + larger;
+            this.lblSmallestScore.Content = " smallest score = " + smaller;
+            this.lblLargestScore.Content = " largest score = " + larger;
 
             _treamdMean = (_scoreA + _scoreB + _scoreC + _scoreD + _scoreE - smaller - larger) / 3;
 
-            this.lblTrimmedMeanScore.Content = this.lblTrimmedMeanScore.Content + " = " + _treamdMean;
+            this.lblTrimmedMeanScore.Content = "trimmed score = " + _treamdMean;
 
         }
 
@@ -157,32 +171,81 @@ namespace KarateGeek.guis
 
         private void scoreA_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            this._scoreA = double.Parse(this.scoreA.Text);
-            this._computeMean();
+            try
+            {
+                this._scoreA = double.Parse(this.scoreA.Text);
+                this._computeMean();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void scoreB_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            this._scoreB = double.Parse(this.scoreB.Text);
-            this._computeMean();
+            try
+            {
+                this._scoreB = double.Parse(this.scoreB.Text);
+                this._computeMean();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
         }
 
         private void scoreC_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            this._scoreC = double.Parse(this.scoreC.Text);
-            this._computeMean();
+
+            try
+            {
+
+
+                this._scoreC = double.Parse(this.scoreC.Text);
+                this._computeMean();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
 
         private void scoreD_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            this._scoreD = double.Parse(this.scoreD.Text);
-            this._computeMean();
+
+            try
+            {
+                this._scoreD = double.Parse(this.scoreD.Text);
+                this._computeMean();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
         }
 
         private void scoreE_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            this._scoreE = double.Parse(this.scoreE.Text);
-            this._computeMean();
+            try
+            {
+                this._scoreE = double.Parse(this.scoreE.Text);
+                this._computeMean();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
         }
 
 
@@ -237,16 +300,34 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            EveSupScoreConnection scoreconn = new EveSupScoreConnection();
-            if(_isTeam){
-                scoreconn.InsertNewScoreTeam(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId, 
+            //EveSupScoreConnection scoreconn = new EveSupScoreConnection();
+
+
+
+            if (_isTeam)
+            {
+                this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
                 _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
+            }
+            else if (_isSync)
+            {
+                this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                    _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
             }
             else
             {
-                scoreconn.InsertNewScoreInd(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                this.InsertNewScoreInd(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
                 _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
             }
+
+
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            string sql = "update games set is_finished = 'true' where id = '" + this._game.gameId + "'; ";
+            conn.NonQuery(sql);
+
+            this._sender.update();
+            _sender.Visibility = System.Windows.Visibility.Visible;
+            this.Close();
 
         }
 
@@ -255,6 +336,41 @@ namespace KarateGeek.guis
             _sender.Visibility = System.Windows.Visibility.Visible;
             this.Close();
         }
+
+
+
+
+        public string InsertNewScoreInd(string gameId, string athleteId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id,
+                                                                        double score1, double score2, double score3, double score4, double score5, double mean)
+        {
+
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            string sql = "insert into game_score (game_id, athlete_id, judge1, judge2, judge3, judge4, judge5, " +
+                "score1, score2, score3, score4, score5, mean_score) values ('" +
+                gameId + "', '" + athleteId + "', '" +
+                judge1Id + "', '" + judge2Id + "', '" + judge3Id + "', '" + judge4Id + "', '" + judge5Id + "', '" +
+                score1 + "', '" + score2 + "' ,'" + score3 + "' ,'" + score4 + "' ,'" + score5 + "' ,'" + mean + "');";
+
+            conn.NonQuery(sql);
+            return "";
+        }
+
+
+        public string InsertNewScoreTeam(string gameId, string teamId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id,
+                                                                        double score1, double score2, double score3, double score4, double score5, double mean)
+        {
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            string sql = "INSERT INTO game_score (game_id, team_id, judge1, judge2, judge3, judge4, judge5, " +
+                "score1, score2, score3, score4, score5, mean_score) VALUES ('" +
+                gameId + "', '" + teamId + "', '" +
+                judge1Id + "', '" + judge2Id + "', '" + judge3Id + "', '" + judge4Id + "', '" + judge5Id + "', '" +
+                score1 + "', '" + score2 + "' ,'" + score3 + "' ,'" + score4 + "' ,'" + score5 + "' ,'" + mean + "');";
+
+            conn.NonQuery(sql);
+            return "";
+        }
+
+
 
         #endregion
 

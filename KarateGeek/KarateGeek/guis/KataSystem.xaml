@@ -37,58 +37,43 @@
             <ComboBox Name="eventJudgePickerA" Grid.Column="1" 
                       VerticalAlignment="Center" 
                       Margin="10" SelectionChanged="eventJudgePickerA_SelectionChanged">
-                <ComboBoxItem Name="judjeA" 
-                              HorizontalAlignment="Center"
-                              Content="judge a"
-                              IsSelected="True"/>
+                
             </ComboBox>
 
             <ComboBox Name="eventJudgePickerB" Grid.Column="2"  
                       VerticalAlignment="Center" 
                       Margin="10" SelectionChanged="eventJudgePickerB_SelectionChanged">
-                <ComboBoxItem Name="judjeB" 
-                              HorizontalAlignment="Center"
-                              Content="judge b"
-                              IsSelected="True"/>
+                
             </ComboBox>
             <ComboBox Name="eventJudgePickerC" 
                       Grid.Column="3"  
                       VerticalAlignment="Center" 
                       Margin="10" SelectionChanged="eventJudgePickerC_SelectionChanged">
-                <ComboBoxItem Name="judjeC" 
-                              HorizontalAlignment="Center"
-                              Content="judge c"
-                              IsSelected="True"/>
+                
             </ComboBox>
             <ComboBox Name="eventJudgePickerD" 
                       Grid.Column="4"   
                       VerticalAlignment="Center" 
                       Margin="10" SelectionChanged="eventJudgePickerD_SelectionChanged">
-                <ComboBoxItem Name="judjeD" 
-                              HorizontalAlignment="Center"
-                              Content="judge d"
-                              IsSelected="True"/>
+                
             </ComboBox>
             <ComboBox Name="eventJudgePickerE" 
                       Grid.Column="5"  
                       VerticalAlignment="Center" 
                       Margin="10" SelectionChanged="eventJudgePickerE_SelectionChanged">
-                <ComboBoxItem Name="judjeE" 
-                              HorizontalAlignment="Center"
-                              Content="judge e"
-                              IsSelected="True"/>
+                
             </ComboBox>
 
             <TextBox Name="scoreA"
-                Text="score a"
+                
                      TextAlignment="Center"
-                Grid.Row="2"
-                Grid.Column="1"
+                     Grid.Row="2"
+                     Grid.Column="1"
                      VerticalAlignment="Center"
-                    Margin="10,0,5,0" 
+                     Margin="10,0,5,0" 
                      TextChanged="scoreA_TextChanged" />
             <TextBox Name="scoreB"
-                Text="score b"
+                
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="2"
@@ -96,7 +81,7 @@
                     Margin="10,0,5,0" 
                      TextChanged="scoreB_TextChanged" />
             <TextBox Name="scoreC"
-                Text="score c"
+                
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="3"
@@ -104,7 +89,7 @@
                     Margin="10,0,5,0" 
                      TextChanged="scoreC_TextChanged" />
             <TextBox Name="scoreD"
-                Text="score d"
+               
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="4"
@@ -112,7 +97,7 @@
                     Margin="10,0,5,0" 
                      TextChanged="scoreD_TextChanged" />
             <TextBox Name="scoreE"
-                Text="score e"
+                
                      TextAlignment="Center"
                 Grid.Row="2"
                 Grid.Column="5"

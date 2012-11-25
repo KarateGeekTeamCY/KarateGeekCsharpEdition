@@ -659,6 +659,14 @@ INSERT INTO athletes (id, rank, club_id ) VALUES ('16', 'Orange –  4th kyu',  
 INSERT INTO athletes (id, rank, club_id ) VALUES ('17', 'Brown  –  1st kyu',   '2'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('18', 'Yellow –  5th kyu',   NULL );
 
+
+INSERT INTO judges (id, rank, class ) VALUES ('2',  'Black  –  1st dan',   'A' );
+INSERT INTO judges (id, rank, class ) VALUES ('3',  'Blue   –  2nd kyu',   'A'  );
+INSERT INTO judges (id, rank, class ) VALUES ('4',  'White/Red – 8th dan', 'B'  );
+INSERT INTO judges (id, rank, class ) VALUES ('5',  'Green  –  3rd kyu',   'B'  );
+INSERT INTO judges (id, rank, class ) VALUES ('6',  'Red    –  9th dan',   'A' );
+
+
 INSERT INTO locations (id, name, phone, email)
 VALUES (0, 'location 1', '77778888', 'loc@locloc.com');
 
