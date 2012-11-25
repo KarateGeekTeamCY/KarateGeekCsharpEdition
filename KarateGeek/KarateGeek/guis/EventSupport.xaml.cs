@@ -1772,68 +1772,70 @@ namespace KarateGeek.guis
             KumiteSystem kumiteSys;
             FlagSystem flagSys;
 
-            if (gm.isFinished)
-            {
-                MessageBox.Show("This game have already played!", "Already played", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-                switch (tournament.gameType)
+
+            if (this.listBoxCurrentGameList.SelectedIndex != -1)
+                if (gm.isFinished)
                 {
-                    case Strings.indKata:
-
-                        switch (tournament.judgingType)
-                        {
-                            case Strings.flag:
-                                flagSys = new FlagSystem(this, gm);
-                                break;
-                            case Strings.score:
-                                kataSys = new KataSystem(this, gm);
-                                break;
-                        }
-
-                        break;
-                    case Strings.indKumite:
-
-                        kumiteSys = new KumiteSystem(this, gm);
-
-                        break;
-                    case Strings.fugugo:
-
-                        if (this._indexCurrentphase % 2 == 0)
-                        {
-                            kumiteSys = new KumiteSystem(this, gm);
-                        }
-                        else
-                        {
-                            kataSys = new KataSystem(this, gm);
-                        }
-
-                        break;
-                    case Strings.teamKata:
-                        kataSys = new KataSystem(this, gm);
-                        break;
-                    case Strings.teamKumite:
-
-                        if (this.listBoxCurrentGameList.SelectedItem == "Click to add game members.")
-                        {
-                            KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
-                        }
-                        else
-                        {
-                            kumiteSys = new KumiteSystem(this, gm);
-                        }
-
-                        break;
-                    case Strings.syncKata:
-
-                        kataSys = new KataSystem(this, gm);
-
-                        break;
-                    case Strings.enbu:
-
-                        kataSys = new KataSystem(this, gm);
-                        break;
+                    MessageBox.Show("This game have already played!", "Already played", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+                else
+                    switch (tournament.gameType)
+                    {
+                        case Strings.indKata:
+
+                            switch (tournament.judgingType)
+                            {
+                                case Strings.flag:
+                                    flagSys = new FlagSystem(this, gm);
+                                    break;
+                                case Strings.score:
+                                    kataSys = new KataSystem(this, gm);
+                                    break;
+                            }
+
+                            break;
+                        case Strings.indKumite:
+
+                            kumiteSys = new KumiteSystem(this, gm);
+
+                            break;
+                        case Strings.fugugo:
+
+                            if (this._indexCurrentphase % 2 == 0)
+                            {
+                                kumiteSys = new KumiteSystem(this, gm);
+                            }
+                            else
+                            {
+                                kataSys = new KataSystem(this, gm);
+                            }
+
+                            break;
+                        case Strings.teamKata:
+                            kataSys = new KataSystem(this, gm);
+                            break;
+                        case Strings.teamKumite:
+
+                            if (this.listBoxCurrentGameList.SelectedItem == "Click to add game members.")
+                            {
+                                KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
+                            }
+                            else
+                            {
+                                kumiteSys = new KumiteSystem(this, gm);
+                            }
+
+                            break;
+                        case Strings.syncKata:
+
+                            kataSys = new KataSystem(this, gm);
+
+                            break;
+                        case Strings.enbu:
+
+                            kataSys = new KataSystem(this, gm);
+                            break;
+                    }
 
 
 
@@ -2399,7 +2401,7 @@ namespace KarateGeek.guis
                                 break;
                             case 2:
 
-                               positionIndex = 0;
+                                positionIndex = 0;
                                 foreach (Team kataTeam in winners)
                                 {
 

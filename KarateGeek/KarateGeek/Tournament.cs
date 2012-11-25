@@ -77,11 +77,11 @@ namespace KarateGeek
                     this.isSync = true;
                     break;
 
-
+            }
 
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            
-            
+
+
 
 
             sql = "select * from games where tournament_id = '" + this.id + "' and phase = '6' and is_finished = false;";
@@ -126,7 +126,7 @@ namespace KarateGeek
             else
                 phase2Done = true;
 
-            }
+
 
 
             #region load games if exist for all phases

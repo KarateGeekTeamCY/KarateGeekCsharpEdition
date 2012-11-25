@@ -27,7 +27,7 @@ join game_score
 
 
 
-select * from games where tournament_id = '2' and phase = '0';
+select * from games where tournament_id = '2' and phase = '1';
 
 
 
@@ -37,5 +37,10 @@ SELECT   game_participations.team_id, mean_score from team_tournament_participat
 select * from team_tournament_participations where tournament_id = 2;
 
 select * from game_score;
+
+
+select * from game_participations join games on games.id = game_participations.game_id where phase = 0;
+
+
 
 

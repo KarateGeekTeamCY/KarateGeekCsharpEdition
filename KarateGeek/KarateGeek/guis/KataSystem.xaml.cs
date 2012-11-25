@@ -93,9 +93,9 @@ namespace KarateGeek.guis
 
             // getting paeticipant id
             if (_isTeam || _isSync)
-                _participationId = _DTparticipations.Rows[0][1].ToString();
+                _participationId = _DTparticipations.Rows[0][3].ToString();
             else
-                _participationId = _DTparticipations.Rows[0][0].ToString();
+                _participationId = _DTparticipations.Rows[0][4].ToString();
 
             this.lblInfo.Content = "";
             foreach (Athlete ath in this._game.participants)
