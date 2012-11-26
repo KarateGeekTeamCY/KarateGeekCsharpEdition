@@ -11,15 +11,15 @@ namespace KarateGeek.databaseConnection
     {
         DataTable judges = new DataTable();
 
-        public string InsertNewJudge(int personId, string firstName, string lastName, string fathersName, string sex,
+        public bool InsertNewJudge(int personId, string firstName, string lastName, string fathersName, string sex,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
            string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
            string rank, string judge_class)
         {
-            DataTable dt;
             string addressId = null;
             string judgeId = null;
+            bool judgeInsertion = false;
 
             if (personId == -1)
             {
@@ -27,24 +27,17 @@ namespace KarateGeek.databaseConnection
                 addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
                 judgeId = insertNewPerson(firstName, lastName, fathersName, sex, dateOfBirth, primaryPhoneNo, secondaryPhoneNo, email, addressId);
                 this._InsertJudge(personId, rank, judge_class);
-
+                judgeInsertion = true;
             }
             else if (personId >= 0)
             {
-                string sql = "select id from persons natural join athletes where id = " + personId + ";";
-                dt = this.Query(sql).Tables[0];
-                if (dt.Rows.Count == 0)
-                {
-                    this._InsertJudge(personId, rank, judge_class);
-                }
-                else
-                {
 
-                }
+                this._InsertJudge(personId, rank, judge_class);
+                judgeInsertion = true;
             }
-           
 
-            return personId.ToString();
+
+            return judgeInsertion;
         }
 
 
@@ -102,20 +95,16 @@ namespace KarateGeek.databaseConnection
             string sql = null;
 
             ds = athleteConnection.findAthlete(id);
-            sql = "select * from tournament_participations where athlete_id='" + id + "';";
-            ds2 = this.Query(sql);
-            if (ds2.Tables[0].Rows.Count == 0)
+
+            sql = "delete from judges where id='" + id + "';";
+            this.NonQuery(sql);
+            if (ds.Tables[0].Rows.Count == 0)
             {
-                sql = "delete from judges where id='" + id + "';";
+                sql = "delete from persons where id='" + id + "';";
                 this.NonQuery(sql);
-                if (ds.Tables[0].Rows.Count == 0)
-                {
-                    sql = "delete from persons where id='" + id + "';";
-                    this.NonQuery(sql);
-                }
-                return true;
             }
-            return false;
+            return true;
+
         }
 
 

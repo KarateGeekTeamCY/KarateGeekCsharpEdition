@@ -32,6 +32,7 @@ namespace KarateGeek.guis
             //myCalendar.SelectedDates.Add(CType(reader.GetDateTime(0), Date))
             EventConnection evCon = new EventConnection();
             DataTable dt = evCon.getEvents().Tables[0];
+            DataTable dt2 = evCon.getUnlotterisedEvents();
 
             foreach (DataRow dr in dt.Rows)
             {
@@ -91,7 +92,8 @@ namespace KarateGeek.guis
             {
                 EventTournamentManagement et = new EventTournamentManagement(ds.Rows[0][1].ToString(), this);
                 et.Activate();
-                et.eSuggestionList.SelectedIndex = 0;
+                et.eventManagemntTabs.SelectedIndex = 1;
+                et.editESuggestionList.SelectedIndex = 0;
                 this.Hide();
                 et.Show();
             }
@@ -155,11 +157,5 @@ namespace KarateGeek.guis
             UserManagement userMan = new UserManagement(this);
             userMan.Show();
         }
-
-
-
-
-
-
     }
 }
