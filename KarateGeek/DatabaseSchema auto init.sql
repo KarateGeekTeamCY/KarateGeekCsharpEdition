@@ -667,16 +667,16 @@ INSERT INTO events (name, date, location_id)
 VALUES ('Big Event', current_date, 0);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Iron Fist Tournament (Ind. Kumite)', 'MALE', 1, 99, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
+VALUES ('Iron Fist Tournament (Ind. Kumite)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter I (Sync. Kata)', 'MALE', 1, 99, 'White  –  6th kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
+VALUES ('Street Fighter I (Sync. Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter II (Team Kata)', 'MALE', 1, 99, 'White  –  6th kyu', 'White/Red – 8th dan', 'TEAM|KATA', 'SCORE', 1);
+VALUES ('Street Fighter II (Team Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'TEAM|KATA', 'SCORE', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter III (Team Kumite)', 'MALE', 1, 99, 'Yellow –  5th kyu', 'Red    –  10th dan', 'TEAM|KUMITE', 'POINT', 1);
+VALUES ('Street Fighter III (Team Kumite)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'TEAM|KUMITE', 'POINT', 1);
 
 -- A NULL "ranking" means that the match hasn't taken place yet
 

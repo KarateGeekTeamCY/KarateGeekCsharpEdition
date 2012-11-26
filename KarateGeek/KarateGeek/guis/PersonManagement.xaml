@@ -9,7 +9,9 @@
             <RowDefinition Height="80"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-
+         
+        
+        
         <Label Name="lblPersonManagementMenuInfo" 
                Content="Info" 
                FontSize="20" 
