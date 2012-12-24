@@ -234,7 +234,15 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        private void writeTournamentGameSet(List<long> idList, bool isReady, int phase, int position, long tournamentId) /* untested */
+        /* Methods writeTournamentGameSet() and writeAllTournamentGameSets() were written following the examples of
+         * methods writeTournamentPair()    and writeAllTournamentPairs()    (respectively), but using a much cleaner
+         * and more reusable approach.
+         * 
+         * Ideally, methods in the Lottery Generator classes that use the latter should be converted to use the first,
+         * passing lists of athletes instead of fake "pairs" (Especially the LotteryGen_Expo_Ind class). However, this
+         * requires significant refactoring (again!) and might break code that works.
+         */
+        private void writeTournamentGameSet(List<long> idList, bool isReady, int phase, int position, long tournamentId)
         {
             String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
                              + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
@@ -252,7 +260,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        public bool writeAllTournamentGameSets(List<Tuple<List<long>, bool, int, int>> Sets, long tournamentId, bool doCommit) /* untested */
+        public bool writeAllTournamentGameSets(List<Tuple<List<long>, bool, int, int>> Sets, long tournamentId, bool doCommit)
         {
             this.NonQuery("BEGIN;");
 
@@ -269,6 +277,7 @@ namespace KarateGeek.databaseConnection
                 return false;               // always false, since we didn't write anything
             }
         }
+
 
         /** The following methods aren't strictly related to lotteries, and might be moved elsewhere: **/
 
