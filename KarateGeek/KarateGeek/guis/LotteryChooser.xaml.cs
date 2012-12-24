@@ -42,12 +42,17 @@ namespace KarateGeek.guis
 
             this.sender = sender;
 
-            string node = "┌───────────────┐\n" +
-                          "│ onoma athliti ├────\n" +
-                          "└───────────────┘\n";
-            terminal.Content = node;
+            string node = "┌──────────────────┐\n"
+                        + "│ Athlete 1's name ├──┐\n"
+                        + "└──────────────────┘  │\n"
+                        + "                      ├──┤\n"
+                        + "┌──────────────────┐  │\n"
+                        + "│ Athlete 2's name ├──┘\n"
+                        + "└──────────────────┘\n";
 
-            
+            //terminal.Content = node;
+            terminal.Content = null;
+            terminal.FontSize = 10;
         }
 
         private void cboEventCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -73,6 +78,8 @@ namespace KarateGeek.guis
             lg = LotteryGeneratorFactory.Create(tournamentId);
             lg.shuffle();
 
+            /* experimental (and totally, totally broken in most cases): */
+            terminal.Content = new LotteryPrinter(lg.getLottery(), tournamentId).ToString();
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)

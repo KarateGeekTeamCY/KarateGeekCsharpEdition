@@ -296,8 +296,7 @@ namespace KarateGeek.lottery
             List<Tuple<long, long, int, int>> teamPairs = base.getPairs(Participants);
             List<Tuple<long, long, int, int>> athletePairs = new List<Tuple<long, long, int, int>>();
 
-            int phase = (int)Math.Ceiling(Math.Log(Participants.Count, 2)) - 3; // THIS LINES CRASHES, BECAUSE GetLottery() SOMEHOW RETURNS NULL!
-            int pos = 1;
+            int phase = (int)Math.Ceiling(Math.Log(Participants.Count, 2)) - 3;
 
             /* Normally we would use (-1, -1) to write only empty !isReady pairs, but actually writing down the
              * real pairs is easier (!). The reason is that we cannot pass teamId to the database easily (as is)...
