@@ -158,7 +158,181 @@ namespace KarateGeek.guis
             //else
             //{
             //}
+
+            List<Athlete> teamA = new List<Athlete>();
+            List<Athlete> teamB = new List<Athlete>();
+            List<Athlete> team = new List<Athlete>();
+
+            List<Game> curentGames = new List<Game>();
+            List<Game> futureGames = new List<Game>();
+            List<Game> game = new List<Game>();
+
+
+
+
+            if (this.tournament.games128.Count != 0 && (!this.tournament.phase128Done))
+            {
+                this._indexCurrentphase = 6;
+                this._indexNextPhase = 5;
+
+                curentGames = this.tournament.games128;
+                futureGames = this.tournament.games64;
+            }
+
+            else if (this.tournament.games64.Count != 0 && (!this.tournament.phase64Done))
+            {
+                this._indexCurrentphase = 5;
+                this._indexNextPhase = 4;
+
+                curentGames = this.tournament.games64;
+                futureGames = this.tournament.games32;
+            }
+
+            else if (this.tournament.games32.Count != 0 && (!this.tournament.phase32Done))
+            {
+                this._indexCurrentphase = 4;
+                this._indexNextPhase = 3;
+
+                curentGames = this.tournament.games32;
+                futureGames = this.tournament.games16;
+            }
+
+            else if (this.tournament.games16.Count != 0 && (!this.tournament.phase16Done))
+            {
+                this._indexCurrentphase = 3;
+                this._indexNextPhase = 2;
+
+                curentGames = this.tournament.games16;
+                futureGames = this.tournament.games8;
+            }
+
+            else if (this.tournament.games8.Count != 0 && (!this.tournament.phase8Done))
+            {
+                this._indexCurrentphase = 2;
+                this._indexNextPhase = 1;
+
+                curentGames = this.tournament.games8;
+                futureGames = this.tournament.games4;
+            }
+
+            else if (this.tournament.games4.Count != 0 && (!this.tournament.phase4Done))
+            {
+                this._indexCurrentphase = 1;
+                this._indexNextPhase = 0;
+
+                curentGames = this.tournament.games4;
+                futureGames = this.tournament.games2;
+            }
+
+
+            else if (this.tournament.games2.Count != 0 && (!this.tournament.phase2Done))
+            {
+                this._indexCurrentphase = 0;
+                this._indexNextPhase = -1;
+
+                curentGames = this.tournament.games2;
+                futureGames = null;
+            }
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+            List<string> current = new List<string>();
+            List<string> future = new List<string>();
+
+
+            foreach (Game gm in curentGames)
+            {
+                
+
+
+            }
+            this.listBoxCurrentGameList.ItemsSource = current;
+
+            //
+            //next Phase
+            //
+            
+
+            foreach (Game gm in futureGames)
+            {
+                if(this.tournament.gameType == Strings.indKata 
+                    || this.tournament.gameType == Strings.indKata )
+                        future.Add( this.createPresentationString(gm) );
+
+                if(this.tournament.gameType == Strings.syncKata 
+                    || this.tournament.gameType == Strings.enbu )
+                        future.Add( this.createTeamPresentationString(gm) );
+
+                if(this.tournament.gameType == Strings.teamKumite 
+                    || this.tournament.gameType == Strings.indKumite )
+                        future.Add( this.createTeamPresentationString(gm) );
+
+
+            }
+            this.listBoxNextGameList.ItemsSource = future;
+
+
+
+
         }
+
+        private string createPresentationString(Game gm)
+        {
+
+            return "";
+        }
+
+
+        private string createVersusString(Game gm)
+        {
+            StringBuilder temp = new StringBuilder();
+            Athlete A;
+            Athlete B;
+
+            switch (gm.participants.Count)
+            {
+                case 0:
+                    temp.Append("Empty...");
+
+                    break;
+                case 1:
+                    A = gm.participants.ElementAt(0);
+                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+
+                    break;
+                case 2:
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
+                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    break;
+            }
+
+            return temp.ToString();
+        }
+
+
+        private string createTeamPresentationString(Game gm)
+        {
+            string temp = "";
+            if (gm.participants.Count == 0)
+            {
+                temp = "Waiting...";
+            }
+            else
+                foreach (Athlete ath in gm.participants)
+                {
+                    temp += (ath.lastName + " " + ath.firstName + " - ");
+                }
+            return temp;
+        }
+
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        /// 
 
         private void loadIndevidual()
         {
@@ -1167,7 +1341,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games128)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -1179,7 +1353,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
@@ -1199,7 +1373,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -1211,7 +1385,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
@@ -1231,7 +1405,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -1243,7 +1417,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1259,7 +1433,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -1271,7 +1445,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
@@ -1289,7 +1463,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -1301,7 +1475,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
@@ -1318,7 +1492,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -1330,7 +1504,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games2)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxNextGameList.ItemsSource = future;
@@ -1347,7 +1521,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games2)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = null;
                 this.listBoxCurrentGameList.ItemsSource = current;
@@ -1382,7 +1556,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games128)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1393,7 +1567,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -1412,7 +1586,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games64)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1423,7 +1597,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1439,7 +1613,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games32)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1450,7 +1624,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
 
@@ -1467,7 +1641,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games16)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1478,7 +1652,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1494,7 +1668,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1505,7 +1679,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1521,7 +1695,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games8)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1532,7 +1706,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    future.Add(loadTeamParticipants(gm));
+                    future.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxNextGameList.ItemsSource = future;
             }
@@ -1548,7 +1722,7 @@ namespace KarateGeek.guis
 
                 foreach (Game gm in tournament.games4)
                 {
-                    current.Add(loadTeamParticipants(gm));
+                    current.Add(createTeamPresentationString(gm));
                 }
                 this.listBoxCurrentGameList.ItemsSource = current;
 
@@ -1576,20 +1750,11 @@ namespace KarateGeek.guis
 
 
 
-        private string loadTeamParticipants(Game game)
-        {
-            string temp = "";
-            if (game.participants.Count == 0)
-            {
-                temp = "Waiting...";
-            }
-            else
-                foreach (Athlete ath in game.participants)
-                {
-                    temp += (ath.lastName + " " + ath.firstName + " - ");
-                }
-            return temp;
-        }
+       
+
+
+
+
 
         private List<Athlete> getKataIndSinglePositioning()
         {
