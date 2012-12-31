@@ -167,7 +167,7 @@ namespace KarateGeek.guis
             List<Game> futureGames = new List<Game>();
             List<Game> game = new List<Game>();
 
-
+            #region find the curent and next phase games list
 
 
             if (this.tournament.games128.Count != 0 && (!this.tournament.phase128Done))
@@ -235,6 +235,7 @@ namespace KarateGeek.guis
             }
 
 
+            #endregion
             ////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -245,7 +246,7 @@ namespace KarateGeek.guis
 
             foreach (Game gm in curentGames)
             {
-                
+
 
 
             }
@@ -254,37 +255,59 @@ namespace KarateGeek.guis
             //
             //next Phase
             //
-            
+
 
             foreach (Game gm in futureGames)
             {
-                if(this.tournament.gameType == Strings.indKata 
-                    || this.tournament.gameType == Strings.indKata )
-                        future.Add( this.createPresentationString(gm) );
 
-                if(this.tournament.gameType == Strings.syncKata 
-                    || this.tournament.gameType == Strings.enbu )
-                        future.Add( this.createTeamPresentationString(gm) );
+                if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                    || this.tournament.gameType == Strings.indKata
+                    || this.tournament.gameType == Strings.teamKata)
+                {
+                    future.Add(this.createPresentationString(gm));
+                }
 
-                if(this.tournament.gameType == Strings.teamKumite 
-                    || this.tournament.gameType == Strings.indKumite )
-                        future.Add( this.createTeamPresentationString(gm) );
 
+
+                if (this.tournament.gameType == Strings.syncKata
+                    || this.tournament.gameType == Strings.enbu)
+                {
+                    future.Add(this.createTeamPresentationString(gm));
+                }
+
+
+
+                if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                    || this.tournament.gameType == Strings.indKumite
+                    || this.tournament.gameType == Strings.fugugo
+                    || this.tournament.gameType == Strings.teamKumite)
+                {
+                    future.Add(this.createVersusString(gm));
+                }
 
             }
+
             this.listBoxNextGameList.ItemsSource = future;
-
-
-
-
         }
+
+
+        #region string creators
 
         private string createPresentationString(Game gm)
         {
+            string temp = "";
+            if (gm.participants.Count == 0)
+            {
+                temp = "Waiting...";
+            }
+            else
+            {
+                Athlete ath = gm.participants[0];
+                temp += (ath.lastName + " " + ath.firstName);
+            }
 
-            return "";
+            return temp;
         }
-
 
         private string createVersusString(Game gm)
         {
@@ -313,7 +336,6 @@ namespace KarateGeek.guis
             return temp.ToString();
         }
 
-
         private string createTeamPresentationString(Game gm)
         {
             string temp = "";
@@ -329,6 +351,7 @@ namespace KarateGeek.guis
             return temp;
         }
 
+        #endregion string creators
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////
         /// </summary>
@@ -1750,7 +1773,7 @@ namespace KarateGeek.guis
 
 
 
-       
+
 
 
 
