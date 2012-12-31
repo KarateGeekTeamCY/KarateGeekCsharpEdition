@@ -128,14 +128,14 @@ namespace KarateGeek.guis
 
         public void loadGames()
         {
-            if (this.tournament.isInd)
-                loadIndevidual();
+            //if (this.tournament.isInd)
+            //    loadIndevidual();
 
-            if (this.tournament.isTeam)
-                loadTeam();
+            //if (this.tournament.isTeam)
+            //    loadTeam();
 
-            if (this.tournament.isSync)
-                loadSync();
+            //if (this.tournament.isSync)
+            //    loadSync();
 
             //if (this.tournament.games128.Count != 0)
             //{
@@ -159,13 +159,14 @@ namespace KarateGeek.guis
             //{
             //}
 
-            List<Athlete> teamA = new List<Athlete>();
-            List<Athlete> teamB = new List<Athlete>();
-            List<Athlete> team = new List<Athlete>();
+            //List<Athlete> teamA = new List<Athlete>();
+            //List<Athlete> teamB = new List<Athlete>();
+            //List<Athlete> team = new List<Athlete>();
 
             List<Game> curentGames = new List<Game>();
             List<Game> futureGames = new List<Game>();
-            List<Game> game = new List<Game>();
+            //List<Game> game = new List<Game>();
+
 
             #region find the curent and next phase games list
 
@@ -236,35 +237,67 @@ namespace KarateGeek.guis
 
 
             #endregion
-            ////////////////////////////////////////////////////////////////////////////////////////////
+            
+
+            //List<string> current = new List<string>();
+            //List<string> future = new List<string>();
+
+
+            
+            this.listBoxCurrentGameList.ItemsSource = loadStrings(curentGames);
+
+            
+            //foreach (Game gm in futureGames)
+            //{
+
+            //    if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+            //        || this.tournament.gameType == Strings.indKata
+            //        || this.tournament.gameType == Strings.teamKata)
+            //    {
+            //        future.Add(this.createPresentationString(gm));
+            //    }
 
 
 
-            List<string> current = new List<string>();
-            List<string> future = new List<string>();
+            //    if (this.tournament.gameType == Strings.syncKata
+            //        || this.tournament.gameType == Strings.enbu)
+            //    {
+            //        future.Add(this.createTeamPresentationString(gm));
+            //    }
 
 
-            foreach (Game gm in curentGames)
-            {
+
+            //    if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+            //        || this.tournament.gameType == Strings.indKumite
+            //        || this.tournament.gameType == Strings.fugugo
+            //        || this.tournament.gameType == Strings.teamKumite)
+            //    {
+            //        future.Add(this.createVersusString(gm));
+            //    }
+
+            //}
+
+            this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames);
+        }
 
 
 
-            }
-            this.listBoxCurrentGameList.ItemsSource = current;
-
-            //
-            //next Phase
-            //
+        #region string creators
 
 
-            foreach (Game gm in futureGames)
+        private List<string> loadStrings(List<Game> games)
+        {
+
+            List<string> temp = new List<string>();
+
+            foreach (Game gm in games)
             {
 
                 if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
                     || this.tournament.gameType == Strings.indKata
                     || this.tournament.gameType == Strings.teamKata)
                 {
-                    future.Add(this.createPresentationString(gm));
+                    temp.Add(this.createPresentationString(gm));
                 }
 
 
@@ -272,7 +305,7 @@ namespace KarateGeek.guis
                 if (this.tournament.gameType == Strings.syncKata
                     || this.tournament.gameType == Strings.enbu)
                 {
-                    future.Add(this.createTeamPresentationString(gm));
+                    temp.Add(this.createTeamPresentationString(gm));
                 }
 
 
@@ -282,16 +315,13 @@ namespace KarateGeek.guis
                     || this.tournament.gameType == Strings.fugugo
                     || this.tournament.gameType == Strings.teamKumite)
                 {
-                    future.Add(this.createVersusString(gm));
+                    temp.Add(this.createVersusString(gm));
                 }
 
             }
 
-            this.listBoxNextGameList.ItemsSource = future;
+            return temp;
         }
-
-
-        #region string creators
 
         private string createPresentationString(Game gm)
         {
@@ -352,10 +382,7 @@ namespace KarateGeek.guis
         }
 
         #endregion string creators
-        /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////
-        /// </summary>
-        /// 
+       
 
         private void loadIndevidual()
         {
