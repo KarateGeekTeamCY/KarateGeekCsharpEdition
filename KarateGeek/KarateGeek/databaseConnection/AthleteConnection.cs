@@ -40,36 +40,6 @@ namespace KarateGeek.databaseConnection
             return athleteInsertion;
         }
 
-
-
-        //public string InserrtNewAthleteFromOther(string id, string firstName, string middleName, string lastName,
-        //  DateTime dateOfBirth,
-        //  string primaryPhoneNo, string secondaryPhoneNo, string email,
-        //  string countryCode, string City, string addressStreetName, string addressStreetNumber, string addressPostalCode,
-        //  string rank, string localClubId)
-        //{
-        //    string sql = "";
-        //    DataSet dr = null;
-
-        //    //this.updatePerson(id, firstName, middleName, lastName,
-        //    //dateOfBirth,
-        //    //primaryPhoneNo, secondaryPhoneNo, email);
-
-        //    this._InsertAthlete(id, rank, localClubId);
-
-        //    // getting the athlete_address id
-        //    sql = "select address_id from persons where id = '" + id + "'; ";
-        //    dr = this.Query(sql);
-        //    int addressId = int.Parse(dr.Tables[0].Rows[0][0].ToString()); 
-
-        //    AddressConnection addConn = new AddressConnection();
-        //    addConn.UpdateAddress(addressId, countryCode, City, addressStreetName, addressStreetNumber, addressPostalCode);
-
-        //    return "";
-        //}
-
-
-
         public string UpdateAthlete(int id, string firstName, string lastName, string fathersName, string sex,
            DateTime dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
@@ -153,8 +123,6 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
-
-
         private string _UpdatetAthlete(int PersonId, string rank, string localClubId)
         {
             string sql = "update athletes set " +
@@ -167,8 +135,6 @@ namespace KarateGeek.databaseConnection
             return "";
         }
 
-
-
         public DataTable GetAthletes()
         {
             string sql = "select * from athletes join persons on persons.id = athletes.id;";
@@ -177,8 +143,6 @@ namespace KarateGeek.databaseConnection
             return temp.Tables[0];
 
         }
-
-
 
         public int getNumOfScheduledParticipation(long athleteId) // returns the number of scheduled participations
         {                                                         // where the tournament hasn't taken place yet.
