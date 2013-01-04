@@ -237,16 +237,16 @@ namespace KarateGeek.guis
 
 
             #endregion
-            
+
 
             //List<string> current = new List<string>();
             //List<string> future = new List<string>();
 
 
-            
+
             this.listBoxCurrentGameList.ItemsSource = loadStrings(curentGames);
 
-            
+
             //foreach (Game gm in futureGames)
             //{
 
@@ -348,20 +348,35 @@ namespace KarateGeek.guis
             switch (gm.participants.Count)
             {
                 case 0:
-                    temp.Append("Empty...");
+
+                    if (this.tournament.gameType == Strings.teamKumite)
+                    {
+                        temp.Append("Click to add game members.");
+                    }
+                    else
+                    {
+                        temp.Append("Empty...");
+                    }
 
                     break;
                 case 1:
+
                     A = gm.participants.ElementAt(0);
                     temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
 
                     break;
                 case 2:
+
                     A = gm.participants.ElementAt(0);
                     B = gm.participants.ElementAt(1);
                     temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+
                     break;
             }
+
+
+
+
 
             return temp.ToString();
         }
@@ -382,8 +397,8 @@ namespace KarateGeek.guis
         }
 
         #endregion string creators
-       
 
+        /*
         private void loadIndevidual()
         {
 
@@ -397,7 +412,7 @@ namespace KarateGeek.guis
                             foreach (Athlete ath in tournament.participants)
                                 ath.ranking = "128";
 
-                        this.loadIndevidualVersus();
+                        //this.loadIndevidualVersus();
                     }
                     else
                     {
@@ -407,7 +422,7 @@ namespace KarateGeek.guis
                                 ath.ranking = "128";
 
 
-                        this.loadIndevidualSingle();
+                        //this.loadIndevidualSingle();
                     }
                     break;
                 case Strings.indKumite:
@@ -417,7 +432,7 @@ namespace KarateGeek.guis
                             ath.ranking = "128";
 
 
-                    this.loadIndevidualVersus();
+                    //this.loadIndevidualVersus();
                     break;
                 case Strings.fugugo:
 
@@ -426,11 +441,14 @@ namespace KarateGeek.guis
                             ath.ranking = "128";
 
 
-                    this.loadIndevidualVersus();
+                    //this.loadIndevidualVersus();
                     break;
             }
         }
 
+        */
+
+        /*
         private void loadIndevidualVersus()
         {
 
@@ -753,7 +771,9 @@ namespace KarateGeek.guis
 
 
         }
+        */
 
+        /*
         private void loadIndevidualSingle()
         {
 
@@ -947,8 +967,9 @@ namespace KarateGeek.guis
                 //tournament is finished anounce the winner
             }
         }
+        */
 
-
+        /*
         private void loadTeam()
         {
             switch (this.tournament.gameType)
@@ -960,7 +981,7 @@ namespace KarateGeek.guis
                             ath.ranking = "128";
 
 
-                    loadIndevidualSingle();
+                   // loadIndevidualSingle();
 
                     break;
                 case Strings.teamKumite:
@@ -974,7 +995,9 @@ namespace KarateGeek.guis
                     break;
             }
         }
+        */
 
+        /*
         private void loadTamVersus()
         {
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
@@ -1346,7 +1369,9 @@ namespace KarateGeek.guis
 
         }
 
+        */
 
+        /*
         private void loadSync()
         {
             switch (this.tournament.gameType)
@@ -1374,6 +1399,10 @@ namespace KarateGeek.guis
                     break;
             }
         }
+
+        */
+
+        /*
 
         private void loadKataSyncSingle()
         {
@@ -1590,6 +1619,10 @@ namespace KarateGeek.guis
             }
         }
 
+
+        */
+
+        /*
         private void loadEmbuSyncSingle()
         {
 
@@ -1788,6 +1821,8 @@ namespace KarateGeek.guis
                 //tournament is finished anounce the winner
             }
         }
+
+        */
 
 
         #endregion game loading functions
