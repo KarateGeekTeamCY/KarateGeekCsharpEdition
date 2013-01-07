@@ -1859,14 +1859,16 @@ namespace KarateGeek.guis
             return aths;
         }
 
-        private Athlete getKataIndVersusWinner(string gameId)
+        private Athlete getKataIndVersusWinner(Game gm)
         {
             string sql;
+            string id = gm.gameId;
+
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
             //
             // untested sql
             //
-            sql = "select * from game_participacions join game_flag on game_participacions.game_id = game_flag.game_id where game_id = '" + gameId + "' ;";
+            sql = "select * from game_participacions join game_flag on game_participacions.game_id = game_flag.game_id where game_id = '" + id + "' ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
@@ -1901,6 +1903,7 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            
             //
             // unchecked sql
             //
@@ -1922,16 +1925,19 @@ namespace KarateGeek.guis
             return teams;
         }
 
-        private Team getKumiteTeamWinner(Game game)
+        private Team getKumiteTeamWinner(Game gm)
         {
 
-            string phase, teamA, teamB;
-            string sql;
+            string phase, teamA, teamB, sql;
+            string gameid = gm.gameId;
+
+
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select team_id from games join game_participations gp on games.id = gp.game_id where game_id = '" + game.gameId + "';";
+            sql = "select team_id from games join game_participations gp on games.id = gp.game_id where game_id = '" + gameid + "';";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            phase = game.phase;
+            phase = gm.phase;
+
             teamA = temp.Rows[0][0].ToString();
             teamB = temp.Rows[1][0].ToString();
 
@@ -2099,6 +2105,7 @@ namespace KarateGeek.guis
             this.loadGames();
         }
 
+
         public void advanceAthlites()
         {
 
@@ -2163,7 +2170,7 @@ namespace KarateGeek.guis
                     {
                         case Strings.flag:
 
-                            winner = this.getKataIndVersusWinner(gm.gameId);
+                            winner = this.getKataIndVersusWinner(gm);
 
                             switch (this._indexCurrentphase)
                             {
@@ -2297,9 +2304,12 @@ namespace KarateGeek.guis
                     }
 
                     break;
+
+
                 #endregion indevidual kata end region
 
                 #region indevidual kumite
+
 
                 case Strings.indKumite:
 
@@ -2368,7 +2378,7 @@ namespace KarateGeek.guis
                         // kata phase
                         //
 
-                        winner = this.getKataIndVersusWinner(gm.gameId);
+                        winner = this.getKataIndVersusWinner(gm);
 
                         switch (this._indexCurrentphase)
                         {
@@ -2822,6 +2832,47 @@ namespace KarateGeek.guis
 
             // this.update();
         }
+
+
+        private void advanceVsGame(Game gm)
+        { 
+            //getKumiteIndVersusWinner
+
+
+        
+        
+        
+        }
+
+
+
+        private int findNextPossInd(int current)
+        {
+            double temp = ((double)current + 1) / 2;
+            int next = (int)Math.Floor(temp);
+            return next;
+        }
+
+
+
+        private int findNextPossTeamX3(int current)
+        {
+            int next3 = current;
+
+            while ((next3 % 3) == 0)
+                next3++;
+
+
+           
+            if (((double)next3 / 2) != 0)
+                current += 3;
+
+
+            return findNextPossInd(current);
+        }
+
+
+
     }
 }
 
