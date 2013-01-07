@@ -1874,16 +1874,18 @@ namespace KarateGeek.guis
             return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
         }
 
-        public Athlete getKumiteIndVersusWinner(string gameId)
+        public Athlete getKumiteIndVersusWinner(Game gm)
         {
-            string sql;
+            string sql, gameid;
+            gameid = gm.gameId;
+
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select athlete_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_points.game_id where game_id = '" + gameId + "' group by (game_participations.athlete_id) ;";
+            sql = "select athlete_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_points.game_id where game_id = '" + gameid + "' group by (game_participations.athlete_id) ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             if ((int)temp.Rows[0][1] == (int)temp.Rows[1][1])
             {
-                ChooseWinner getwin = new ChooseWinner(this, new Game(gameId), this.tournament);
+                ChooseWinner getwin = new ChooseWinner(this, new Game(gameid), this.tournament);
             }
             else
             {
@@ -1987,6 +1989,8 @@ namespace KarateGeek.guis
         {
             return this.getSyncKataWinner(gameId);
         }
+
+
         #endregion winner checks
 
         //
@@ -2313,7 +2317,7 @@ namespace KarateGeek.guis
 
                 case Strings.indKumite:
 
-                    winner = this.getKumiteIndVersusWinner(gm.gameId);
+                    winner = this.getKumiteIndVersusWinner(gm);
 
                     if (winner != null)
                         switch (this._indexCurrentphase)
@@ -2439,7 +2443,7 @@ namespace KarateGeek.guis
 
 
 
-                        winner = this.getKumiteIndVersusWinner(gm.gameId);
+                        winner = this.getKumiteIndVersusWinner(gm);
 
                         switch (this._indexCurrentphase)
                         {
@@ -2835,13 +2839,33 @@ namespace KarateGeek.guis
 
 
         private void advanceVsGame(Game gm)
-        { 
-            //getKumiteIndVersusWinner
+        {
+            string winner = "-1";
+
+            if (this.tournament.gameType == Strings.indKumite)
+                winner = getKumiteIndVersusWinner(gm).id;
+
+            //
+            // make the function below to return -1 if not all the games of the two teams 
+            // aren't finished eg. just two of the three games are done and there another 
+            // game to be played.
+            //
+            if (this.tournament.gameType == Strings.teamKumite)
+                winner = getKumiteTeamWinner(gm).id;
 
 
-        
-        
-        
+            if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag)
+                winner = getKataIndVersusWinner(gm).id;
+
+
+            if (winner != "-1")
+            { 
+            
+            
+            
+            
+            
+            }
         }
 
 
