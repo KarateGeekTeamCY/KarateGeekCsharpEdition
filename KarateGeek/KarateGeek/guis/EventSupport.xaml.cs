@@ -2906,12 +2906,25 @@ namespace KarateGeek.guis
 
                     }
                 }
-
-
-
-
-
             }
+        }
+
+
+        private void advancePresentationWinners(Game gm)
+        {
+            List<Athlete> aWinners;
+            List<Team> tWinners;
+
+
+            if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                aWinners = getKataIndSinglePositioning();
+
+            if (this.tournament.gameType == Strings.teamKata)
+                tWinners = getKataTeamIndPositioning(_indexCurrentphase.ToString());
+
+
+
+
         }
 
 
@@ -2932,11 +2945,8 @@ namespace KarateGeek.guis
             while ((next3 % 3) == 0)
                 next3++;
 
-
-
             if (((double)next3 / 2) != 0)
                 current += 3;
-
 
             return findNextPossInd(current);
         }
