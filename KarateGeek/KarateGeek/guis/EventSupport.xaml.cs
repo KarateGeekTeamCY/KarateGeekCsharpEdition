@@ -1905,7 +1905,7 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            
+
             //
             // unchecked sql
             //
@@ -2857,14 +2857,60 @@ namespace KarateGeek.guis
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag)
                 winner = getKataIndVersusWinner(gm).id;
 
-
+            //
+            // here is the actual advancing of the winners if there are any for the given moment (round)
+            //
             if (winner != "-1")
-            { 
-            
-            
-            
-            
-            
+            {
+                int nextPhase, nextPoss;
+                int currentPhase, currentPossition;
+                string sql;
+
+                if (this.tournament.gameType == Strings.indKumite || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
+                {
+                    currentPossition = int.Parse(gm.position);
+                    nextPoss = findNextPossInd(currentPossition);
+
+                    currentPhase = int.Parse(gm.phase);
+                    nextPhase = currentPhase - 1;
+
+                    if (nextPhase == -1)
+                    {
+                        //
+                        // its the winner there is no more rounds
+                        // do something about that
+                        //
+                    }
+                    else
+                    {
+                        sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
+                            + " AND phase = " + nextPhase
+                            + " AND possition = " + nextPoss + ";";
+                        CoreDatabaseConnection conn = new CoreDatabaseConnection();
+                        string nextgameid = conn.Query(sql).Tables[0].Rows[0][0].ToString();
+
+                        string winnertype;
+
+
+                        if (this.tournament.gameType == Strings.teamKumite)
+                            winnertype = "team_id";
+                        else
+                            winnertype = "athlete_id";
+
+
+                        sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
+                            + " VALUES (" + winner + ", " + nextgameid + "); ";
+                        conn.NonQuery(sql);
+
+
+
+                    }
+                }
+
+
+
+
+
             }
         }
 
@@ -2887,7 +2933,7 @@ namespace KarateGeek.guis
                 next3++;
 
 
-           
+
             if (((double)next3 / 2) != 0)
                 current += 3;
 

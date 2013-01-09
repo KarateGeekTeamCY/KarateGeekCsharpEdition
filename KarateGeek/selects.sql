@@ -43,4 +43,18 @@ select * from game_participations join games on games.id = game_participations.g
 
 
 
+select * from games;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
