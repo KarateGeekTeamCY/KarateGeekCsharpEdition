@@ -2854,6 +2854,14 @@ namespace KarateGeek.guis
                 winner = getKumiteTeamWinner(gm).id;
 
 
+            if (this.tournament.gameType == Strings.fugugo)
+                if ((_indexCurrentphase % 2) == 0)
+                    winner = getKumiteTeamWinner(gm).id;
+                else
+                    winner = getKataIndVersusWinner(gm).id;
+
+
+
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag)
                 winner = getKataIndVersusWinner(gm).id;
 
@@ -2883,30 +2891,58 @@ namespace KarateGeek.guis
                     }
                     else
                     {
+                        
                         sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
                             + " AND phase = " + nextPhase
                             + " AND possition = " + nextPoss + ";";
                         CoreDatabaseConnection conn = new CoreDatabaseConnection();
                         string nextgameid = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
+
+
                         string winnertype;
-
-
                         if (this.tournament.gameType == Strings.teamKumite)
                             winnertype = "team_id";
                         else
                             winnertype = "athlete_id";
 
+                        
+                        if (this.tournament.gameType == Strings.teamKumite)
+                        {
+                            int next3 = findnext3(nextPoss);
+                            for (int i = (next3 - 3); i < next3; i++)
+                            {
+                                nextgameid = findNextGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
 
-                        sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
-                            + " VALUES (" + winner + ", " + nextgameid + "); ";
-                        conn.NonQuery(sql);
+                                sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
+                                + " VALUES (" + winner + ", " + nextgameid + "); ";
+                                conn.NonQuery(sql);
+                            }
+                        }
+                        else
+                        {
+                            nextgameid = findNextGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
 
+                            sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
+                                + " VALUES (" + winner + ", " + nextgameid + "); ";
+                            conn.NonQuery(sql);
+                        }
 
 
                     }
                 }
             }
+        }
+
+
+        private string findNextGameId(string tourid, string phase, string poss)
+        {
+            string sql = "SELECT id FROM games WHERE tournament_id = " + tourid
+                                        + " AND phase = " + phase
+                                        + " AND possition = " + poss + ";";
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+             return conn.Query(sql).Tables[0].Rows[0][0].ToString();
         }
 
 
@@ -2922,9 +2958,11 @@ namespace KarateGeek.guis
             if (this.tournament.gameType == Strings.teamKata)
                 tWinners = getKataTeamIndPositioning(_indexCurrentphase.ToString());
 
-
-
-
+            if (this.tournament.gameType == Strings.enbu)
+                tWinners = getEnbuWinner(_indexCurrentphase.ToString());
+            //
+            // TO-DO
+            //
         }
 
 
@@ -2940,10 +2978,10 @@ namespace KarateGeek.guis
 
         private int findNextPossTeamX3(int current)
         {
-            int next3 = current;
+            int next3 = findnext3(current);
 
-            while ((next3 % 3) == 0)
-                next3++;
+            //while ((next3 % 3) == 0)
+            //    next3++;
 
             if (((double)next3 / 2) != 0)
                 current += 3;
@@ -2951,6 +2989,17 @@ namespace KarateGeek.guis
             return findNextPossInd(current);
         }
 
+
+
+        private int findnext3(int current)
+        {
+            int next3 = current;
+
+            while (((next3 % 3) == 0) && (next3 != 0))
+                next3++;
+
+            return next3;
+        }
 
 
     }
