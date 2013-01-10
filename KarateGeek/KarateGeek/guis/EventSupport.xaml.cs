@@ -2156,7 +2156,7 @@ namespace KarateGeek.guis
             //
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
             string sql;
-            
+
             sql = "SELECT phase, position FROM games WHERE tournament_id = '" + this.tournament.id + "' ORDER BY phase DESC, position;";
             DataTable temp = conn.Query(sql).Tables[0];
 
@@ -2895,7 +2895,7 @@ namespace KarateGeek.guis
                     }
                     else
                     {
-                        
+
                         sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
                             + " AND phase = " + nextPhase
                             + " AND possition = " + nextPoss + ";";
@@ -2910,13 +2910,13 @@ namespace KarateGeek.guis
                         else
                             winnertype = "athlete_id";
 
-                        
+
                         if (this.tournament.gameType == Strings.teamKumite)
                         {
                             int next3 = findnext3(nextPoss);
                             for (int i = (next3 - 3); i < next3; i++)
                             {
-                                nextgameid = findNextGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
+                                nextgameid = findGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
 
                                 sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
                                 + " VALUES (" + winner + ", " + nextgameid + "); ";
@@ -2925,7 +2925,7 @@ namespace KarateGeek.guis
                         }
                         else
                         {
-                            nextgameid = findNextGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
+                            nextgameid = findGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
 
                             sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
                                 + " VALUES (" + winner + ", " + nextgameid + "); ";
@@ -2941,8 +2941,8 @@ namespace KarateGeek.guis
 
         private void advancePresentationWinners(Game gm)
         {
-            List<Athlete> aWinners;
-            List<Team> tWinners;
+            List<Athlete> aWinners = null;
+            List<Team> tWinners = null;
 
 
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
@@ -2959,21 +2959,73 @@ namespace KarateGeek.guis
                 tWinners = getSyncKataWinner(_indexCurrentphase.ToString());
 
 
+            int i = 0;
+
+            if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+            {
+                foreach (Athlete ath in aWinners)
+                {
+                    addSingleParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), ath);
+                    i++;
+                }
+            }
+
+            i = 0;
+
+            if (this.tournament.gameType == Strings.teamKata
+            || this.tournament.gameType == Strings.enbu
+            || this.tournament.gameType == Strings.syncKata)
+            {
+                foreach (Team team in tWinners)
+                {
+                    addTeamParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
+                    i++;
+                }
+            }
+
+
+
             //
             // TO-DO
             //
         }
 
 
+        private void addSingleParticipant(string gameid, Athlete ath)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            sql = "INSERT INTO game_participations (athlete_id, game_id) VAlUES ( " + ath.id + ", " + gameid + " ); ";
+            conn.NonQuery(sql);
 
-        private string findNextGameId(string tourid, string phase, string poss)
+
+
+        }
+
+
+        private void addTeamParticipant(string gameid, Team team)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            foreach (Athlete ath in team.participants)
+            {
+                sql = "INSERT INTO game_participations (team_id, athlete_id, game_id) VAlUES ( " + team.id + ", " + ath.id + " , " + gameid + " ); ";
+                conn.NonQuery(sql);
+            }
+
+        }
+
+
+
+        private string findGameId(string tourid, string phase, string poss)
         {
             string sql = "SELECT id FROM games WHERE tournament_id = " + tourid
                                         + " AND phase = " + phase
                                         + " AND possition = " + poss + ";";
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
-             return conn.Query(sql).Tables[0].Rows[0][0].ToString();
+            return conn.Query(sql).Tables[0].Rows[0][0].ToString();
         }
 
 
