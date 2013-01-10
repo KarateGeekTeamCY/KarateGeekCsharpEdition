@@ -2166,8 +2166,10 @@ namespace KarateGeek.guis
 
 
 
-
-            /**
+            #region comments legasy staff
+            /*
+              
+             
             switch (tournament.gameType)
             {
                 #region indevidual kata flag and point
@@ -2834,8 +2836,10 @@ namespace KarateGeek.guis
 
                 #endregion embu end region
             }
-            **/
-
+            
+             
+             */
+            #endregion comments legasy staff
 
 
             // this.update();
