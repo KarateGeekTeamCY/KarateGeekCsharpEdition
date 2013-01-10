@@ -2167,7 +2167,7 @@ namespace KarateGeek.guis
 
 
 
-
+            /**
             switch (tournament.gameType)
             {
                 #region indevidual kata flag and point
@@ -2834,7 +2834,7 @@ namespace KarateGeek.guis
 
                 #endregion embu end region
             }
-
+            **/
 
 
 
