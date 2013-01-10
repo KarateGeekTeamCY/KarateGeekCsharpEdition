@@ -2076,7 +2076,7 @@ namespace KarateGeek.guis
                             break;
                         case Strings.teamKumite:
 
-                            if (this.listBoxCurrentGameList.SelectedItem == "Click to add game members.")
+                            if (this.listBoxCurrentGameList.SelectedItem.ToString() == "Click to add game members.")
                             {
                                 KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
                             }
@@ -2154,12 +2154,16 @@ namespace KarateGeek.guis
             //
             //  start taking the deferent cases of the games 
             //
-            string sql = "SELECT phase, position FROM games WHERE tournament_id = '" + this.tournament.id + "' ORDER BY phase DESC, position;";
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            string sql;
+            
+            sql = "SELECT phase, position FROM games WHERE tournament_id = '" + this.tournament.id + "' ORDER BY phase DESC, position;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             int firstPhase = (int)temp.Rows[0][0];
             int firstGame = (int)temp.Rows[0][1];
+
+
 
 
 
@@ -2935,17 +2939,6 @@ namespace KarateGeek.guis
         }
 
 
-        private string findNextGameId(string tourid, string phase, string poss)
-        {
-            string sql = "SELECT id FROM games WHERE tournament_id = " + tourid
-                                        + " AND phase = " + phase
-                                        + " AND possition = " + poss + ";";
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
-
-             return conn.Query(sql).Tables[0].Rows[0][0].ToString();
-        }
-
-
         private void advancePresentationWinners(Game gm)
         {
             List<Athlete> aWinners;
@@ -2960,9 +2953,27 @@ namespace KarateGeek.guis
 
             if (this.tournament.gameType == Strings.enbu)
                 tWinners = getEnbuWinner(_indexCurrentphase.ToString());
+
+
+            if (this.tournament.gameType == Strings.syncKata)
+                tWinners = getSyncKataWinner(_indexCurrentphase.ToString());
+
+
             //
             // TO-DO
             //
+        }
+
+
+
+        private string findNextGameId(string tourid, string phase, string poss)
+        {
+            string sql = "SELECT id FROM games WHERE tournament_id = " + tourid
+                                        + " AND phase = " + phase
+                                        + " AND possition = " + poss + ";";
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+             return conn.Query(sql).Tables[0].Rows[0][0].ToString();
         }
 
 
