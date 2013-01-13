@@ -449,15 +449,17 @@ namespace KarateGeek.guis
 
 
 
-        private Team getKumiteTeamWinner(Game gm)
+        private string getKumiteTeamWinner(Game gm)
         {
 
             string phase, teamA, teamB, sql;
             string gameid = gm.gameId;
 
+            sql = "SELECT * FROM games join game_participations ON games.id = game_participations.game_id WHERE team_id = ";
+
 
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select team_id from games join game_participations gp on games.id = gp.game_id where game_id = '" + gameid + "';";
+            sql = "SELECT team_id FROM games JOIN game_participations gp ON games.id = gp.game_id where game_id = '" + gameid + "';";
             DataTable temp = conn.Query(sql).Tables[0];
 
             phase = gm.phase;
@@ -465,21 +467,46 @@ namespace KarateGeek.guis
             teamA = temp.Rows[0][0].ToString();
             teamB = temp.Rows[1][0].ToString();
 
+            sql = "SELECT * FROM games join game_participations ON games.id = game_participations.game_id"
+                + " WHERE team_id = " + teamA
+                + " AND tournament_id = " + tournament.id
+                + " AND phase = " + gm.phase
+                + " AND is_ready = 't' AND is_finished = 't' ;";
 
-            sql = "select game_participations.team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_points.game_id join games on games.id = game_participations.game_id where phase = '"
-                + phase + "' and game_participations.team_id = '"
-                + teamA + "' OR game_participations.team_id = '"
-                + teamB + "'  group by (game_participations.team_id) ;";
             temp = conn.Query(sql).Tables[0];
 
-            //
-            // TODO: create gui to make user set the winner in case of a tie
-            //
+            if (temp.Rows.Count == 3)
+            {
+                sql = "select game_participations.team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_points.game_id join games on games.id = game_participations.game_id where phase = '"
+                    + phase + "' and game_participations.team_id = '"
+                    + teamA + "' OR game_participations.team_id = '"
+                    + teamB + "'  group by (game_participations.team_id) ;";
+                temp = conn.Query(sql).Tables[0];
 
-            if (int.Parse(temp.Rows[0][1].ToString()) > int.Parse(temp.Rows[1][1].ToString()))
-                return new Team((string)temp.Rows[0][0].ToString());
+                if (int.Parse(temp.Rows[0][1].ToString()) != int.Parse(temp.Rows[1][1].ToString()))
+                {
+                    if (int.Parse(temp.Rows[0][1].ToString()) > int.Parse(temp.Rows[1][1].ToString()))
+                        return temp.Rows[0][0].ToString();
+                    else
+                        return temp.Rows[1][0].ToString();
+                }
+                else
+                {
+                    //
+                    // TODO: create gui to make user set the winner in case of a tie
+                    //
+
+                    return "0";
+                }
+            }
             else
-                return new Team((string)temp.Rows[1][0].ToString());
+            {
+                //
+                // case were not all the games are finished
+                // so that the advancing code can take respective actions.
+                //
+                return "-1";
+            }
         }
 
 
@@ -718,12 +745,12 @@ namespace KarateGeek.guis
             // game to be played.
             //
             if (this.tournament.gameType == Strings.teamKumite)
-                winner = getKumiteTeamWinner(gm).id;
+                winner = getKumiteTeamWinner(gm);
 
 
             if (this.tournament.gameType == Strings.fugugo)
                 if ((_indexCurrentphase % 2) == 0)
-                    winner = getKumiteTeamWinner(gm).id;
+                    winner = getKumiteIndVersusWinner(gm).id;
                 else
                     winner = getKataIndVersusWinner(gm).id;
 
@@ -750,6 +777,8 @@ namespace KarateGeek.guis
 
                     if (nextPhase == -1)
                     {
+                        //
+                        // TO-DO
                         //
                         // its the winner there is no more rounds
                         // do something about that
