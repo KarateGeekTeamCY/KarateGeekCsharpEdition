@@ -2154,16 +2154,17 @@ namespace KarateGeek.guis
             //
             //  start taking the deferent cases of the games 
             //
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            string sql;
+            //CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            //string sql;
 
-            sql = "SELECT phase, position FROM games WHERE tournament_id = '" + this.tournament.id + "' ORDER BY phase DESC, position;";
-            DataTable temp = conn.Query(sql).Tables[0];
+            //sql = "SELECT phase, position FROM games WHERE tournament_id = '" + this.tournament.id + "' ORDER BY phase DESC, position;";
+            //DataTable temp = conn.Query(sql).Tables[0];
 
-            int firstPhase = (int)temp.Rows[0][0];
-            int firstGame = (int)temp.Rows[0][1];
+            //int firstPhase = (int)temp.Rows[0][0];
+            //int firstGame = (int)temp.Rows[0][1];
 
-
+            this.advanceVsGame(gm);
+            //this.advancePresentationWinners();
 
 
             #region comments legasy staff
