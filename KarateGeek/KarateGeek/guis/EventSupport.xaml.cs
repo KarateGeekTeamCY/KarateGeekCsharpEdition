@@ -24,7 +24,6 @@ namespace KarateGeek.guis
 
         private Window _sender;
 
-
         private string _eventId;
         private string _tournamentId;
 
@@ -32,14 +31,10 @@ namespace KarateGeek.guis
         private int _indexCurrentphase;
         private int _indexNextPhase;
 
-        private bool _firstLoad = true;
-
         public Tournament tournament;
 
         private TournamentConnection _tournamentConn = new TournamentConnection();
         private EventConnection _eventConn = new EventConnection();
-
-
 
         private DataTable _TournamantsDT;
 
@@ -49,8 +44,9 @@ namespace KarateGeek.guis
 
 
 
-
         #endregion private declaretions
+
+
 
         public EventSupport(Window sender)
         {
@@ -99,6 +95,8 @@ namespace KarateGeek.guis
             //this.Show();
         }
 
+
+
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
@@ -110,63 +108,41 @@ namespace KarateGeek.guis
             //todo finf the first phase check the length 
         }
 
+
+
         #region buttons
+
+
 
         private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
         {
             this.update();
         }
 
+
+
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
+
+
         #endregion
+
+
 
         #region game loading functions
 
         public void loadGames()
         {
-            //if (this.tournament.isInd)
-            //    loadIndevidual();
 
-            //if (this.tournament.isTeam)
-            //    loadTeam();
-
-            //if (this.tournament.isSync)
-            //    loadSync();
-
-            //if (this.tournament.games128.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games64.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games32.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games16.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games8.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games4.Count != 0)
-            //{
-            //}
-            //else
-            //{
-            //}
-
-            
 
             List<Game> curentGames = new List<Game>();
             List<Game> futureGames = new List<Game>();
-            //List<Game> game = new List<Game>();
 
 
-            #region find the curent and next phase games list
+
 
 
             if (this.tournament.games128.Count != 0 && (!this.tournament.phase128Done))
@@ -234,24 +210,20 @@ namespace KarateGeek.guis
             }
 
 
-            #endregion
 
 
-            //List<string> current = new List<string>();
-            //List<string> future = new List<string>();
-
-
+            //
+            // the actual strings list creation for the gui to show
+            //
 
             this.listBoxCurrentGameList.ItemsSource = loadStrings(curentGames);
-
-
-           
             this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames);
         }
 
 
 
         #region string creators
+
 
 
         private List<string> loadStrings(List<Game> games)
@@ -292,6 +264,8 @@ namespace KarateGeek.guis
             return temp;
         }
 
+
+
         private string createPresentationString(Game gm)
         {
             string temp = "";
@@ -307,6 +281,8 @@ namespace KarateGeek.guis
 
             return temp;
         }
+
+
 
         private string createVersusString(Game gm)
         {
@@ -343,12 +319,10 @@ namespace KarateGeek.guis
                     break;
             }
 
-
-
-
-
             return temp.ToString();
         }
+
+
 
         private string createTeamPresentationString(Game gm)
         {
@@ -365,26 +339,23 @@ namespace KarateGeek.guis
             return temp;
         }
 
+
+
         #endregion string creators
 
-      
+
 
         #endregion game loading functions
 
+
+
         #region winner checks
+
+
+
         //
         // INDIVIDUAL
         //
-
-
-
-
-
-
-
-
-
-
         private List<Athlete> getKataIndSinglePositioning()
         {
             string sql;
@@ -403,6 +374,8 @@ namespace KarateGeek.guis
             return aths;
         }
 
+
+
         private Athlete getKataIndVersusWinner(Game gm)
         {
             string sql;
@@ -417,6 +390,8 @@ namespace KarateGeek.guis
 
             return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
         }
+
+
 
         public Athlete getKumiteIndVersusWinner(Game gm)
         {
@@ -440,6 +415,7 @@ namespace KarateGeek.guis
             }
             return null;
         }
+
 
 
         //
@@ -470,6 +446,8 @@ namespace KarateGeek.guis
 
             return teams;
         }
+
+
 
         private Team getKumiteTeamWinner(Game gm)
         {
@@ -504,6 +482,8 @@ namespace KarateGeek.guis
                 return new Team((string)temp.Rows[1][0].ToString());
         }
 
+
+
         //
         // SYNCRONIZED
         //
@@ -529,13 +509,18 @@ namespace KarateGeek.guis
             return teams;
         }
 
+
+
         private List<Team> getEnbuWinner(string gameId)
         {
             return this.getSyncKataWinner(gameId);
         }
 
 
+
         #endregion winner checks
+
+
 
         //
         // game starting functionality
@@ -590,10 +575,14 @@ namespace KarateGeek.guis
                             switch (tournament.judgingType)
                             {
                                 case Strings.flag:
+
                                     flagSys = new FlagSystem(this, gm);
+
                                     break;
                                 case Strings.score:
+
                                     kataSys = new KataSystem(this, gm);
+
                                     break;
                             }
 
@@ -616,7 +605,9 @@ namespace KarateGeek.guis
 
                             break;
                         case Strings.teamKata:
+
                             kataSys = new KataSystem(this, gm);
+
                             break;
                         case Strings.teamKumite:
 
@@ -638,12 +629,13 @@ namespace KarateGeek.guis
                         case Strings.enbu:
 
                             kataSys = new KataSystem(this, gm);
+
                             break;
                     }
 
-
-
         }
+
+
 
         public void update()
         {
@@ -654,69 +646,60 @@ namespace KarateGeek.guis
         }
 
 
+
         public void advanceAthlites()
         {
-
+            //
+            // to-do code if condition that will choose ether presentation ether vs progressing system
             //
             //  finding the last game
             //
 
-
-            Game gm = null;
-            Athlete winner = null;
-            int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
-
-            if (gameIndex == -1)
-                gameIndex = 1;
-
-            switch (this._indexCurrentphase)
+            if ((this.tournament.gameType == Strings.indKumite)
+                || (this.tournament.gameType == Strings.teamKumite)
+                || (this.tournament.gameType == Strings.fugugo)
+                || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
             {
-                case 0:
-                    gm = tournament.games2.ElementAt(gameIndex);
-                    break;
-                case 1:
-                    gm = tournament.games4.ElementAt(gameIndex);
-                    break;
-                case 2:
-                    gm = tournament.games8.ElementAt(gameIndex);
-                    break;
-                case 3:
-                    gm = tournament.games16.ElementAt(gameIndex);
-                    break;
-                case 4:
-                    gm = tournament.games32.ElementAt(gameIndex);
-                    break;
-                case 5:
-                    gm = tournament.games64.ElementAt(gameIndex);
-                    break;
-                case 6:
-                    gm = tournament.games128.ElementAt(gameIndex);
-                    break;
+
+                Game gm = null;
+
+                int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
+
+                if (gameIndex == -1)
+                    gameIndex = 1;
+
+                switch (this._indexCurrentphase)
+                {
+                    case 0:
+                        gm = tournament.games2.ElementAt(gameIndex);
+                        break;
+                    case 1:
+                        gm = tournament.games4.ElementAt(gameIndex);
+                        break;
+                    case 2:
+                        gm = tournament.games8.ElementAt(gameIndex);
+                        break;
+                    case 3:
+                        gm = tournament.games16.ElementAt(gameIndex);
+                        break;
+                    case 4:
+                        gm = tournament.games32.ElementAt(gameIndex);
+                        break;
+                    case 5:
+                        gm = tournament.games64.ElementAt(gameIndex);
+                        break;
+                    case 6:
+                        gm = tournament.games128.ElementAt(gameIndex);
+                        break;
+                }
+
+                this.advanceVsGame(gm);
+
             }
-
-
-            //
-            //  start taking the deferent cases of the games 
-            //
-            //CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            //string sql;
-
-            //sql = "SELECT phase, position FROM games WHERE tournament_id = '" + this.tournament.id + "' ORDER BY phase DESC, position;";
-            //DataTable temp = conn.Query(sql).Tables[0];
-
-            //int firstPhase = (int)temp.Rows[0][0];
-            //int firstGame = (int)temp.Rows[0][1];
-
-            this.advanceVsGame(gm);
-            //this.advancePresentationWinners();
-
-
-            #region comments legasy staff
-            //  
-            // deleted
-            //
-            #endregion comments legasy staff
-
+            else
+            {
+                this.advancePresentationWinners();
+            }
 
             // this.update();
         }
@@ -743,7 +726,6 @@ namespace KarateGeek.guis
                     winner = getKumiteTeamWinner(gm).id;
                 else
                     winner = getKataIndVersusWinner(gm).id;
-
 
 
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag)
@@ -819,7 +801,7 @@ namespace KarateGeek.guis
         }
 
 
-        private void advancePresentationWinners(Game gm)
+        private void advancePresentationWinners()
         {
             List<Athlete> aWinners = null;
             List<Team> tWinners = null;
@@ -866,7 +848,8 @@ namespace KarateGeek.guis
 
 
             //
-            // TO-DO
+            // -TO-DO 
+            // -done(13.1.2013)
             //
         }
 
