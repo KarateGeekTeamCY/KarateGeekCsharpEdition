@@ -498,7 +498,7 @@ namespace KarateGeek.guis
                     // DONE:    16 January 2013
                     //
 
-                    return ;
+                    return "-1" ;
                 }
             }
             else
@@ -510,6 +510,8 @@ namespace KarateGeek.guis
                 return "-1";
             }
         }
+
+
 
 
 
@@ -675,6 +677,10 @@ namespace KarateGeek.guis
         }
 
 
+        public void advanceAthlites(Game gm)
+        {
+            this.advanceVsGame(gm);
+        }
 
         public void advanceAthlites()
         {
@@ -732,6 +738,7 @@ namespace KarateGeek.guis
 
             // this.update();
         }
+
 
 
         private void advanceVsGame(Game gm)

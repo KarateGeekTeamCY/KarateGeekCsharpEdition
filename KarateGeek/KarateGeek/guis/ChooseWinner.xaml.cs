@@ -21,9 +21,11 @@ namespace KarateGeek.guis
         private Game _game;
         private Tournament _tournament;
         private bool _isTeam;
-        private string partAId, partBId;
 
+
+        private string partAId, partBId;
         private Team a, b;
+
 
         CoreDatabaseConnection conn = new CoreDatabaseConnection();
         DataTable temp;
@@ -80,58 +82,95 @@ namespace KarateGeek.guis
 
         private void btnAthleteAisWinner_Click(object sender, RoutedEventArgs e)
         {
-            if (this._isTeam)
-            {
-                foreach (Athlete ath in a.participants)
-                {
-                    conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
-                                + this._game.gameId + "','"
-                                + ath.id + "', '"
-                                + this.a.id + "', '"
-                                + "1" + "', '"
-                                + Strings.bychoice + "'); ");
-                }
-            }
-            else
-            {
-                conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
-                            + this._game.eventId + "','"
-                            + this.partAId + "','"
-                            + "1" + "', '"
-                            + Strings.bychoice + "'); ");
-            }
 
-            this.Close();
+            setWinner(partAId, a);
+
+
+            //if (this._isTeam)
+            //{
+            //    foreach (Athlete ath in a.participants)
+            //    {
+            //        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
+            //                    + this._game.gameId + "','"
+            //                    + ath.id + "', '"
+            //                    + this.a.id + "', '"
+            //                    + "1" + "', '"
+            //                    + Strings.bychoice + "'); ");
+            //    }
+            //}
+            //else
+            //{
+            //    conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
+            //                + this._game.eventId + "','"
+            //                + this.partAId + "','"
+            //                + "1" + "', '"
+            //                + Strings.bychoice + "'); ");
+            //}
+
+            //this.Close();
         }
 
 
 
         private void btnAthleteBisWinner_Click(object sender, RoutedEventArgs e)
         {
+
+            setWinner(partBId, b);
+
+            //if (this._isTeam)
+            //{
+            //    foreach (Athlete ath in b.participants)
+            //    {
+            //        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
+            //                    + this._game.gameId + "','"
+            //                    + ath.id + "', '"
+            //                    + this.b.id + "', '"
+            //                    + "1" + "', '"
+            //                    + Strings.bychoice + "'); ");
+            //    }
+            //}
+            //else
+            //{
+            //    conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
+            //                + this._game.eventId + "','"
+            //                + this.partBId + "','"
+            //                + "1" + "', '"
+            //                + Strings.bychoice + "'); ");
+            //}
+
+            //this.Close();
+        }
+
+
+
+        private void setWinner(string athId, Team tm)
+        {
             if (this._isTeam)
             {
-                foreach (Athlete ath in b.participants)
+                foreach (Athlete ath in tm.participants)
                 {
                     conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
                                 + this._game.gameId + "','"
                                 + ath.id + "', '"
-                                + this.b.id + "', '"
+                                + tm.id + "', '"
                                 + "1" + "', '"
                                 + Strings.bychoice + "'); ");
                 }
+
+                _sender.advanceAthlites(this._game);
+
             }
             else
             {
                 conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
                             + this._game.eventId + "','"
-                            + this.partBId + "','"
+                            + athId + "','"
                             + "1" + "', '"
                             + Strings.bychoice + "'); ");
             }
 
             this.Close();
         }
-
 
 
     }
