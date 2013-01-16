@@ -15,9 +15,6 @@ using KarateGeek.databaseConnection;
 
 namespace KarateGeek.guis
 {
-    /// <summary>
-    /// Interaction logic for ChooseWinner.xaml
-    /// </summary>
     public partial class ChooseWinner : Window
     {
         private EventSupport _sender;
@@ -36,6 +33,7 @@ namespace KarateGeek.guis
         public ChooseWinner(EventSupport sender, Game game, Tournament tournament)
         {
             InitializeComponent();
+
             this._sender = sender;
             this._game = game;
             this._tournament = tournament;
@@ -80,7 +78,6 @@ namespace KarateGeek.guis
 
 
 
-
         private void btnAthleteAisWinner_Click(object sender, RoutedEventArgs e)
         {
             if (this._isTeam)
@@ -105,8 +102,9 @@ namespace KarateGeek.guis
             }
 
             this.Close();
-            
         }
+
+
 
         private void btnAthleteBisWinner_Click(object sender, RoutedEventArgs e)
         {
@@ -131,9 +129,7 @@ namespace KarateGeek.guis
                             + Strings.bychoice + "'); ");
             }
 
-            this._sender.update();
             this.Close();
-
         }
 
 

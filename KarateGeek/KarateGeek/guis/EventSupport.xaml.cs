@@ -451,21 +451,20 @@ namespace KarateGeek.guis
 
         private string getKumiteTeamWinner(Game gm)
         {
-
             string phase, teamA, teamB, sql;
             string gameid = gm.gameId;
-
-            sql = "SELECT * FROM games join game_participations ON games.id = game_participations.game_id WHERE team_id = ";
-
-
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+
+
             sql = "SELECT team_id FROM games JOIN game_participations gp ON games.id = gp.game_id where game_id = '" + gameid + "';";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            phase = gm.phase;
-
             teamA = temp.Rows[0][0].ToString();
             teamB = temp.Rows[1][0].ToString();
+
+
+            phase = gm.phase;
 
             sql = "SELECT * FROM games join game_participations ON games.id = game_participations.game_id"
                 + " WHERE team_id = " + teamA
@@ -492,11 +491,14 @@ namespace KarateGeek.guis
                 }
                 else
                 {
+                    ChooseWinner choice = new ChooseWinner(this, gm, tournament);
+                    choice.Show();
                     //
-                    // TODO: create gui to make user set the winner in case of a tie
+                    // TODO:    create gui to make user set the winner in case of a tie
+                    // DONE:    16 January 2013
                     //
 
-                    return "0";
+                    return ;
                 }
             }
             else
