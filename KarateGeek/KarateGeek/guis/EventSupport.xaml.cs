@@ -679,17 +679,17 @@ namespace KarateGeek.guis
         public void advanceAthlites()
         {
             //
-            // to-do code if condition that will choose ether presentation ether vs progressing system
+            //  checks if the tournament type is versus or presentation
+            //  and then does the apropriate preparetion for the winner advancement
             //
-            //  finding the last game
-            //
-
             if ((this.tournament.gameType == Strings.indKumite)
                 || (this.tournament.gameType == Strings.teamKumite)
                 || (this.tournament.gameType == Strings.fugugo)
                 || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
             {
-
+                //
+                //  this is the vs case
+                //
                 Game gm = null;
 
                 int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
@@ -727,10 +727,21 @@ namespace KarateGeek.guis
             }
             else
             {
+                //
+                //  the presentetion game winner 
+                //  advancing method
+                //
                 this.advancePresentationWinners();
             }
 
+            //
+            // i don't now if thats necessary here but will live it 
+            // as a note in case of something go wrong
+            // althow i am sertaind that i dont need this
+            //
+            // code:
             // this.update();
+            //
         }
 
 
@@ -742,11 +753,7 @@ namespace KarateGeek.guis
             if (this.tournament.gameType == Strings.indKumite)
                 winner = getKumiteIndVersusWinner(gm).id;
 
-            //
-            // make the function below to return -1 if not all the games of the two teams 
-            // aren't finished eg. just two of the three games are done and there another 
-            // game to be played.
-            //
+            
             if (this.tournament.gameType == Strings.teamKumite)
                 winner = getKumiteTeamWinner(gm);
 
@@ -876,13 +883,6 @@ namespace KarateGeek.guis
                     i++;
                 }
             }
-
-
-
-            //
-            // -TO-DO 
-            // -done(13.1.2013)
-            //
         }
 
 
@@ -892,8 +892,6 @@ namespace KarateGeek.guis
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
             sql = "INSERT INTO game_participations (athlete_id, game_id) VAlUES ( " + ath.id + ", " + gameid + " ); ";
             conn.NonQuery(sql);
-
-
 
         }
 
@@ -937,9 +935,6 @@ namespace KarateGeek.guis
         private int findNextPossTeamX3(int current)
         {
             int next3 = findnext3(current);
-
-            //while ((next3 % 3) == 0)
-            //    next3++;
 
             if (((double)next3 / 2) != 0)
                 current += 3;
