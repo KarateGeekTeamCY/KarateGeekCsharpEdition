@@ -69,7 +69,7 @@ namespace KarateGeek.guis
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
 
-                //this._sender.Show();
+
                 this.Close();
                 return;
             }
@@ -77,22 +77,23 @@ namespace KarateGeek.guis
             {
                 this.Show();
                 this._sender.Hide();
-
                 this._eventId = todayEventDT.Rows[0][0].ToString();
             }
 
+
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
             string sql = "select * from tournaments where event_id = '" + this._eventId + "'; ";
             _TournamantsDT = conn.Query(sql).Tables[0];
+            this._availableTournaments = new List<string>();
+
 
             foreach (DataRow dr in _TournamantsDT.Rows)
             {
-                this._availableTournaments.Add("" + dr[1]);
+                this._availableTournaments.Add(dr[1].ToString());
             }
 
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
-
-            //this.Show();
         }
 
 
@@ -100,16 +101,19 @@ namespace KarateGeek.guis
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
-            this._tournamentId = (string)_TournamantsDT.Rows[i][0].ToString();
+            this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
 
             this.tournament = new Tournament(this._tournamentId);
 
             loadGames();
-            //todo finf the first phase check the length 
         }
 
 
 
+        //
+        //  nothing here yet 
+        //  need to implement 
+        //
         #region buttons
 
 
@@ -136,12 +140,8 @@ namespace KarateGeek.guis
 
         public void loadGames()
         {
-
-
             List<Game> curentGames = new List<Game>();
             List<Game> futureGames = new List<Game>();
-
-
 
 
 
@@ -211,12 +211,10 @@ namespace KarateGeek.guis
 
 
 
-
             //
             // the actual strings list creation for the gui to show
             //
-
-            this.listBoxCurrentGameList.ItemsSource = loadStrings(curentGames);
+            this.listBoxCurrentGameList.ItemsSource = this.loadStrings(curentGames);
             this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames);
         }
 
@@ -225,40 +223,40 @@ namespace KarateGeek.guis
         #region string creators
 
 
-
         private List<string> loadStrings(List<Game> games)
         {
 
             List<string> temp = new List<string>();
 
+            int type = 0;
+
+            if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                            || this.tournament.gameType == Strings.indKata
+                            || this.tournament.gameType == Strings.teamKata)
+            { type = 1; }
+
+            else if (this.tournament.gameType == Strings.syncKata
+                        || this.tournament.gameType == Strings.enbu)
+            { type = 2; }
+
+            else if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                        || this.tournament.gameType == Strings.indKumite
+                        || this.tournament.gameType == Strings.fugugo
+                        || this.tournament.gameType == Strings.teamKumite)
+            { type = 3; }
+
+
+
             foreach (Game gm in games)
             {
+                if (type == 1)
+                { temp.Add(this.createPresentationString(gm)); }
 
-                if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
-                    || this.tournament.gameType == Strings.indKata
-                    || this.tournament.gameType == Strings.teamKata)
-                {
-                    temp.Add(this.createPresentationString(gm));
-                }
+                else if (type == 2)
+                { temp.Add(this.createTeamPresentationString(gm)); }
 
-
-
-                if (this.tournament.gameType == Strings.syncKata
-                    || this.tournament.gameType == Strings.enbu)
-                {
-                    temp.Add(this.createTeamPresentationString(gm));
-                }
-
-
-
-                if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
-                    || this.tournament.gameType == Strings.indKumite
-                    || this.tournament.gameType == Strings.fugugo
-                    || this.tournament.gameType == Strings.teamKumite)
-                {
-                    temp.Add(this.createVersusString(gm));
-                }
-
+                else if (type == 3)
+                { temp.Add(this.createVersusString(gm)); }
             }
 
             return temp;
@@ -270,9 +268,8 @@ namespace KarateGeek.guis
         {
             string temp = "";
             if (gm.participants.Count == 0)
-            {
-                temp = "Waiting...";
-            }
+            { temp = "Waiting..."; }
+
             else
             {
                 Athlete ath = gm.participants[0];
@@ -342,9 +339,6 @@ namespace KarateGeek.guis
 
 
         #endregion string creators
-
-
-
         #endregion game loading functions
 
 
@@ -498,7 +492,7 @@ namespace KarateGeek.guis
                     // DONE:    16 January 2013
                     //
 
-                    return "-1" ;
+                    return "-1";
                 }
             }
             else
