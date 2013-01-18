@@ -198,9 +198,14 @@ namespace KarateGeek.databaseConnection
                 }
             }
 
-            
+            if (num > 0)
+            {
                 sql = "select * from (select persons.id as persons_id,first_name,last_name,sex , extract(year from age(date_of_birth)) as age, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank, club_id from persons inner join athletes on (persons.id = athletes.id)) as t1 " + filter + " and persons_id not in(select athlete_id from tournament_participations where tournament_id='" + tournamentId + "');";
-           
+            }
+            else
+            {
+                sql = "select * from (select persons.id as persons_id,first_name,last_name,sex , extract(year from age(date_of_birth)) as age, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank, club_id from persons inner join athletes on (persons.id = athletes.id)) as t1 where persons_id not in(select athlete_id from tournament_participations where tournament_id='" + tournamentId + "');";
+            }
 
            
             return this.Query(sql);

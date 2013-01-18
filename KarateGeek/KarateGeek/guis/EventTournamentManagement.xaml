@@ -150,6 +150,18 @@
                                      Grid.Column="3"
                                      VerticalAlignment="Center" TextChanged="newEventPCode_TextChanged" />
                             </Grid>
+                            <Label Content="Country"
+                               Grid.Row="3"
+                               Grid.Column="3"
+                               VerticalAlignment="Center"
+                                   Margin="15,0,0,0"/>
+                            <ComboBox Name="cmbNewECountryChooses"
+                                            Grid.Row="3"
+                                            Grid.Column="4"
+                                            Margin="0,3,0,3" 
+                                           SelectionChanged="cmbNewECountryChooses_SelectionChanged">
+
+                            </ComboBox>
                             <Label Content="City"
                                Grid.Row="4"
                                Grid.Column="3"
@@ -163,18 +175,6 @@
                                 <ComboBoxItem
                                                   Content="Nicosia"
                                                   IsSelected="True"/>
-                            </ComboBox>
-                            <Label Content="Country"
-                               Grid.Row="3"
-                               Grid.Column="3"
-                               VerticalAlignment="Center"
-                                   Margin="15,0,0,0"/>
-                            <ComboBox Name="cmbNewECountryChooses"
-                                            Grid.Row="3"
-                                            Grid.Column="4"
-                                            Margin="0,3,0,3" 
-                                           SelectionChanged="cmbNewECountryChooses_SelectionChanged">
-
                             </ComboBox>
                             <Label Content="Official"
                                Grid.Row="5"
@@ -275,7 +275,7 @@
                                          Grid.Row="1"
                                          Grid.Column="2"
                                          Margin="0,3,0,3" 
-                                         TextChanged="editEventName_TextChanged" />
+                                         TextChanged="editEventName_TextChanged" LostFocus="editEventName_LostFocus" PreviewMouseLeftButtonDown="editEventName_PreviewMouseLeftButtonDown" />
 
                             <Label Content="Date" 
                                        Grid.Row="2"
@@ -926,7 +926,7 @@
                                          Margin="0,5,0,5"
                                          VerticalAlignment="Center"
                                          Grid.ColumnSpan="2" 
-                                         TextChanged="tbEditTName_TextChanged" />
+                                         TextChanged="tbEditTName_TextChanged" LostFocus="tbEditTName_LostFocus" PreviewMouseLeftButtonDown="tbEditTName_PreviewMouseLeftButtonDown" />
 
                                 <Label Content="Sex"
                                        Grid.Column="1"
@@ -1076,7 +1076,7 @@
                                 <ListBox Name="editTSuggestionList" 
                                          Grid.Column="2" 
                                          Grid.Row="0" 
-                                         Grid.RowSpan="3" 
+                                         Grid.RowSpan="4" 
                                          Grid.ColumnSpan="2" 
                                          VerticalAlignment="Top" 
                                          Margin="0,26,0,0" 

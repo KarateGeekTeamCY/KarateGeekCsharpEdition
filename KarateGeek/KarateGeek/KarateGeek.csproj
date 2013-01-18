@@ -128,6 +128,8 @@
       <DependentUpon>YesNoCancelReplacement.xaml</DependentUpon>
     </Compile>
     <Compile Include="lottery\LotteryPrinter.cs" />
+    <Compile Include="helpers\ErrorMessages.cs" />
+    <Compile Include="helpers\RegularExpressions.cs" />
     <Compile Include="lottery\LotteryGeneratorFactory.cs" />
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="lottery\LotteryBox.cs" />

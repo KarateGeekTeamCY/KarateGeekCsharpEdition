@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using KarateGeek.databaseConnection;
 using System.Data;
+using System.Text.RegularExpressions;
+using KarateGeek.helpers;
 
 namespace KarateGeek.guis
 {
@@ -39,9 +41,9 @@ namespace KarateGeek.guis
         List<ListData> editAthleteNameListForAutoComplete;
         List<ListData> newJudgeNameListForAutoComplete;
         List<ListData> editJudgeNameListForAutoComplete;
-        private bool newAthleteMode = true;
-        private bool newJudgeMode = true;
-
+        RegularExpressions regex = new RegularExpressions();
+        ErrorMessages em = new ErrorMessages();
+        
         //
         //athlete specific variables
         //
@@ -143,7 +145,7 @@ namespace KarateGeek.guis
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             //here should be the loading of the locations and clubs and countries
             InitializeComponent();
-            
+
             //prosthetoume tis xwres kai arxikopoioume stin kipro
             this.countries = countryConnection.GetCountries();
 
@@ -269,7 +271,7 @@ namespace KarateGeek.guis
 
             }
             cmbEditAClubChooses.SelectedIndex = 0;
-           
+
 
             //prosthetoume judge classes gia new judge
             cmbNewJClassChooses.Items.Add("A");
@@ -280,13 +282,11 @@ namespace KarateGeek.guis
             cmbEditJClassChooses.Items.Add("A");
             cmbEditJClassChooses.Items.Add("B");
             cmbEditJClassChooses.SelectedIndex = 0;
-
-
         }
+
 
         #endregion
         //private Boolean nameflag = true;
-
 
         #region new athlete
 
@@ -307,8 +307,6 @@ namespace KarateGeek.guis
             }
             return list;
         }
-
-
 
         private void NewASuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -451,9 +449,6 @@ namespace KarateGeek.guis
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
-
-
-
         private void newAthleteList()
         {
             _newAthleteFirstName = NewAthleteFirstName.Text;
@@ -491,15 +486,13 @@ namespace KarateGeek.guis
         {
             string name = NewAthleteFirstName.Text;
 
-
-            if (string.IsNullOrEmpty(name) == true)
+            if (name == "")
             {
                 initializeNewAthlete();
             }
-            
+
             newAthleteList();
         }
-
 
         private void NewAthleteLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -507,43 +500,37 @@ namespace KarateGeek.guis
 
         }
 
-
         private void NewAthleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newAthleteFathersName = NewAthleteFatherName.Text;
 
         }
 
-
         private void NewAthleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             _newAthleteDateOfBirth = NewAthleteDateOfBirth.SelectedDate.Value;
         }
 
-        
         private void NewAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newAthleteFirstPhone = NewAthleteFirstPhone.Text;
         }
-
 
         private void NewAthleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newAthleteSecondPhone = NewAthleteSecondPhone.Text;
         }
 
-
         private void NewAthleteEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newAthleteEmail = NewAthleteEmail.Text;
-        }
 
+        }
 
         private void NewAthleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newAthleteAddress = NewAthleteStreetName.Text;
         }
-
 
         private void NewAthleteAddressNum_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -571,7 +558,6 @@ namespace KarateGeek.guis
             this.athleteUpdateCities(_newAthleteCountryCode);
         }
 
-
         private void athleteUpdateCities(string countryCode)
         {
             CityConnection citiesconn = new CityConnection();
@@ -593,8 +579,6 @@ namespace KarateGeek.guis
 
             cmbNewAthleteCityChooses.Items.Refresh();
         }
-
-
 
         private void cmbNewARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -618,7 +602,22 @@ namespace KarateGeek.guis
             _newAthleteSex = "female";
         }
 
+        #region other listeners
+
+        private void NewAthleteFirstName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            NewASuggestionList.Visibility = Visibility.Collapsed;
+        }
+
+        private void NewAthleteFirstName_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            newAthleteList();
+        }
+
+        #endregion
+
         #region buttons
+
         private void btnNewABack_Click(object sender, RoutedEventArgs e)
         {
             this.sender.Show();
@@ -628,9 +627,8 @@ namespace KarateGeek.guis
         private void btnNewASave_Click(object sender, RoutedEventArgs e)
         {
             bool insertAthlete;
-            if (checkFields("athlete" , true))
+            if (checkNullOrEmptyFields("athlete", true) && checkWrongFields("athlete", true))
             {
-
                 insertAthlete = athleteConnection.InsertNewAthlete(_newPersonId, _newAthleteFirstName, _newAthleteLastName, _newAthleteFathersName, _newAthleteSex, _newAthleteDateOfBirth, _newAthleteFirstPhone, _newAthleteSecondPhone, _newAthleteEmail, _newAthleteAddress, _newAthleteAddressNum, _newAthleteTK, _newAthleteCountryCode, _newAthleteCity, _newAthleteRank, _newAthleteClubId);
                 if (insertAthlete)
                 {
@@ -642,37 +640,12 @@ namespace KarateGeek.guis
                     MessageBox.Show("Error. Athlete not succesfully saved!");
                 }
             }
-            
-            
+
+
         }
 
         #endregion
-      
 
-
-
-
-        
-        // dead code alla asto kalou kakou
-        
-        //private void setCountryCode(string country)
-        //{
-        //    if (country.Equals("Cyprus"))
-        //    {
-        //        athlete_country_code = "CY";
-        //    }
-        //    else if (country.Equals("Greece"))
-        //    {
-        //        athlete_country_code = "GR";
-        //    }
-        //}
-
-
-        //
-        //mixali min frikaris afto einai gia na grouparis kodika
-        //arxizi me #region <name>
-        //lai telion me #endregion
-        //
         #endregion
 
         #region edit athlete
@@ -694,8 +667,6 @@ namespace KarateGeek.guis
             }
             return list;
         }
-
-
 
         private void EditASuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -838,9 +809,6 @@ namespace KarateGeek.guis
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
-
-
-
         private void editAthleteList()
         {
             _editAthleteFirstName = EditAthleteFirstName.Text;
@@ -873,12 +841,15 @@ namespace KarateGeek.guis
 
         #endregion
 
-
         private void EditAthleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            string name = EditAthleteFirstName.Text;
+            if (name == "")
+            {
+                initializeEditAthlete();
+            }
             editAthleteList();
         }
-
 
         private void EditAthleteLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -886,25 +857,21 @@ namespace KarateGeek.guis
 
         }
 
-
         private void EditAthleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _editAthleteFathersName = EditAthleteFatherName.Text;
 
         }
 
-
         private void EditAthleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             _editAthleteDateOfBirth = EditAthleteDateOfBirth.SelectedDate.Value;
         }
 
-
         private void EditAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
             _editAthleteFirstPhone = EditAthleteFirstPhone.Text;
         }
-
 
         private void EditAthleteSecondPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -914,6 +881,7 @@ namespace KarateGeek.guis
         private void EditAthleteEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
             _editAthleteEmail = EditAthleteEmail.Text;
+
         }
 
         private void EditAthleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
@@ -995,17 +963,31 @@ namespace KarateGeek.guis
             _editAthleteSex = "female";
         }
 
+        #region other listeners
+
+        private void EditAthleteFirstName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            EditASuggestionList.Visibility = Visibility.Collapsed;
+        }
+
+        private void EditAthleteFirstName_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            editAthleteList();
+        }
+
+        #endregion
+
         #region buttons
+
         private void btnEditABack_Click(object sender, RoutedEventArgs e)
         {
             this.sender.Show();
             this.Close();
         }
 
-
         private void btnEditASave_Click(object sender, RoutedEventArgs e)
         {
-            if (checkFields("athlete" , false))
+            if (checkNullOrEmptyFields("athlete", false) && checkWrongFields("athlete", false) && _editPersonId!=-1)
             {
                 athleteConnection.UpdateAthlete(_editPersonId, _editAthleteFirstName, _editAthleteLastName, _editAthleteFathersName, _editAthleteSex, _editAthleteDateOfBirth, _editAthleteFirstPhone, _editAthleteSecondPhone, _editAthleteEmail, _editAthleteAddress, _editAthleteAddressNum, _editAthleteTK, _editAthleteCountryCode, _editAthleteCity, _editAthleteRank, _editAthleteClubId);
                 MessageBox.Show("Succesfully saved!");
@@ -1013,44 +995,35 @@ namespace KarateGeek.guis
             }
         }
 
-
         private void btnEditADelete_Click(object sender, RoutedEventArgs e)
         {
-
-            if (athleteConnection.deleteAthlete(_editPersonId))
+            if (_editPersonId != -1)
             {
-                MessageBox.Show("Succesfully deleted!");
-                initializeEditAthlete();
+                if (athleteConnection.deleteAthlete(_editPersonId))
+                {
+                    MessageBox.Show("Succesfully deleted!");
+                    initializeEditAthlete();
+                }
+                else
+                {
+                    MessageBox.Show("Cannot be deleted because of tournament participation!");
+                    PersonManagement pm = new PersonManagement(this);
+                    pm.Activate();
+                    pm.Show();
+                    this.Close();
+                }
             }
             else
             {
-                MessageBox.Show("Cannot be deleted because of tournament participation!");
-                PersonManagement pm = new PersonManagement(this);
-                pm.Activate();
-                pm.Show();
-                this.Close();
+                MessageBox.Show("Please selectge one athlete to delete.");
             }
 
         }
         #endregion
 
         #endregion
-
 
         #region new judge
-
-        private void newJudgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string name = newJudgeFirstName.Text;
-
-
-            if (string.IsNullOrEmpty(name) == true)
-            {
-                initializeNewJudge();
-            }
-            newJudgeList();
-        }
-
 
 
         private List<ListData> newJudgefiltersNames()
@@ -1227,8 +1200,6 @@ namespace KarateGeek.guis
             }
         }
 
-
-
         private void newJudgeList()
         {
             _newJudgeFirstName = newJudgeFirstName.Text;
@@ -1264,6 +1235,17 @@ namespace KarateGeek.guis
         }
 
         #endregion
+
+        private void newJudgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = newJudgeFirstName.Text;
+
+            if (name == "")
+            {
+                initializeNewJudge();
+            }
+            newJudgeList();
+        }
 
         private void newJudgeLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -1370,10 +1352,24 @@ namespace KarateGeek.guis
             _newJudgeClass = cmbNewJClassChooses.Items[index].ToString();
         }
 
+        #region other listeners
+
+        private void newJudgeFirstName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            newJSuggestionList.Visibility = Visibility.Collapsed;
+        }
+
+        private void newJudgeFirstName_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            newJudgeList();
+        }
+
+        #endregion
+
         #region buttons
         private void btnNewJBack_Click(object sender, RoutedEventArgs e)
         {
-           
+
             this.sender.Show();
             this.Close();
         }
@@ -1381,9 +1377,8 @@ namespace KarateGeek.guis
         private void btnNewJSave_Click(object sender, RoutedEventArgs e)
         {
             bool judgeInsert;
-            if (checkFields("judge" , true))
+            if (checkNullOrEmptyFields("judge", true) && checkWrongFields("judge", true))
             {
-
                 judgeInsert = judgeConnection.InsertNewJudge(_newJudgeId, _newJudgeFirstName, _newJudgeLastName, _newJudgeFathersName, _newJudgeSex, _newJudgeDateOfBirth, _newJudgeFirstPhone, _newJudgeSecondPhone, _newJudgeEmail, _newJudgeAddress, _newJudgeAddressNum, _newJudgeTK, _newJudgeCountryCode, _newJudgeCity, _newJudgeRank, _newJudgeClass);
                 if (judgeInsert)
                 {
@@ -1399,27 +1394,14 @@ namespace KarateGeek.guis
                 }
 
             }
-            
+
         }
 
         #endregion
 
-
-
-
-
         #endregion
-
 
         #region edit judge
-
-
-        private void editJudgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            editJudgeList();
-        }
-
-
 
         private List<ListData> editJudgefiltersNames()
         {
@@ -1633,6 +1615,16 @@ namespace KarateGeek.guis
 
         #endregion
 
+        private void editJudgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = editJudgeFirstName.Text;
+            if (name == "")
+            {
+                initializeEditJudge();
+            }
+            editJudgeList();
+        }
+
         private void editJudgeLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _editJudgeLastName = editJudgeLastName.Text;
@@ -1738,6 +1730,20 @@ namespace KarateGeek.guis
             _editJudgeClass = cmbEditJClassChooses.Items[index].ToString();
         }
 
+        #region other listeners
+
+        private void editJudgeFirstName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            editJSuggestionList.Visibility = Visibility.Collapsed;
+        }
+
+        private void editJudgeFirstName_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            editJudgeList();
+        }
+
+        #endregion
+
         #region buttons
         private void btnEditJBack_Click(object sender, RoutedEventArgs e)
         {
@@ -1748,9 +1754,8 @@ namespace KarateGeek.guis
 
         private void btnEditJSave_Click(object sender, RoutedEventArgs e)
         {
-            if (checkFields("judge" , false))
+            if (checkNullOrEmptyFields("judge", false) && checkWrongFields("judge", false) && _editJudgeId!=-1)
             {
-                judgeConnection = new JudgeConnection();
                 judgeConnection.UpdateJudge(_editJudgeId, _editJudgeFirstName, _editJudgeLastName, _editJudgeFathersName, _editJudgeSex, _editJudgeDateOfBirth, _editJudgeFirstPhone, _editJudgeSecondPhone, _editJudgeEmail, _editJudgeAddress, _editJudgeAddressNum, _editJudgeTK, _editJudgeCountryCode, _editJudgeCity, _editJudgeRank, _editJudgeClass);
                 MessageBox.Show("Succesfully saved!");
 
@@ -1760,28 +1765,34 @@ namespace KarateGeek.guis
                 this.Hide();
             }
 
+
         }
 
         private void btnEditJDelete_Click(object sender, RoutedEventArgs e)
         {
-            judgeConnection = new JudgeConnection();
-            if (judgeConnection.deleteJudge(_editJudgeId))
+            if (_editJudgeId != -1)
             {
-                MessageBox.Show("Succesfully deleted!");
-                PersonManagement pm = new PersonManagement(this.sender);
-                pm.Activate();
-                pm.Show();
-                this.Close();
+                if (judgeConnection.deleteJudge(_editJudgeId))
+                {
+                    MessageBox.Show("Succesfully deleted!");
+                    PersonManagement pm = new PersonManagement(this.sender);
+                    pm.Activate();
+                    pm.Show();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Cannot be deleted because of tournament participation!");
+                    PersonManagement pm = new PersonManagement(this.sender);
+                    pm.Activate();
+                    pm.Show();
+                    this.Close();
+                }
             }
             else
             {
-                MessageBox.Show("Cannot be deleted because of tournament participation!");
-                PersonManagement pm = new PersonManagement(this.sender);
-                pm.Activate();
-                pm.Show();
-                this.Close();
+                MessageBox.Show("Please select one judge to delete.");
             }
-
 
 
         }
@@ -1791,40 +1802,40 @@ namespace KarateGeek.guis
         #region checks
 
 
-        private bool checkFields(string person , bool newMode)
+        private bool checkNullOrEmptyFields(string person, bool newMode)
         {
             if (person.Equals("athlete"))
             {
                 if (newMode)
                 {
-                    if (_newAthleteFirstName == null)
+                    if (string.IsNullOrEmpty(_newAthleteFirstName))
                     {
-                        errorMessage("First Name");
+                        em.nullErrorMessage("First Name");
                         return false;
                     }
-                    else if (_newAthleteLastName == null)
+                    else if (string.IsNullOrEmpty(_newAthleteLastName))
                     {
-                        errorMessage("Last Name");
+                        em.nullErrorMessage("Last Name");
                         return false;
                     }
-                    else if (_newAthleteSex == null)
+                    else if (string.IsNullOrEmpty(_newAthleteSex))
                     {
-                        errorMessage("Sex");
+                        em.nullErrorMessage("Sex");
                         return false;
                     }
-                    else if (_newAthleteFirstPhone == null)
+                    else if (string.IsNullOrEmpty(_newAthleteFirstPhone))
                     {
-                        errorMessage("Phone Num.");
+                        em.nullErrorMessage("Phone Num.");
                         return false;
                     }
-                    else if (_newAthleteEmail == null)
+                    else if (string.IsNullOrEmpty(_newAthleteEmail))
                     {
-                        errorMessage("Email");
+                        em.nullErrorMessage("Email");
                         return false;
                     }
-                    else if (_newAthleteAddress == null)
+                    else if (string.IsNullOrEmpty(_newAthleteAddress))
                     {
-                        errorMessage("Address");
+                        em.nullErrorMessage("Address");
                         return false;
                     }
                     else
@@ -1834,34 +1845,34 @@ namespace KarateGeek.guis
                 }
                 else
                 {
-                    if (_editAthleteFirstName == null)
+                    if (string.IsNullOrEmpty(_editAthleteFirstName))
                     {
-                        errorMessage("First Name");
+                        em.nullErrorMessage("First Name");
                         return false;
                     }
-                    else if (_editAthleteLastName == null)
+                    else if (string.IsNullOrEmpty(_editAthleteLastName))
                     {
-                        errorMessage("Last Name");
+                        em.nullErrorMessage("Last Name");
                         return false;
                     }
-                    else if (_editAthleteSex == null)
+                    else if (string.IsNullOrEmpty(_editAthleteSex))
                     {
-                        errorMessage("Sex");
+                        em.nullErrorMessage("Sex");
                         return false;
                     }
-                    else if (_editAthleteFirstPhone == null)
+                    else if (string.IsNullOrEmpty(_editAthleteFirstPhone))
                     {
-                        errorMessage("Phone Num.");
+                        em.nullErrorMessage("Phone Num.");
                         return false;
                     }
-                    else if (_editAthleteEmail == null)
+                    else if (string.IsNullOrEmpty(_editAthleteEmail))
                     {
-                        errorMessage("Email");
+                        em.nullErrorMessage("Email");
                         return false;
                     }
-                    else if (_editAthleteAddress == null)
+                    else if (string.IsNullOrEmpty(_editAthleteAddress))
                     {
-                        errorMessage("Address");
+                        em.nullErrorMessage("Address");
                         return false;
                     }
                     else
@@ -1874,34 +1885,34 @@ namespace KarateGeek.guis
             {
                 if (newMode)
                 {
-                    if (_newJudgeFirstName == null)
+                    if (string.IsNullOrEmpty(_newJudgeFirstName))
                     {
-                        errorMessage("First Name");
+                        em.nullErrorMessage("First Name");
                         return false;
                     }
-                    else if (_newJudgeLastName == null)
+                    else if (string.IsNullOrEmpty(_newJudgeLastName))
                     {
-                        errorMessage("Last Name");
+                        em.nullErrorMessage("Last Name");
                         return false;
                     }
-                    else if (_newJudgeSex == null)
+                    else if (string.IsNullOrEmpty(_newJudgeSex))
                     {
-                        errorMessage("Sex");
+                        em.nullErrorMessage("Sex");
                         return false;
                     }
-                    else if (_newJudgeFirstPhone == null)
+                    else if (string.IsNullOrEmpty(_newJudgeFirstPhone))
                     {
-                        errorMessage("Phone Num.");
+                        em.nullErrorMessage("Phone Num.");
                         return false;
                     }
-                    else if (_newJudgeEmail == null)
+                    else if (string.IsNullOrEmpty(_newJudgeEmail))
                     {
-                        errorMessage("Email");
+                        em.nullErrorMessage("Email");
                         return false;
                     }
-                    else if (_newJudgeAddress == null)
+                    else if (string.IsNullOrEmpty(_newJudgeAddress))
                     {
-                        errorMessage("Address");
+                        em.nullErrorMessage("Address");
                         return false;
                     }
                     else
@@ -1911,34 +1922,34 @@ namespace KarateGeek.guis
                 }
                 else
                 {
-                    if (_editJudgeFirstName == null)
+                    if (string.IsNullOrEmpty(_editJudgeFirstName))
                     {
-                        errorMessage("First Name");
+                        em.nullErrorMessage("First Name");
                         return false;
                     }
-                    else if (_editJudgeLastName == null)
+                    else if (string.IsNullOrEmpty(_editJudgeLastName))
                     {
-                        errorMessage("Last Name");
+                        em.nullErrorMessage("Last Name");
                         return false;
                     }
-                    else if (_editJudgeSex == null)
+                    else if (string.IsNullOrEmpty(_editJudgeSex))
                     {
-                        errorMessage("Sex");
+                        em.nullErrorMessage("Sex");
                         return false;
                     }
-                    else if (_editJudgeFirstPhone == null)
+                    else if (string.IsNullOrEmpty(_editJudgeFirstPhone))
                     {
-                        errorMessage("Phone Num.");
+                        em.nullErrorMessage("Phone Num.");
                         return false;
                     }
-                    else if (_editJudgeEmail == null)
+                    else if (string.IsNullOrEmpty(_editJudgeEmail))
                     {
-                        errorMessage("Email");
+                        em.nullErrorMessage("Email");
                         return false;
                     }
-                    else if (_editJudgeAddress == null)
+                    else if (string.IsNullOrEmpty(_editJudgeAddress))
                     {
-                        errorMessage("Address");
+                        em.nullErrorMessage("Address");
                         return false;
                     }
                     else
@@ -1949,19 +1960,220 @@ namespace KarateGeek.guis
             }
         }
 
-        private void errorMessage(string formField)
+        private bool checkWrongFields(string person, bool newMode)
         {
-            string message = "Please complete" + formField;
-            MessageBox.Show(message, "Message!",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information).ToString();
+            if (person.Equals("athlete"))
+            {
+                if (newMode)
+                {
+                    if (!regex.isCharsOnly(_newAthleteFirstName))
+                    {
+                        em.charsErrorMessage("First Name");
+                        return false;
+                    }
+                    else if (!regex.isCharsOnly(_newAthleteLastName))
+                    {
+                        em.charsErrorMessage("Last Name");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newAthleteFathersName) && !regex.isCharsOnly(_newAthleteFathersName))
+                    {
+                        em.charsErrorMessage("Fathers Name");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_newAthleteFirstPhone))
+                    {
+                        em.digitsErrorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newAthleteSecondPhone) && !regex.isDigitsOnly(_newAthleteSecondPhone))
+                    {
+                        em.digitsErrorMessage("Second Num.");
+                        return false;
+                    }
+                    else if (!regex.isEmailValid(_newAthleteEmail))
+                    {
+                        return false;
+                    }
+                    else if (!regex.isCharsOrSpace(_newAthleteAddress))
+                    {
+                        em.charsSpaceErrorMessage("Address");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newAthleteAddressNum) && !regex.isCharsOrDigits(_newAthleteAddressNum))
+                    {
+                        em.charsDigitsErrorMessage("Address Num.");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_newAthleteTK))
+                    {
+                        em.digitsErrorMessage("Postal Code");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (!regex.isCharsOnly(_editAthleteFirstName))
+                    {
+                        em.charsErrorMessage("First Name");
+                        return false;
+                    }
+                    else if (!regex.isCharsOnly(_editAthleteLastName))
+                    {
+                        em.charsErrorMessage("Last Name");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_editAthleteFathersName) && !regex.isCharsOnly(_editAthleteFathersName))
+                    {
+                        em.charsErrorMessage("Fathers Name");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_editAthleteFirstPhone))
+                    {
+                        em.digitsErrorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_editAthleteSecondPhone) && !regex.isDigitsOnly(_editAthleteSecondPhone))
+                    {
+                        em.digitsErrorMessage("Second Num.");
+                        return false;
+                    }
+                    else if (!regex.isEmailValid(_editAthleteEmail))
+                    {
+                        return false;
+                    }
+                    else if (!regex.isCharsOrSpace(_editAthleteAddress))
+                    {
+                        em.charsSpaceErrorMessage("Address");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_editAthleteAddressNum) && !regex.isCharsOrDigits(_editAthleteAddressNum))
+                    {
+                        em.charsDigitsErrorMessage("Address Num.");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_editAthleteTK))
+                    {
+                        em.digitsErrorMessage("Postal Code");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if (newMode)
+                {
+                    if (!regex.isCharsOnly(_newJudgeFirstName))
+                    {
+                        em.charsErrorMessage("First Name");
+                        return false;
+                    }
+                    else if (!regex.isCharsOnly(_newJudgeLastName))
+                    {
+                        em.charsErrorMessage("Last Name");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newJudgeFathersName) && !regex.isCharsOnly(_newJudgeFathersName))
+                    {
+                        em.charsErrorMessage("Last Name");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_newJudgeFirstPhone))
+                    {
+                        em.digitsErrorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newJudgeSecondPhone) && !regex.isDigitsOnly(_newJudgeSecondPhone))
+                    {
+                        em.digitsErrorMessage("Second Num.");
+                        return false;
+                    }
+                    else if (!regex.isCharsOrSpace(_newJudgeAddress))
+                    {
+                        em.charsSpaceErrorMessage("Address");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newJudgeAddressNum) && !regex.isCharsOrDigits(_newJudgeAddressNum))
+                    {
+                        em.charsDigitsErrorMessage("Address Num.");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_newJudgeTK))
+                    {
+                        em.digitsErrorMessage("Postal Code");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (!regex.isCharsOnly(_editJudgeFirstName))
+                    {
+                        em.charsErrorMessage("First Name");
+                        return false;
+                    }
+                    else if (!regex.isCharsOnly(_editJudgeLastName))
+                    {
+                        em.charsErrorMessage("Last Name");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_editJudgeFathersName) && !regex.isCharsOnly(_editJudgeFathersName))
+                    {
+                        em.charsErrorMessage("Last Name");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_editJudgeFirstPhone))
+                    {
+                        em.digitsErrorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_editJudgeSecondPhone) && !regex.isDigitsOnly(_editJudgeSecondPhone))
+                    {
+                        em.digitsErrorMessage("Second Num.");
+                        return false;
+                    }
+                    else if (!regex.isCharsOrSpace(_editJudgeAddress))
+                    {
+                        em.charsSpaceErrorMessage("Address");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_editJudgeAddressNum) && !regex.isCharsOrDigits(_editJudgeAddressNum))
+                    {
+                        em.charsDigitsErrorMessage("Address Num.");
+                        return false;
+                    }
+                    else if (!regex.isDigitsOnly(_editJudgeTK))
+                    {
+                        em.digitsErrorMessage("Postal Code");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
         }
+
+       
+        
         #endregion
 
-
-        #region helping methods
+        #region initialize methods
         private void initializeNewAthlete()
         {
+            _newPersonId = -1;              //gia na min menei to id apo to autocomplete mpike argotera mporei an dimiourgisei provlima
             NewAthleteFirstName.Text = null;
             NewAthleteLastName.Text = null;
             NewAthleteFatherName.Text = null;
@@ -1975,11 +2187,13 @@ namespace KarateGeek.guis
             NewAthleteTK.Text = null;
             cmbNewACountryChooses.SelectedIndex = 54;
             cmbNewAthleteRankChooses.SelectedIndex = 0;
-            cmbNewAClubChooses.SelectedIndex = 0; 
+            cmbNewAClubChooses.SelectedIndex = 0;
+            Dispatcher.BeginInvoke(new Action(() => { NewAthleteFirstName.Focus(); }));  //dinei to focus sto newathletefirstName
         }
 
         private void initializeEditAthlete()
         {
+            _editPersonId = -1;
             EditAthleteFirstName.Text = null;
             EditAthleteLastName.Text = null;
             EditAthleteFatherName.Text = null;
@@ -1993,11 +2207,13 @@ namespace KarateGeek.guis
             EditAthleteTK.Text = null;
             cmbEditACountryChooses.SelectedIndex = 54;
             cmbEditAthleteRankChooses.SelectedIndex = 0;
-            cmbEditAClubChooses.SelectedIndex = 0; 
+            cmbEditAClubChooses.SelectedIndex = 0;
+            Dispatcher.BeginInvoke(new Action(() => { EditAthleteFirstName.Focus(); }));
         }
 
         private void initializeNewJudge()
         {
+            _newJudgeId = -1;
             newJudgeFirstName.Text = null;
             newJudgeLastName.Text = null;
             newJudgeFatherName.Text = null;
@@ -2012,10 +2228,12 @@ namespace KarateGeek.guis
             cmbNewJCountryChooses.SelectedIndex = 54;
             cmbNewJudgeRankChooses.SelectedIndex = 0;
             cmbNewJClassChooses.SelectedIndex = 0;
+            Dispatcher.BeginInvoke(new Action(() => { newJudgeFirstName.Focus(); }));
         }
 
         private void initializeEditJudge()
         {
+            _editJudgeId = -1;
             editJudgeFirstName.Text = null;
             editJudgeLastName.Text = null;
             editJudgeFatherName.Text = null;
@@ -2030,22 +2248,15 @@ namespace KarateGeek.guis
             cmbEditJCountryChooses.SelectedIndex = 54;
             cmbEditJudgeRankChooses.SelectedIndex = 0;
             cmbEditJClassChooses.SelectedIndex = 0;
+            Dispatcher.BeginInvoke(new Action(() => { editJudgeFirstName.Focus(); }));
         }
 
+
         #endregion
-
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
-
-       
-
-      
-
-        
-
     }
 }
