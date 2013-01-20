@@ -80,7 +80,7 @@ namespace KarateGeek.guis
 
         #region point buttons
 
-        private void addPoint(string pointDSC, int point, string site)
+        private void addPointToHistory(string pointDSC, int point, string site)
         {
             Point p = new Point(pointDSC, point, pointsIndex, site);
             pointsIndex++;
@@ -94,37 +94,37 @@ namespace KarateGeek.guis
                 this.replaceFlag = false;
 
             updateHistory();
-            
+
         }
 
         private void ipponA_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.ippon, 10 , "left");
+            addPointToHistory(Strings.ippon, 10, "left");
         }
 
         private void wazaariA_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.wazaari, 1, "left");
+            addPointToHistory(Strings.wazaari, 1, "left");
         }
 
         private void jyogaiA_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.jyogai, 1, "left");
+            addPointToHistory(Strings.jyogai, 1, "left");
         }
 
         private void chuiA_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.chui, 1, "left");
+            addPointToHistory(Strings.chui, 1, "left");
         }
 
         private void keikokuA_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.keikoku, 1, "left");
+            addPointToHistory(Strings.keikoku, 1, "left");
         }
 
         private void tentoA_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.tento, 1, "left");
+            addPointToHistory(Strings.tento, 1, "left");
         }
 
         private void doctorStopA_Click(object sender, RoutedEventArgs e)
@@ -134,33 +134,33 @@ namespace KarateGeek.guis
 
         private void ipponB_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.ippon, 1, "right");
+            addPointToHistory(Strings.ippon, 1, "right");
 
         }
 
         private void wazaariB_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.wazaari, 1, "right");
+            addPointToHistory(Strings.wazaari, 1, "right");
         }
 
         private void jyogaiB_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.jyogai, 1, "right");
+            addPointToHistory(Strings.jyogai, 1, "right");
         }
 
         private void chuiB_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.chui, 1, "right");
+            addPointToHistory(Strings.chui, 1, "right");
         }
 
         private void keikokuB_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.keikoku, 1, "right");
+            addPointToHistory(Strings.keikoku, 1, "right");
         }
 
         private void tentoB_Click(object sender, RoutedEventArgs e)
         {
-            addPoint(Strings.tento, 1, "right");
+            addPointToHistory(Strings.tento, 1, "right");
         }
 
         private void doctorstopB_Click(object sender, RoutedEventArgs e)
@@ -173,13 +173,8 @@ namespace KarateGeek.guis
 
         private void updateHistory()
         {
-            //StringBuilder sb = new StringBuilder();
-            //bool endFlag = false;
             int historyIndex = 0;
 
-            //sb.Append("");
-
-            //listBoxHistory = new ListBox();
             List<string> temp = new List<string>();
 
             scoreLeft = 0;
@@ -232,16 +227,17 @@ namespace KarateGeek.guis
 
         public void yncListener(string ans)
         {
-            switch (ans) {
+            switch (ans)
+            {
                 case "delete":
-                                    this._pointsHistory.Remove(toReplacePoint);
-                                    this.updateHistory();
-                                    break;
+                    this._pointsHistory.Remove(toReplacePoint);
+                    this.updateHistory();
+                    break;
                 case "change":
-                                    this.replaceFlag = true;
-                                    break;
+                    this.replaceFlag = true;
+                    break;
                 case "cancel":
-                default:            break;
+                default: break;
             }
         }
 
@@ -266,49 +262,21 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
             foreach (Point p in _pointsHistory)
             {
                 if (p.side == "left")
                 {
                     if (_leftAthleteTeamId == "")
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ("
-                            + _gameId + ","
-                            + _leftAthleteId + ","
-                            + p.points + ", '"
-                            + p.description + "'); ");
-                    }
+                        insertPointToDB(_leftAthleteId, p);
                     else
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ("
-                            + _gameId + ","
-                            + _leftAthleteId + ", "
-                            + _leftAthleteTeamId + ","
-                            + p.points + ", '"
-                            + p.description + "'); ");
-                    }
+                        insertPointToDB(_leftAthleteId, _leftAthleteTeamId, p);
                 }
                 else
                 {
                     if (_rightAthleteTeamId == "")
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
-                            + _gameId + "','"
-                            + _rightAthleteId + "','"
-                            + p.points + "', '"
-                            + p.description + "'); ");
-                    }
+                        insertPointToDB(_rightAthleteId, p);
                     else
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
-                            + _gameId + "','"
-                            + _rightAthleteId + "', '"
-                            + _rightAthleteTeamId + "', '"
-                            + p.points + "', '"
-                            + p.description + "'); ");
-                    }
-
+                        insertPointToDB(_rightAthleteId, _rightAthleteTeamId, p);
                 }
             }
 
@@ -324,10 +292,39 @@ namespace KarateGeek.guis
             this.Close();
         }
 
-        #endregion
 
-       
+
+        private void insertPointToDB(string athId, string teamid, Point p)
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+
+            conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ("
+                + _gameId + ","
+                + athId + ", "
+                + teamid + ","
+                + p.points + ", '"
+                + p.description + "'); ");
+        }
+
+
+
+        private void insertPointToDB(string athId, Point p)
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+
+            conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ("
+                + _gameId + ","
+                + athId + ","
+                + p.points + ", '"
+                + p.description + "'); ");
+        }
+
+
+
+        #endregion
     }
+
+
 
 
     public class Point
@@ -339,6 +336,8 @@ namespace KarateGeek.guis
         public string time { get; set; }
         public string side { get; set; }
 
+
+
         public Point(string dsc, int points, int PointIndex, string side)
         {
             this.description = dsc;
@@ -347,6 +346,8 @@ namespace KarateGeek.guis
             this.time = DateTime.Now.ToString("HH:mm:ss tt");
             this.side = side;
         }
+
+
 
         public void update(string dsc, int points, string side)
         {
