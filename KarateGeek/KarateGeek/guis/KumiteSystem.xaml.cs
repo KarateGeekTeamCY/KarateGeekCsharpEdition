@@ -326,7 +326,6 @@ namespace KarateGeek.guis
 
 
 
-
     public class Point
     {
 
@@ -351,13 +350,9 @@ namespace KarateGeek.guis
 
         public void update(string dsc, int points, string side)
         {
-
             this.description = dsc;
             this.points = points;
             this.side = side;
         }
-
     }
-
-
 }

@@ -393,7 +393,7 @@ namespace KarateGeek.guis
             gameid = gm.gameId;
 
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "SELECT gp.athlete_id, sum(technical_point) FROM game_participations gp  join game_points on gp.game_id = game_points.game_id where gp.game_id = '" + gameid + "' group by (gp.athlete_id) ;";
+            sql = "SELECT athlete_id, sum(technical_point) FROM game_points where game_id = " + gameid + " group by athlete_id;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             int a = int.Parse(temp.Rows[0][1].ToString());
@@ -411,7 +411,7 @@ namespace KarateGeek.guis
                 else
                     return new Athlete((string)temp.Rows[1][0].ToString(), this.tournament.id);
             }
-            
+
         }
 
 
@@ -756,13 +756,13 @@ namespace KarateGeek.guis
 
             if (this.tournament.gameType == Strings.indKumite)
             {
-               // winner  
-                 Athlete temp = getKumiteIndVersusWinner(gm);
-                 if (temp != null)
-                     winner = temp.id;
-                 
+                // winner  
+                Athlete temp = getKumiteIndVersusWinner(gm);
+                if (temp != null)
+                    winner = temp.id;
+
             }
-                
+
 
 
             if (this.tournament.gameType == Strings.teamKumite)
@@ -785,13 +785,13 @@ namespace KarateGeek.guis
             if (winner != "-1")
             {
                 int nextPhase, nextPoss;
-                int currentPhase, currentPossition;
+                int currentPhase, currentPosition;
                 string sql;
 
                 if (this.tournament.gameType == Strings.indKumite || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
                 {
-                    currentPossition = int.Parse(gm.position);
-                    nextPoss = findNextPossInd(currentPossition);
+                    currentPosition = int.Parse(gm.position);
+                    nextPoss = findNextPossInd(currentPosition);
 
                     currentPhase = int.Parse(gm.phase);
                     nextPhase = currentPhase - 1;
@@ -821,7 +821,7 @@ namespace KarateGeek.guis
 
                         sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
                             + " AND phase = " + nextPhase
-                            + " AND possition = " + nextPoss + ";";
+                            + " AND position = " + nextPoss + ";";
                         CoreDatabaseConnection conn = new CoreDatabaseConnection();
                         string nextgameid = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
@@ -984,7 +984,7 @@ namespace KarateGeek.guis
         {
             string sql = "SELECT id FROM games WHERE tournament_id = " + tourid
                                         + " AND phase = " + phase
-                                        + " AND possition = " + poss + ";";
+                                        + " AND position = " + poss + ";";
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
             return conn.Query(sql).Tables[0].Rows[0][0].ToString();
