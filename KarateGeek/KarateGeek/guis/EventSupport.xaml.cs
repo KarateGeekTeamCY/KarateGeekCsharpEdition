@@ -393,21 +393,25 @@ namespace KarateGeek.guis
             gameid = gm.gameId;
 
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select athlete_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_points.game_id where game_id = '" + gameid + "' group by (game_participations.athlete_id) ;";
+            sql = "SELECT gp.athlete_id, sum(technical_point) FROM game_participations gp  join game_points on gp.game_id = game_points.game_id where gp.game_id = '" + gameid + "' group by (gp.athlete_id) ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            if ((int)temp.Rows[0][1] == (int)temp.Rows[1][1])
+            int a = int.Parse(temp.Rows[0][1].ToString());
+            int b = int.Parse(temp.Rows[1][1].ToString());
+
+            if (a == b)
             {
                 ChooseWinner getwin = new ChooseWinner(this, new Game(gameid), this.tournament);
+                return null;
             }
             else
             {
-                if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
+                if (a > b)
                     return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
                 else
                     return new Athlete((string)temp.Rows[1][0].ToString(), this.tournament.id);
             }
-            return null;
+            
         }
 
 
@@ -665,7 +669,7 @@ namespace KarateGeek.guis
         public void update()
         {
             this.tournament.load();
-            this.advanceAthlites();
+            this.advanceAthletes();
             this.tournament.load();
             this.loadGames();
         }
@@ -676,7 +680,7 @@ namespace KarateGeek.guis
             this.advanceVsGame(gm);
         }
 
-        public void advanceAthlites()
+        public void advanceAthletes()
         {
             //
             //  checks if the tournament type is versus or presentation
@@ -751,7 +755,14 @@ namespace KarateGeek.guis
             string winner = "-1";
 
             if (this.tournament.gameType == Strings.indKumite)
-                winner = getKumiteIndVersusWinner(gm).id;
+            {
+               // winner  
+                 Athlete temp = getKumiteIndVersusWinner(gm);
+                 if (temp != null)
+                     winner = temp.id;
+                 
+            }
+                
 
 
             if (this.tournament.gameType == Strings.teamKumite)

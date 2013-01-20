@@ -440,7 +440,7 @@ namespace KarateGeek.guis
 
 
             this.sender.tournament.load();
-            this.sender.advanceAthlites();
+            this.sender.advanceAthletes();
             this.sender.tournament.load();
 
             this.sender.loadGames();
