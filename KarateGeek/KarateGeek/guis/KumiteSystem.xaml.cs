@@ -80,103 +80,51 @@ namespace KarateGeek.guis
 
         #region point buttons
 
-
-        private void ipponA_Click(object sender, RoutedEventArgs e)
+        private void addPoint(string pointDSC, int point, string site)
         {
-            Point p = new Point(Strings.ippon, 1, pointsIndex, "left");
+            Point p = new Point(pointDSC, point, pointsIndex, site);
             pointsIndex++;
 
             if (replaceFlag)
-                this.toReplacePoint.update(Strings.ippon, 1, "left");
+                this.toReplacePoint.update(pointDSC, point, site);
             else
                 this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
 
-            //_pointsHistory.add
             updateHistory();
+            
+        }
 
+        private void ipponA_Click(object sender, RoutedEventArgs e)
+        {
+            addPoint(Strings.ippon, 10 , "left");
         }
 
         private void wazaariA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.wazaari, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.wazaari, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.wazaari, 1, "left");
         }
 
         private void jyogaiA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.jyogai, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.jyogai, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.jyogai, 1, "left");
         }
 
         private void chuiA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.chui, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.chui, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.chui, 1, "left");
         }
 
         private void keikokuA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.keikoku, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.keikoku, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.keikoku, 1, "left");
         }
 
         private void tentoA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.tento, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.tento, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.tento, 1, "left");
         }
 
         private void doctorStopA_Click(object sender, RoutedEventArgs e)
@@ -186,99 +134,33 @@ namespace KarateGeek.guis
 
         private void ipponB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.ippon, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.ippon, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.ippon, 1, "right");
 
         }
 
         private void wazaariB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.wazaari, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.wazaari, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.wazaari, 1, "right");
         }
 
         private void jyogaiB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.jyogai, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.jyogai, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.jyogai, 1, "right");
         }
 
         private void chuiB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.chui, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.chui, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.chui, 1, "right");
         }
 
         private void keikokuB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.keikoku, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.keikoku, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.keikoku, 1, "right");
         }
 
         private void tentoB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.tento, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.tento, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPoint(Strings.tento, 1, "right");
         }
 
         private void doctorstopB_Click(object sender, RoutedEventArgs e)
@@ -331,12 +213,7 @@ namespace KarateGeek.guis
             this.listBoxHistory.ItemsSource = temp;
         }
 
-        private void checkWinner()
-        {
 
-
-
-        }
 
         private void listBoxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
