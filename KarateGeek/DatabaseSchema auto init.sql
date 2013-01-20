@@ -260,7 +260,7 @@ CREATE TABLE game_score (
     score3          INTEGER,
     score4          INTEGER,
     score5          INTEGER,
-    mean_score      INTEGER,
+    mean_score      FLOAT,
 
     judge1          INTEGER         REFERENCES judges(id),
     judge2          INTEGER         REFERENCES judges(id),
