@@ -85,6 +85,9 @@ namespace KarateGeek.guis
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
             lg.shuffle();
+
+            /* experimental (and totally, totally broken in most cases): */
+            terminal.Content = new LotteryPrinter(lg.getLottery(), tournamentId).ToString();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
