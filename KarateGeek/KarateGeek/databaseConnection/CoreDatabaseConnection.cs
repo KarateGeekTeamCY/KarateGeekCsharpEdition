@@ -14,6 +14,11 @@ namespace KarateGeek.databaseConnection
     {
         private NpgsqlConnection _conn = null;
 
+        public static string database = "karategeek";
+        public static string user = "postgres";
+        public static string Password = "admin";
+        public static string host = "127.0.0.1";
+        public static string port = "5432";
 
         public NpgsqlConnection conn
         {
@@ -21,7 +26,7 @@ namespace KarateGeek.databaseConnection
             {
                 if (_conn == null)
                 {
-                    _conn = new NpgsqlConnection("Server=127.0.0.1; Port=5432; User Id=postgres; Password=admin; Database=karategeek;");
+                    _conn = new NpgsqlConnection("Server=" + host + "; Port=" + port + "; User Id=" + user + "; Password=" + Password + "; Database=" + database + ";");
 
                     /* Use the following code to test with a remote DB (to check for latency issues): */
                     //_conn = new NpgsqlConnection("Server=nicholas.ddns.net; Port=52728; User Id=karate; Password=xI85nO; Database=karate_db;");
@@ -37,7 +42,7 @@ namespace KarateGeek.databaseConnection
                 if (_conn.State != ConnectionState.Open)
                     _conn.Open();
 
-                
+
                 return _conn;
 
             }

@@ -27,8 +27,16 @@ namespace KarateGeek.guis
 
         public LogIn()
         {
-            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
+
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+
+            //
+            //
+            //
+            this.host.Text = CoreDatabaseConnection.host;
+
+            
         }
 
         private void login_Click(object sender, RoutedEventArgs e)
@@ -97,5 +105,12 @@ namespace KarateGeek.guis
                 menu.btnReports.IsEnabled = true;
             }
         }
+
+        private void host_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CoreDatabaseConnection.host = this.host.Text;
+        }
+
+        
     }
 }
