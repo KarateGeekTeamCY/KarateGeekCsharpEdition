@@ -289,6 +289,7 @@ namespace KarateGeek.guis
             this.sender.tournament.load();
 
             this.sender.loadGames();
+
             this.Close();
         }
 

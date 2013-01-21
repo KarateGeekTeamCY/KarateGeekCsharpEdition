@@ -675,6 +675,7 @@ namespace KarateGeek.guis
             this.advanceAthletes();
             this.tournament.load();
             this.loadGames();
+
         }
 
 
