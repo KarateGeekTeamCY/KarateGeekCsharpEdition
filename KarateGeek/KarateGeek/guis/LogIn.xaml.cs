@@ -34,7 +34,7 @@ namespace KarateGeek.guis
             //
             //
             //
-            this.host.Text = CoreDatabaseConnection.host;
+            this.host.Text = CoreDatabaseConnection._SERVER;
 
             
         }
@@ -108,7 +108,7 @@ namespace KarateGeek.guis
 
         private void host_TextChanged(object sender, TextChangedEventArgs e)
         {
-            CoreDatabaseConnection.host = this.host.Text;
+            CoreDatabaseConnection._SERVER = this.host.Text;
         }
 
         

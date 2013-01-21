@@ -14,19 +14,20 @@ namespace KarateGeek.databaseConnection
     {
         private NpgsqlConnection _conn = null;
 
-        public static string database = "karategeek";
-        public static string user = "postgres";
-        public static string Password = "admin";
-        public static string host = "127.0.0.1";
-        public static string port = "5432";
-
+        public static string _SERVER    = "127.0.0.1";
+        public static string _PORT      = "5432";
+        public static string _USER      = "postgres";
+        public static string _PASSWORD  = "admin";
+        public static string _DATABASE  = "karategeek";
+        
+        
         public NpgsqlConnection conn
         {
             get
             {
                 if (_conn == null)
                 {
-                    _conn = new NpgsqlConnection("Server=" + host + "; Port=" + port + "; User Id=" + user + "; Password=" + Password + "; Database=" + database + ";");
+                    _conn = new NpgsqlConnection("Server=" + _SERVER + "; Port=" + _PORT + "; User Id=" + _USER + "; Password=" + _PASSWORD + "; Database=" + _DATABASE + ";");
 
                     /* Use the following code to test with a remote DB (to check for latency issues): */
                     //_conn = new NpgsqlConnection("Server=nicholas.ddns.net; Port=52728; User Id=karate; Password=xI85nO; Database=karate_db;");
