@@ -145,6 +145,12 @@ namespace KarateGeek.guis
 
         private void setWinner(string athId, Team tm)
         {
+            //
+            //  NOTE
+            //  bug:
+            //
+            //  to athid einai to onoma tou athliti prepi na gini to id 
+            //
             if (this._isTeam)
             {
                 foreach (Athlete ath in tm.participants)

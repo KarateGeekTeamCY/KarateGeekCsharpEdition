@@ -402,6 +402,9 @@ namespace KarateGeek.guis
             if (a == b)
             {
                 ChooseWinner getwin = new ChooseWinner(this, new Game(gameid), this.tournament);
+                
+                getwin.Show();
+
                 return null;
             }
             else
