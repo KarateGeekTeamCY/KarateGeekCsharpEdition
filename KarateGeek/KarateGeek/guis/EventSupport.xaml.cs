@@ -219,7 +219,7 @@ namespace KarateGeek.guis
             if (futureGames != null)
             { this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames); }
             else
-            { 
+            {
                 //
                 // final game msg
                 //
@@ -485,10 +485,22 @@ namespace KarateGeek.guis
 
             if (temp.Rows.Count == 3)
             {
-                sql = "select game_participations.team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_points.game_id join games on games.id = game_participations.game_id where phase = '"
-                    + phase + "' and game_participations.team_id = '"
-                    + teamA + "' OR game_participations.team_id = '"
-                    + teamB + "'  group by (game_participations.team_id) ;";
+
+                //
+                //select team_id, sum(technical_point) from game_points where game_id in(select game_id from games where tournament_id = 4 and phase = 2 ) and (team_id = '12' OR team_id = '17' ) group by (team_id) ;
+                //
+
+                sql = "select team_id, sum(technical_point) from game_points"
+                    + " where game_id in( select game_id from games "
+                            + " where tournament_id = " + tournament.id
+                            + " and phase = " + phase + " )"
+                    + " and (team_id = " + teamA + " OR team_id = " + teamB + " ) group by team_id ;";
+
+                //sql = "select game_participations.team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_points.game_id join games on games.id = game_participations.game_id where phase = '"
+                //    + phase + "' and game_participations.team_id = '"
+                //    + teamA + "' OR game_participations.team_id = '"
+                //    + teamB + "'  group by (game_participations.team_id) ;";
+
                 temp = conn.Query(sql).Tables[0];
 
                 if (int.Parse(temp.Rows[0][1].ToString()) != int.Parse(temp.Rows[1][1].ToString()))
@@ -502,11 +514,6 @@ namespace KarateGeek.guis
                 {
                     ChooseWinner choice = new ChooseWinner(this, gm, tournament);
                     choice.Show();
-                    //
-                    // TODO:    create gui to make user set the winner in case of a tie
-                    // DONE:    16 January 2013
-                    //
-
                     return "-1";
                 }
             }

@@ -122,8 +122,11 @@ namespace KarateGeek.guis
                 {
                     save();
                     this.sender.Visibility = System.Windows.Visibility.Visible;
+                    
+                    
                     this.sender.tournament.load();
                     this.sender.loadGames();
+
                     this.Close();
                 }
             }
