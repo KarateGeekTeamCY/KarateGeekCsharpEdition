@@ -215,7 +215,15 @@ namespace KarateGeek.guis
             // the actual strings list creation for the gui to show
             //
             this.listBoxCurrentGameList.ItemsSource = this.loadStrings(curentGames);
-            this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames);
+
+            if (futureGames != null)
+            { this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames); }
+            else
+            { 
+                //
+                // final game msg
+                //
+            }
         }
 
 
@@ -402,7 +410,7 @@ namespace KarateGeek.guis
             if (a == b)
             {
                 ChooseWinner getwin = new ChooseWinner(this, new Game(gameid), this.tournament);
-                
+
                 getwin.Show();
 
                 return null;
