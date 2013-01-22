@@ -575,58 +575,58 @@ INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, se
 VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'MALE', '99123144' , null , 'email@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl1' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'MALE', '99123145' , null , 'athl1@gmail.com' , '0');
+VALUES ('Avery' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'MALE', '99123145' , null , 'athl1@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl2' , 'athl2_father' , 'athl2_last', '02-10-1992' , 'MALE', '99123146' , null , 'athl2@gmail.com' , '0');
+VALUES ('Serria' , 'athl2_father' , 'athl2_last', '02-10-1992' , 'MALE', '99123146' , null , 'athl2@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl3' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'FEMALE', '99123145' , null , 'athl3@gmail.com' , '0');
+VALUES ('Ambassador' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'FEMALE', '99123145' , null , 'athl3@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl4' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'MALE', '98123146' , null , 'athl4@gmail.com' , '0');
+VALUES ('Blackjack' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'MALE', '98123146' , null , 'athl4@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl5' , 'athl5_father' , 'athl5_last', '02-10-1999' , 'MALE', '98123145' , null , 'athl5@gmail.com' , '0');
+VALUES ('Malley' , 'athl5_father' , 'athl5_last', '02-10-1999' , 'MALE', '98123145' , null , 'athl5@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl6' , 'athl6_father' , 'athl6_last', '02-10-1991' , 'MALE', '99123146' , null , 'athl6@gmail.com' , '0');
+VALUES ('Atlas' , 'athl6_father' , 'athl6_last', '02-10-1991' , 'MALE', '99123146' , null , 'athl6@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl7' , 'athl7_father' , 'athl7_last', '02-10-2000' , 'FEMALE', '99123145' , null , 'athl7@gmail.com' , '0');
+VALUES ('Atlas' , 'athl7_father' , 'athl7_last', '02-10-2000' , 'FEMALE', '99123145' , null , 'athl7@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl8' , 'athl8_father' , 'athl8_last', '02-10-2006' , 'MALE', '98133146' , null , 'athl8@gmail.com' , '0');
+VALUES ('Margo' , 'athl8_father' , 'athl8_last', '02-10-2006' , 'MALE', '98133146' , null , 'athl8@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl9' , 'athl9_father' , 'athl9_last', '02-10-1962' , 'MALE', '98123246' , null , 'athl9@gmail.com' , '0');
+VALUES ('Bowe' , 'athl9_father' , 'athl9_last', '02-10-1962' , 'MALE', '98123246' , null , 'athl9@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl10' , 'athl10_father' , 'athl10_last', '02-10-1989' , 'MALE', '98123145' , null , 'athl10@gmail.com' , '0');
+VALUES ('Poppi' , 'athl10_father' , 'athl10_last', '02-10-1989' , 'MALE', '98123145' , null , 'athl10@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl11' , 'athl11_father' , 'athl11_last', '02-12-1991' , 'MALE', '98123146' , null , 'athl11@gmail.com' , '0');
+VALUES ('Gorten' , 'athl11_father' , 'athl11_last', '02-12-1991' , 'MALE', '98123146' , null , 'athl11@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl12' , 'athl12_father' , 'athl12_last', '12-10-2000' , 'FEMALE', '99123145' , null , 'athl12@gmail.com' , '0');
+VALUES ('Elvis' , 'athl12_father' , 'athl12_last', '12-10-2000' , 'FEMALE', '99123145' , null , 'athl12@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl13' , 'athl13_father' , 'athl13_last', '02-10-2002' , 'MALE', '98133146' , null , 'athl13@gmail.com' , '0');
+VALUES ('Olivia' , 'athl13_father' , 'athl13_last', '02-10-2002' , 'MALE', '98133146' , null , 'athl13@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl14' , 'athl14_father' , 'athl14_last', '10-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
+VALUES ('Bartholomew' , 'athl14_father' , 'athl14_last', '10-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl15' , 'athl15_father' , 'athl15_last', '02-12-1961' , 'MALE', '98123416' , null , 'athl15@gmail.com' , '0');
+VALUES ('Becca' , 'athl15_father' , 'athl15_last', '02-12-1961' , 'MALE', '98123416' , null , 'athl15@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl16' , 'athl16_father' , 'athl16_last', '12-10-2001' , 'FEMALE', '97133145' , null , 'athl16@gmail.com' , '0');
+VALUES ('Dallas' , 'athl16_father' , 'athl16_last', '12-10-2001' , 'FEMALE', '97133145' , null , 'athl16@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl17' , 'athl17_father' , 'athl17_last', '02-10-2003' , 'MALE', '98133146' , null , 'athl17@gmail.com' , '0');
+VALUES ('Tiernay' , 'athl17_father' , 'athl17_last', '02-10-2003' , 'MALE', '98133146' , null , 'athl17@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl18' , 'athl18_father' , 'athl18_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl18@gmail.com' , '0');
+VALUES ('Annabelle' , 'athl18_father' , 'athl18_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl18@gmail.com' , '0');
 
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
 -- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')
@@ -675,16 +675,33 @@ INSERT INTO events (name, date, location_id)
 VALUES ('Big Event', current_date, 0);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Iron Fist Tournament (Ind. Kumite)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
+VALUES ('Street Fighter I (Ind. Kumite)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'White/Red – 8th dan', 'IND|KUMITE', 'POINT', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter I (Sync. Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
+VALUES ('Street Fighter II (Sync. Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'SYNC|KATA', 'SCORE', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter II (Team Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'TEAM|KATA', 'SCORE', 1);
+VALUES ('Street Fighter III (Team Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'TEAM|KATA', 'SCORE', 1);
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
-VALUES ('Street Fighter III (Team Kumite)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'TEAM|KUMITE', 'POINT', 1);
+VALUES ('Street Fighter IV (Team Kumite)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'TEAM|KUMITE', 'POINT', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Street Fighter V (embu)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'SYNC|EN-BU', 'SCORE', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Street Fighter VI (fuguko)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'IND|FUGU-GO', 'FLAG|POINT', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Street Fighter VII (ind. Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'IND|KATA', 'SCORE', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Street Fighter VIII (team. Kata)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'TEAM|KATA', 'SCORE', 1);
+
+
+
+
+
 
 -- A NULL "ranking" means that the match hasn't taken place yet
 
