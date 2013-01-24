@@ -39,6 +39,7 @@ namespace KarateGeek
          *  5th kyu             –  Yellow (at least 7 Month of traning or more)
          *  6th kyu             –  White (at least 5 Month of traning or more)
          */
+
         public const string rank01 = "White  –  6th kyu";
         public const string rank02 = "Yellow –  5th kyu";
         public const string rank03 = "Orange –  4th kyu";
@@ -66,6 +67,8 @@ namespace KarateGeek
         //
         // game types (tournament types)
         //
+        public const string left = "LEFT";
+        public const string right = "RIGHT";
 
         public const string prefixInd  = "IND";
         public const string prefixTeam = "TEAM";
