@@ -97,75 +97,83 @@ namespace KarateGeek.guis
 
         }
 
+        //
+        //  LEFT SITE Athilete
+        //
+
         private void ipponA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.ippon, 10, "left");
+            addPointToHistory(Strings.ippon, 10, Strings.left);
         }
 
         private void wazaariA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.wazaari, 1, "left");
+            addPointToHistory(Strings.wazaari, 4, Strings.left);
         }
 
         private void jyogaiA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.jyogai, 1, "left");
+            addPointToHistory(Strings.jyogai, 2, Strings.left);
         }
 
         private void chuiA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.chui, 1, "left");
+            addPointToHistory(Strings.chui, 4, Strings.left);
         }
 
         private void keikokuA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.keikoku, 1, "left");
+            addPointToHistory(Strings.keikoku, 2, Strings.left);
         }
 
         private void tentoA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.tento, 1, "left");
+            addPointToHistory(Strings.tento, 1, Strings.left);
         }
 
         private void doctorStopA_Click(object sender, RoutedEventArgs e)
         {
-
+            addPointToHistory(Strings.doctorStop, 4, Strings.left);
         }
+
+        //
+        //  RIGHT SITE Athilete
+        //
 
         private void ipponB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.ippon, 1, "right");
+            addPointToHistory(Strings.ippon, 10, Strings.right);
 
         }
 
         private void wazaariB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.wazaari, 1, "right");
+            addPointToHistory(Strings.wazaari, 4, Strings.right);
         }
 
         private void jyogaiB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.jyogai, 1, "right");
+            addPointToHistory(Strings.jyogai, 2, Strings.right);
         }
 
         private void chuiB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.chui, 1, "right");
+            addPointToHistory(Strings.chui, 4, Strings.right);
         }
 
         private void keikokuB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.keikoku, 1, "right");
+            addPointToHistory(Strings.keikoku, 2, Strings.right);
         }
 
         private void tentoB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.tento, 1, "right");
+            addPointToHistory(Strings.tento, 1, Strings.right);
         }
 
         private void doctorstopB_Click(object sender, RoutedEventArgs e)
         {
-
+            addPointToHistory(Strings.doctorStop, 4, Strings.right);
         }
 
         #endregion
