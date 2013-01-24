@@ -66,6 +66,8 @@ namespace KarateGeek
         //
         // game types (tournament types)
         //
+        public const string left = "LEFT";
+        public const string right = "RIGHT";
 
         public const string prefixInd  = "IND";
         public const string prefixTeam = "TEAM";
