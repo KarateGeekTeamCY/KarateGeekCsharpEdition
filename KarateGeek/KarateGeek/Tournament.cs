@@ -128,7 +128,6 @@ namespace KarateGeek
 
 
 
-
             #region load games if exist for all phases
 
             sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 6 ORDER BY position ASC;";

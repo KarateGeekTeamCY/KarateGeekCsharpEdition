@@ -486,7 +486,7 @@ namespace KarateGeek.guis
             if (temp.Rows.Count == 3)
             {
 
-               
+
 
                 sql = "select team_id, sum(technical_point) from game_points"
                     + " where game_id in( select game_id from games "
@@ -494,7 +494,7 @@ namespace KarateGeek.guis
                             + " and phase = " + phase + " )"
                     + " and (team_id = " + teamA + " OR team_id = " + teamB + " ) group by team_id ;";
 
-                
+
 
                 temp = conn.Query(sql).Tables[0];
 
@@ -533,7 +533,7 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "SELECT game_participations.team_id, mean_score "
+            sql = "SELECT DISTINCT game_participations.team_id, mean_score "
                 + "from team_tournament_participations join "
                 + "game_participations on team_tournament_participations.id = game_participations.team_id join "
                 + "game_score on team_tournament_participations.id = game_score.team_id join "
@@ -700,6 +700,62 @@ namespace KarateGeek.guis
             //  checks if the tournament type is versus or presentation
             //  and then does the apropriate preparetion for the winner advancement
             //
+
+            Game gm = null;
+            bool ready = false;
+            int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
+
+            if (gameIndex == -1)
+                gameIndex = 1;
+
+            switch (this._indexCurrentphase)
+            {
+                case 0:
+                    gm = tournament.games2.ElementAt(gameIndex);
+
+                    ready = this.tournament.phase2Done;
+
+                    break;
+                case 1:
+                    gm = tournament.games4.ElementAt(gameIndex);
+
+                    ready = this.tournament.phase4Done;
+
+                    break;
+                case 2:
+                    gm = tournament.games8.ElementAt(gameIndex);
+
+                    ready = this.tournament.phase8Done;
+
+                    break;
+                case 3:
+                    gm = tournament.games16.ElementAt(gameIndex);
+
+                    ready = this.tournament.phase16Done;
+
+                    break;
+                case 4:
+                    gm = tournament.games32.ElementAt(gameIndex);
+
+                    ready = this.tournament.phase32Done;
+
+                    break;
+                case 5:
+                    gm = tournament.games64.ElementAt(gameIndex);
+
+                    ready = this.tournament.phase64Done;
+
+                    break;
+                case 6:
+                    gm = tournament.games128.ElementAt(gameIndex);
+
+                    ready = this.tournament.phase128Done;
+
+                    break;
+            }
+
+
+
             if ((this.tournament.gameType == Strings.indKumite)
                 || (this.tournament.gameType == Strings.teamKumite)
                 || (this.tournament.gameType == Strings.fugugo)
@@ -708,38 +764,6 @@ namespace KarateGeek.guis
                 //
                 //  this is the vs case
                 //
-                Game gm = null;
-
-                int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
-
-                if (gameIndex == -1)
-                    gameIndex = 1;
-
-                switch (this._indexCurrentphase)
-                {
-                    case 0:
-                        gm = tournament.games2.ElementAt(gameIndex);
-                        break;
-                    case 1:
-                        gm = tournament.games4.ElementAt(gameIndex);
-                        break;
-                    case 2:
-                        gm = tournament.games8.ElementAt(gameIndex);
-                        break;
-                    case 3:
-                        gm = tournament.games16.ElementAt(gameIndex);
-                        break;
-                    case 4:
-                        gm = tournament.games32.ElementAt(gameIndex);
-                        break;
-                    case 5:
-                        gm = tournament.games64.ElementAt(gameIndex);
-                        break;
-                    case 6:
-                        gm = tournament.games128.ElementAt(gameIndex);
-                        break;
-                }
-
                 this.advanceVsGame(gm);
 
             }
@@ -749,7 +773,8 @@ namespace KarateGeek.guis
                 //  the presentetion game winner 
                 //  advancing method
                 //
-                this.advancePresentationWinners();
+                if (ready)
+                    this.advancePresentationWinners();
             }
 
             //
@@ -905,7 +930,8 @@ namespace KarateGeek.guis
             {
                 foreach (Athlete ath in aWinners)
                 {
-                    addSingleParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), ath);
+                    if (i <= (2 ^ (_indexCurrentphase + 1)))
+                        addSingleParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), ath);
                     i++;
                 }
             }
@@ -918,7 +944,8 @@ namespace KarateGeek.guis
             {
                 foreach (Team team in tWinners)
                 {
-                    addTeamParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
+                    if (i <= (2 ^ (_indexCurrentphase + 2)))
+                        addTeamParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
                     i++;
                 }
             }
