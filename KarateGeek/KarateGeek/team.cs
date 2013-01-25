@@ -39,7 +39,8 @@ namespace KarateGeek
             sql = "SELECT * FROM team_tournament_participations WHERE id = '" + id + "'; ";
             DataTable temp = Query(sql).Tables[0];
 
-            this.id = id;
+            this.tournamentId = temp.Rows[0][3].ToString(); 
+
             if (temp.Rows[0][1] == null)
             {
                 this.ranking = "128";
@@ -48,7 +49,7 @@ namespace KarateGeek
             {
                 this.ranking = temp.Rows[0][1].ToString();
             }
-            this.tournamentId = temp.Rows[0][3].ToString(); ;
+            
 
             sql = "SELECT * FROM tournament_participations where tournament_id = '" + this.tournamentId
                 + "' AND team_id = '" + this.id + "' ; ";

@@ -486,9 +486,7 @@ namespace KarateGeek.guis
             if (temp.Rows.Count == 3)
             {
 
-                //
-                //select team_id, sum(technical_point) from game_points where game_id in(select game_id from games where tournament_id = 4 and phase = 2 ) and (team_id = '12' OR team_id = '17' ) group by (team_id) ;
-                //
+               
 
                 sql = "select team_id, sum(technical_point) from game_points"
                     + " where game_id in( select game_id from games "
@@ -496,10 +494,7 @@ namespace KarateGeek.guis
                             + " and phase = " + phase + " )"
                     + " and (team_id = " + teamA + " OR team_id = " + teamB + " ) group by team_id ;";
 
-                //sql = "select game_participations.team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_points.game_id join games on games.id = game_participations.game_id where phase = '"
-                //    + phase + "' and game_participations.team_id = '"
-                //    + teamA + "' OR game_participations.team_id = '"
-                //    + teamB + "'  group by (game_participations.team_id) ;";
+                
 
                 temp = conn.Query(sql).Tables[0];
 
@@ -904,7 +899,7 @@ namespace KarateGeek.guis
                 tWinners = getSyncKataWinner(_indexCurrentphase.ToString());
 
 
-            int i = 0;
+            int i = 1;
 
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
             {
@@ -915,7 +910,7 @@ namespace KarateGeek.guis
                 }
             }
 
-            i = 0;
+            i = 1;
 
             if (this.tournament.gameType == Strings.teamKata
             || this.tournament.gameType == Strings.enbu
@@ -960,7 +955,7 @@ namespace KarateGeek.guis
             }
 
             sql = "UPDATE team_tournament_participations SET ranking = " + phase
-                + " WHERE team_id = " + tm.id
+                + " WHERE id = " + tm.id
                 + " AND tournament_id = " + tournament.id + " ;";
 
             conn.NonQuery(sql);
