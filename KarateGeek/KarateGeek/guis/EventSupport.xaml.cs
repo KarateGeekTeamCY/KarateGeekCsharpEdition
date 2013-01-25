@@ -837,7 +837,6 @@ namespace KarateGeek.guis
                         // do something about that
                         //
 
-
                         if (this.tournament.gameType == Strings.teamKumite)
                         {
                             setRanking(new Team(winner), _indexNextPhase.ToString());
