@@ -64,5 +64,13 @@ namespace KarateGeek.helpers
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
         }
+
+        static public void menuSelectionErrorMessage(string formField)
+        {
+            string message = "Please choose a " + formField + " first.";
+            MessageBox.Show(message, "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+        }
     }
 }
