@@ -127,7 +127,8 @@ namespace KarateGeek.guis
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-
+            _sender.Show();
+            this.Close();
         }
 
 
@@ -712,43 +713,36 @@ namespace KarateGeek.guis
             {
                 case 0:
                     gm = tournament.games2.ElementAt(gameIndex);
-
                     ready = this.tournament.phase2Done;
 
                     break;
                 case 1:
                     gm = tournament.games4.ElementAt(gameIndex);
-
                     ready = this.tournament.phase4Done;
 
                     break;
                 case 2:
                     gm = tournament.games8.ElementAt(gameIndex);
-
                     ready = this.tournament.phase8Done;
 
                     break;
                 case 3:
                     gm = tournament.games16.ElementAt(gameIndex);
-
                     ready = this.tournament.phase16Done;
 
                     break;
                 case 4:
                     gm = tournament.games32.ElementAt(gameIndex);
-
                     ready = this.tournament.phase32Done;
 
                     break;
                 case 5:
                     gm = tournament.games64.ElementAt(gameIndex);
-
                     ready = this.tournament.phase64Done;
 
                     break;
                 case 6:
                     gm = tournament.games128.ElementAt(gameIndex);
-
                     ready = this.tournament.phase128Done;
 
                     break;
@@ -786,7 +780,6 @@ namespace KarateGeek.guis
             // this.update();
             //
         }
-
 
 
         private void advanceVsGame(Game gm)
@@ -919,32 +912,32 @@ namespace KarateGeek.guis
             if (this.tournament.gameType == Strings.enbu)
                 tWinners = getEnbuWinner(_indexCurrentphase.ToString());
 
-
             if (this.tournament.gameType == Strings.syncKata)
                 tWinners = getSyncKataWinner(_indexCurrentphase.ToString());
 
 
-            int i = 1;
 
+            int i = 1;
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
             {
-                foreach (Athlete ath in aWinners)
+                foreach (Athlete athlete in aWinners)
                 {
-                    if (i <= (2 ^ (_indexCurrentphase + 1)))
-                        addSingleParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), ath);
+                    double last = Math.Pow(2, (_indexCurrentphase + 1));
+                    if (i <= last + 0.5)
+                        addSingleParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
                     i++;
                 }
             }
 
             i = 1;
-
             if (this.tournament.gameType == Strings.teamKata
             || this.tournament.gameType == Strings.enbu
             || this.tournament.gameType == Strings.syncKata)
             {
                 foreach (Team team in tWinners)
                 {
-                    if (i <= (2 ^ (_indexCurrentphase + 2)))
+                    double last = Math.Pow(2, (_indexCurrentphase + 1));
+                    if (i <= last + 0.5)
                         addTeamParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
                     i++;
                 }
