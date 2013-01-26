@@ -917,30 +917,34 @@ namespace KarateGeek.guis
 
 
             int i = 1;
+            double last = Math.Pow(2, (_indexCurrentphase + 1));
+            
+
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
-            {
                 foreach (Athlete athlete in aWinners)
                 {
-                    double last = Math.Pow(2, (_indexCurrentphase + 1));
-                    if (i <= last + 0.5)
-                        addSingleParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
+                    
+                    if ((double)i < last + 1)
+                        addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
+
                     i++;
                 }
-            }
+
 
             i = 1;
+            //double last = Math.Pow(2, (_indexCurrentphase + 1));
+
             if (this.tournament.gameType == Strings.teamKata
             || this.tournament.gameType == Strings.enbu
             || this.tournament.gameType == Strings.syncKata)
-            {
                 foreach (Team team in tWinners)
                 {
-                    double last = Math.Pow(2, (_indexCurrentphase + 1));
-                    if (i <= last + 0.5)
-                        addTeamParticipant(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
+
+                    if ((double)i < last + 1)
+                        addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
+                    
                     i++;
                 }
-            }
         }
 
 
@@ -969,22 +973,19 @@ namespace KarateGeek.guis
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
             foreach (Athlete ath in tm.participants)
-            {
                 setRanking(ath, phase);
-            }
+
 
             sql = "UPDATE team_tournament_participations SET ranking = " + phase
                 + " WHERE id = " + tm.id
                 + " AND tournament_id = " + tournament.id + " ;";
 
             conn.NonQuery(sql);
-
-
         }
 
 
 
-        private void addSingleParticipant(string gameid, Athlete ath)
+        private void addParticipantToGame(string gameid, Athlete ath)
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
@@ -996,7 +997,7 @@ namespace KarateGeek.guis
         }
 
 
-        private void addTeamParticipant(string gameid, Team team)
+        private void addParticipantToGame(string gameid, Team team)
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
