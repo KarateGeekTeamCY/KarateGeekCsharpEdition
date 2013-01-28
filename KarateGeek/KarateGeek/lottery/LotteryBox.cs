@@ -93,7 +93,10 @@ namespace KarateGeek.lottery
             this.boxHeight = team.Count;
             this.boxWidth = defaultWidth;
 
-            this.box = makeBox(team);
+            if (team.Count == 1 && String.IsNullOrEmpty(team.ElementAt(0)))
+                this.box = makeEmptyBox();
+            else
+                this.box = makeBox(team);
         }
 
 
@@ -160,6 +163,21 @@ namespace KarateGeek.lottery
 
             //foreach(var ln in tmpBox)
             //    Debug.Assert(ln.Length <= realWidth + 1); // ?!
+
+            return tmpBox;
+        }
+
+
+        private char[][] makeEmptyBox() {
+            char[][] tmpBox = new char[this.realHeight][];
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < realHeight; ++i)
+            {
+                sb.Append(' ', this.realWidth - 2);
+                tmpBox[i] = sb.ToString().ToCharArray();
+                sb.Clear();
+            }
 
             return tmpBox;
         }
