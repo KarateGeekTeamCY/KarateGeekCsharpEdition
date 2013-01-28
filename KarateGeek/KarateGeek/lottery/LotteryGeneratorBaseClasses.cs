@@ -284,16 +284,46 @@ namespace KarateGeek.lottery
 
             LotteryGenConnection conn = new LotteryGenConnection();
             List<long> L = this.getLottery();
-            List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L);
+            List<Tuple<long, long, int, int>> pairsToCommit = getPairsToCommit(L);
 
             { // Debug info
-                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + PairsToCommit);
-                foreach (var i in PairsToCommit)
+                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + pairsToCommit);
+                foreach (var i in pairsToCommit)
                     Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
                         i.Item1, i.Item2, i.Item3, i.Item4);
             }
 
-            this.confirmed = conn.writeAllTournamentPairs(PairsToCommit, tournamentId, doCommit: doCommit);
+            /**/
+
+            /* Converting pairs to sets... */
+
+            /* CONVENTION: For semi-complete pairs, the caller provides a negative athlete id.
+             *
+             * Specifically, we use -1 for !is_ready pairs and -2 for is_ready "pairs".
+             * The latter are just single athlete participations, or single team
+             * participations (reusing the same code for the DB transaction).                 */
+
+            List<Tuple<List<long>, bool, int, int>> setsToCommit = new List<Tuple<List<long>, bool, int, int>>(); ;
+            bool isReady;
+            long id1, id2;
+
+            foreach (var pair in pairsToCommit) {
+
+                id1 = pair.Item1;
+                id2 = pair.Item2;
+                isReady = (id1 >= 0 && id2 >= 0) || (id1 >= 0 && id2 == -2);
+
+                List<long> set = new List<long>();
+                if (id1 >= 0) set.Add(id1);
+                if (id2 >= 0) set.Add(id2);
+
+                setsToCommit.Add(new Tuple<List<long>, bool, int, int>(set, isReady, pair.Item3, pair.Item4));
+            }
+
+            /**/
+
+            //this.confirmed = conn.writeAllTournamentPairs(PairsToCommit, tournamentId, doCommit: doCommit);
+            this.confirmed = conn.writeAllTournamentGameSets(setsToCommit, tournamentId, doCommit: doCommit);
             conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);
             // we could make "confirmed" a property, so that the setter does this automatically :)
         }
