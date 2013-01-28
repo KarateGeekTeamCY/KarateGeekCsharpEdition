@@ -839,11 +839,11 @@ namespace KarateGeek.guis
 
                         if (this.tournament.gameType == Strings.teamKumite)
                         {
-                            setRanking(new Team(winner), _indexNextPhase.ToString());
+                            setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
                         }
                         else
                         {
-                            setRanking(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
+                            setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
                         }
 
                     }
@@ -877,7 +877,7 @@ namespace KarateGeek.guis
                                 conn.NonQuery(sql);
                             }
 
-                            setRanking(new Team(winner), _indexNextPhase.ToString());
+                            setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
                         }
                         else
                         {
@@ -887,7 +887,7 @@ namespace KarateGeek.guis
                                 + " VALUES (" + winner + ", " + nextgameid + "); ";
                             conn.NonQuery(sql);
 
-                            setRanking(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
+                            setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
                         }
 
                     }
@@ -918,15 +918,17 @@ namespace KarateGeek.guis
 
             int i = 1;
             double last = Math.Pow(2, (_indexCurrentphase + 1));
-            
+
 
             if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
                 foreach (Athlete athlete in aWinners)
                 {
-                    
-                    if ((double)i < last + 1)
-                        addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
 
+                    if ((double)i < last + 1)
+                        if (!(_indexNextPhase == -1))
+                            addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
+
+                    insertRank(athlete, i.ToString());
                     i++;
                 }
 
@@ -941,24 +943,21 @@ namespace KarateGeek.guis
                 {
 
                     if ((double)i < last + 1)
-                        addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
-                    
+                        if (!(_indexNextPhase == -1))
+                            addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
+
+                    insertRank(team, i.ToString());
                     i++;
                 }
         }
 
 
 
-        private void setRanking(Athlete ath, string phase)
+        private void insertRank(Athlete ath, string rank)
         {
-            string sql = "";
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            string ranking;
 
-            ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
-
-
-            sql = "UPDATE tournament_participations SET ranking = " + ranking
+            string sql = "UPDATE tournament_participations SET ranking = " + rank
                 + " WHERE athlete_id = " + ath.id
                 + " AND tournament_id = " + tournament.id + " ;";
 
@@ -967,20 +966,39 @@ namespace KarateGeek.guis
 
 
 
-        private void setRanking(Team tm, string phase)
+        private void insertRank(Team team, string rank)
         {
-            string sql = "";
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
-            foreach (Athlete ath in tm.participants)
-                setRanking(ath, phase);
+            foreach (Athlete ath in team.participants)
+                insertRank(ath, rank);
 
-
-            sql = "UPDATE team_tournament_participations SET ranking = " + phase
-                + " WHERE id = " + tm.id
+            string sql = "UPDATE team_tournament_participations SET ranking = " + rank
+                + " WHERE id = " + team.id
                 + " AND tournament_id = " + tournament.id + " ;";
 
             conn.NonQuery(sql);
+        }
+
+
+
+        //
+        //  for vs games
+        //
+        private void setRankingByPhase(Athlete athlete, string phase)
+        {
+            string ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
+
+            insertRank(athlete, ranking);
+        }
+
+
+
+        private void setRankingByPhase(Team team, string phase)
+        {
+            string ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
+
+            insertRank(team, ranking);
         }
 
 
@@ -989,12 +1007,11 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
             sql = "INSERT INTO game_participations (athlete_id, game_id) VAlUES ( " + ath.id + ", " + gameid + " ); ";
             conn.NonQuery(sql);
-
-            setRanking(ath, Math.Pow(2, _indexNextPhase).ToString());
-
         }
+
 
 
         private void addParticipantToGame(string gameid, Team team)
@@ -1007,9 +1024,6 @@ namespace KarateGeek.guis
                 sql = "INSERT INTO game_participations (team_id, athlete_id, game_id) VAlUES ( " + team.id + ", " + ath.id + " , " + gameid + " ); ";
                 conn.NonQuery(sql);
             }
-
-
-            setRanking(team, Math.Pow(2, _indexNextPhase).ToString());
         }
 
 
