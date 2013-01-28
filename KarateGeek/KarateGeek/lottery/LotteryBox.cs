@@ -93,7 +93,7 @@ namespace KarateGeek.lottery
             this.boxHeight = team.Count;
             this.boxWidth = defaultWidth;
 
-            if (team.Count == 1 && String.IsNullOrEmpty(team.ElementAt(0)))
+            if (team.Count == 1 && String.IsNullOrEmpty(team.ElementAt(0)) && this.typeLeft == BoxTypeLeft.unconnected)
                 this.box = makeEmptyBox();
             else
                 this.box = makeBox(team);

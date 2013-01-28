@@ -85,15 +85,30 @@ namespace KarateGeek.lottery
 
                     tmpBox = new LotteryBox(nameList, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up).get();
                 }
-                
+
+                tmpBigBox[line] = "kdshbfvjdsbfvlkjdsbvfkjsdbvjkDSbvkjSdbfkjsdbfkjSDbnv.kjSDbnvkSJNvkjDSnvk>                                                  ".ToCharArray();
+
                 for (int i = 0; i < tmpBox.Length; ++i) {
                     tmpBigBox[line] = tmpBox[i];
+
+                    //tmpBigBox[line] = String.Concat(tmpBigBox[line].ToString(), tmpBox[i].ToString()).ToCharArray();
+
+                    //tmpBox[i].CopyTo(tmpBigBox[line], 10);
+                    
+                    
                     ++line;
                 }
                 directiondown = !directiondown;
                 ++line;
             }
             return tmpBigBox;
+        }
+
+
+        private char[][] TournamentTreeToBox(List<long> lotteryList) {
+
+
+            return null;
         }
 
 
