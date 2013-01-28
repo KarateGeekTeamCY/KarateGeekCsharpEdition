@@ -117,10 +117,10 @@ namespace KarateGeek.guis
         #region buttons
 
 
-
-        private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
+        private void btnRefreshe_Click(object sender, RoutedEventArgs e)
         {
-            this.update();
+            this.tournament.load();
+            this.loadGames();
         }
 
 
@@ -130,8 +130,6 @@ namespace KarateGeek.guis
             _sender.Show();
             this.Close();
         }
-
-
 
         #endregion
 
@@ -1070,8 +1068,6 @@ namespace KarateGeek.guis
 
             return next3;
         }
-
-
     }
 }
 
