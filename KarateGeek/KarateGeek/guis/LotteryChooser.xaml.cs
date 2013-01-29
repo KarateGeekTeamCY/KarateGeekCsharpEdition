@@ -121,6 +121,11 @@ namespace KarateGeek.guis
             try {
                 lg.confirmLottery(doCommit: true);
 
+                //
+                // dublicate fixing function
+                //
+
+
                 //temp
                 new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
 
@@ -133,6 +138,46 @@ namespace KarateGeek.guis
                 ErrorMessages.menuSelectionErrorMessage("tournament");
             }
         }
+
+        private void cleanUp()
+        {
+            string sql = "";
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            sql = "SELECT phase FROM games WHERE tournament_id = " + tournamentId + "  ORDER BY phase DESC ; ";
+            int phase = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
+            
+            for (int i = phase; i >= 0; i--)
+            {
+                sql = "SELECT position FROM games WHERE tournament_id = " + tournamentId 
+                    + " AND phase = " + i 
+                    + " ORDER BY position DESC ;";
+                int gameCount = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
+
+                for (int y = 1; y <= gameCount; y++)
+                {
+                    sql = "SELECT * FROM games WHERE tournament_id = " + tournamentId 
+                        + " AND phase = " + i 
+                        + " AND position = " + y + " ;";
+                    DataTable temp = conn.Query(sql).Tables[0];
+
+                    if (temp.Rows.Count > 1)
+                    {
+                        sql = "DELETE FROM games gm WHERE tournament_id = " + tournamentId
+                            + " AND phase = " + i
+                            + " AND position = " + y
+                            + " AND NOT EXIST IN ( SELECT * FROM game_participations WHERE game_id = gm.id ) ;";
+
+                        conn.NonQuery(sql);
+                    }
+                }
+            }
+        }
+
+
+
+
+
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
