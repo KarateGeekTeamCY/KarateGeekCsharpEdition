@@ -186,6 +186,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        [Obsolete("Don't use writeAllTournamentPairs; use writeAllTournamentGameSets instead", false)]
         /* Writes a tournament pair to the database (important: this method should be
          * "private" to ensure atomicity).
          * 

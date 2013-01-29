@@ -277,23 +277,88 @@ namespace KarateGeek.lottery
         }
 
 
+        /* Builds and returns game sets, sorted by phase descending, position ascending: */
+        public virtual List<Tuple<List<long>, bool, int, int>> buildTournamentGameSets()
+        {
+            List<long> L = this.getLottery();
+            List<Tuple<long, long, int, int>> pairsToCommit = getPairsToCommit(L);
+
+            { // Debug info
+                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + pairsToCommit);
+                foreach (var i in pairsToCommit)
+                    Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
+                        i.Item1, i.Item2, i.Item3, i.Item4);
+            }
+
+            /* Converting pairs to sets... */
+
+            /* CONVENTION: For semi-complete pairs, the caller provides a negative athlete id.
+             *
+             * Specifically, we use -1 for !is_ready pairs and -2 for is_ready "pairs".
+             * The latter are just single athlete participations, or single team
+             * participations (reusing the same code for the DB transaction).                 */
+
+            List<Tuple<List<long>, bool, int, int>> tournamentGameSets = new List<Tuple<List<long>, bool, int, int>>(); ;
+            bool isReady;
+            long id1, id2;
+
+            foreach (var pair in pairsToCommit)
+            {
+
+                id1 = pair.Item1;
+                id2 = pair.Item2;
+                isReady = (id1 >= 0 && id2 >= 0) || (id1 >= 0 && id2 == -2);
+
+                List<long> set = new List<long>();
+                if (id1 >= 0) set.Add(id1);
+                if (id2 >= 0) set.Add(id2);
+
+                tournamentGameSets.Add(new Tuple<List<long>, bool, int, int>(set, isReady, pair.Item3, pair.Item4));
+            }
+
+            /**/ /* debugging code, to be removed */
+
+            var temp = tournamentGameSets;
+
+            foreach (var tuple in temp)
+            {
+                //if (tuple.Item1 == null)
+                //Debug.WriteLine("Unsorted list item: - , phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                //else
+                foreach (var athlete in tuple.Item1)
+                    Debug.WriteLine("Unsorted list item: " + athlete + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                Debug.WriteLine('\n');
+            }
+
+            temp = tournamentGameSets.OrderBy(x => x.Item4).OrderByDescending(x => x.Item3).ToList();
+
+            foreach (var tuple in temp)
+            {
+                //if (tuple.Item1 == null)
+                //Debug.WriteLine("Unsorted list item: - , phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                //else
+                foreach (var athlete in tuple.Item1)
+                    Debug.WriteLine("Sorted list item: " + athlete + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                Debug.WriteLine('\n');
+            }
+
+            return temp;
+
+            /**/
+
+            //return tournamentGameSets.OrderBy(x => x.Item4).OrderByDescending(x => x.Item3).ToList();
+        }
+
+
         public virtual void confirmLottery(bool doCommit = false) // writes current lottery to the database, atomically!
         {
             if (this.confirmed)
                 throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore.");
 
             LotteryGenConnection conn = new LotteryGenConnection();
-            List<long> L = this.getLottery();
-            List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L);
-
-            { // Debug info
-                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + PairsToCommit);
-                foreach (var i in PairsToCommit)
-                    Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
-                        i.Item1, i.Item2, i.Item3, i.Item4);
-            }
-
-            this.confirmed = conn.writeAllTournamentPairs(PairsToCommit, tournamentId, doCommit: doCommit);
+            List<Tuple<List<long>, bool, int, int>> setsToCommit = buildTournamentGameSets();
+            
+            this.confirmed = conn.writeAllTournamentGameSets(setsToCommit, tournamentId, doCommit: doCommit);
             conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);
             // we could make "confirmed" a property, so that the setter does this automatically :)
         }
