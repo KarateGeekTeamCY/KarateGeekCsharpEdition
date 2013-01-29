@@ -105,8 +105,23 @@ namespace KarateGeek.lottery
         }
 
 
-        private char[][] TournamentTreeToBox(List<long> lotteryList) {
+        private List<Tuple<List<long>, bool, int, int>> sortPhaseDescPositionAsc(List<Tuple<List<long>, bool, int, int>> unsorted)
+        {
+            return unsorted.OrderBy(x => x.Item4).OrderByDescending(x => x.Item3).ToList();
+        }
 
+
+        private char[][] TournamentTreeToBox(List<Tuple<List<long>, bool, int, int>> Sets)
+        {
+            var temp = Sets;
+
+            //foreach (var tuple in temp)
+            //    Debug.WriteLine("Unsorted list item: " + tuple.Item1.ElementAt(0) + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+
+            temp = sortPhaseDescPositionAsc(Sets);
+
+            //foreach (var tuple in temp)
+            //    Debug.WriteLine("Sorted list item:   " + tuple.Item1.ElementAt(0) + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
 
             return null;
         }

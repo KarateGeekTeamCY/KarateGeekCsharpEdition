@@ -29,9 +29,30 @@ namespace KarateGeek.guis
         private int eventId;
         private int tournamentId;
         private LotteryGenerator lg;
-        private Window sender;
+        private Window sender; 
 
-        public LotteryChooser(Window sender)
+        private const double ASCIIGraphMinFontSize = 6;
+        private const double ASCIIGraphDefFontSize = 12;    // size 10 works well for many screens
+        private const double ASCIIGraphMaxFontSize = 36;
+
+        private double ASCIIGraphFontSize {                 // within permitted font size range 
+            get {
+                  return terminal.FontSize;
+                }
+            set {
+                  terminal.FontSize = (value < ASCIIGraphMinFontSize) ? ASCIIGraphMinFontSize :
+                                      (value > ASCIIGraphMaxFontSize) ? ASCIIGraphMaxFontSize :
+                                      value;
+                }
+        }
+
+        public LotteryChooser(Window sender, double ASCIIGraphFontSize) // overloaded constructor
+            : this(sender)
+        {
+            this.ASCIIGraphFontSize = ASCIIGraphFontSize;
+        }
+
+        public LotteryChooser(Window sender)                            // overloaded constructor
         {
             InitializeComponent();
 
@@ -50,10 +71,11 @@ namespace KarateGeek.guis
                         + "┌──────────────────┐  │\n"
                         + "│ Athlete 2's name ├──┘\n"
                         + "└──────────────────┘\n";
+            terminal.Content = node;
 
-            //terminal.Content = node;
-            terminal.Content = null;
-            terminal.FontSize = 10;
+            //terminal.Content = null;
+
+            ASCIIGraphFontSize = ASCIIGraphDefFontSize; // can be set to another value using the overloaded constructor
         }
 
         private void cboEventCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -63,13 +85,12 @@ namespace KarateGeek.guis
 
             if (index < cboEventCombo.Items.Count && index != -1)
                 futureUnlotterisedTournaments = tournamentConn.getUnlotterisedTournaments(eventId);
+
             foreach (DataRow dr in futureUnlotterisedTournaments.Rows)
             {
                 cboTournamentCombo.Items.Add(dr[1].ToString());
             }
-
         }
-
 
         private void cboTournamentCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -85,8 +106,7 @@ namespace KarateGeek.guis
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            try {
                 lg.shuffle();
 
                 /* experimental (and totally, totally broken in most cases): */
@@ -98,14 +118,14 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            try {
                 lg.confirmLottery(doCommit: true);
 
                 //temp
                 new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
 
-                LotteryChooser lc = new LotteryChooser(this.sender);
+                //LotteryChooser lc = new LotteryChooser(this.sender);
+                LotteryChooser lc = new LotteryChooser(this.sender, this.ASCIIGraphFontSize);
                 lc.Activate();
                 this.Close();
                 lc.Show();
@@ -119,5 +139,38 @@ namespace KarateGeek.guis
             this.sender.Show();
             this.Close();
         }
+
+        //private void terminal_MouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    if(ctrl)
+        //        if (e.Delta < 0)
+        //            --ASCIIGraphFontSize;
+        //        else
+        //            ++ASCIIGraphFontSize;
+        //}
+        //private bool ctrl = false;
+        
+        
+        //private void terminal_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if ((e.Key == Key.LeftCtrl) || (e.Key == Key.RightCtrl))
+        //    {
+        //        if (e.IsDown)
+        //            ctrl = true;
+
+        //    }
+        //}
+
+        //private void terminal_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    if ((e.Key == Key.LeftCtrl) || (e.Key == Key.RightCtrl))
+        //    {
+        //        if (e.IsUp)
+        //            ctrl = false;
+
+        //    }
+
+        //}
+
     }
 }
