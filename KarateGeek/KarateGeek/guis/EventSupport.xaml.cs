@@ -83,7 +83,7 @@ namespace KarateGeek.guis
 
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
-            string sql = "select * from tournaments where event_id = '" + this._eventId + "'; ";
+            string sql = "select * from tournaments where event_id = '" + this._eventId + "' AND lottery_ready = 't' AND is_finished = 'f' ORDER BY name; ";
             _TournamantsDT = conn.Query(sql).Tables[0];
             this._availableTournaments = new List<string>();
 
