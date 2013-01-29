@@ -330,8 +330,11 @@ namespace KarateGeek.lottery
         protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
         {
             List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
-
-            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants / 3, 2));
+            //
+            //12345
+            //
+            //int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants / 3, 2));
+            int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants , 2));
 
             for (int phase = numOfPhases - 1; phase >= 0; --phase)
                 for (int position = 1; position <= Math.Pow(2, phase) * 3; ++position) // * 3
