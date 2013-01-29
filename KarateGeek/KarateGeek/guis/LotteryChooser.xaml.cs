@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.Data;
 using KarateGeek.databaseConnection;
 using KarateGeek.lottery;
+using KarateGeek.helpers;
 
 namespace KarateGeek.guis
 {
@@ -84,23 +85,33 @@ namespace KarateGeek.guis
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
         {
-            lg.shuffle();
+            try
+            {
+                lg.shuffle();
 
-            /* experimental (and totally, totally broken in most cases): */
-            terminal.Content = new LotteryPrinter(lg.getLottery(), tournamentId).ToString();
+                /* experimental (and totally, totally broken in most cases): */
+                terminal.Content = new LotteryPrinter(lg.getLottery(), tournamentId).ToString();
+            } catch (NullReferenceException exception) {
+                ErrorMessages.menuSelectionErrorMessage("tournament");
+            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            lg.confirmLottery(doCommit: true);
+            try
+            {
+                lg.confirmLottery(doCommit: true);
 
-            //temp
-            new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
+                //temp
+                new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
 
-            LotteryChooser lc = new LotteryChooser(this.sender);
-            lc.Activate();
-            this.Close();
-            lc.Show();
+                LotteryChooser lc = new LotteryChooser(this.sender);
+                lc.Activate();
+                this.Close();
+                lc.Show();
+            } catch (NullReferenceException exception) {
+                ErrorMessages.menuSelectionErrorMessage("tournament");
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
