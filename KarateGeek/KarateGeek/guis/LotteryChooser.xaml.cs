@@ -139,40 +139,41 @@ namespace KarateGeek.guis
         }
 
 
-        private void cleanUp()
-        {
-            string sql = "";
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+        /* UNUSED AND UNTESTED */
+        //private void cleanUp()
+        //{
+        //    string sql = "";
+        //    CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
-            sql = "SELECT phase FROM games WHERE tournament_id = " + tournamentId + "  ORDER BY phase DESC ; ";
-            int phase = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
+        //    sql = "SELECT phase FROM games WHERE tournament_id = " + tournamentId + "  ORDER BY phase DESC ; ";
+        //    int phase = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
             
-            for (int i = phase; i >= 0; i--)
-            {
-                sql = "SELECT position FROM games WHERE tournament_id = " + tournamentId 
-                    + " AND phase = " + i 
-                    + " ORDER BY position DESC ;";
-                int gameCount = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
+        //    for (int i = phase; i >= 0; i--)
+        //    {
+        //        sql = "SELECT position FROM games WHERE tournament_id = " + tournamentId 
+        //            + " AND phase = " + i 
+        //            + " ORDER BY position DESC ;";
+        //        int gameCount = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
 
-                for (int y = 1; y <= gameCount; y++)
-                {
-                    sql = "SELECT * FROM games WHERE tournament_id = " + tournamentId 
-                        + " AND phase = " + i 
-                        + " AND position = " + y + " ;";
-                    DataTable temp = conn.Query(sql).Tables[0];
+        //        for (int y = 1; y <= gameCount; y++)
+        //        {
+        //            sql = "SELECT * FROM games WHERE tournament_id = " + tournamentId 
+        //                + " AND phase = " + i 
+        //                + " AND position = " + y + " ;";
+        //            DataTable temp = conn.Query(sql).Tables[0];
 
-                    if (temp.Rows.Count > 1)
-                    {
-                        sql = "DELETE FROM games gm WHERE tournament_id = " + tournamentId
-                            + " AND phase = " + i
-                            + " AND position = " + y
-                            + " AND NOT EXIST IN ( SELECT * FROM game_participations WHERE game_id = gm.id ) ;";
+        //            if (temp.Rows.Count > 1)
+        //            {
+        //                sql = "DELETE FROM games gm WHERE tournament_id = " + tournamentId
+        //                    + " AND phase = " + i
+        //                    + " AND position = " + y
+        //                    + " AND NOT EXIST IN ( SELECT * FROM game_participations WHERE game_id = gm.id ) ;";
 
-                        conn.NonQuery(sql);
-                    }
-                }
-            }
-        }
+        //                conn.NonQuery(sql);
+        //            }
+        //        }
+        //    }
+        //}
 
 
 
@@ -187,10 +188,16 @@ namespace KarateGeek.guis
         private void terminal_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                double temp = this.treeView.ContentVerticalOffset;
+
                 if (e.Delta < 0)
                     --ASCIIGraphFontSize;
                 else
                     ++ASCIIGraphFontSize;
+
+                this.treeView.ScrollToVerticalOffset(temp);
+            }
         }
 
     }
