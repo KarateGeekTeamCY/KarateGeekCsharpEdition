@@ -140,37 +140,14 @@ namespace KarateGeek.guis
             this.Close();
         }
 
-        //private void terminal_MouseWheel(object sender, MouseWheelEventArgs e)
-        //{
-        //    if(ctrl)
-        //        if (e.Delta < 0)
-        //            --ASCIIGraphFontSize;
-        //        else
-        //            ++ASCIIGraphFontSize;
-        //}
-        //private bool ctrl = false;
-        
-        
-        //private void terminal_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if ((e.Key == Key.LeftCtrl) || (e.Key == Key.RightCtrl))
-        //    {
-        //        if (e.IsDown)
-        //            ctrl = true;
-
-        //    }
-        //}
-
-        //private void terminal_KeyUp(object sender, KeyEventArgs e)
-        //{
-        //    if ((e.Key == Key.LeftCtrl) || (e.Key == Key.RightCtrl))
-        //    {
-        //        if (e.IsUp)
-        //            ctrl = false;
-
-        //    }
-
-        //}
+        private void terminal_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                if (e.Delta < 0)
+                    --ASCIIGraphFontSize;
+                else
+                    ++ASCIIGraphFontSize;
+        }
 
     }
 }

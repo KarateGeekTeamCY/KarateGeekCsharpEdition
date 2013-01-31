@@ -79,12 +79,9 @@
                        VerticalContentAlignment="Center" 
                        Grid.ColumnSpan="2" 
                        Margin="5" 
-                       BorderThickness="2" 
-                       /> 
-                    
-                       <!-- MouseWheel="terminal_MouseWheel" 
-                       KeyDown="terminal_KeyDown" 
-                       KeyUp="terminal_KeyUp" -->
+                       BorderThickness="2"
+                       MouseWheel="terminal_MouseWheel" 
+                       />
                     
                     
                 </ScrollViewer>
