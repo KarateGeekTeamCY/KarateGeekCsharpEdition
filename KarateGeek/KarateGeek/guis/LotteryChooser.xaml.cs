@@ -102,7 +102,7 @@ namespace KarateGeek.guis
             lg.shuffle();
 
             /* experimental (and totally, totally broken in most cases): */
-            terminal.Content = new LotteryPrinter(lg.getLottery(), tournamentId).ToString();
+            terminal.Content = "_\n" + new LotteryPrinter(lg.getLottery(), tournamentId).ToString(); // workaround for a .NET bug
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
