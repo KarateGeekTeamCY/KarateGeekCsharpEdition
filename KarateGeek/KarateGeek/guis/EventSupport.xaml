@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="EventSupport" 
         ResizeMode="NoResize"
-        Height="500">
+        Height="600"
+        Width="800">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -116,17 +118,17 @@
             <Button Name="btnBack"
                     Content="Back"
                     VerticalAlignment="Center"
-                    Grid.Column="2"
+                    Grid.Column="1"
                     Margin="5"
                     Padding="20,5" Click="btnBack_Click" />
-            
-            
-            <Button Name="btnStartNextGame"
-                    Content="Start next game"
+
+
+            <Button Name="btnRefreshe"
+                    Content="Refreshe"
                     VerticalAlignment="Center"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Padding="5"
-                    Margin="5" Click="btnStartNextGame_Click" />
+                    Margin="5" Click="btnRefreshe_Click" />
 
 
         </Grid>

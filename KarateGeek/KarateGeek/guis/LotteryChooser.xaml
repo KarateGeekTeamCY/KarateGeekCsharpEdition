@@ -80,7 +80,8 @@
                        Grid.ColumnSpan="2" 
                        Margin="5" 
                        BorderThickness="2"
-                       MouseWheel="terminal_MouseWheel" 
+                       MouseWheel="terminal_MouseWheel"
+                       ToolTip="Hold down &lt;Ctrl&gt; to zoom with the mouse wheel"
                        />
                     
                     

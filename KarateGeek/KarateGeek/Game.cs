@@ -107,7 +107,7 @@ namespace KarateGeek
             this.eventId = (string)temp.Rows[0][15].ToString();
 
 
-            sql = "select * from game_participants_total_det where game_id = '" + this.gameId + "'";
+            sql = "select * from game_participants_total_det where game_id = '" + this.gameId + "' ORDER BY last_name";
             temp = this.Query(sql).Tables[0];
 
             this.numOfParticipants = 0;

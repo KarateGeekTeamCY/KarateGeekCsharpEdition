@@ -189,6 +189,7 @@ CREATE TABLE tournaments (
                                                 -- "point"      -> ippon ktl.
     event_id        INTEGER         REFERENCES events(id) ON DELETE CASCADE,
     lottery_ready   BOOLEAN         NOT NULL DEFAULT false,
+    is_finished     BOOLEAN         NOT NULL DEFAULT false,
     PRIMARY KEY(id)
 );
 
@@ -810,6 +811,12 @@ VALUES ('Tiernay' , 'athl17_father' , 'athl17_last', '02-10-2003' , 'MALE', '981
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
 VALUES ('Annabelle' , 'athl18_father' , 'athl18_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl18@gmail.com' , '0');
 
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Amalia' , 'athl19_father' , 'athl19_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl19@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Sotiroula' , 'athl20_father' , 'athl20_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl20@gmail.com' , '0');
+
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
 -- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
@@ -840,6 +847,8 @@ INSERT INTO athletes (id, rank, club_id ) VALUES ('15', 'Black  –  1st dan',  
 INSERT INTO athletes (id, rank, club_id ) VALUES ('16', 'Orange –  4th kyu',   '3'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('17', 'Brown  –  1st kyu',   '2'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('18', 'Yellow –  5th kyu',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('19', 'Yellow –  5th kyu',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('20', 'Yellow –  5th kyu',   NULL );
 
 
 INSERT INTO judges (id, rank, class ) VALUES ('2',  'Black  –  1st dan',   'A' );
@@ -1048,16 +1057,21 @@ VALUES (11, 4, (SELECT rank FROM athletes WHERE id = 11), NULL, 15 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 5
 VALUES (12, 4, (SELECT rank FROM athletes WHERE id = 12), NULL, 16 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (18, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 16 );
+VALUES (13, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 16 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (14, 4, (SELECT rank FROM athletes WHERE id = 14), NULL, 16 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 6
-VALUES (13, 4, (SELECT rank FROM athletes WHERE id = 12), NULL, 17 );
+VALUES (15, 4, (SELECT rank FROM athletes WHERE id = 15), NULL, 17 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (17, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 17 );
+VALUES (16, 4, (SELECT rank FROM athletes WHERE id = 16), NULL, 17 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (15, 4, (SELECT rank FROM athletes WHERE id = 14), NULL, 17 );
-
+VALUES (17, 4, (SELECT rank FROM athletes WHERE id = 17), NULL, 17 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 7
+VALUES (18, 4, (SELECT rank FROM athletes WHERE id = 18), NULL, 18 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (19, 4, (SELECT rank FROM athletes WHERE id = 19), NULL, 18 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (20, 4, (SELECT rank FROM athletes WHERE id = 20), NULL, 18 );
 
 
 
@@ -1074,25 +1088,25 @@ INSERT INTO team_tournament_participations (team, tournament_id)
 VALUES (4, 5);
 
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 1
-VALUES (1, 5, (SELECT rank FROM athletes WHERE id = 1), NULL, 18 );
+VALUES (1, 5, (SELECT rank FROM athletes WHERE id = 1), NULL, 19 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (2, 5, (SELECT rank FROM athletes WHERE id = 2), NULL, 18 );
+VALUES (2, 5, (SELECT rank FROM athletes WHERE id = 2), NULL, 19 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 2
-VALUES (3, 5, (SELECT rank FROM athletes WHERE id = 3), NULL, 19 );
+VALUES (3, 5, (SELECT rank FROM athletes WHERE id = 3), NULL, 20 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (5, 5, (SELECT rank FROM athletes WHERE id = 5), NULL, 19 );
+VALUES (5, 5, (SELECT rank FROM athletes WHERE id = 5), NULL, 20 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 3
-VALUES (6, 5, (SELECT rank FROM athletes WHERE id = 6), NULL, 20 );
+VALUES (6, 5, (SELECT rank FROM athletes WHERE id = 6), NULL, 21 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (7, 5, (SELECT rank FROM athletes WHERE id = 7), NULL, 20 );
+VALUES (7, 5, (SELECT rank FROM athletes WHERE id = 7), NULL, 21 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 4
-VALUES (9, 5, (SELECT rank FROM athletes WHERE id = 9), NULL, 21 );
+VALUES (9, 5, (SELECT rank FROM athletes WHERE id = 9), NULL, 22 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (11, 5, (SELECT rank FROM athletes WHERE id = 11), NULL, 21 );
+VALUES (11, 5, (SELECT rank FROM athletes WHERE id = 11), NULL, 22 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 5
-VALUES (12, 5, (SELECT rank FROM athletes WHERE id = 12), NULL, 22 );
+VALUES (12, 5, (SELECT rank FROM athletes WHERE id = 12), NULL, 23 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (13, 5, (SELECT rank FROM athletes WHERE id = 13), NULL, 22 );
+VALUES (13, 5, (SELECT rank FROM athletes WHERE id = 13), NULL, 23 );
 
 -- 'Tekken 2 (Fugugo)'
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)

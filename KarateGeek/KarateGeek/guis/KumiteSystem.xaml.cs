@@ -43,11 +43,11 @@ namespace KarateGeek.guis
         private Game game;
         private int scoreLeft = 0;
         private int scoreRight = 0;
-        private EventSupport sender;
+        private EventSupport _sender;
 
 
 
-        #endregion
+        #endregion  private declarations
 
 
 
@@ -56,7 +56,7 @@ namespace KarateGeek.guis
 
             InitializeComponent();
             this.game = game;
-            this.sender = sender;
+            this._sender = sender;
             //this._gameId = gameId;
             this._LoadData();
             this.Show();
@@ -179,6 +179,7 @@ namespace KarateGeek.guis
         #endregion
 
 
+
         private void updateHistory()
         {
             int historyIndex = 0;
@@ -195,16 +196,18 @@ namespace KarateGeek.guis
                 sb.Append(": ");
 
 
-                if (p.side == "right")
+                if (p.side == Strings.right)
                 {
                     scoreRight += p.points;
                     sb.Append("Comp. B -> ");
                 }
-                else
+                else // if (p.side == Strings.left)
                 {
                     scoreLeft += p.points;
                     sb.Append("Comp. A -> ");
                 }
+
+
                 sb.Append(p.description);
                 sb.Append("\n");
                 scoreA.Text = scoreLeft.ToString();
@@ -233,6 +236,7 @@ namespace KarateGeek.guis
         }
 
 
+
         public void yncListener(string ans)
         {
             switch (ans)
@@ -252,34 +256,26 @@ namespace KarateGeek.guis
 
         #region management buttons
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-
-
+            this._sender.Show();
+            this.Close();
         }
+        
 
-        private void btnPause_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnEnd_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             foreach (Point p in _pointsHistory)
             {
-                if (p.side == "left")
+                if (p.side == Strings.left)
                 {
                     if (_leftAthleteTeamId == "")
                         insertPointToDB(_leftAthleteId, p);
                     else
                         insertPointToDB(_leftAthleteId, _leftAthleteTeamId, p);
                 }
-                else
+                else // if (p.side == Strings.left)
                 {
                     if (_rightAthleteTeamId == "")
                         insertPointToDB(_rightAthleteId, p);
@@ -292,11 +288,11 @@ namespace KarateGeek.guis
             this.game.isFinished = true;
 
 
-            this.sender.tournament.load();
-            this.sender.advanceAthletes();
-            this.sender.tournament.load();
+            this._sender.tournament.load();
+            this._sender.advanceAthletes();
+            this._sender.tournament.load();
 
-            this.sender.loadGames();
+            this._sender.loadGames();
 
             this.Close();
         }
@@ -307,7 +303,7 @@ namespace KarateGeek.guis
         {
             databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
 
-            conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ("
+            conn.NonQuery("INSERT INTO game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) VALUES ("
                 + _gameId + ","
                 + athId + ", "
                 + teamid + ","
@@ -321,7 +317,7 @@ namespace KarateGeek.guis
         {
             databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
 
-            conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ("
+            conn.NonQuery("INSERT INTO game_points (game_id , athlete_id , technical_point , technical_point_desc) VALUES ("
                 + _gameId + ","
                 + athId + ","
                 + p.points + ", '"
@@ -331,6 +327,8 @@ namespace KarateGeek.guis
 
 
         #endregion
+
+        
     }
 
 

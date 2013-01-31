@@ -26,6 +26,25 @@ namespace KarateGeek
         public bool isInd { get; set; }
         public bool isSync { get; set; }
 
+        private bool _isFinished;
+        public bool isFinished
+        {
+            get
+            { return _isFinished; }
+            set
+            {
+                string sqlbool;
+                if (value)
+                    sqlbool = "t";
+                else
+                    sqlbool = "f";
+
+                string sql = "UPDATE tournaments SET is_finished = " + sqlbool + " WHERE id = " + this.id + ";";
+                NonQuery(sql);
+
+                this._isFinished = value;
+            }
+        }
 
         public List<Game> games2 { get; set; }
         public List<Game> games4 { get; set; }
@@ -64,6 +83,7 @@ namespace KarateGeek
             this.gameType = (string)temp.Rows[0][7].ToString();
             this.judgingType = (string)temp.Rows[0][8].ToString();
             this.eventId = (string)temp.Rows[0][9].ToString();
+            this._isFinished = (bool)temp.Rows[0][11];
 
             switch ((string)this.gameType.Split('|')[0].ToString())
             {
@@ -125,7 +145,6 @@ namespace KarateGeek
                 phase2Done = false;
             else
                 phase2Done = true;
-
 
 
 
@@ -212,7 +231,7 @@ namespace KarateGeek
 
             #region load participants and teams if exist
 
-            sql = "SELECT * FROM tournament_participations where tournament_id = '" + this.id + "';";
+            sql = "SELECT * FROM tournament_participations where tournament_id = '" + this.id + "' ORDER BY athlete_id;";
             temp = this.Query(sql).Tables[0];
             this.participants = new List<Athlete>();
             foreach (DataRow dr in temp.Rows)
@@ -220,7 +239,7 @@ namespace KarateGeek
                 this.participants.Add(new Athlete((string)dr[0].ToString(), this.id));
             }
 
-            sql = "SELECT * FROM team_tournament_participations where tournament_id = '" + this.id + "';";
+            sql = "SELECT * FROM team_tournament_participations where tournament_id = '" + this.id + "' ORDER BY team;";
             temp = this.Query(sql).Tables[0];
             this.teams = new List<Team>();
 

@@ -85,6 +85,11 @@ namespace KarateGeek.guis
             }
             //string runka = Strings.rank1;
 
+            this.eventJudgePickerA.SelectedIndex = 1;
+            this.eventJudgePickerB.SelectedIndex = 1;
+            this.eventJudgePickerC.SelectedIndex = 1;
+            this.eventJudgePickerD.SelectedIndex = 1;
+            this.eventJudgePickerE.SelectedIndex = 1;
 
             string gametype = this._DTgame.Rows[0][4].ToString();
 
@@ -103,6 +108,12 @@ namespace KarateGeek.guis
                 this.lblInfo.Content += ath.lastName + " " + ath.firstName + " | ";
 
             }
+
+            this.scoreA.Text = "5";
+            this.scoreB.Text = "5";
+            this.scoreC.Text = "5";
+            this.scoreD.Text = "5";
+            this.scoreE.Text = "5";
 
 
             this._sender.Hide();
