@@ -93,7 +93,8 @@ namespace KarateGeek.lottery
             this.boxHeight = team.Count;
             this.boxWidth = defaultWidth;
 
-            if (team.Count == 1 && String.IsNullOrEmpty(team.ElementAt(0)) && this.typeLeft == BoxTypeLeft.unconnected)
+            //if (team.Count == 1 && String.IsNullOrEmpty(team.ElementAt(0)) && this.typeLeft == BoxTypeLeft.unconnected)
+            if (String.IsNullOrEmpty(team.ElementAt(0)) && this.typeLeft == BoxTypeLeft.unconnected)
                 this.box = makeEmptyBox();
             else
                 this.box = makeBox(team);
@@ -105,6 +106,7 @@ namespace KarateGeek.lottery
             char[][] tmpBox = new char[this.realHeight][];
             StringBuilder sb = new StringBuilder(); // "sb" gets .Clear()ed after building every line of the tmpBox...
 
+            if (typeLeft == BoxTypeLeft.connected) sb.Append("   ");
             sb.Append('┌').Append('─', this.boxWidth).Append('┐');
             if (typeRight == BoxTypeRight.connected_up) sb.Append("  │");
             tmpBox[0] = sb.ToString().ToCharArray();
@@ -156,6 +158,7 @@ namespace KarateGeek.lottery
 
 
             Debug.Assert(line == realHeight - 1);
+            if (typeLeft == BoxTypeLeft.connected) sb.Append("   ");
             sb.Append('└').Append('─', this.boxWidth).Append('┘');
             if (typeRight == BoxTypeRight.connected_down) sb.Append("  │");
             tmpBox[realHeight - 1] = sb.ToString().ToCharArray();
@@ -174,7 +177,7 @@ namespace KarateGeek.lottery
 
             for (int i = 0; i < realHeight; ++i)
             {
-                sb.Append(' ', this.realWidth - 2);
+                sb.Append('.', this.realWidth - 2);
                 tmpBox[i] = sb.ToString().ToCharArray();
                 sb.Clear();
             }

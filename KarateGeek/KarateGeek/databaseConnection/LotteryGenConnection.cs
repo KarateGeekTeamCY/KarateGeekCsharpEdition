@@ -5,7 +5,6 @@ using System.Text;
 using KarateGeek.databaseConnection;
 using Npgsql;
 
-/** This file will be removed and the contents added to AthleteConnection! **/
 using System.Data;          // DataSet, DataTable
 using System.Diagnostics;   // has Debug.WriteLine()
 

@@ -25,7 +25,7 @@ namespace KarateGeek.lottery
 
         /** Class methods: **/
 
-        public LotteryPrinter(List<long> lotteryList, long tournamentId)
+        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId)
         {
             this.tournamentId = tournamentId;
 
@@ -41,9 +41,26 @@ namespace KarateGeek.lottery
                                          break;
             }
 
-            /** The following is just an experimental proof-of-concept implementation of the constructor: */
+            bigBox = makeBigBox(lotterySets);
 
-            bigBox = makeBox(lotteryList);
+            /** The following is just an experimental proof-of-concept implementation of the constructor: */
+            //bigBox = makeBox(lotteryList);
+        }
+
+
+        private char[][] allocateBigBox()  // 2D jagged char array filled with spaces
+        {
+            return null;
+        }
+
+
+        private char[][] makeBigBox(List<Tuple<List<long>, bool, int, int>> lotterySets)
+        {
+            //char[][] tmpBigBox = allocateBigBox();
+
+            //TournamentTreeToBox(..., ...);
+            
+            return TournamentTreeToBox(lotterySets);
         }
 
 
@@ -105,27 +122,121 @@ namespace KarateGeek.lottery
         }
 
 
+        private void insertSmallBox(char[][] bigBox, LotteryBox smallBox, int x, int y)
+        {
+            if (y + smallBox.realHeight - 1 > bigBox.Length )
+                throw new Exception("External character box not big enough!");
+
+            var tmpSmallBox = smallBox.get();
+
+            for (int line = 0; line < smallBox.realHeight; ++line)
+                tmpSmallBox[line].CopyTo(bigBox[line + y], x);
+        }
+
+
         private List<Tuple<List<long>, bool, int, int>> sortPhaseDescPositionAsc(List<Tuple<List<long>, bool, int, int>> unsorted)
         {
             return unsorted.OrderBy(x => x.Item4).OrderByDescending(x => x.Item3).ToList();
         }
 
 
-        private char[][] TournamentTreeToBox(List<Tuple<List<long>, bool, int, int>> Sets)
+        private char[][] TournamentTreeToBox(List<Tuple<List<long>, bool, int, int>> Sets) // implementation ONLY for "versus"-type tournaments!
         {
-            var temp = Sets;
+            Sets = sortPhaseDescPositionAsc(Sets); // line probably not needed at all
 
-            //foreach (var tuple in temp)
-            //    Debug.WriteLine("Unsorted list item: " + tuple.Item1.ElementAt(0) + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+            LotteryPrinterConnection conn = new LotteryPrinterConnection();
 
-            temp = sortPhaseDescPositionAsc(Sets);
 
-            //foreach (var tuple in temp)
-            //    Debug.WriteLine("Sorted list item:   " + tuple.Item1.ElementAt(0) + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+            // get smallbox size
 
-            return null;
+            /* get the size of the largest small box: */
+
+            int maxSetCount = 0;
+            Tuple<List<long>, bool, int, int> maxSet = null;
+
+            foreach (var set in Sets)
+                if (set.Item1.Count > maxSetCount) {
+                    maxSetCount = set.Item1.Count;
+                    maxSet = set;
+                }
+
+            var testBoxData = conn.getAthleteNameList(maxSet);
+            int smallBoxHeight = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down).realHeight;
+            int smallBoxWidthFirstPhase = new LotteryBox(testBoxData, BoxTypeLeft.unconnected, BoxTypeRight.connected_down).realWidth;
+            int smallBoxWidthMiddlePhases = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down).realWidth;
+            int smallBoxWidthLastPhase = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.unconnected).realWidth;
+
+
+            // allocate "big box" of suitable size
+         
+            /* int numOfNonEmptySmallBoxesOfFirstPhase = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4; */ //real number of non-empty boxes of the 1st phase
+            int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
+            int numOfPhases = Sets.First().Item3 + 1;
+
+            int bigBoxHeight = numOfSmallBoxesOfFirstPhase * (smallBoxHeight + 1);
+            //int bigBoxWidth  = smallBoxWidthFirstPhase + (numOfPhases - 2) * smallBoxWidthMiddlePhases + smallBoxWidthLastPhase;
+            int bigBoxWidth  = (numOfPhases - 1) * smallBoxWidthMiddlePhases + smallBoxWidthLastPhase;
+
+            char[][] tmpBigBox = new char[bigBoxHeight][];
+
+            for (int line = 0; line < bigBoxHeight; ++line)
+                tmpBigBox[line] = new StringBuilder().Append('□', bigBoxWidth).ToString().ToCharArray();
+
+            // build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box"
+
+            bool directiondown = true;
+            for (int phase = numOfPhases - 1; phase >= 0; phase--)
+            {
+                for (int position = 1; position <= (int)Math.Pow(2, phase); ++position)
+                {
+                    Tuple<List<long>, bool, int, int> head;
+
+                    if (Sets == null || Sets.Count == 0)
+                        head = null;
+                    else
+                    {
+                        head = Sets.First();
+
+                        if (head.Item3 == phase && head.Item4 == position)  // assumes ordered set
+                            Sets = Sets.Skip(1).ToList();
+                        else
+                            head = null;
+                    }
+                   
+                    // (head == null) is handled by LotteryPrinterConnection.getAthleteNameList()
+                    LotteryBox smallBox = new LotteryBox( conn.getAthleteNameList(head, maxSetCount),
+                                                          (phase == numOfPhases - 1) ? BoxTypeLeft.unconnected : BoxTypeLeft.connected,
+                                                          (phase == 0) ? BoxTypeRight.unconnected : directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up
+                                                        );
+
+                    insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase) : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases, (position - 1) * (smallBoxHeight + 1)); // WRONG position calculation
+
+                    //int offset = getOffset(smallBoxHeight + 1, (numOfPhases - 1) - phase);
+                    //insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase) : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases, (position == 1) ? offset : 2 * offset); // WRONG position calculation
+
+                    directiondown = !directiondown;
+                }
+            }
+
+            return tmpBigBox;
         }
 
+        
+        private int getOffset(int boxSize, int depth)
+        {
+            return (int) (boxSize * Math.Pow(2, depth - 1) - boxSize / 2.0);
+        }
+
+
+        private int startingY(int bigBoxHeight, int smallBoxHeight, int depth)
+        {
+            ////depth =  numOfPhases -  currentphase
+            //int drawSpace = (bigBoxHeight / (int)Math.Pow(2, depth));
+            //int offset = drawSpace - smallBoxHeight * (int)Math.Pow(2, currentPhase);
+            ////tha kanei set to offet se mia alli methodo an einai arnitiko eimaste ston teliko
+            //return (bigBoxHeight - drawSpace) / 2;
+            return 0;
+        }
 
         public char[][] get()                   // returns the constructed bigBox (probably useless)
         {
