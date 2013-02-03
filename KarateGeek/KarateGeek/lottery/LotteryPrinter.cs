@@ -10,7 +10,12 @@ using System.Diagnostics;   // has Debug.Assert()
 namespace KarateGeek.lottery
 {
     /** This class constructs an ASCII-art style drawing of a lottery, using instances
-     *  of "LotteryBox" as building blocks...                                          */
+     *  of "LotteryBox" as building blocks...
+     *
+     *  It can be used both directly (passing a LotteryGenerator "LotterySets" structure
+     *  to its constructor, before approving the lottery) and indirectly (querying the
+     *  database itself for tournaments with already-approved lotteries, passing only the
+     *  tournamentId to the LotteryPrinter constructor).                                  */
     class LotteryPrinter
     {
         
@@ -25,7 +30,7 @@ namespace KarateGeek.lottery
 
         /** Class methods: **/
 
-        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId)
+        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId)   // overloaded constructor (useful for the lotteries of "unlotterised" tournaments)
         {
             this.tournamentId = tournamentId;
 
@@ -48,27 +53,53 @@ namespace KarateGeek.lottery
         }
 
 
-        private char[][] allocateBigBox()  // 2D jagged char array filled with spaces
+        public LotteryPrinter(long tournamentId)    // overloaded constructor (useful for "lotterised" tournaments)
         {
-            return null;
+            this.tournamentId = tournamentId;
+
+            switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
+            {
+                case Strings.enbu:
+                case Strings.syncKata:
+                case Strings.teamKata:
+                case Strings.teamKumite: this.isListOfTeams = true;
+                    break;
+
+                default: this.isListOfTeams = false;
+                    break;
+            }
+
+            //bigBox = makeBigBox(lotterySets);
+
+            /* Now get the "lotterySets" by querying the database: */
+            LotteryPrinterConnection conn = new LotteryPrinterConnection();
+            /* ... */
+        }
+
+
+        private char[][] allocateBigBox(int bigBoxHeight, int bigBoxWidth)  // 2D jagged char array filled with spaces
+        {
+            char[][] tmpBigBox = new char[bigBoxHeight][];
+
+            for (int line = 0; line < bigBoxHeight; ++line)
+                tmpBigBox[line] = new StringBuilder().Append('□', bigBoxWidth).ToString().ToCharArray();
+
+            return tmpBigBox;
         }
 
 
         private char[][] makeBigBox(List<Tuple<List<long>, bool, int, int>> lotterySets)
         {
-            //char[][] tmpBigBox = allocateBigBox();
+            // TODO: call either TournamentTreeToBox() or TournamentExpoLotteryToBox(), depending on this.tournamentId
 
-            //TournamentTreeToBox(..., ...);
-            
             return TournamentTreeToBox(lotterySets);
         }
 
 
+        /** The following is just an obsolete, experimental proof-of-concept implementation of makeBigBox(): */
         private char[][] makeBox(List<long> lotteryList) // monster method, and it doesn't even work for all cases...
                                                          // only useful as a template
         {
-            /** The following is just an experimental proof-of-concept implementation of makeBox(): */
-
             char[][] tmpBigBox = new char[lotteryList.Count * (isListOfTeams ? 5 : 3) + (lotteryList.Count - 1)][]; // 5 is WRONG!
 
             int line = 0;
@@ -103,18 +134,11 @@ namespace KarateGeek.lottery
                     tmpBox = new LotteryBox(nameList, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up).get();
                 }
 
-                tmpBigBox[line] = "kdshbfvjdsbfvlkjdsbvfkjsdbvjkDSbvkjSdbfkjsdbfkjSDbnv.kjSDbnvkSJNvkjDSnvk>                                                  ".ToCharArray();
-
                 for (int i = 0; i < tmpBox.Length; ++i) {
                     tmpBigBox[line] = tmpBox[i];
-
-                    //tmpBigBox[line] = String.Concat(tmpBigBox[line].ToString(), tmpBox[i].ToString()).ToCharArray();
-
-                    //tmpBox[i].CopyTo(tmpBigBox[line], 10);
-                    
-                    
                     ++line;
                 }
+
                 directiondown = !directiondown;
                 ++line;
             }
@@ -124,8 +148,10 @@ namespace KarateGeek.lottery
 
         private void insertSmallBox(char[][] bigBox, LotteryBox smallBox, int x, int y)
         {
-            if (y + smallBox.realHeight - 1 > bigBox.Length )
-                throw new Exception("External character box not big enough!");
+            //if (y + smallBox.realHeight - 1 > bigBox.Length)
+            //    throw new Exception("External character box not big enough!");
+
+            Debug.Assert(y + smallBox.realHeight <= bigBox.Length + 1);
 
             var tmpSmallBox = smallBox.get();
 
@@ -142,14 +168,12 @@ namespace KarateGeek.lottery
 
         private char[][] TournamentTreeToBox(List<Tuple<List<long>, bool, int, int>> Sets) // implementation ONLY for "versus"-type tournaments!
         {
-            Sets = sortPhaseDescPositionAsc(Sets); // line probably not needed at all
+            Sets = sortPhaseDescPositionAsc(Sets); // defensive coding; line probably not needed at all, we pass already-ordered Sets
 
             LotteryPrinterConnection conn = new LotteryPrinterConnection();
 
 
-            // get smallbox size
-
-            /* get the size of the largest small box: */
+            /** Get smallbox size (the dimensions of the largest "small box"): */
 
             int maxSetCount = 0;
             Tuple<List<long>, bool, int, int> maxSet = null;
@@ -167,22 +191,20 @@ namespace KarateGeek.lottery
             int smallBoxWidthLastPhase = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.unconnected).realWidth;
 
 
-            // allocate "big box" of suitable size
+            /** Allocate "big box" of suitable size: */
          
             /* int numOfNonEmptySmallBoxesOfFirstPhase = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4; */ //real number of non-empty boxes of the 1st phase
             int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
             int numOfPhases = Sets.First().Item3 + 1;
 
             int bigBoxHeight = numOfSmallBoxesOfFirstPhase * (smallBoxHeight + 1);
-            //int bigBoxWidth  = smallBoxWidthFirstPhase + (numOfPhases - 2) * smallBoxWidthMiddlePhases + smallBoxWidthLastPhase;
-            int bigBoxWidth  = (numOfPhases - 1) * smallBoxWidthMiddlePhases + smallBoxWidthLastPhase;
+            int bigBoxWidth  = smallBoxWidthFirstPhase + (numOfPhases - 2) * smallBoxWidthMiddlePhases + smallBoxWidthLastPhase;
+            //int bigBoxWidth  = (numOfPhases - 1) * smallBoxWidthMiddlePhases + smallBoxWidthLastPhase;
 
-            char[][] tmpBigBox = new char[bigBoxHeight][];
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight, bigBoxWidth);
 
-            for (int line = 0; line < bigBoxHeight; ++line)
-                tmpBigBox[line] = new StringBuilder().Append('□', bigBoxWidth).ToString().ToCharArray();
 
-            // build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box"
+            /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
 
             bool directiondown = true;
             for (int phase = numOfPhases - 1; phase >= 0; phase--)
@@ -203,16 +225,17 @@ namespace KarateGeek.lottery
                             head = null;
                     }
                    
-                    // (head == null) is handled by LotteryPrinterConnection.getAthleteNameList()
+                    // the special (head == null) case is handled by the LotteryPrinterConnection.getAthleteNameList() method
                     LotteryBox smallBox = new LotteryBox( conn.getAthleteNameList(head, maxSetCount),
                                                           (phase == numOfPhases - 1) ? BoxTypeLeft.unconnected : BoxTypeLeft.connected,
                                                           (phase == 0) ? BoxTypeRight.unconnected : directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up
                                                         );
 
-                    insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase) : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases, (position - 1) * (smallBoxHeight + 1)); // WRONG position calculation
+                    // WRONG position calculation
+                    insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? 0 : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases - (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase), (position - 1) * (smallBoxHeight + 1));
 
                     //int offset = getOffset(smallBoxHeight + 1, (numOfPhases - 1) - phase);
-                    //insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase) : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases, (position == 1) ? offset : 2 * offset); // WRONG position calculation
+                    //insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? 0 : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases - (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase), (position == 1) ? offset : 2 * offset);
 
                     directiondown = !directiondown;
                 }

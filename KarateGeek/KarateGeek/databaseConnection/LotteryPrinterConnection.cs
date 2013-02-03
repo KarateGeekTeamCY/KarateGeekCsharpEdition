@@ -44,12 +44,5 @@ namespace KarateGeek.databaseConnection
 
 
 
-
-
-
-
-
-
-
     }
 }

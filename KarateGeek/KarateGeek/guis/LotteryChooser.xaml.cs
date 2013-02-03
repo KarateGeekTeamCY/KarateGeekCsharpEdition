@@ -102,7 +102,9 @@ namespace KarateGeek.guis
             lg.shuffle();
 
             /* experimental (and totally, totally broken in most cases): */
-            terminal.Content = "_\n" + new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString(); // workaround for a .NET bug
+            // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
+            // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
+            terminal.Content = "_\n" + new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString();
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
@@ -111,7 +113,9 @@ namespace KarateGeek.guis
                 lg.shuffle();
 
                 /* experimental (and totally, totally broken in most cases): */
-                terminal.Content = new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString();
+                // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
+                // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
+                terminal.Content = "_\n" + new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString();
             } catch (NullReferenceException exception) {
                 ErrorMessages.menuSelectionErrorMessage("tournament");
             }

@@ -82,7 +82,7 @@ namespace KarateGeek.lottery
 
         /** Class methods: **/
 
-        public LotteryBox(string athlete, BoxTypeLeft typeLeft, BoxTypeRight typeRight)     // overloaded constructor
+        public LotteryBox(string athlete, BoxTypeLeft typeLeft, BoxTypeRight typeRight)     // overloaded constructor, currently unused
            : this(new List<string>() { athlete }, typeLeft, typeRight) { }
 
 
