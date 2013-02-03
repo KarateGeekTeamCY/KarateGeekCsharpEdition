@@ -490,17 +490,16 @@ namespace KarateGeek.lottery
 
             int numOfPhases = (int) Math.Ceiling(Math.Log(numOfParticipants, 2));
 
-            //for (int phase = numOfPhases - 2; phase >= 0; --phase)  // numOfPhases - 2 ?
-            //    for (int position = 1; position <= Math.Pow(2, phase); ++position)
-            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-
-            //for (int phase = numOfPhases - 1; phase >= 0; --phase)
-            //    for (int position = 1; position <= Math.Pow(2, phase + 2); ++position)
-            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-
+            /* THIS WORKS! (deep black magic, but tested) */
             for (int phase = numOfPhases - 3; phase >= 0; --phase)
                 for (int position = 1; position <= Math.Pow(2, phase + 2); ++position)
                     emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+            /* This might work (easier to read, but not so much tested): */
+            //int firstPhase = numOfPhases - 1;
+            //for (int phase = firstPhase; phase > 0; --phase) // phase > 0 and not phase >= 0 because we don't need the phase 0
+            //    for (int position = 1; position <= Math.Pow(2, phase + 1); ++position)
+            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
 
             return emptyPairs;
         }
@@ -706,10 +705,11 @@ namespace KarateGeek.lottery
         }
 
 
-        protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
+        protected List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants, int membersPerTeam) //overloaded
         {
             List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
 
+            // This part mimicks the getPairs() method above, refer to the comments of that method for p, y, yleft and yright:
             int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
 
             int p = (int)Math.Pow(2, numOfPhases);
@@ -717,13 +717,16 @@ namespace KarateGeek.lottery
             int yleft = (y + 1) / 2;
             int yright = y - yleft;
 
-            // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK)
-            for (int position = 1 + (yleft + 1) / 2; position <= Math.Pow(2, numOfPhases - 2) - (yright + 1) / 2; ++position)  // phase Y (missing games)
+            // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK) -> EDIT: CHECKED, OK
+            int initialPos = 1 + ((yleft + 1) / 2) * membersPerTeam;
+            int finalPos = ((int)Math.Pow(2, numOfPhases - 2)  - (yright + 1) / 2) * membersPerTeam;
+            for (int position = initialPos; position <= finalPos; ++position)                       // phase Y (missing games)
                 emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, numOfPhases - 2, position));
 
-            for (int phase = numOfPhases - 3; phase >= 0; --phase)  // phase (Y - 1) to phase 0
-                for (int position = 1; position <= Math.Pow(2, phase); ++position)
+            for (int phase = numOfPhases - 3; phase >= 0; --phase)                                  // phase (Y - 1) to phase 0
+                for (int position = 1; position <= Math.Pow(2, phase) * membersPerTeam; ++position)
                     emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
 
             { // Debug info
                 Debug.WriteLine("EMPTY Pairs and positions: " + emptyPairs);
@@ -734,6 +737,45 @@ namespace KarateGeek.lottery
 
             return emptyPairs;
         }
+
+
+        protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants) //overloaded
+        {
+            return getEmptyPairs(numOfParticipants, 1);
+        }
+
+
+        //protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants) //overloaded, TODO: reuse code above
+        //{
+        //    List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
+
+        //    int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
+
+        //    int p = (int)Math.Pow(2, numOfPhases);
+        //    int y = p - numOfParticipants;
+        //    int yleft = (y + 1) / 2;
+        //    int yright = y - yleft;
+
+        //    // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK) -> EDIT: CHECKED, OK
+        //    int initialPos = 1 + (yleft + 1) / 2;
+        //    int finalPos = (int)Math.Pow(2, numOfPhases - 2) - (yright + 1) / 2;
+        //    for (int position = initialPos; position <= finalPos; ++position)                       // phase Y (missing games)
+        //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, numOfPhases - 2, position));
+
+        //    for (int phase = numOfPhases - 3; phase >= 0; --phase)                                  // phase (Y - 1) to phase 0
+        //        for (int position = 1; position <= Math.Pow(2, phase); ++position)
+        //            emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+
+        //    { // Debug info
+        //        Debug.WriteLine("EMPTY Pairs and positions: " + emptyPairs);
+        //        foreach (var i in emptyPairs)
+        //            Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
+        //                i.Item1, i.Item2, i.Item3, i.Item4);
+        //    }
+
+        //    return emptyPairs;
+        //}
 
     }
     #endregion

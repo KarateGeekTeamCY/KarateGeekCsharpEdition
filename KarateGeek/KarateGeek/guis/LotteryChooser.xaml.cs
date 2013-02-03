@@ -64,16 +64,17 @@ namespace KarateGeek.guis
 
             this.sender = sender;
 
-            string node = "┌──────────────────┐\n"
-                        + "│ Athlete 1's name ├──┐\n"
-                        + "└──────────────────┘  │\n"
-                        + "                      ├──┤\n"
-                        + "┌──────────────────┐  │\n"
-                        + "│ Athlete 2's name ├──┘\n"
-                        + "└──────────────────┘\n";
-            terminal.Content = node;
+            //string node = "┌──────────────────┐\n"
+            //            + "│ Athlete 1's name ├──┐\n"
+            //            + "└──────────────────┘  │\n"
+            //            + "                      ├──┤\n"
+            //            + "┌──────────────────┐  │\n"
+            //            + "│ Athlete 2's name ├──┘\n"
+            //            + "└──────────────────┘\n";
+            //
+            //terminal.Content = node;
 
-            //terminal.Content = null;
+            terminal.Content = null;
 
             ASCIIGraphFontSize = ASCIIGraphDefFontSize; // can be set to another value using the overloaded constructor
         }
@@ -101,7 +102,9 @@ namespace KarateGeek.guis
             lg.shuffle();
 
             /* experimental (and totally, totally broken in most cases): */
-            terminal.Content = new LotteryPrinter(lg.getLottery(), tournamentId).ToString();
+            // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
+            // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
+            terminal.Content = "_\n" + new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString();
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
@@ -110,7 +113,9 @@ namespace KarateGeek.guis
                 lg.shuffle();
 
                 /* experimental (and totally, totally broken in most cases): */
-                terminal.Content = new LotteryPrinter(lg.getLottery(), tournamentId).ToString();
+                // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
+                // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
+                terminal.Content = "_\n" + new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString();
             } catch (NullReferenceException exception) {
                 ErrorMessages.menuSelectionErrorMessage("tournament");
             }
@@ -122,11 +127,9 @@ namespace KarateGeek.guis
                 lg.confirmLottery(doCommit: true);
 
                 //
-                // dublicate fixing function
+                // call cleanUp() code here
                 //
 
-
-                //temp
                 new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
 
                 //LotteryChooser lc = new LotteryChooser(this.sender);
@@ -139,43 +142,42 @@ namespace KarateGeek.guis
             }
         }
 
-        private void cleanUp()
-        {
-            string sql = "";
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
-            sql = "SELECT phase FROM games WHERE tournament_id = " + tournamentId + "  ORDER BY phase DESC ; ";
-            int phase = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
+        /* UNUSED AND UNTESTED */
+        //private void cleanUp()
+        //{
+        //    string sql = "";
+        //    CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+        //    sql = "SELECT phase FROM games WHERE tournament_id = " + tournamentId + "  ORDER BY phase DESC ; ";
+        //    int phase = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
             
-            for (int i = phase; i >= 0; i--)
-            {
-                sql = "SELECT position FROM games WHERE tournament_id = " + tournamentId 
-                    + " AND phase = " + i 
-                    + " ORDER BY position DESC ;";
-                int gameCount = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
+        //    for (int i = phase; i >= 0; i--)
+        //    {
+        //        sql = "SELECT position FROM games WHERE tournament_id = " + tournamentId 
+        //            + " AND phase = " + i 
+        //            + " ORDER BY position DESC ;";
+        //        int gameCount = int.Parse(conn.Query(sql).Tables[0].Rows[0][0].ToString());
 
-                for (int y = 1; y <= gameCount; y++)
-                {
-                    sql = "SELECT * FROM games WHERE tournament_id = " + tournamentId 
-                        + " AND phase = " + i 
-                        + " AND position = " + y + " ;";
-                    DataTable temp = conn.Query(sql).Tables[0];
+        //        for (int y = 1; y <= gameCount; y++)
+        //        {
+        //            sql = "SELECT * FROM games WHERE tournament_id = " + tournamentId 
+        //                + " AND phase = " + i 
+        //                + " AND position = " + y + " ;";
+        //            DataTable temp = conn.Query(sql).Tables[0];
 
-                    if (temp.Rows.Count > 1)
-                    {
-                        sql = "DELETE FROM games gm WHERE tournament_id = " + tournamentId
-                            + " AND phase = " + i
-                            + " AND position = " + y
-                            + " AND NOT EXIST IN ( SELECT * FROM game_participations WHERE game_id = gm.id ) ;";
+        //            if (temp.Rows.Count > 1)
+        //            {
+        //                sql = "DELETE FROM games gm WHERE tournament_id = " + tournamentId
+        //                    + " AND phase = " + i
+        //                    + " AND position = " + y
+        //                    + " AND NOT EXIST IN ( SELECT * FROM game_participations WHERE game_id = gm.id ) ;";
 
-                        conn.NonQuery(sql);
-                    }
-                }
-            }
-        }
-
-
-
+        //                conn.NonQuery(sql);
+        //            }
+        //        }
+        //    }
+        //}
 
 
 
@@ -185,37 +187,22 @@ namespace KarateGeek.guis
             this.Close();
         }
 
-        //private void terminal_MouseWheel(object sender, MouseWheelEventArgs e)
-        //{
-        //    if(ctrl)
-        //        if (e.Delta < 0)
-        //            --ASCIIGraphFontSize;
-        //        else
-        //            ++ASCIIGraphFontSize;
-        //}
-        //private bool ctrl = false;
-        
-        
-        //private void terminal_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if ((e.Key == Key.LeftCtrl) || (e.Key == Key.RightCtrl))
-        //    {
-        //        if (e.IsDown)
-        //            ctrl = true;
 
-        //    }
-        //}
 
-        //private void terminal_KeyUp(object sender, KeyEventArgs e)
-        //{
-        //    if ((e.Key == Key.LeftCtrl) || (e.Key == Key.RightCtrl))
-        //    {
-        //        if (e.IsUp)
-        //            ctrl = false;
+        private void terminal_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                double temp = this.treeView.ContentVerticalOffset;
 
-        //    }
+                if (e.Delta < 0)
+                    --ASCIIGraphFontSize;
+                else
+                    ++ASCIIGraphFontSize;
 
-        //}
+                this.treeView.ScrollToVerticalOffset(temp);
+            }
+        }
 
     }
 }

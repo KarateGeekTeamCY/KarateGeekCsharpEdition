@@ -10,7 +10,12 @@ using System.Diagnostics;   // has Debug.Assert()
 namespace KarateGeek.lottery
 {
     /** This class constructs an ASCII-art style drawing of a lottery, using instances
-     *  of "LotteryBox" as building blocks...                                          */
+     *  of "LotteryBox" as building blocks...
+     *
+     *  It can be used both directly (passing a LotteryGenerator "LotterySets" structure
+     *  to its constructor, before approving the lottery) and indirectly (querying the
+     *  database itself for tournaments with already-approved lotteries, passing only the
+     *  tournamentId to the LotteryPrinter constructor).                                  */
     class LotteryPrinter
     {
         
@@ -22,10 +27,13 @@ namespace KarateGeek.lottery
                                                 // true:  input is a list of teams of athletes
         private long tournamentId;
 
+        //private readonly char spaceChar = '□';
+        private readonly char spaceChar = ' ';
+
 
         /** Class methods: **/
 
-        public LotteryPrinter(List<long> lotteryList, long tournamentId)
+        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId)   // overloaded constructor (useful for the lotteries of "unlotterised" tournaments)
         {
             this.tournamentId = tournamentId;
 
@@ -41,17 +49,60 @@ namespace KarateGeek.lottery
                                          break;
             }
 
-            /** The following is just an experimental proof-of-concept implementation of the constructor: */
+            bigBox = makeBigBox(lotterySets);
 
-            bigBox = makeBox(lotteryList);
+            /** The following is just an experimental proof-of-concept implementation of the constructor: */
+            //bigBox = makeBox(lotteryList);
         }
 
 
+        public LotteryPrinter(long tournamentId)    // overloaded constructor (useful for "lotterised" tournaments)
+        {
+            this.tournamentId = tournamentId;
+
+            switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
+            {
+                case Strings.enbu:
+                case Strings.syncKata:
+                case Strings.teamKata:
+                case Strings.teamKumite: this.isListOfTeams = true;
+                    break;
+
+                default: this.isListOfTeams = false;
+                    break;
+            }
+
+            //bigBox = makeBigBox(lotterySets);
+
+            /* Now get the "lotterySets" by querying the database: */
+            LotteryPrinterConnection conn = new LotteryPrinterConnection();
+            /* ... */
+        }
+
+
+        private char[][] allocateBigBox(int bigBoxHeight, int bigBoxWidth)  // 2D jagged char array filled with spaces
+        {
+            char[][] tmpBigBox = new char[bigBoxHeight][];
+
+            for (int line = 0; line < bigBoxHeight; ++line)
+                tmpBigBox[line] = new StringBuilder().Append(spaceChar, bigBoxWidth).ToString().ToCharArray();
+
+            return tmpBigBox;
+        }
+
+
+        private char[][] makeBigBox(List<Tuple<List<long>, bool, int, int>> lotterySets)
+        {
+            // TODO: call either TournamentTreeToBox() or TournamentExpoLotteryToBox(), depending on this.tournamentId
+
+            return TournamentTreeToBox(lotterySets);
+        }
+
+
+        /** The following is just an obsolete, experimental proof-of-concept implementation of makeBigBox(): */
         private char[][] makeBox(List<long> lotteryList) // monster method, and it doesn't even work for all cases...
                                                          // only useful as a template
         {
-            /** The following is just an experimental proof-of-concept implementation of makeBox(): */
-
             char[][] tmpBigBox = new char[lotteryList.Count * (isListOfTeams ? 5 : 3) + (lotteryList.Count - 1)][]; // 5 is WRONG!
 
             int line = 0;
@@ -86,22 +137,96 @@ namespace KarateGeek.lottery
                     tmpBox = new LotteryBox(nameList, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up).get();
                 }
 
-                tmpBigBox[line] = "kdshbfvjdsbfvlkjdsbvfkjsdbvjkDSbvkjSdbfkjsdbfkjSDbnv.kjSDbnvkSJNvkjDSnvk>                                                  ".ToCharArray();
-
                 for (int i = 0; i < tmpBox.Length; ++i) {
                     tmpBigBox[line] = tmpBox[i];
-
-                    //tmpBigBox[line] = String.Concat(tmpBigBox[line].ToString(), tmpBox[i].ToString()).ToCharArray();
-
-                    //tmpBox[i].CopyTo(tmpBigBox[line], 10);
-                    
-                    
                     ++line;
                 }
+
                 directiondown = !directiondown;
                 ++line;
             }
             return tmpBigBox;
+        }
+
+
+        private void insertSmallBox(char[][] bigBox, LotteryBox smallBox, int x, int y)
+        {
+            //if (y + smallBox.realHeight - 1 > bigBox.Length)
+            //    throw new Exception("External character box not big enough!");
+
+            Debug.Assert(y + smallBox.realHeight <= bigBox.Length + 1);
+
+            Debug.WriteLine("insertSmallBox() debug message: x: {0,10}, y: {1,10}", x, y);
+
+            var tmpSmallBox = smallBox.get();
+
+            for (int line = 0; line < smallBox.realHeight; ++line) // allow 1-char overlapping: Blanks get overwritten, other characters do not
+                if (bigBox[line + y][x] == spaceChar)
+                    tmpSmallBox[line].CopyTo(bigBox[line + y], x);
+                else
+                    tmpSmallBox[line].Skip(1).ToArray().CopyTo(bigBox[line + y], x + 1);
+        }
+
+
+        private void fixConnectionsOf(char[][] bigBox, int start, int interval) // assumes that all lines of the jagged array have the same length as the 1st one
+        {
+            bool emptyCol, fillNeeded;
+            char deletionMark = ':';    // choose something unique!
+
+            for (int col = start; col < bigBox[0].Length; col += interval) {
+
+                emptyCol = true;
+                fillNeeded = false;
+                for (int row = 0; row < bigBox.Length; ++row) {         // fill downwards
+                    if (bigBox[row][col] == '├') {
+                        fillNeeded = true;
+                        if (emptyCol)
+                            bigBox[row][col] = '┌';
+                    }
+                    if (bigBox[row][col] == '┐')
+                        fillNeeded = true;
+                    if (bigBox[row][col] != spaceChar)
+                        emptyCol = false;
+                    if (bigBox[row][col] == '┘') {
+                        emptyCol = true;
+                        fillNeeded = false;
+                    }
+                    if (fillNeeded && bigBox[row][col] == spaceChar)
+                        //bigBox[row][col] = ';';
+                        bigBox[row][col] = '│';
+                }
+
+                emptyCol = true;
+                fillNeeded = false;
+                for (int row = bigBox.Length - 1; row >= 0; --row) {    // fill upwards, a bit buggy right now
+                    if (!fillNeeded && bigBox[row][col] == '│') // or (!fillNeeded && bigBox[row][col] == '│'), useful for testing
+                        bigBox[row][col] = spaceChar;
+                    if (bigBox[row][col] == '├') {
+                        fillNeeded = true;
+                        if (emptyCol)
+                            bigBox[row][col] = '└';
+                    }
+                    if (bigBox[row][col] == '┘')
+                        fillNeeded = true;
+                    if (bigBox[row][col] != spaceChar)
+                        emptyCol = false;
+                    if (bigBox[row][col] == '┐') {
+                        emptyCol = true;
+                        fillNeeded = false;
+                    }
+                    if (!fillNeeded && bigBox[row][col] == '┌')
+                        bigBox[row][col] = deletionMark;            // !!
+                    if (fillNeeded && bigBox[row][col] == spaceChar)
+                        //bigBox[row][col] = ';';
+                        bigBox[row][col] = '│';
+                }
+            }
+
+            // remove unneeded "├──┤" connectors:
+            for (int row = 0; row < bigBox.Length; ++row)
+                for (int col = start; col < bigBox[0].Length; col += interval)
+                    if (bigBox[row][col] == deletionMark)
+                        "   │".ToCharArray().CopyTo(bigBox[row], col);
         }
 
 
@@ -111,21 +236,121 @@ namespace KarateGeek.lottery
         }
 
 
-        private char[][] TournamentTreeToBox(List<Tuple<List<long>, bool, int, int>> Sets)
+        private char[][] TournamentTreeToBox(List<Tuple<List<long>, bool, int, int>> Sets) // implementation ONLY for "versus"-type tournaments!
         {
-            var temp = Sets;
+            Sets = sortPhaseDescPositionAsc(Sets); // defensive coding; line probably not needed at all, we pass already-ordered Sets
 
-            //foreach (var tuple in temp)
-            //    Debug.WriteLine("Unsorted list item: " + tuple.Item1.ElementAt(0) + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+            LotteryPrinterConnection conn = new LotteryPrinterConnection();
 
-            temp = sortPhaseDescPositionAsc(Sets);
 
-            //foreach (var tuple in temp)
-            //    Debug.WriteLine("Sorted list item:   " + tuple.Item1.ElementAt(0) + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+            /** Get smallbox size (the dimensions of the largest "small box"): */
 
-            return null;
+            int maxSetCount = 0;
+            Tuple<List<long>, bool, int, int> maxSet = null;
+
+            foreach (var set in Sets)
+                if (set.Item1.Count > maxSetCount) {
+                    maxSetCount = set.Item1.Count;
+                    maxSet = set;
+                }
+
+            var testBoxData = conn.getAthleteNameList(maxSet);
+            int smallBoxHeight = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down).realHeight;
+            int smallBoxWidthFirstPhase = new LotteryBox(testBoxData, BoxTypeLeft.unconnected, BoxTypeRight.connected_down).realWidth;
+            int smallBoxWidthMiddlePhases = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down).realWidth;
+            int smallBoxWidthLastPhase = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.unconnected).realWidth;
+
+
+            /** Allocate "big box" of suitable size: */
+         
+            /* int numOfNonEmptySmallBoxesOfFirstPhase = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4; */ //real number of non-empty boxes of the 1st phase
+            int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
+            int numOfPhases = Sets.First().Item3 + 1;
+
+            int charOverlap = 3; // hardcoded for now, TODO: find a cleaner way to do it...
+
+            int bigBoxHeight = numOfSmallBoxesOfFirstPhase * (smallBoxHeight + 1);
+            int bigBoxWidth = smallBoxWidthFirstPhase + (numOfPhases - 2) * (smallBoxWidthMiddlePhases - charOverlap) + (smallBoxWidthLastPhase - charOverlap);
+
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight, bigBoxWidth);
+
+
+            /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
+
+            bool directiondown = true;
+            for (int phase = numOfPhases - 1; phase >= 0; --phase)
+            {
+                for (int position = 1; position <= (int)Math.Pow(2, phase); ++position)
+                {
+                    Tuple<List<long>, bool, int, int> head;
+
+                    if (Sets == null || Sets.Count == 0)
+                        head = null;
+                    else
+                    {
+                        head = Sets.First();
+
+                        if (head.Item3 == phase && head.Item4 == position)  // assumes ordered set
+                            Sets = Sets.Skip(1).ToList();
+                        else
+                            head = null;
+                    }
+                   
+                    // the special (head == null) case is handled by the LotteryPrinterConnection.getAthleteNameList() method
+                    LotteryBox smallBox = new LotteryBox( conn.getAthleteNameList(head, maxSetCount),
+                                                          (phase == numOfPhases - 1) ? BoxTypeLeft.unconnected : BoxTypeLeft.connected,
+                                                          (phase == 0) ? BoxTypeRight.unconnected : directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up
+                                                        );
+
+                    // WRONG position calculation
+                    //insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? 0 : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases - (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase), (position - 1) * (smallBoxHeight + 1));
+
+                    int depth = (numOfPhases - 1) - phase;
+                    int offset = getOffset(smallBoxHeight + 1, depth);
+                    Debug.WriteLine("TournamentTreeToBox() message:  phase: {0,6}, position: {1,3}, offset: {2,5}",
+                                    phase, position, offset);
+
+                    insertSmallBox( tmpBigBox,
+                                    smallBox,
+                                    x: (phase == numOfPhases - 1) ? 0 : depth * (smallBoxWidthMiddlePhases - charOverlap) - (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase),
+                                    y: ((position == 1) ? offset : offset + 2 * offset * (position - 1)) - (smallBoxHeight + 1) / 2 + ((phase == numOfPhases - 1) ? position - 1 : 0)
+                                  );
+
+                    directiondown = !directiondown;
+                }
+            }
+
+            fixConnectionsOf(tmpBigBox, smallBoxWidthFirstPhase - charOverlap, smallBoxWidthMiddlePhases - charOverlap);
+
+            return tmpBigBox;
         }
 
+        
+        private int getOffset(int boxHeight, int depth)
+        {
+            //return (int) (boxHeight * Math.Pow(2, depth - 1) - boxHeight / 2.0);
+
+            //int offset = (int)(boxHeight * Math.Pow(2, depth - 1) - boxHeight / 2.0);
+            //int offset = (int)(boxHeight * Math.Pow(2, depth - 1) - (boxHeight) / Math.Pow(2, depth));
+            int offset = (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));
+
+            Debug.WriteLine("getOffset() debug message:      boxHeight: {0,2}, depth: {1,6}, offset: {2,5}",
+                boxHeight, depth, offset);
+
+            //return (offset >= 0) ? offset : 0;
+            return offset;
+        }
+
+
+        private int startingY(int bigBoxHeight, int smallBoxHeight, int depth)
+        {
+            ////depth =  numOfPhases -  currentphase
+            //int drawSpace = (bigBoxHeight / (int)Math.Pow(2, depth));
+            //int offset = drawSpace - smallBoxHeight * (int)Math.Pow(2, currentPhase);
+            ////tha kanei set to offet se mia alli methodo an einai arnitiko eimaste ston teliko
+            //return (bigBoxHeight - drawSpace) / 2;
+            return 0;
+        }
 
         public char[][] get()                   // returns the constructed bigBox (probably useless)
         {
