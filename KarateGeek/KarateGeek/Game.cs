@@ -72,6 +72,7 @@ namespace KarateGeek
         public void AddParticipant(string athleteId)
         {
             this.participants.Add(new Athlete(athleteId, this.tournamentId));
+            this.numOfParticipants++;
             this.Update();
         }
 
@@ -106,7 +107,7 @@ namespace KarateGeek
             this.eventId = (string)temp.Rows[0][15].ToString();
 
 
-            sql = "select * from game_participants_total_det where game_id = '" + this.gameId + "'";
+            sql = "select * from game_participants_total_det where game_id = '" + this.gameId + "' ORDER BY last_name";
             temp = this.Query(sql).Tables[0];
 
             this.numOfParticipants = 0;
@@ -135,10 +136,14 @@ namespace KarateGeek
                 if (exist == 0)
                 {
 
-                    sql = "select * from tournament_participations where tournament_id = '" + this.tournamentId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
+                    sql = "select * from tournament_participations where tournament_id = '" 
+                        + this.tournamentId + "' and athlete_id = '" + this.participants.ElementAt(i).id + "' ;";
                     DataTable temp = Query(sql).Tables[0];
 
-                    if (temp.Rows.Count == 0)
+                    Tournament tour = new Tournament(this.tournamentId);
+
+
+                    if (tour.isInd)
                     {
                         sql = "insert into game_participations (athlete_id, game_id) values ('"
                             + this.participants.ElementAt(i).id + "', '"

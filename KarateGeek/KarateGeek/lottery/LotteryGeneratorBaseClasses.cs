@@ -29,26 +29,27 @@ namespace KarateGeek.lottery
      * - Sort the List (athleteScoreList) by score and return a new
      *   List<int>. That List will be used by the reporting tools.
      *
-     * - The class LotteryGenerator will have a constructor that takes
-     *   a tournament id and three publicly accessible methods:
+     * - The class LotteryGenerator has a constructor that takes a
+     *   tournament id and three publicly accessible methods:
      *   shuffle(), which produces a new randomisation, getLottery(),
      *   which returns it, and confirmLottery(), which writes to the DB.
+     *   (A fourth public method might be added, printLottery(), using
+     *    getLottery() to correctly initialise the LotteryPrinter class and
+     *    pretty-print the lottery to the screen...)
      * - It must take into account team sports.
      * 
      * 
      * USING A (SIMPLIFIED) FACTORY-LIKE DESIGN PATTERN: LotteryGenerator
      * is an abstract base class providing the aforementioned three methods
      * and is extended by LotteryGen_Expo_Ind, LotteryGen_Versus_Ind,
-     * LotteryGen_Expo_Sync and LotteryGen_Versus_Team;
+     * LotteryGen_Expo_Sync, LotteryGen_Expo_Team and LotteryGen_Versus_Team;
      * LotteryGeneratorFactory mainly has a "factory method" that chooses
      * which one of the above should be instatiated, based on DB data.
      * 
      * LotteryGenerator cannot be instatiated, but has a useful constructor
      * inherited by the others. Also, there are 2 more abstract classes
-     * between LotteryGenerator and the aforementioned 4, LotteryGen_Versus
+     * between LotteryGenerator and the aforementioned 5, LotteryGen_Versus
      * and LotteryGen_Expo. They provide different getPairs() implem/tions.
-     * 
-     * CURRENTLY ONLY IMPLEMENTED FOR "VERSUS"-TYPE TOURNAMENTS!                                //TODO: UPDATE COMMENTS
      */
 
     #region abstract base class LotteryGenerator
@@ -267,12 +268,85 @@ namespace KarateGeek.lottery
 
 
         /* The following method is designed (?) to be overriden, if needed, by child classes (team cases?).
-         * I'll probably change the structure used by getPairsToCommit(), writeAllTournamentPairs() etc. to
-         * something like List<Tuple<List<long>, int, int>>, though, because not all cases are "pairs"...
+         * I should probably change the structure used by getPairsToCommit(), writeAllTournamentPairs() etc.
+         * to something like List<Tuple<List<long>, int, int>>, though, because not all cases are "pairs"...
          */
         protected List<Tuple<long, long, int, int>> getPairsToCommit(List<long> Lott)
         {
-            return getPairs(Lott).Concat(getEmptyPairs(Lott.Count)).ToList(); // BUG FOUND: Lott.Count is always for athletes, it should be for teams for team games??? EDIT: Bullshit, delete this comment, probably not a bug
+            return getPairs(Lott).Concat(getEmptyPairs(Lott.Count)).ToList();
+        }
+
+
+        /* Builds and returns game sets, sorted by phase descending, position ascending: */
+        public virtual List<Tuple<List<long>, bool, int, int>> buildTournamentGameSets()
+        {
+            List<long> L = this.getLottery();
+            List<Tuple<long, long, int, int>> pairsToCommit = getPairsToCommit(L);
+
+            { // Debug info
+                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + pairsToCommit);
+                foreach (var i in pairsToCommit)
+                    Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
+                        i.Item1, i.Item2, i.Item3, i.Item4);
+            }
+
+            /* Converting pairs to sets... */
+
+            /* CONVENTION: For semi-complete pairs, the caller provides a negative athlete id.
+             *
+             * Specifically, we use -1 for !is_ready pairs and -2 for is_ready "pairs".
+             * The latter are just single athlete participations, or single team
+             * participations (reusing the same code for the DB transaction).                 */
+
+            List<Tuple<List<long>, bool, int, int>> tournamentGameSets = new List<Tuple<List<long>, bool, int, int>>(); ;
+            bool isReady;
+            long id1, id2;
+
+            foreach (var pair in pairsToCommit)
+            {
+
+                id1 = pair.Item1;
+                id2 = pair.Item2;
+                isReady = (id1 >= 0 && id2 >= 0) || (id1 >= 0 && id2 == -2);
+
+                List<long> set = new List<long>();
+                if (id1 >= 0) set.Add(id1);
+                if (id2 >= 0) set.Add(id2);
+
+                tournamentGameSets.Add(new Tuple<List<long>, bool, int, int>(set, isReady, pair.Item3, pair.Item4));
+            }
+
+            /**/ /* debugging code, to be removed */
+
+            var temp = tournamentGameSets;
+
+            foreach (var tuple in temp)
+            {
+                //if (tuple.Item1 == null)
+                //Debug.WriteLine("Unsorted list item: - , phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                //else
+                foreach (var athlete in tuple.Item1)
+                    Debug.WriteLine("Unsorted list item: " + athlete + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                Debug.WriteLine('\n');
+            }
+
+            temp = tournamentGameSets.OrderBy(x => x.Item4).OrderByDescending(x => x.Item3).ToList();
+
+            foreach (var tuple in temp)
+            {
+                //if (tuple.Item1 == null)
+                //Debug.WriteLine("Unsorted list item: - , phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                //else
+                foreach (var athlete in tuple.Item1)
+                    Debug.WriteLine("Sorted list item: " + athlete + ", phase: " + tuple.Item3 + ", position: " + tuple.Item4);
+                Debug.WriteLine('\n');
+            }
+
+            return temp;
+
+            /**/
+
+            //return tournamentGameSets.OrderBy(x => x.Item4).OrderByDescending(x => x.Item3).ToList();
         }
 
 
@@ -282,17 +356,9 @@ namespace KarateGeek.lottery
                 throw new Exception("Once \"confirmed\", a LotteryGenerator object cannot write to the database anymore.");
 
             LotteryGenConnection conn = new LotteryGenConnection();
-            List<long> L = this.getLottery();
-            List<Tuple<long, long, int, int>> PairsToCommit = getPairsToCommit(L);
-
-            { // Debug info
-                Debug.WriteLine("Ready to commit the following pairs (including empty ones) to the DB: " + PairsToCommit);
-                foreach (var i in PairsToCommit)
-                    Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
-                        i.Item1, i.Item2, i.Item3, i.Item4);
-            }
-
-            this.confirmed = conn.writeAllTournamentPairs(PairsToCommit, tournamentId, doCommit: doCommit);
+            List<Tuple<List<long>, bool, int, int>> setsToCommit = buildTournamentGameSets();
+            
+            this.confirmed = conn.writeAllTournamentGameSets(setsToCommit, tournamentId, doCommit: doCommit);
             conn.setTournamentLotteryStateReady(tournamentId, this.confirmed);
             // we could make "confirmed" a property, so that the setter does this automatically :)
         }
@@ -424,17 +490,16 @@ namespace KarateGeek.lottery
 
             int numOfPhases = (int) Math.Ceiling(Math.Log(numOfParticipants, 2));
 
-            //for (int phase = numOfPhases - 2; phase >= 0; --phase)  // numOfPhases - 2 ?
-            //    for (int position = 1; position <= Math.Pow(2, phase); ++position)
-            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-
-            //for (int phase = numOfPhases - 1; phase >= 0; --phase)
-            //    for (int position = 1; position <= Math.Pow(2, phase + 2); ++position)
-            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-
+            /* THIS WORKS! (deep black magic, but tested) */
             for (int phase = numOfPhases - 3; phase >= 0; --phase)
                 for (int position = 1; position <= Math.Pow(2, phase + 2); ++position)
                     emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+            /* This might work (easier to read, but not so much tested): */
+            //int firstPhase = numOfPhases - 1;
+            //for (int phase = firstPhase; phase > 0; --phase) // phase > 0 and not phase >= 0 because we don't need the phase 0
+            //    for (int position = 1; position <= Math.Pow(2, phase + 1); ++position)
+            //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
 
             return emptyPairs;
         }
@@ -513,8 +578,6 @@ namespace KarateGeek.lottery
              * 
              *  ** There might be a smarter way to do it! (using Lists?!) **
              */
-
-            /* Crude and untested first version: */
 
             int len = Participants.Count;
             int numOfPhases = (int) Math.Ceiling(Math.Log(len, 2));
@@ -642,10 +705,11 @@ namespace KarateGeek.lottery
         }
 
 
-        protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
+        protected List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants, int membersPerTeam) //overloaded
         {
             List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
 
+            // This part mimicks the getPairs() method above, refer to the comments of that method for p, y, yleft and yright:
             int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
 
             int p = (int)Math.Pow(2, numOfPhases);
@@ -653,13 +717,16 @@ namespace KarateGeek.lottery
             int yleft = (y + 1) / 2;
             int yright = y - yleft;
 
-            // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK)
-            for (int position = 1 + (yleft + 1) / 2; position <= Math.Pow(2, numOfPhases - 2) - (yright + 1) / 2; ++position)  // phase Y (missing games)
+            // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK) -> EDIT: CHECKED, OK
+            int initialPos = 1 + ((yleft + 1) / 2) * membersPerTeam;
+            int finalPos = ((int)Math.Pow(2, numOfPhases - 2)  - (yright + 1) / 2) * membersPerTeam;
+            for (int position = initialPos; position <= finalPos; ++position)                       // phase Y (missing games)
                 emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, numOfPhases - 2, position));
 
-            for (int phase = numOfPhases - 3; phase >= 0; --phase)  // phase (Y - 1) to phase 0
-                for (int position = 1; position <= Math.Pow(2, phase); ++position)
+            for (int phase = numOfPhases - 3; phase >= 0; --phase)                                  // phase (Y - 1) to phase 0
+                for (int position = 1; position <= Math.Pow(2, phase) * membersPerTeam; ++position)
                     emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
 
             { // Debug info
                 Debug.WriteLine("EMPTY Pairs and positions: " + emptyPairs);
@@ -670,6 +737,45 @@ namespace KarateGeek.lottery
 
             return emptyPairs;
         }
+
+
+        protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants) //overloaded
+        {
+            return getEmptyPairs(numOfParticipants, 1);
+        }
+
+
+        //protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants) //overloaded, TODO: reuse code above
+        //{
+        //    List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
+
+        //    int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
+
+        //    int p = (int)Math.Pow(2, numOfPhases);
+        //    int y = p - numOfParticipants;
+        //    int yleft = (y + 1) / 2;
+        //    int yright = y - yleft;
+
+        //    // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK) -> EDIT: CHECKED, OK
+        //    int initialPos = 1 + (yleft + 1) / 2;
+        //    int finalPos = (int)Math.Pow(2, numOfPhases - 2) - (yright + 1) / 2;
+        //    for (int position = initialPos; position <= finalPos; ++position)                       // phase Y (missing games)
+        //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, numOfPhases - 2, position));
+
+        //    for (int phase = numOfPhases - 3; phase >= 0; --phase)                                  // phase (Y - 1) to phase 0
+        //        for (int position = 1; position <= Math.Pow(2, phase); ++position)
+        //            emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
+
+
+        //    { // Debug info
+        //        Debug.WriteLine("EMPTY Pairs and positions: " + emptyPairs);
+        //        foreach (var i in emptyPairs)
+        //            Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
+        //                i.Item1, i.Item2, i.Item3, i.Item4);
+        //    }
+
+        //    return emptyPairs;
+        //}
 
     }
     #endregion

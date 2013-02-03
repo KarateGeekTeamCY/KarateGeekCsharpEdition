@@ -2,18 +2,18 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="karate geek log in" 
-        Width="450" Height="300"
+        Width="450" Height="350"
         ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="50"/>
             <RowDefinition MinHeight="50"/>
-            <RowDefinition MinHeight="10"/>
             <RowDefinition MinHeight="50"/>
             <RowDefinition MinHeight="50"/>
             <RowDefinition MinHeight="50"/>
-            
-            
+            <RowDefinition MinHeight="50"/>
+            <RowDefinition MinHeight="50"/>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="50"/>
@@ -23,12 +23,14 @@
             
         </Grid.ColumnDefinitions>
         
-        <Label Content="  Username" 
+        <Label Content="Username" 
                Grid.Column="1" 
                Grid.Row="1" 
                VerticalAlignment="Center" 
                HorizontalAlignment="Left" 
-               FontSize="17"/>
+               FontSize="17"
+               Margin="10"
+               />
         <TextBox Name="userNameTB" 
                  Grid.Row="1" 
                  Grid.Column="2" 
@@ -36,16 +38,20 @@
                  VerticalAlignment="Center" 
                  HorizontalAlignment="Center" 
                  FontSize="17"
-                 BorderThickness="2" Text="" />
+                 BorderThickness="2" 
+                 Text="" 
+                 />
         
-        <Label Content="  Password" 
+        <Label Content="Password" 
                Grid.Column="1" 
-               Grid.Row="3" 
+               Grid.Row="2" 
                VerticalAlignment="Center" 
                HorizontalAlignment="Left" 
-               FontSize="17"/>
+               FontSize="17"
+               Margin="10"
+               />
         <PasswordBox Name="passwordTB" 
-                 Grid.Row="3" 
+                 Grid.Row="2" 
                  Grid.Column="2" 
                  MinWidth="150"
                  VerticalAlignment="Center" 
@@ -53,19 +59,44 @@
                  FontSize="17"
                  Password=""
                  BorderThickness="2"  />
+
+        <Label Content="server" 
+               Grid.Column="1" 
+               Grid.Row="3" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Left" 
+               FontSize="17"
+               Margin="10"
+               />
+        <TextBox Name="host" 
+                 Grid.Row="3" 
+                 Grid.Column="2" 
+                 MinWidth="150"
+                 VerticalAlignment="Center" 
+                 HorizontalAlignment="Center" 
+                 FontSize="17"
+                 BorderThickness="2" 
+                 TextChanged="host_TextChanged" 
+                 />
+
+        
         
         <Button Name="exit"
                 Content="Exit"
                 Grid.Row="4"
                 Grid.Column="1"
                 Margin="0,10,15,10"
-                Click="exit_Click" IsCancel="True" />
+                Click="exit_Click" 
+                IsCancel="True" 
+                />
         <Button Name="login"
                 Content="Log in"
                 Grid.Row="4"
                 Grid.Column="2"
                 Margin="15,10,0,10" 
-                Click="login_Click" IsDefault="True" />        
+                Click="login_Click" 
+                IsDefault="True" 
+                />        
         
         
         

@@ -43,11 +43,11 @@ namespace KarateGeek.guis
         private Game game;
         private int scoreLeft = 0;
         private int scoreRight = 0;
-        private EventSupport sender;
+        private EventSupport _sender;
 
 
 
-        #endregion
+        #endregion  private declarations
 
 
 
@@ -56,7 +56,7 @@ namespace KarateGeek.guis
 
             InitializeComponent();
             this.game = game;
-            this.sender = sender;
+            this._sender = sender;
             //this._gameId = gameId;
             this._LoadData();
             this.Show();
@@ -80,224 +80,110 @@ namespace KarateGeek.guis
 
         #region point buttons
 
-
-        private void ipponA_Click(object sender, RoutedEventArgs e)
+        private void addPointToHistory(string pointDSC, int point, string site)
         {
-            Point p = new Point(Strings.ippon, 1, pointsIndex, "left");
+            Point p = new Point(pointDSC, point, pointsIndex, site);
             pointsIndex++;
 
             if (replaceFlag)
-                this.toReplacePoint.update(Strings.ippon, 1, "left");
+                this.toReplacePoint.update(pointDSC, point, site);
             else
                 this._pointsHistory.Add(p);
 
             if (this.replaceFlag)
                 this.replaceFlag = false;
 
-            //_pointsHistory.add
             updateHistory();
 
+        }
+
+        //
+        //  LEFT SITE Athilete
+        //
+
+        private void ipponA_Click(object sender, RoutedEventArgs e)
+        {
+            addPointToHistory(Strings.ippon, 10, Strings.left);
         }
 
         private void wazaariA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.wazaari, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.wazaari, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.wazaari, 4, Strings.left);
         }
 
         private void jyogaiA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.jyogai, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.jyogai, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.jyogai, 2, Strings.left);
         }
 
         private void chuiA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.chui, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.chui, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.chui, 4, Strings.left);
         }
 
         private void keikokuA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.keikoku, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.keikoku, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.keikoku, 2, Strings.left);
         }
 
         private void tentoA_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.tento, 1, pointsIndex, "left");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.tento, 1, "left");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.tento, 1, Strings.left);
         }
 
         private void doctorStopA_Click(object sender, RoutedEventArgs e)
         {
-
+            addPointToHistory(Strings.doctorStop, 4, Strings.left);
         }
+
+        //
+        //  RIGHT SITE Athilete
+        //
 
         private void ipponB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.ippon, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.ippon, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.ippon, 10, Strings.right);
 
         }
 
         private void wazaariB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.wazaari, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.wazaari, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.wazaari, 4, Strings.right);
         }
 
         private void jyogaiB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.jyogai, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.jyogai, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.jyogai, 2, Strings.right);
         }
 
         private void chuiB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.chui, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.chui, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.chui, 4, Strings.right);
         }
 
         private void keikokuB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.keikoku, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.keikoku, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.keikoku, 2, Strings.right);
         }
 
         private void tentoB_Click(object sender, RoutedEventArgs e)
         {
-            Point p = new Point(Strings.tento, 1, pointsIndex, "right");
-            pointsIndex++;
-
-            if (replaceFlag)
-                this.toReplacePoint.update(Strings.tento, 1, "right");
-            else
-                this._pointsHistory.Add(p);
-
-            if (this.replaceFlag)
-                this.replaceFlag = false;
-
-            updateHistory();
+            addPointToHistory(Strings.tento, 1, Strings.right);
         }
 
         private void doctorstopB_Click(object sender, RoutedEventArgs e)
         {
-
+            addPointToHistory(Strings.doctorStop, 4, Strings.right);
         }
 
         #endregion
 
 
+
         private void updateHistory()
         {
-            //StringBuilder sb = new StringBuilder();
-            //bool endFlag = false;
             int historyIndex = 0;
 
-            //sb.Append("");
-
-            //listBoxHistory = new ListBox();
             List<string> temp = new List<string>();
 
             scoreLeft = 0;
@@ -310,16 +196,18 @@ namespace KarateGeek.guis
                 sb.Append(": ");
 
 
-                if (p.side == "right")
+                if (p.side == Strings.right)
                 {
                     scoreRight += p.points;
                     sb.Append("Comp. B -> ");
                 }
-                else
+                else // if (p.side == Strings.left)
                 {
                     scoreLeft += p.points;
                     sb.Append("Comp. A -> ");
                 }
+
+
                 sb.Append(p.description);
                 sb.Append("\n");
                 scoreA.Text = scoreLeft.ToString();
@@ -331,12 +219,7 @@ namespace KarateGeek.guis
             this.listBoxHistory.ItemsSource = temp;
         }
 
-        private void checkWinner()
-        {
 
-
-
-        }
 
         private void listBoxHistory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -353,85 +236,51 @@ namespace KarateGeek.guis
         }
 
 
+
         public void yncListener(string ans)
         {
-            switch (ans) {
+            switch (ans)
+            {
                 case "delete":
-                                    this._pointsHistory.Remove(toReplacePoint);
-                                    this.updateHistory();
-                                    break;
+                    this._pointsHistory.Remove(toReplacePoint);
+                    this.updateHistory();
+                    break;
                 case "change":
-                                    this.replaceFlag = true;
-                                    break;
+                    this.replaceFlag = true;
+                    break;
                 case "cancel":
-                default:            break;
+                default: break;
             }
         }
 
 
         #region management buttons
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-
-
+            this._sender.Show();
+            this.Close();
         }
+        
 
-        private void btnPause_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnEnd_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
             foreach (Point p in _pointsHistory)
             {
-                if (p.side == "left")
+                if (p.side == Strings.left)
                 {
                     if (_leftAthleteTeamId == "")
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ("
-                            + _gameId + ","
-                            + _leftAthleteId + ","
-                            + p.points + ", '"
-                            + p.description + "'); ");
-                    }
+                        insertPointToDB(_leftAthleteId, p);
                     else
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ("
-                            + _gameId + ","
-                            + _leftAthleteId + ", "
-                            + _leftAthleteTeamId + ","
-                            + p.points + ", '"
-                            + p.description + "'); ");
-                    }
+                        insertPointToDB(_leftAthleteId, _leftAthleteTeamId, p);
                 }
-                else
+                else // if (p.side == Strings.left)
                 {
                     if (_rightAthleteTeamId == "")
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
-                            + _gameId + "','"
-                            + _rightAthleteId + "','"
-                            + p.points + "', '"
-                            + p.description + "'); ");
-                    }
+                        insertPointToDB(_rightAthleteId, p);
                     else
-                    {
-                        conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
-                            + _gameId + "','"
-                            + _rightAthleteId + "', '"
-                            + _rightAthleteTeamId + "', '"
-                            + p.points + "', '"
-                            + p.description + "'); ");
-                    }
-
+                        insertPointToDB(_rightAthleteId, _rightAthleteTeamId, p);
                 }
             }
 
@@ -439,18 +288,49 @@ namespace KarateGeek.guis
             this.game.isFinished = true;
 
 
-            this.sender.tournament.load();
-            this.sender.advanceAthlites();
-            this.sender.tournament.load();
+            this._sender.tournament.load();
+            this._sender.advanceAthletes();
+            this._sender.tournament.load();
 
-            this.sender.loadGames();
+            this._sender.loadGames();
+
             this.Close();
         }
 
+
+
+        private void insertPointToDB(string athId, string teamid, Point p)
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+
+            conn.NonQuery("INSERT INTO game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) VALUES ("
+                + _gameId + ","
+                + athId + ", "
+                + teamid + ","
+                + p.points + ", '"
+                + p.description + "'); ");
+        }
+
+
+
+        private void insertPointToDB(string athId, Point p)
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+
+            conn.NonQuery("INSERT INTO game_points (game_id , athlete_id , technical_point , technical_point_desc) VALUES ("
+                + _gameId + ","
+                + athId + ","
+                + p.points + ", '"
+                + p.description + "'); ");
+        }
+
+
+
         #endregion
 
-       
+        
     }
+
 
 
     public class Point
@@ -462,6 +342,8 @@ namespace KarateGeek.guis
         public string time { get; set; }
         public string side { get; set; }
 
+
+
         public Point(string dsc, int points, int PointIndex, string side)
         {
             this.description = dsc;
@@ -471,15 +353,13 @@ namespace KarateGeek.guis
             this.side = side;
         }
 
+
+
         public void update(string dsc, int points, string side)
         {
-
             this.description = dsc;
             this.points = points;
             this.side = side;
         }
-
     }
-
-
 }

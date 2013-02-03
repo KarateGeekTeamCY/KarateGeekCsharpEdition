@@ -104,6 +104,7 @@
     <Compile Include="databaseConnection\AthleteData.cs" />
     <Compile Include="databaseConnection\ListData.cs" />
     <Compile Include="databaseConnection\GameConnection.cs" />
+    <Compile Include="databaseConnection\LotteryPrinterConnection.cs" />
     <Compile Include="databaseConnection\ParticipationsConnection.cs" />
     <Compile Include="databaseConnection\LotteryGenConnection.cs" />
     <Compile Include="databaseConnection\EveSupScoreConnection.cs" />
@@ -127,10 +128,12 @@
     <Compile Include="guis\YesNoCancelReplacement.xaml.cs">
       <DependentUpon>YesNoCancelReplacement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="lottery\LotteryPrinter.cs" />
     <Compile Include="helpers\ErrorMessages.cs" />
     <Compile Include="helpers\RegularExpressions.cs" />
     <Compile Include="lottery\LotteryGeneratorFactory.cs" />
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
+    <Compile Include="lottery\LotteryBox.cs" />
     <Compile Include="Reports\AthleteCrystalReport.cs">
       <DependentUpon>AthleteCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>

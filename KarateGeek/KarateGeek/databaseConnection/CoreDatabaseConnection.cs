@@ -14,14 +14,21 @@ namespace KarateGeek.databaseConnection
     {
         private NpgsqlConnection _conn = null;
 
-
+        //public static string _SERVER    = "192.168.1.115";
+        public static string _SERVER    = "127.0.0.1";
+        public static string _PORT      = "5432";
+        public static string _USER      = "postgres";
+        public static string _PASSWORD  = "admin";
+        public static string _DATABASE  = "karategeek";
+        
+        
         public NpgsqlConnection conn
         {
             get
             {
                 if (_conn == null)
                 {
-                    _conn = new NpgsqlConnection("Server=127.0.0.1; Port=5432; User Id=postgres; Password=admin; Database=karategeek;");
+                    _conn = new NpgsqlConnection("Server=" + _SERVER + "; Port=" + _PORT + "; User Id=" + _USER + "; Password=" + _PASSWORD + "; Database=" + _DATABASE + ";");
 
                     /* Use the following code to test with a remote DB (to check for latency issues): */
                     //_conn = new NpgsqlConnection("Server=nicholas.ddns.net; Port=52728; User Id=karate; Password=xI85nO; Database=karate_db;");
@@ -29,7 +36,7 @@ namespace KarateGeek.databaseConnection
                     //{ /* temporary (and UGLY) hack to test remote DB with different schema name... */
                     //    NpgsqlCommand comm = _conn.CreateCommand();
                     //    comm.CommandText = "SET search_path TO schema_v1;";
-                    //    comm.CommandText = "SET DateStyle TO Euro;";
+                    //    //comm.CommandText = "SET DateStyle TO Euro;";
                     //    _conn.Open();
                     //    comm.ExecuteNonQuery();
                     //}
@@ -37,7 +44,7 @@ namespace KarateGeek.databaseConnection
                 if (_conn.State != ConnectionState.Open)
                     _conn.Open();
 
-                
+
                 return _conn;
 
             }

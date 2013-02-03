@@ -15,18 +15,17 @@ using KarateGeek.databaseConnection;
 
 namespace KarateGeek.guis
 {
-    /// <summary>
-    /// Interaction logic for ChooseWinner.xaml
-    /// </summary>
     public partial class ChooseWinner : Window
     {
         private EventSupport _sender;
         private Game _game;
         private Tournament _tournament;
         private bool _isTeam;
-        private string partAId, partBId;
 
-        private Team a, b;
+
+        private string partAId, partBId;
+        private Team teamA, teamB;
+
 
         CoreDatabaseConnection conn = new CoreDatabaseConnection();
         DataTable temp;
@@ -36,6 +35,7 @@ namespace KarateGeek.guis
         public ChooseWinner(EventSupport sender, Game game, Tournament tournament)
         {
             InitializeComponent();
+
             this._sender = sender;
             this._game = game;
             this._tournament = tournament;
@@ -47,28 +47,29 @@ namespace KarateGeek.guis
             if (this._isTeam)
             {
                 conn = new CoreDatabaseConnection();
-                temp = conn.Query("SELECT DISTINCT  team_id FROM game_participations WHERE game_id = '" + this._game.gameId + "' order by team|_id;").Tables[0];
+                temp = conn.Query("SELECT DISTINCT  team_id FROM game_participations WHERE game_id = '" + this._game.gameId + "' order by team_id;").Tables[0];
 
                 partAId = temp.Rows[0][0].ToString();
-                partBId = temp.Rows[0][1].ToString();
-                a = new Team(partAId);
-                b = new Team(partBId);
+                partBId = temp.Rows[1][0].ToString();
 
-                this.lblAthleteAname.Content = a.participants.ElementAt(0).lastName + " " + a.participants.ElementAt(0).firstName + "\n";
-                this.lblAthleteAname.Content += a.participants.ElementAt(1).lastName + " " + a.participants.ElementAt(1).firstName + "\n";
-                this.lblAthleteAname.Content += a.participants.ElementAt(2).lastName + " " + a.participants.ElementAt(2).firstName;
+                teamA = new Team(partAId);
+                teamB = new Team(partBId);
+
+                this.lblAthleteAname.Content = teamA.participants.ElementAt(0).lastName + " " + teamA.participants.ElementAt(0).firstName + "\n";
+                this.lblAthleteAname.Content += teamA.participants.ElementAt(1).lastName + " " + teamA.participants.ElementAt(1).firstName + "\n";
+                this.lblAthleteAname.Content += teamA.participants.ElementAt(2).lastName + " " + teamA.participants.ElementAt(2).firstName;
 
 
-                this.lblAthleteBname.Content = b.participants.ElementAt(0).lastName + " " + b.participants.ElementAt(0).firstName + "\n";
-                this.lblAthleteBname.Content += b.participants.ElementAt(1).lastName + " " + b.participants.ElementAt(1).firstName + "\n";
-                this.lblAthleteBname.Content += b.participants.ElementAt(2).lastName + " " + b.participants.ElementAt(2).firstName;
+                this.lblAthleteBname.Content = teamB.participants.ElementAt(0).lastName + " " + teamB.participants.ElementAt(0).firstName + "\n";
+                this.lblAthleteBname.Content += teamB.participants.ElementAt(1).lastName + " " + teamB.participants.ElementAt(1).firstName + "\n";
+                this.lblAthleteBname.Content += teamB.participants.ElementAt(2).lastName + " " + teamB.participants.ElementAt(2).firstName;
 
                 this.lblInfo.Content = "Please shoose the winner";
             }
             else
             {
-                this.partAId = game.participants.ElementAt(0).lastName + " " + game.participants.ElementAt(0).id;
-                this.partBId = game.participants.ElementAt(0).lastName + " " + game.participants.ElementAt(1).id;
+                this.partAId = game.participants.ElementAt(0).id;
+                this.partBId = game.participants.ElementAt(1).id;
 
                 this.lblAthleteAname.Content = game.participants.ElementAt(0).lastName + " " + game.participants.ElementAt(0).firstName;
                 this.lblAthleteBname.Content = game.participants.ElementAt(1).lastName + " " + game.participants.ElementAt(1).firstName;
@@ -80,44 +81,38 @@ namespace KarateGeek.guis
 
 
 
-
         private void btnAthleteAisWinner_Click(object sender, RoutedEventArgs e)
         {
-            if (this._isTeam)
-            {
-                foreach (Athlete ath in a.participants)
-                {
-                    conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
-                                + this._game.gameId + "','"
-                                + ath.id + "', '"
-                                + this.a.id + "', '"
-                                + "1" + "', '"
-                                + Strings.bychoice + "'); ");
-                }
-            }
-            else
-            {
-                conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
-                            + this._game.eventId + "','"
-                            + this.partAId + "','"
-                            + "1" + "', '"
-                            + Strings.bychoice + "'); ");
-            }
 
-            this.Close();
-            
+            setWinner(partAId, teamA);
         }
+
+
 
         private void btnAthleteBisWinner_Click(object sender, RoutedEventArgs e)
         {
+
+            setWinner(partBId, teamB);
+        }
+
+
+
+        private void setWinner(string athId, Team tm)
+        {
+            //
+            //  NOTE
+            //  bug:
+            //
+            //  to athid einai to onoma tou athliti prepi na gini to id 
+            //
             if (this._isTeam)
             {
-                foreach (Athlete ath in b.participants)
+                foreach (Athlete ath in tm.participants)
                 {
                     conn.NonQuery("insert into game_points (game_id , athlete_id , team_id , technical_point , technical_point_desc) values ('"
                                 + this._game.gameId + "','"
                                 + ath.id + "', '"
-                                + this.b.id + "', '"
+                                + tm.id + "', '"
                                 + "1" + "', '"
                                 + Strings.bychoice + "'); ");
                 }
@@ -125,17 +120,20 @@ namespace KarateGeek.guis
             else
             {
                 conn.NonQuery("insert into game_points (game_id , athlete_id , technical_point , technical_point_desc) values ('"
-                            + this._game.eventId + "','"
-                            + this.partBId + "','"
+                            + this._game.gameId + "','"
+                            + athId + "','"
                             + "1" + "', '"
                             + Strings.bychoice + "'); ");
             }
 
-            this._sender.update();
+            _sender.tournament.load();
+            _sender.advanceAthlites(this._game);
+            _sender.tournament.load();
+            _sender.loadGames();
+
+
             this.Close();
-
         }
-
 
 
     }

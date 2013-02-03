@@ -20,12 +20,9 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class EventSupport : Window
     {
-
-
         #region private declarations
 
         private Window _sender;
-
 
         private string _eventId;
         private string _tournamentId;
@@ -34,14 +31,10 @@ namespace KarateGeek.guis
         private int _indexCurrentphase;
         private int _indexNextPhase;
 
-        private bool _firstLoad = true;
-
         public Tournament tournament;
 
         private TournamentConnection _tournamentConn = new TournamentConnection();
         private EventConnection _eventConn = new EventConnection();
-
-
 
         private DataTable _TournamantsDT;
 
@@ -51,8 +44,8 @@ namespace KarateGeek.guis
 
 
 
-
         #endregion private declaretions
+
 
 
         public EventSupport(Window sender)
@@ -76,7 +69,7 @@ namespace KarateGeek.guis
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
 
-                //this._sender.Show();
+
                 this.Close();
                 return;
             }
@@ -84,1499 +77,286 @@ namespace KarateGeek.guis
             {
                 this.Show();
                 this._sender.Hide();
-
                 this._eventId = todayEventDT.Rows[0][0].ToString();
             }
 
+
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            string sql = "select * from tournaments where event_id = '" + this._eventId + "'; ";
+
+            string sql = "select * from tournaments where event_id = '" + this._eventId + "' AND lottery_ready = 't' AND is_finished = 'f' ORDER BY name; ";
             _TournamantsDT = conn.Query(sql).Tables[0];
+            this._availableTournaments = new List<string>();
+
 
             foreach (DataRow dr in _TournamantsDT.Rows)
             {
-                this._availableTournaments.Add("" + dr[1]);
+                this._availableTournaments.Add(dr[1].ToString());
             }
 
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
-
-            //this.Show();
         }
+
+
 
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
-            this._tournamentId = (string)_TournamantsDT.Rows[i][0].ToString();
+            this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
 
             this.tournament = new Tournament(this._tournamentId);
 
             loadGames();
-            //todo finf the first phase check the length 
         }
 
 
+
+        //
+        //  nothing here yet 
+        //  need to implement 
+        //
         #region buttons
 
-        private void btnStartNextGame_Click(object sender, RoutedEventArgs e)
-        {
 
+        private void btnRefreshe_Click(object sender, RoutedEventArgs e)
+        {
+            this.tournament.load();
+            this.loadGames();
         }
+
+
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-
+            _sender.Show();
+            this.Close();
         }
 
         #endregion
+
 
 
         #region game loading functions
 
         public void loadGames()
         {
-            if (this.tournament.isInd)
-                loadIndevidual();
+            List<Game> curentGames = new List<Game>();
+            List<Game> futureGames = new List<Game>();
 
-            if (this.tournament.isTeam)
-                loadTeam();
 
-            if (this.tournament.isSync)
-                loadSync();
 
-            //if (this.tournament.games128.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games64.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games32.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games16.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games8.Count != 0)
-            //{
-            //}
-            //else if (this.tournament.games4.Count != 0)
-            //{
-            //}
-            //else
-            //{
-            //}
-        }
-
-        private void loadIndevidual()
-        {
-
-            switch (this.tournament.gameType)
+            if (this.tournament.games128.Count != 0 && (!this.tournament.phase128Done))
             {
-                case Strings.indKata:
-                    if (this.tournament.judgingType == Strings.flag)
-                    {
+                this._indexCurrentphase = 6;
+                this._indexNextPhase = 5;
 
-                        if (this._firstLoad)
-                            foreach (Athlete ath in tournament.participants)
-                                ath.ranking = "128";
+                curentGames = this.tournament.games128;
+                futureGames = this.tournament.games64;
+            }
 
-                        this.loadIndevidualVersus();
-                    }
-                    else
-                    {
+            else if (this.tournament.games64.Count != 0 && (!this.tournament.phase64Done))
+            {
+                this._indexCurrentphase = 5;
+                this._indexNextPhase = 4;
 
-                        if (this._firstLoad)
-                            foreach (Athlete ath in tournament.participants)
-                                ath.ranking = "128";
+                curentGames = this.tournament.games64;
+                futureGames = this.tournament.games32;
+            }
+
+            else if (this.tournament.games32.Count != 0 && (!this.tournament.phase32Done))
+            {
+                this._indexCurrentphase = 4;
+                this._indexNextPhase = 3;
+
+                curentGames = this.tournament.games32;
+                futureGames = this.tournament.games16;
+            }
+
+            else if (this.tournament.games16.Count != 0 && (!this.tournament.phase16Done))
+            {
+                this._indexCurrentphase = 3;
+                this._indexNextPhase = 2;
+
+                curentGames = this.tournament.games16;
+                futureGames = this.tournament.games8;
+            }
+
+            else if (this.tournament.games8.Count != 0 && (!this.tournament.phase8Done))
+            {
+                this._indexCurrentphase = 2;
+                this._indexNextPhase = 1;
+
+                curentGames = this.tournament.games8;
+                futureGames = this.tournament.games4;
+            }
+
+            else if (this.tournament.games4.Count != 0 && (!this.tournament.phase4Done))
+            {
+                this._indexCurrentphase = 1;
+                this._indexNextPhase = 0;
+
+                curentGames = this.tournament.games4;
+                futureGames = this.tournament.games2;
+            }
 
 
-                        this.loadIndevidualSingle();
-                    }
-                    break;
-                case Strings.indKumite:
+            else if (this.tournament.games2.Count != 0 && (!this.tournament.phase2Done))
+            {
+                this._indexCurrentphase = 0;
+                this._indexNextPhase = -1;
 
-                    if (this._firstLoad)
-                        foreach (Athlete ath in tournament.participants)
-                            ath.ranking = "128";
-
-
-                    this.loadIndevidualVersus();
-                    break;
-                case Strings.fugugo:
-
-                    if (this._firstLoad)
-                        foreach (Athlete ath in tournament.participants)
-                            ath.ranking = "128";
+                curentGames = this.tournament.games2;
+                futureGames = null;
+            }
 
 
-                    this.loadIndevidualVersus();
-                    break;
+
+            //
+            // the actual strings list creation for the gui to show
+            //
+            this.listBoxCurrentGameList.ItemsSource = this.loadStrings(curentGames);
+
+            if (futureGames != null)
+            { this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames); }
+            else
+            {
+                //
+                // final game msg
+                //
             }
         }
 
-        private void loadIndevidualVersus()
+
+
+        #region string creators
+
+
+        private List<string> loadStrings(List<Game> games)
         {
 
+            List<string> temp = new List<string>();
+
+            int type = 0;
+
+            if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                            || this.tournament.gameType == Strings.indKata
+                            || this.tournament.gameType == Strings.teamKata)
+            { type = 1; }
+
+            else if (this.tournament.gameType == Strings.syncKata
+                        || this.tournament.gameType == Strings.enbu)
+            { type = 2; }
+
+            else if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                        || this.tournament.gameType == Strings.indKumite
+                        || this.tournament.gameType == Strings.fugugo
+                        || this.tournament.gameType == Strings.teamKumite)
+            { type = 3; }
+
+
+
+            foreach (Game gm in games)
+            {
+                if (type == 1)
+                { temp.Add(this.createPresentationString(gm)); }
+
+                else if (type == 2)
+                { temp.Add(this.createTeamPresentationString(gm)); }
+
+                else if (type == 3)
+                { temp.Add(this.createVersusString(gm)); }
+            }
+
+            return temp;
+        }
+
+
+
+        private string createPresentationString(Game gm)
+        {
+            string temp = "";
+            if (gm.participants.Count == 0)
+            { temp = "Waiting..."; }
+
+            else
+            {
+                Athlete ath = gm.participants[0];
+                temp += (ath.lastName + " " + ath.firstName);
+            }
+
+            return temp;
+        }
+
+
+
+        private string createVersusString(Game gm)
+        {
+            StringBuilder temp = new StringBuilder();
             Athlete A;
             Athlete B;
 
-            if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
+            switch (gm.participants.Count)
             {
-                this._indexCurrentphase = 6;
-                this._indexNextPhase = 5;
+                case 0:
 
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games128)
-                {
-                    A = gm.participants.ElementAt(0);
-                    B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    switch (gm.participants.Count)
+                    if (this.tournament.gameType == Strings.teamKumite)
                     {
-                        case 0:
-                            current.Add("Empty...");
-
-                            break;
-                        case 1:
-                            A = gm.participants.ElementAt(0);
-                            //Athlete B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
-
-                            break;
-                        case 2:
-                            A = gm.participants.ElementAt(0);
-                            B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                            break;
+                        temp.Append("Click to add game members.");
                     }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-
-            }
-            else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
-            {
-                this._indexCurrentphase = 5;
-                this._indexNextPhase = 4;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    A = gm.participants.ElementAt(0);
-                    B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    switch (gm.participants.Count)
+                    else
                     {
-                        case 0:
-                            current.Add("Empty...");
-
-                            break;
-                        case 1:
-                            A = gm.participants.ElementAt(0);
-                            //Athlete B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
-
-                            break;
-                        case 2:
-                            A = gm.participants.ElementAt(0);
-                            B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                            break;
+                        temp.Append("Empty...");
                     }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
-            {
-                this._indexCurrentphase = 4;
-                this._indexNextPhase = 3;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    A = gm.participants.ElementAt(0);
-                    B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    switch (gm.participants.Count)
-                    {
-                        case 0:
-                            current.Add("Empty...");
-
-                            break;
-                        case 1:
-                            A = gm.participants.ElementAt(0);
-                            //Athlete B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
-
-                            break;
-                        case 2:
-                            A = gm.participants.ElementAt(0);
-                            B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                            break;
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
-            {
-                this._indexCurrentphase = 3;
-                this._indexNextPhase = 2;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    A = gm.participants.ElementAt(0);
-                    B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    switch (gm.participants.Count)
-                    {
-                        case 0:
-                            current.Add("Empty...");
-
-                            break;
-                        case 1:
-                            A = gm.participants.ElementAt(0);
-                            //Athlete B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
-
-                            break;
-                        case 2:
-                            A = gm.participants.ElementAt(0);
-                            B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                            break;
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
-            {
-                this._indexCurrentphase = 2;
-                this._indexNextPhase = 1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    A = gm.participants.ElementAt(0);
-                    B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    switch (gm.participants.Count)
-                    {
-                        case 0:
-                           
-                            current.Add("Empty...");
-
-                            break;
-                        case 1:
-                            A = gm.participants.ElementAt(0);
-                            //Athlete B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
-
-                            break;
-                        case 2:
-                            A = gm.participants.ElementAt(0);
-                            B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                            break;
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
-            {
-                this._indexCurrentphase = 1;
-                this._indexNextPhase = 0;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    A = gm.participants.ElementAt(0);
-                    B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games2)
-                {
-                    switch (gm.participants.Count)
-                    {
-                        case 0:
-                            current.Add("Empty...");
-
-                            break;
-                        case 1:
-                            A = gm.participants.ElementAt(0);
-                            //Athlete B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
-
-                            break;
-                        case 2:
-                            A = gm.participants.ElementAt(0);
-                            B = gm.participants.ElementAt(1);
-                            current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                            break;
-                    }
-
-
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games2.Count != 0 && (!this.tournament.games2.Last().isFinished))
-            {
-                this._indexCurrentphase = 0;
-                this._indexNextPhase = -1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games2)
-                {
-                    A = gm.participants.ElementAt(0);
-                    B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase there no next phase you are in finale
-                //
-                List<string> future = new List<string>();
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else
-            {
-                //tournament is finished anounce the winner
-            }
-
-
-        }
-
-        private void loadIndevidualSingle()
-        {
-
-            if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
-            {
-                this._indexCurrentphase = 5;
-                this._indexNextPhase = 4;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games128)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-
-            }
-            else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
-            {
-                this._indexCurrentphase = 4;
-                this._indexNextPhase = 3;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
-            {
-                this._indexCurrentphase = 3;
-                this._indexNextPhase = 2;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
-            {
-                this._indexCurrentphase = 2;
-                this._indexNextPhase = 1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
-            {
-                this._indexCurrentphase = 1;
-                this._indexNextPhase = 0;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
-            {
-                this._indexCurrentphase = 0;
-                this._indexNextPhase = -1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    //Athlete B = gm.participants.ElementAt(1);
-                    current.Add(A.lastName + " " + A.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                // next Phase? no next phase
-                //
-                List<string> future = new List<string>();
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-
-            else
-            {
-                //tournament is finished anounce the winner
-            }
-        }
-
-
-        private void loadTeam()
-        {
-            switch (this.tournament.gameType)
-            {
-                case Strings.teamKata:
-
-                    if (this._firstLoad)
-                        foreach (Athlete ath in tournament.participants)
-                            ath.ranking = "128";
-
-
-                    loadIndevidualSingle();
 
                     break;
-                case Strings.teamKumite:
+                case 1:
 
-                    if (this._firstLoad)
-                        foreach (Athlete ath in tournament.participants)
-                            ath.ranking = "128";
+                    A = gm.participants.ElementAt(0);
+                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
 
-                    loadTamVersus();
+                    break;
+                case 2:
+
+                    A = gm.participants.ElementAt(0);
+                    B = gm.participants.ElementAt(1);
+                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
 
                     break;
             }
+
+            return temp.ToString();
         }
 
-        private void loadTamVersus()
+
+
+        private string createTeamPresentationString(Game gm)
         {
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            string sql;
-            bool phase128Done, phase64Done, phase32Done, phase16Done, phase8Done, phase4Done, phase2Done;
-
-
-            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '6' and is_finished = false;";
-            if (conn.Query(sql).Tables[0].Rows.Count > 0)
-                phase128Done = false;
-            else
-                phase128Done = true;
-
-            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '5' and is_finished = false;";
-            if (conn.Query(sql).Tables[0].Rows.Count > 0)
-                phase64Done = false;
-            else
-                phase64Done = true;
-
-            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '4' and is_finished = false;";
-            if (conn.Query(sql).Tables[0].Rows.Count > 0)
-                phase32Done = false;
-            else
-                phase32Done = true;
-
-            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '3' and is_finished = false;";
-            if (conn.Query(sql).Tables[0].Rows.Count > 0)
-                phase16Done = false;
-            else
-                phase16Done = true;
-
-            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '2' and is_finished = false;";
-            if (conn.Query(sql).Tables[0].Rows.Count > 0)
-                phase8Done = false;
-            else
-                phase8Done = true;
-
-            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '1' and is_finished = false;";
-            if (conn.Query(sql).Tables[0].Rows.Count > 0)
-                phase4Done = false;
-            else
-                phase4Done = true;
-
-            sql = "select * from games where tournament_id = '" + this.tournament.id + "' and phase = '0' and is_finished = false;";
-            if (conn.Query(sql).Tables[0].Rows.Count > 0)
-                phase2Done = false;
-            else
-                phase2Done = true;
-
-
-
-            if (this.tournament.games128.Count != 0 && (!phase128Done))
+            string temp = "";
+            if (gm.participants.Count == 0)
             {
-                this._indexCurrentphase = 6;
-                this._indexNextPhase = 5;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games128)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-
-            }
-            else if (this.tournament.games64.Count != 0 && (!phase64Done))
-            {
-                this._indexCurrentphase = 5;
-                this._indexNextPhase = 4;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games32.Count != 0 && (!phase32Done))
-            {
-                this._indexCurrentphase = 4;
-                this._indexNextPhase = 3;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games16.Count != 0 && (!phase16Done))
-            {
-                this._indexCurrentphase = 3;
-                this._indexNextPhase = 2;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games8.Count != 0 && (!phase8Done))
-            {
-                this._indexCurrentphase = 2;
-                this._indexNextPhase = 1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        future.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        future.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games4.Count != 0 && (!phase4Done))
-            {
-                this._indexCurrentphase = 1;
-                this._indexNextPhase = 0;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-                //this.listBoxCurrentGameList.Items = new ItemCollection();
-
-
-                foreach (Game gm in tournament.games4)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-
-
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-                //this.listBoxCurrentGameList.Items = new ItemCollection();
-
-                foreach (Game gm in tournament.games2)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        future.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        future.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games2.Count != 0 && (!phase2Done))
-            {
-                this._indexCurrentphase = 0;
-                this._indexNextPhase = -1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games2)
-                {
-                    if (gm.numOfParticipants == 2)
-                    {
-                        Athlete A = gm.participants.ElementAt(0);
-                        Athlete B = gm.participants.ElementAt(1);
-                        current.Add(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
-                    }
-                    else
-                    {
-                        current.Add("Click to add game members.");
-                    }
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase there no next phase you are in finale
-                //
-                List<string> future = new List<string>();
-                this.listBoxNextGameList.ItemsSource = future;
+                temp = "Waiting...";
             }
             else
-            {
-                //tournament is finished anounce the winner
-            }
-
-
+                foreach (Athlete ath in gm.participants)
+                {
+                    temp += (ath.lastName + " " + ath.firstName + " - ");
+                }
+            return temp;
         }
 
 
-        private void loadSync()
-        {
-            switch (this.tournament.gameType)
-            {
-                case Strings.syncKata:
 
-                    if (this._firstLoad)
-                        foreach (Athlete ath in tournament.participants)
-                            ath.ranking = "128";
-
-
-                    loadKataSyncSingle();
-
-
-                    break;
-                case Strings.enbu:
-
-                    if (this._firstLoad)
-                        foreach (Athlete ath in tournament.participants)
-                            ath.ranking = "128";
-
-
-                    loadEmbuSyncSingle();
-
-                    break;
-            }
-        }
-
-        private void loadKataSyncSingle()
-        {
-
-            if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
-            {
-                this._indexCurrentphase = 6;
-                this._indexNextPhase = 5;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games128)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-
-            }
-            else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
-            {
-                this._indexCurrentphase = 4;
-                this._indexNextPhase = 3;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
-            {
-                this._indexCurrentphase = 3;
-                this._indexNextPhase = 2;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
-            {
-                this._indexCurrentphase = 2;
-                this._indexNextPhase = 1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
-            {
-                this._indexCurrentphase = 1;
-                this._indexNextPhase = 0;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
-            {
-                this._indexCurrentphase = 0;
-                this._indexNextPhase = -1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName + " - " + C.lastName + " " + C.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                // next Phase? no next phase
-                //
-                List<string> future = new List<string>();
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-
-            else
-            {
-                //tournament is finished anounce the winner
-            }
-        }
-
-        private void loadEmbuSyncSingle()
-        {
-
-            if (this.tournament.games128.Count != 0 && (!this.tournament.games128.Last().isFinished))
-            {
-                this._indexCurrentphase = 5;
-                this._indexNextPhase = 4;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games128)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-
-            }
-            else if (this.tournament.games64.Count != 0 && (!this.tournament.games64.Last().isFinished))
-            {
-                this._indexCurrentphase = 4;
-                this._indexNextPhase = 3;
-
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games64)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games32.Count != 0 && (!this.tournament.games32.Last().isFinished))
-            {
-                this._indexCurrentphase = 3;
-                this._indexNextPhase = 2;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games32)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-
-            }
-            else if (this.tournament.games16.Count != 0 && (!this.tournament.games16.Last().isFinished))
-            {
-                this._indexCurrentphase = 2;
-                this._indexNextPhase = 1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games16)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games8.Count != 0 && (!this.tournament.games8.Last().isFinished))
-            {
-                this._indexCurrentphase = 1;
-                this._indexNextPhase = 0;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games8)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                //next Phase
-                //
-                List<string> future = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-            else if (this.tournament.games4.Count != 0 && (!this.tournament.games4.Last().isFinished))
-            {
-                this._indexCurrentphase = 0;
-                this._indexNextPhase = -1;
-
-                //
-                // current phase
-                //
-                List<string> current = new List<string>();
-
-                foreach (Game gm in tournament.games4)
-                {
-                    Athlete A = gm.participants.ElementAt(0);
-                    Athlete B = gm.participants.ElementAt(1);
-                    //Athlete C = gm.participants.ElementAt(2);
-                    current.Add(A.lastName + " " + A.firstName + " - " + B.lastName + " " + B.firstName);
-                }
-                this.listBoxCurrentGameList.ItemsSource = current;
-
-                //
-                // next Phase? no next phase
-                //
-                List<string> future = new List<string>();
-                this.listBoxNextGameList.ItemsSource = future;
-            }
-
-            else
-            {
-                //tournament is finished anounce the winner
-            }
-        }
-
-
+        #endregion string creators
         #endregion game loading functions
 
 
+
         #region winner checks
+
+
+
         //
         // INDIVIDUAL
         //
-
-
-
         private List<Athlete> getKataIndSinglePositioning()
         {
             string sql;
@@ -1595,39 +375,55 @@ namespace KarateGeek.guis
             return aths;
         }
 
-        private Athlete getKataIndVersusWinner(string gameId)
+
+
+        private Athlete getKataIndVersusWinner(Game gm)
         {
             string sql;
+            string id = gm.gameId;
+
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
             //
             // untested sql
             //
-            sql = "select * from game_participacions join game_flag on game_participacions.game_id = game_flag.game_id where game_id = '" + gameId + "' ;";
+            sql = "select * from game_participacions join game_flag on game_participacions.game_id = game_flag.game_id where game_id = '" + id + "' ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
         }
 
-        public Athlete getKumiteIndVersusWinner(string gameId)
+
+
+        public Athlete getKumiteIndVersusWinner(Game gm)
         {
-            string sql;
+            string sql, gameid;
+            gameid = gm.gameId;
+
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select athlete_id, sum(technical_point) from game_participacions join game_points on game_participacions.game_id = game_points.game_id where game_id = '" + gameId + "' group by (game_participations.athlete_id) ;";
+            sql = "SELECT athlete_id, sum(technical_point) FROM game_points where game_id = " + gameid + " group by athlete_id;";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            if ((int)temp.Rows[0][1] == (int)temp.Rows[1][1])
+            int a = int.Parse(temp.Rows[0][1].ToString());
+            int b = int.Parse(temp.Rows[1][1].ToString());
+
+            if (a == b)
             {
-                ChooseWinner getwin = new ChooseWinner(this, new Game(gameId), this.tournament);
+                ChooseWinner getwin = new ChooseWinner(this, new Game(gameid), this.tournament);
+
+                getwin.Show();
+
+                return null;
             }
             else
             {
-                if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
+                if (a > b)
                     return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
                 else
                     return new Athlete((string)temp.Rows[1][0].ToString(), this.tournament.id);
             }
-            return null;
+
         }
+
 
 
         //
@@ -1637,15 +433,18 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
             //
             // unchecked sql
             //
             sql = "select game_participations.team_id, sum(mean_score) from "
-                + "team_tournament_participations join game_participations "
+                + "team_tournament_participations "
+                + "join game_participations "
                 + "on team_tournament_participations.id = game_participations.team_id "
-                + "join game_score on team_tournament_participations.id = game_score.team_id where tournament_id = '"
-                + this.tournament.id + "' and game.phase = '"
-                + phase + "' group by game_participations.team_id ORDER BY sum(mean_score) DESC ;";
+                + "join game_score "
+                + "on team_tournament_participations.id = game_score.team_id join games on games.id = game_score.game_id "
+                + "where games.tournament_id = '" + this.tournament.id
+                + "' and games.phase = '" + phase + "' group by game_participations.team_id ORDER BY sum(mean_score) DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Team> teams = new List<Team>();
@@ -1656,35 +455,75 @@ namespace KarateGeek.guis
             return teams;
         }
 
-        private Team getKumiteTeamWinner(Game game)
-        {
 
-            string phase, teamA, teamB;
-            string sql;
+
+        private string getKumiteTeamWinner(Game gm)
+        {
+            string phase, teamA, teamB, sql;
+            string gameid = gm.gameId;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select team_id from games join game_participations gp on games.id = gp.game_id where game_id = '" + game.gameId + "';";
+
+
+
+            sql = "SELECT team_id FROM games JOIN game_participations gp ON games.id = gp.game_id where game_id = '" + gameid + "';";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            phase = game.phase;
             teamA = temp.Rows[0][0].ToString();
             teamB = temp.Rows[1][0].ToString();
 
 
-            sql = "select team_id, sum(technical_point) from game_participations join game_points on game_participations.game_id = game_point.game_id where phase = '"
-                + phase + "' and team_id = '"
-                + teamA + "' OR team_id = '"
-                + teamB + "'  group by (game_participations.team_id) ;";
+            phase = gm.phase;
+
+            sql = "SELECT * FROM games join game_participations ON games.id = game_participations.game_id"
+                + " WHERE team_id = " + teamA
+                + " AND tournament_id = " + tournament.id
+                + " AND phase = " + gm.phase
+                + " AND is_ready = 't' AND is_finished = 't' ;";
+
             temp = conn.Query(sql).Tables[0];
 
-            //
-            // TODO: create gui to make user set the winner in case of a tie
-            //
+            if (temp.Rows.Count == 3)
+            {
 
-            if ((int)temp.Rows[0][1] > (int)temp.Rows[1][1])
-                return new Team((string)temp.Rows[0][0].ToString());
+
+
+                sql = "select team_id, sum(technical_point) from game_points"
+                    + " where game_id in( select game_id from games "
+                            + " where tournament_id = " + tournament.id
+                            + " and phase = " + phase + " )"
+                    + " and (team_id = " + teamA + " OR team_id = " + teamB + " ) group by team_id ;";
+
+
+
+                temp = conn.Query(sql).Tables[0];
+
+                if (int.Parse(temp.Rows[0][1].ToString()) != int.Parse(temp.Rows[1][1].ToString()))
+                {
+                    if (int.Parse(temp.Rows[0][1].ToString()) > int.Parse(temp.Rows[1][1].ToString()))
+                        return temp.Rows[0][0].ToString();
+                    else
+                        return temp.Rows[1][0].ToString();
+                }
+                else
+                {
+                    ChooseWinner choice = new ChooseWinner(this, gm, tournament);
+                    choice.Show();
+                    return "-1";
+                }
+            }
             else
-                return new Team((string)temp.Rows[1][0].ToString());
+            {
+                //
+                // case were not all the games are finished
+                // so that the advancing code can take respective actions.
+                //
+                return "-1";
+            }
         }
+
+
+
+
 
         //
         // SYNCRONIZED
@@ -1693,7 +532,14 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            sql = "select game_participations.team_id, mean_score from team_tournament_participations join game_participacions on team_tournament_participations.id = game_participations.team_id join game_score on team_tournament_participation.id = game_score.team_id where tournament_id = '" + this.tournament.id + "' ORDER BY mean_score DESC ;";
+            sql = "SELECT DISTINCT game_participations.team_id, mean_score "
+                + "from team_tournament_participations join "
+                + "game_participations on team_tournament_participations.id = game_participations.team_id join "
+                + "game_score on team_tournament_participations.id = game_score.team_id join "
+                + "games on games.id = game_score.game_id "
+                + "where games.tournament_id = '" + this.tournament.id
+                + "' AND phase = '" + this._indexCurrentphase
+                + "' ORDER BY mean_score DESC ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Team> teams = new List<Team>();
@@ -1704,11 +550,17 @@ namespace KarateGeek.guis
             return teams;
         }
 
+
+
         private List<Team> getEnbuWinner(string gameId)
         {
             return this.getSyncKataWinner(gameId);
         }
+
+
+
         #endregion winner checks
+
 
 
         //
@@ -1719,826 +571,502 @@ namespace KarateGeek.guis
             Game gm = null;
             this._indexlastExecutedGame = this.listBoxCurrentGameList.SelectedIndex;
 
-
-            switch (this._indexCurrentphase)
-            {
-                case 0:
-                    gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 1:
-                    gm = tournament.games4.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 2:
-                    gm = tournament.games8.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 3:
-                    gm = tournament.games16.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 4:
-                    gm = tournament.games32.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 5:
-                    gm = tournament.games64.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-                case 6:
-                    gm = tournament.games128.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
-                    break;
-            }
+            if (this.listBoxCurrentGameList.SelectedIndex != -1)
+                switch (this._indexCurrentphase)
+                {
+                    case 0:
+                        gm = tournament.games2.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 1:
+                        gm = tournament.games4.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 2:
+                        gm = tournament.games8.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 3:
+                        gm = tournament.games16.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 4:
+                        gm = tournament.games32.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 5:
+                        gm = tournament.games64.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                    case 6:
+                        gm = tournament.games128.ElementAt(this.listBoxCurrentGameList.SelectedIndex);
+                        break;
+                }
 
 
             KataSystem kataSys;
             KumiteSystem kumiteSys;
             FlagSystem flagSys;
 
-            if (gm.isFinished)
-            {
-                MessageBox.Show("This game have already played!", "Already played", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-                switch (tournament.gameType)
+
+            if (this.listBoxCurrentGameList.SelectedIndex != -1)
+                if (gm.isFinished)
                 {
-                    case Strings.indKata:
-
-                        switch (tournament.judgingType)
-                        {
-                            case Strings.flag:
-                                flagSys = new FlagSystem(this, gm);
-                                break;
-                            case Strings.score:
-                                kataSys = new KataSystem(this, gm);
-                                break;
-                        }
-
-                        break;
-                    case Strings.indKumite:
-
-                        kumiteSys = new KumiteSystem(this, gm);
-
-                        break;
-                    case Strings.fugugo:
-
-                        if (this._indexCurrentphase % 2 == 0)
-                        {
-                            kumiteSys = new KumiteSystem(this, gm);
-                        }
-                        else
-                        {
-                            kataSys = new KataSystem(this, gm);
-                        }
-
-                        break;
-                    case Strings.teamKata:
-                        kataSys = new KataSystem(this, gm);
-                        break;
-                    case Strings.teamKumite:
-
-                        if (this.listBoxCurrentGameList.SelectedItem == "Click to add game members.")
-                        {
-                            KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
-                        }
-                        else
-                        {
-                            kumiteSys = new KumiteSystem(this, gm);
-                        }
-
-                        break;
-                    case Strings.syncKata:
-
-                        kataSys = new KataSystem(this, gm);
-
-                        break;
-                    case Strings.enbu:
-
-                        kataSys = new KataSystem(this, gm);
-                        break;
+                    MessageBox.Show("This game have already played!", "Already played", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+                else
+                    switch (tournament.gameType)
+                    {
+                        case Strings.indKata:
 
+                            switch (tournament.judgingType)
+                            {
+                                case Strings.flag:
 
+                                    flagSys = new FlagSystem(this, gm);
+
+                                    break;
+                                case Strings.score:
+
+                                    kataSys = new KataSystem(this, gm);
+
+                                    break;
+                            }
+
+                            break;
+                        case Strings.indKumite:
+
+                            kumiteSys = new KumiteSystem(this, gm);
+
+                            break;
+                        case Strings.fugugo:
+
+                            if (this._indexCurrentphase % 2 == 0)
+                            {
+                                kumiteSys = new KumiteSystem(this, gm);
+                            }
+                            else
+                            {
+                                kataSys = new KataSystem(this, gm);
+                            }
+
+                            break;
+                        case Strings.teamKata:
+
+                            kataSys = new KataSystem(this, gm);
+
+                            break;
+                        case Strings.teamKumite:
+
+                            if (this.listBoxCurrentGameList.SelectedItem.ToString() == "Click to add game members.")
+                            {
+                                KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
+                            }
+                            else
+                            {
+                                kumiteSys = new KumiteSystem(this, gm);
+                            }
+
+                            break;
+                        case Strings.syncKata:
+
+                            kataSys = new KataSystem(this, gm);
+
+                            break;
+                        case Strings.enbu:
+
+                            kataSys = new KataSystem(this, gm);
+
+                            break;
+                    }
 
         }
+
+
 
         public void update()
         {
             this.tournament.load();
-            this.advanceAthlites();
+            this.advanceAthletes();
             this.tournament.load();
             this.loadGames();
+
         }
 
 
-        public void advanceAthlites()
+        public void advanceAthlites(Game gm)
         {
+            this.advanceVsGame(gm);
+        }
 
+        public void advanceAthletes()
+        {
             //
-            //  finding the last game
+            //  checks if the tournament type is versus or presentation
+            //  and then does the apropriate preparetion for the winner advancement
             //
-
 
             Game gm = null;
-            Athlete winner = null;
+            bool ready = false;
             int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
+
+            if (gameIndex == -1)
+                gameIndex = 1;
 
             switch (this._indexCurrentphase)
             {
                 case 0:
                     gm = tournament.games2.ElementAt(gameIndex);
+                    ready = this.tournament.phase2Done;
+
                     break;
                 case 1:
                     gm = tournament.games4.ElementAt(gameIndex);
+                    ready = this.tournament.phase4Done;
+
                     break;
                 case 2:
                     gm = tournament.games8.ElementAt(gameIndex);
+                    ready = this.tournament.phase8Done;
+
                     break;
                 case 3:
                     gm = tournament.games16.ElementAt(gameIndex);
+                    ready = this.tournament.phase16Done;
+
                     break;
                 case 4:
                     gm = tournament.games32.ElementAt(gameIndex);
+                    ready = this.tournament.phase32Done;
+
                     break;
                 case 5:
                     gm = tournament.games64.ElementAt(gameIndex);
+                    ready = this.tournament.phase64Done;
+
                     break;
                 case 6:
                     gm = tournament.games128.ElementAt(gameIndex);
+                    ready = this.tournament.phase128Done;
+
                     break;
             }
 
 
-            //
-            //  start taking the deferent cases of the games 
-            //
-            string sql = "SELECT phase, position FROM games WHERE tournament_id = '" + this.tournament.id + "' ORDER BY phase DESC, position;";
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            DataTable temp = conn.Query(sql).Tables[0];
 
-            int firstPhase = (int)temp.Rows[0][0];
-            int firstGame = (int)temp.Rows[0][1];
-
-
-
-
-            switch (tournament.gameType)
+            if ((this.tournament.gameType == Strings.indKumite)
+                || (this.tournament.gameType == Strings.teamKumite)
+                || (this.tournament.gameType == Strings.fugugo)
+                || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
             {
-                #region indevidual kata flag and point
+                //
+                //  this is the vs case
+                //
+                this.advanceVsGame(gm);
 
-                case Strings.indKata:
+            }
+            else
+            {
+                //
+                //  the presentetion game winner 
+                //  advancing method
+                //
+                if (ready)
+                    this.advancePresentationWinners();
+            }
 
-                    switch (tournament.judgingType)
+            //
+            // i don't now if thats necessary here but will live it 
+            // as a note in case of something go wrong
+            // although i am sertaind that i dont need this
+            //
+            // code:
+            // this.update();
+            //
+        }
+
+
+        private void advanceVsGame(Game gm)
+        {
+            string winner = "-1";
+
+            if (this.tournament.gameType == Strings.indKumite)
+            {
+                // winner  
+                Athlete temp = getKumiteIndVersusWinner(gm);
+                if (temp != null)
+                    winner = temp.id;
+
+            }
+
+
+
+            if (this.tournament.gameType == Strings.teamKumite)
+                winner = getKumiteTeamWinner(gm);
+
+
+            if (this.tournament.gameType == Strings.fugugo)
+                if ((_indexCurrentphase % 2) == 0)
+                    winner = getKumiteIndVersusWinner(gm).id;
+                else
+                    winner = getKataIndVersusWinner(gm).id;
+
+
+            if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag)
+                winner = getKataIndVersusWinner(gm).id;
+
+            //
+            // here is the actual advancing of the winners if there are any for the given moment (round)
+            //
+            if (winner != "-1")
+            {
+                int nextPhase, nextPoss;
+                int currentPhase, currentPosition;
+                string sql;
+
+                if (this.tournament.gameType == Strings.indKumite || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
+                {
+                    currentPosition = int.Parse(gm.position);
+                    nextPoss = findNextPossInd(currentPosition);
+
+                    currentPhase = int.Parse(gm.phase);
+                    nextPhase = currentPhase - 1;
+
+                    if (nextPhase == -1)
                     {
-                        case Strings.flag:
-
-                            winner = this.getKataIndVersusWinner(gm.gameId);
-
-                            switch (this._indexCurrentphase)
-                            {
-                                case 1:
-
-                                    if (firstPhase == _indexCurrentphase)
-                                        gameIndex += firstGame - 1;
-
-                                    tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 2:
-
-                                    if (firstPhase == _indexCurrentphase)
-                                        gameIndex += firstGame - 1;
-
-
-                                    tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 3:
-
-                                    if (firstPhase == _indexCurrentphase)
-                                        gameIndex += firstGame - 1;
-
-
-                                    tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 4:
-
-                                    if (firstPhase == _indexCurrentphase)
-                                        gameIndex += firstGame - 1;
-
-
-                                    tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 5:
-
-                                    if (firstPhase == _indexCurrentphase)
-                                        gameIndex += firstGame - 1;
-
-
-                                    tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                    break;
-                                case 6:
-
-                                    if (firstPhase == _indexCurrentphase)
-                                        gameIndex += firstGame - 1;
-
-
-                                    tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                    break;
-                            }
-
-
-                            break;
-                        case Strings.score:
-
-                            DataTable dt = new CoreDatabaseConnection().Query("SELECT * FROM games where phase = '" + this._indexCurrentphase + "' and is_finished = false ;").Tables[0];
-
-                            if (dt.Rows.Count == 0)
-                            {
-                                List<Athlete> winners = this.getKataIndSinglePositioning();
-                                int phaseIndex = 0;
-                                switch (this._indexCurrentphase)
-                                {
-                                    case 1:
-
-                                        foreach (Athlete kataAth in winners)
-                                        {
-                                            if (phaseIndex < 4)
-                                            {
-                                                tournament.games4.ElementAt(phaseIndex).AddParticipant(kataAth.id);
-                                            }
-                                            phaseIndex++;
-                                        }
-
-                                        break;
-                                    case 2:
-
-                                        foreach (Athlete kataAth in winners)
-                                        {
-                                            if (phaseIndex < 8)
-                                            {
-                                                tournament.games8.ElementAt(phaseIndex).AddParticipant(kataAth.id);
-                                            }
-                                            phaseIndex++;
-                                        }
-
-
-                                        break;
-                                    case 3:
-
-                                        foreach (Athlete kataAth in winners)
-                                        {
-                                            if (phaseIndex < 16)
-                                            {
-                                                tournament.games16.ElementAt(phaseIndex).AddParticipant(kataAth.id);
-                                            }
-                                            phaseIndex++;
-                                        }
-
-                                        break;
-                                    case 4:
-
-                                        foreach (Athlete kataAth in winners)
-                                        {
-                                            if (phaseIndex < 32)
-                                            {
-                                                tournament.games32.ElementAt(phaseIndex).AddParticipant(kataAth.id);
-                                            }
-                                            phaseIndex++;
-                                        }
-
-                                        break;
-                                    case 5:
-
-                                        foreach (Athlete kataAth in winners)
-                                        {
-                                            if (phaseIndex < 64)
-                                            {
-                                                tournament.games64.ElementAt(phaseIndex).AddParticipant(kataAth.id);
-                                            }
-                                            phaseIndex++;
-                                        }
-
-                                        break;
-                                }
-                            }
-
-                            break;
-
-                    }
-
-                    break;
-                #endregion indevidual kata end region
-
-                #region indevidual kumite
-
-                case Strings.indKumite:
-
-                    winner = this.getKumiteIndVersusWinner(gm.gameId);
-
-                    if (winner != null)
-                        switch (this._indexCurrentphase)
-                        {
-                            case 1:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 2:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1; ;
-
-                                tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 3:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 4:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 5:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 6:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                        }
-
-
-
-                    break;
-
-                #endregion indevidual kumite end region
-
-                #region fugugo bothe judging game phases
-
-
-                case Strings.fugugo:
-
-                    if (this._indexCurrentphase % 2 == 1)
-                    {   //
-                        // kata phase
+                        //
+                        // TO-DO
+                        //
+                        // its the winner there is no more rounds
+                        // do something about that
                         //
 
-                        winner = this.getKataIndVersusWinner(gm.gameId);
-
-                        switch (this._indexCurrentphase)
+                        if (this.tournament.gameType == Strings.teamKumite)
                         {
-                            case 1:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 2:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-
-                                tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 3:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-
-                                tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 4:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-
-                                tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 5:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-
-                                tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 6:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-
-                                tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
+                            setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
+                        }
+                        else
+                        {
+                            setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
                         }
 
                     }
                     else
-                    {   //
-                        // kumite phase
-                        //
-
-
-
-                        winner = this.getKumiteIndVersusWinner(gm.gameId);
-
-                        switch (this._indexCurrentphase)
-                        {
-                            case 1:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games2.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 2:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1; ;
-
-                                tournament.games4.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 3:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games8.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 4:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games16.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 5:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games32.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                            case 6:
-
-                                if (firstPhase == _indexCurrentphase)
-                                    gameIndex += firstGame - 1;
-
-                                tournament.games64.ElementAt((int)Math.Ceiling(gameIndex / 2.0)).AddParticipant(winner.id);
-                                break;
-                        }
-
-                    }
-
-                    break;
-
-                #endregion fugugo bothe judging kame phases end region
-
-                #region team kata
-
-                case Strings.teamKata:
-
-                    string teamId = gm.participants.ElementAt(0).teamId;
-
-                    temp = conn.Query("SELECT * FROM games where phase = '" + this._indexCurrentphase + "' and is_finished = false ;").Tables[0];
-
-                    if (temp.Rows.Count == 0)
-                    {
-                        List<Team> teamKataWinners = this.getKataTeamIndPositioning("" + _indexCurrentphase);
-                        int phaseIndex = 0;
-                        switch (this._indexCurrentphase)
-                        {
-
-                            case 1:
-
-                                foreach (Team kataTeams in teamKataWinners)
-                                {
-                                    if (phaseIndex < 4 * 3)
-                                    {
-                                        foreach (Athlete ath in kataTeams.participants)
-                                        {
-                                            tournament.games4.ElementAt(phaseIndex).AddParticipant(ath.id);
-                                            phaseIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                            case 2:
-
-                                foreach (Team kataTeams in teamKataWinners)
-                                {
-                                    if (phaseIndex < 8 * 3)
-                                    {
-                                        foreach (Athlete ath in kataTeams.participants)
-                                        {
-                                            tournament.games4.ElementAt(phaseIndex).AddParticipant(ath.id);
-                                            phaseIndex++;
-                                        }
-                                    }
-                                }
-
-
-                                break;
-                            case 3:
-
-                                foreach (Team kataTeams in teamKataWinners)
-                                {
-                                    if (phaseIndex < 16 * 3)
-                                    {
-                                        foreach (Athlete ath in kataTeams.participants)
-                                        {
-                                            tournament.games4.ElementAt(phaseIndex).AddParticipant(ath.id);
-                                            phaseIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                            case 4:
-
-                                foreach (Team kataTeams in teamKataWinners)
-                                {
-                                    if (phaseIndex < 32 * 3)
-                                    {
-                                        foreach (Athlete ath in kataTeams.participants)
-                                        {
-                                            tournament.games4.ElementAt(phaseIndex).AddParticipant(ath.id);
-                                            phaseIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                            case 5:
-
-                                foreach (Team kataTeams in teamKataWinners)
-                                {
-                                    if (phaseIndex < 64 * 3)
-                                    {
-                                        foreach (Athlete ath in kataTeams.participants)
-                                        {
-                                            tournament.games4.ElementAt(phaseIndex).AddParticipant(ath.id);
-                                            phaseIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                        }
-                    }
-
-                    break;
-
-                #endregion team kata end region
-
-                #region team kumite
-
-                case Strings.teamKumite:
-
-                    conn = new CoreDatabaseConnection();
-                    teamId = gm.participants.ElementAt(0).teamId;
-
-                    temp = conn.Query("select * from games join game_participations on games.id = game_participations.game_id where team_id = '" + teamId + "' and is_finished = true ").Tables[0];
-                    if (temp.Rows.Count == 3)
-                    {
-                        Team kumiteTeamWinner = this.getKumiteTeamWinner(gm);
-                        conn = new CoreDatabaseConnection();
-
-                        int firstPos = (int)conn.Query("select position from games join game participations gp on games.id = gp.game_id where team_id = '"
-                            + teamId + "' order by position ASC ; ").Tables[0].Rows[0][0];
-
-                        if (firstPos % 2 != 0)
-                            firstPos -= 3;
-
-                        int nextPhaseFirstPos = firstPos / 3;
-
-                        for (int i = 0; i < 3; i++)
-                        {
-                            conn.NonQuery("insert into game_participations (team_id, game_id) values ( '" + teamId + "', "
-                                + "(SELECT id from games where tournament_id = '" + tournament.id
-                                + "' AND phase = '" + _indexNextPhase
-                                + "' AND position = '" + (nextPhaseFirstPos + i) + "' ) ) ;");
-                        }
-                    }
-
-                    break;
-
-                #endregion team kumite end region
-
-                #region sync kata
-
-
-                case Strings.syncKata:
-
-                    temp = new CoreDatabaseConnection().Query("SELECT * FROM games where phase = '" + this._indexCurrentphase + "' and is_finished = false ;").Tables[0];
-
-                    if (temp.Rows.Count == 0)
                     {
 
-                        List<Team> winners = this.getKataTeamIndPositioning(this._indexCurrentphase.ToString());
+                        sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
+                            + " AND phase = " + nextPhase
+                            + " AND position = " + nextPoss + ";";
+                        CoreDatabaseConnection conn = new CoreDatabaseConnection();
+                        string nextgameid = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
-                        int positionIndex = 0;
 
-                        switch (this._indexCurrentphase)
+
+                        string winnertype;
+                        if (this.tournament.gameType == Strings.teamKumite)
+                            winnertype = "team_id";
+                        else
+                            winnertype = "athlete_id";
+
+
+                        if (this.tournament.gameType == Strings.teamKumite)
                         {
-                            case 1:
+                            int next3 = findnext3(nextPoss);
+                            for (int i = (next3 - 3); i < next3; i++)
+                            {
+                                nextgameid = findGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
 
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (4 * 3))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
+                                sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
+                                + " VALUES (" + winner + ", " + nextgameid + "); ";
+                                conn.NonQuery(sql);
+                            }
 
-                                break;
-                            case 2:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (8 * 3))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-
-                                break;
-                            case 3:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (16 * 3))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                            case 4:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (32 * 3))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                            case 5:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (64 * 3))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
+                            setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
                         }
-                    }
-
-
-
-                    break;
-
-                #endregion synk kata end region
-
-                #region embu
-
-
-                case Strings.enbu:
-
-                    temp = new CoreDatabaseConnection().Query("SELECT * FROM games where phase = '" + this._indexCurrentphase + "' and is_finished = false ;").Tables[0];
-
-                    if (temp.Rows.Count == 0)
-                    {
-
-                        List<Team> winners = this.getEnbuWinner(this._indexCurrentphase.ToString());
-
-                        int positionIndex = 0;
-
-                        switch (this._indexCurrentphase)
+                        else
                         {
-                            case 1:
+                            nextgameid = findGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
 
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (4 * 2))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
+                            sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
+                                + " VALUES (" + winner + ", " + nextgameid + "); ";
+                            conn.NonQuery(sql);
 
-                                break;
-                            case 2:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (8 * 2))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-
-                                break;
-                            case 3:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (16 * 2))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                            case 4:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (32 * 2))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
-                            case 5:
-
-                                foreach (Team kataTeam in winners)
-                                {
-                                    if (positionIndex < (64 * 2))
-                                    {
-                                        foreach (Athlete ath in kataTeam.participants)
-                                        {
-                                            tournament.games4.ElementAt(positionIndex).AddParticipant(kataTeam.id);
-                                            positionIndex++;
-                                        }
-                                    }
-                                }
-
-                                break;
+                            setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
                         }
+
                     }
-
-                    break;
-
-                #endregion embu end region
+                }
             }
+        }
+
+
+        private void advancePresentationWinners()
+        {
+            List<Athlete> aWinners = null;
+            List<Team> tWinners = null;
+
+
+            if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                aWinners = getKataIndSinglePositioning();
+
+            if (this.tournament.gameType == Strings.teamKata)
+                tWinners = getKataTeamIndPositioning(_indexCurrentphase.ToString());
+
+            if (this.tournament.gameType == Strings.enbu)
+                tWinners = getEnbuWinner(_indexCurrentphase.ToString());
+
+            if (this.tournament.gameType == Strings.syncKata)
+                tWinners = getSyncKataWinner(_indexCurrentphase.ToString());
+
+
+
+            int i = 1;
+            double last = Math.Pow(2, (_indexCurrentphase + 1));
+
+
+            if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                foreach (Athlete athlete in aWinners)
+                {
+
+                    if ((double)i < last + 1)
+                        if (!(_indexNextPhase == -1))
+                            addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
+
+                    insertRank(athlete, i.ToString());
+                    i++;
+                }
+
+
+            i = 1;
+            //double last = Math.Pow(2, (_indexCurrentphase + 1));
+
+            if (this.tournament.gameType == Strings.teamKata
+            || this.tournament.gameType == Strings.enbu
+            || this.tournament.gameType == Strings.syncKata)
+                foreach (Team team in tWinners)
+                {
+
+                    if ((double)i < last + 1)
+                        if (!(_indexNextPhase == -1))
+                            addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
+
+                    insertRank(team, i.ToString());
+                    i++;
+                }
+        }
+
+
+
+        private void insertRank(Athlete ath, string rank)
+        {
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            string sql = "UPDATE tournament_participations SET ranking = " + rank
+                + " WHERE athlete_id = " + ath.id
+                + " AND tournament_id = " + tournament.id + " ;";
+
+            conn.NonQuery(sql);
+        }
+
+
+
+        private void insertRank(Team team, string rank)
+        {
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            foreach (Athlete ath in team.participants)
+                insertRank(ath, rank);
+
+            string sql = "UPDATE team_tournament_participations SET ranking = " + rank
+                + " WHERE id = " + team.id
+                + " AND tournament_id = " + tournament.id + " ;";
+
+            conn.NonQuery(sql);
+        }
+
+
+
+        //
+        //  for vs games
+        //
+        private void setRankingByPhase(Athlete athlete, string phase)
+        {
+            string ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
+
+            insertRank(athlete, ranking);
+        }
+
+
+
+        private void setRankingByPhase(Team team, string phase)
+        {
+            string ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
+
+            insertRank(team, ranking);
+        }
+
+
+
+        private void addParticipantToGame(string gameid, Athlete ath)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            sql = "INSERT INTO game_participations (athlete_id, game_id) VAlUES ( " + ath.id + ", " + gameid + " ); ";
+            conn.NonQuery(sql);
+        }
+
+
+
+        private void addParticipantToGame(string gameid, Team team)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            foreach (Athlete ath in team.participants)
+            {
+                sql = "INSERT INTO game_participations (team_id, athlete_id, game_id) VAlUES ( " + team.id + ", " + ath.id + " , " + gameid + " ); ";
+                conn.NonQuery(sql);
+            }
+        }
+
+
+
+        private string findGameId(string tourid, string phase, string poss)
+        {
+            string sql = "SELECT id FROM games WHERE tournament_id = " + tourid
+                                        + " AND phase = " + phase
+                                        + " AND position = " + poss + ";";
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            return conn.Query(sql).Tables[0].Rows[0][0].ToString();
+        }
+
+
+
+        private int findNextPossInd(int current)
+        {
+            double temp = ((double)current + 1) / 2;
+            int next = (int)Math.Floor(temp);
+            return next;
+        }
+
+
+
+        private int findNextPossTeamX3(int current)
+        {
+            int next3 = findnext3(current);
+
+            if (((double)next3 / 2) != 0)
+                current += 3;
+
+            return findNextPossInd(current);
+        }
+
+
+
+        private int findnext3(int current)
+        {
+            int next3 = current;
+
+            while (((next3 % 3) == 0) && (next3 != 0))
+                next3++;
+
+            return next3;
         }
     }
 }

@@ -26,6 +26,25 @@ namespace KarateGeek
         public bool isInd { get; set; }
         public bool isSync { get; set; }
 
+        private bool _isFinished;
+        public bool isFinished
+        {
+            get
+            { return _isFinished; }
+            set
+            {
+                string sqlbool;
+                if (value)
+                    sqlbool = "t";
+                else
+                    sqlbool = "f";
+
+                string sql = "UPDATE tournaments SET is_finished = " + sqlbool + " WHERE id = " + this.id + ";";
+                NonQuery(sql);
+
+                this._isFinished = value;
+            }
+        }
 
         public List<Game> games2 { get; set; }
         public List<Game> games4 { get; set; }
@@ -37,6 +56,9 @@ namespace KarateGeek
 
         public List<Athlete> participants { get; set; }
         public List<Team> teams { get; set; }
+
+
+        public bool phase128Done, phase64Done, phase32Done, phase16Done, phase8Done, phase4Done, phase2Done;
 
 
         public Tournament(string tournamentId)
@@ -61,6 +83,7 @@ namespace KarateGeek
             this.gameType = (string)temp.Rows[0][7].ToString();
             this.judgingType = (string)temp.Rows[0][8].ToString();
             this.eventId = (string)temp.Rows[0][9].ToString();
+            this._isFinished = (bool)temp.Rows[0][11];
 
             switch ((string)this.gameType.Split('|')[0].ToString())
             {
@@ -73,12 +96,61 @@ namespace KarateGeek
                 case Strings.synchronized:
                     this.isSync = true;
                     break;
+
             }
+
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+
+
+
+            sql = "select * from games where tournament_id = '" + this.id + "' and phase = '6' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase128Done = false;
+            else
+                phase128Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.id + "' and phase = '5' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase64Done = false;
+            else
+                phase64Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.id + "' and phase = '4' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase32Done = false;
+            else
+                phase32Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.id + "' and phase = '3' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase16Done = false;
+            else
+                phase16Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.id + "' and phase = '2' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase8Done = false;
+            else
+                phase8Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.id + "' and phase = '1' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase4Done = false;
+            else
+                phase4Done = true;
+
+            sql = "select * from games where tournament_id = '" + this.id + "' and phase = '0' and is_finished = false;";
+            if (conn.Query(sql).Tables[0].Rows.Count > 0)
+                phase2Done = false;
+            else
+                phase2Done = true;
+
 
 
             #region load games if exist for all phases
 
-            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 7 ORDER BY position ASC;";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 6 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
 
             this.games128 = new List<Game>();
@@ -89,7 +161,7 @@ namespace KarateGeek
                 this.games128.Add(new Game((string)dr[0].ToString()));
             }
 
-            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 6 ORDER BY position ASC;";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 5 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
 
             this.games64 = new List<Game>();
@@ -100,7 +172,7 @@ namespace KarateGeek
                 this.games64.Add(new Game((string)dr[0].ToString()));
             }
 
-            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 5 ORDER BY position ASC;";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 4 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
 
             this.games32 = new List<Game>();
@@ -111,7 +183,7 @@ namespace KarateGeek
                 this.games32.Add(new Game((string)dr[0].ToString()));
             }
 
-            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 4 ORDER BY position ASC;";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 3 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
 
             this.games16 = new List<Game>();
@@ -122,7 +194,7 @@ namespace KarateGeek
                 this.games16.Add(new Game((string)dr[0].ToString()));
             }
 
-            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 3 ORDER BY position ASC;";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 2 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
 
             this.games8 = new List<Game>();
@@ -133,7 +205,7 @@ namespace KarateGeek
                 this.games8.Add(new Game((string)dr[0].ToString()));
             }
 
-            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 2 ORDER BY position ASC;";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 1 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
 
             this.games4 = new List<Game>();
@@ -144,7 +216,7 @@ namespace KarateGeek
                 this.games4.Add(new Game((string)dr[0].ToString()));
             }
 
-            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 1 ORDER BY position ASC;";
+            sql = "SELECT * FROM games WHERE tournament_id = '" + this.id + "' AND phase = 0 ORDER BY position ASC;";
             temp = Query(sql).Tables[0];
 
             this.games2 = new List<Game>();
@@ -159,7 +231,7 @@ namespace KarateGeek
 
             #region load participants and teams if exist
 
-            sql = "SELECT * FROM tournament_participations where tournament_id = '" + this.id + "';";
+            sql = "SELECT * FROM tournament_participations where tournament_id = '" + this.id + "' ORDER BY athlete_id;";
             temp = this.Query(sql).Tables[0];
             this.participants = new List<Athlete>();
             foreach (DataRow dr in temp.Rows)
@@ -167,7 +239,7 @@ namespace KarateGeek
                 this.participants.Add(new Athlete((string)dr[0].ToString(), this.id));
             }
 
-            sql = "SELECT * FROM team_tournament_participations where tournament_id = '" + this.id + "';";
+            sql = "SELECT * FROM team_tournament_participations where tournament_id = '" + this.id + "' ORDER BY team;";
             temp = this.Query(sql).Tables[0];
             this.teams = new List<Team>();
 

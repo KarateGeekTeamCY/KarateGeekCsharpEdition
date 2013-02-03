@@ -54,13 +54,14 @@
 -- begin transaction:
 BEGIN;
 
-DROP SCHEMA IF EXISTS public CASCADE;       -- WARNING: This also deletes all tables!
+DROP SCHEMA IF EXISTS public CASCADE;       -- WARNING: This also deletes all tables (and views)!
 
 CREATE SCHEMA public;
 
 SET search_path TO public;                  -- "public" is the default schema anyway
 SET DateStyle TO European;                  -- "European" is a synonym for the "DMY" format...
 -- DateStyle needs to be set for some installations of Postgres, for some reason (8.x versions?)
+
 
 --
 -- TABLE creation:
@@ -188,6 +189,7 @@ CREATE TABLE tournaments (
                                                 -- "point"      -> ippon ktl.
     event_id        INTEGER         REFERENCES events(id) ON DELETE CASCADE,
     lottery_ready   BOOLEAN         NOT NULL DEFAULT false,
+    is_finished     BOOLEAN         NOT NULL DEFAULT false,
     PRIMARY KEY(id)
 );
 
@@ -260,7 +262,7 @@ CREATE TABLE game_score (
     score3          INTEGER,
     score4          INTEGER,
     score5          INTEGER,
-    mean_score      INTEGER,
+    mean_score      FLOAT,
 
     judge1          INTEGER         REFERENCES judges(id),
     judge2          INTEGER         REFERENCES judges(id),
@@ -292,6 +294,187 @@ create table game_flag (
 
     PRIMARY KEY (id)
 );
+
+
+--
+-- VIEW creation:
+--
+
+
+CREATE OR REPLACE VIEW athlete_first_places_ind AS
+SELECT athlete_id, COUNT(athlete_id)
+FROM tournament_participations
+WHERE ranking = '1'
+GROUP BY athlete_id;
+
+
+CREATE OR REPLACE VIEW athlete_second_places_ind AS
+SELECT athlete_id, COUNT(athlete_id)
+FROM tournament_participations
+WHERE ranking = '2'
+GROUP BY athlete_id;
+
+
+CREATE OR REPLACE VIEW athlete_third_places_ind AS
+SELECT athlete_id, COUNT(athlete_id)
+FROM tournament_participations
+WHERE ranking = '3'
+GROUP BY athlete_id;
+
+
+CREATE OR REPLACE VIEW athletes_total_details AS
+    SELECT athletes.id, first_name, last_name, fathers_name, sex, date_of_birth,
+        persons.phone, secondary_phone, persons.email, rank, clubs.name AS club_name, street,
+        addresses.number, addresses.postal_code, cities.name as city, countries.name as country,
+		athlete_first_places_ind.count AS first_places,
+		athlete_second_places_ind.count AS second_places,
+		athlete_third_places_ind.count AS third_places
+FROM persons
+JOIN athletes
+	ON athletes.id = persons.id
+LEFT JOIN addresses
+	ON persons.address_id = addresses.id
+LEFT JOIN clubs
+	ON athletes.club_id = clubs.id
+LEFT JOIN cities
+	ON cities.id = addresses.city_id
+LEFT JOIN countries
+	ON countries.code = cities.country_code
+LEFT JOIN athlete_first_places_ind
+	ON athlete_first_places_ind.athlete_id = athletes.id
+LEFT JOIN athlete_second_places_ind
+	ON athlete_second_places_ind.athlete_id = athletes.id
+LEFT JOIN athlete_third_places_ind
+	ON athlete_third_places_ind.athlete_id = athletes.id;
+
+
+CREATE OR REPLACE VIEW judges_total_details AS
+    SELECT judges.id, first_name, last_name, sex, date_of_birth, persons.phone, persons.email,
+        rank, street, addresses.number, cities.name AS city, countries.name AS country
+FROM persons
+JOIN judges
+	ON judges.id = persons.id
+JOIN addresses
+	ON persons.address_id = addresses.id
+JOIN cities
+	ON cities.id = addresses.city_id
+JOIN countries
+	ON countries.code = cities.country_code;
+
+
+CREATE or REPLACE VIEW clubs_total_details AS
+    SELECT clubs.name, clubs.phone, clubs.email, persons.first_name, persons.last_name,
+        street, addresses.number, cities.name AS city, countries.name AS country
+FROM clubs
+JOIN athletes
+	ON athletes.club_id = clubs.id
+LEFT JOIN persons
+	ON persons.id = athletes.id
+LEFT JOIN addresses
+	ON addresses.id = clubs.address_id
+LEFT JOIN cities
+	ON cities.id = addresses.city_id
+LEFT JOIN countries
+	ON countries.code = cities.country_code;
+
+
+CREATE or REPLACE VIEW events_total_details AS
+    SELECT events.name AS event, events.date,official,locations.name AS location,
+        locations.phone, street, addresses.number, cities.name AS city,
+        countries.name AS country, tournaments.id, tournaments.name AS tournament,
+        tournaments.sex, tournaments.age_from, tournaments.age_to, tournaments.level_from,
+        tournaments.level_to, tournaments.game_type, tournaments.scoring_type
+FROM events
+JOIN locations
+    ON events.location_id = locations.id
+LEFT JOIN addresses
+    ON locations.id = addresses.id
+LEFT JOIN tournaments
+    ON events.id = tournaments.event_id
+LEFT JOIN cities
+    ON addresses.city_id = cities.id
+LEFT JOIN countries
+    ON countries.code = cities.country_code;
+
+
+CREATE OR REPLACE VIEW tournaments_total_details AS
+SELECT events.name AS event, events.date,locations.name AS location,
+	tournaments.id, tournaments.name AS tournament, tournaments.sex, tournaments.age_from, tournaments.age_to,
+	tournaments.level_from,tournaments.level_to, tournaments.game_type, tournaments.scoring_type,
+	team_tournament_participations.ranking AS rankingTeam,
+	tournament_participations.athlete_id, tournament_participations.ranking AS ranking,
+	persons.last_name, persons.first_name
+FROM tournaments
+JOIN events
+	ON tournaments.event_id = events.id
+LEFT JOIN tournament_participations
+	ON tournaments.id = tournament_participations.tournament_id
+LEFT JOIN team_tournament_participations
+	ON tournaments.id = team_tournament_participations.tournament_id
+LEFT JOIN persons
+	ON tournament_participations.athlete_id = persons.id
+LEFT JOIN locations
+	ON events.location_id = locations.id;
+
+
+CREATE OR REPLACE VIEW game_participants_total_det AS
+    SELECT event_id, tournament_id, game_id, team_id,
+        athletes.id AS athlete_id, last_name, first_name
+FROM events
+JOIN tournaments
+	ON events.id = tournaments.event_id
+JOIN games
+	ON tournaments.id = games.tournament_id
+JOIN game_participations
+	ON game_participations.game_id = games.id
+JOIN athletes
+	ON game_participations.athlete_id = athletes.id
+JOIN persons
+	ON athletes.id = persons.id;
+
+
+CREATE OR REPLACE VIEW total_point_system AS
+    SELECT games.id AS game_id, game_participations.athlete_id AS athlete_id,
+        SUM(technical_point)
+FROM games
+JOIN game_participations
+    ON games.id = game_participations.game_id
+JOIN game_points
+    ON games.id = game_points.game_id
+LEFT JOIN team_tournament_participations
+    ON team_tournament_participations.id = game_participations.team_id
+GROUP BY games.id, game_participations.athlete_id;
+
+
+CREATE OR REPLACE VIEW total_score_system AS
+    SELECT tournaments.id AS tournament_id, games.id AS game_id, games.phase AS phase,
+    games.position AS position, game_participations.athlete_id AS athlete_id, mean_score
+FROM games
+JOIN tournaments
+    ON tournaments.id = games.tournament_id
+JOIN game_participations
+    ON games.id = game_participations.game_id
+JOIN game_score
+    ON games.id = game_score.game_id
+LEFT JOIN team_tournament_participations
+    ON team_tournament_participations.id = game_participations.team_id
+ORDER BY mean_score DESC;
+
+
+CREATE OR REPLACE VIEW athlete_view AS
+    SELECT persons.id AS id, first_name, last_name, fathers_name, sex,
+        extract(year FROM AGE(date_of_birth)) AS age, phone, secondary_phone, email, address_id,
+        addresses.street AS street_name, cities.name AS city, countries.name AS country,
+        addresses.number AS address_num, rank
+FROM persons
+JOIN athletes
+    ON persons.id = athletes.id
+JOIN addresses
+    ON persons.address_id = addresses.id
+JOIN countries
+    ON addresses.country_code = countries.code
+JOIN cities
+    ON cities.id = addresses.city_id;
 
 
 -- rollback transaction (useful for checking syntax):
@@ -575,58 +758,64 @@ INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, se
 VALUES ('0' , 'administrator' , 'xampis' , 'administrator', '02-10-1990' , 'MALE', '99123144' , null , 'email@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl1' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'MALE', '99123145' , null , 'athl1@gmail.com' , '0');
+VALUES ('Avery' , 'athl1_father' , 'athl1_last', '02-10-1991' , 'MALE', '99123145' , null , 'athl1@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl2' , 'athl2_father' , 'athl2_last', '02-10-1992' , 'MALE', '99123146' , null , 'athl2@gmail.com' , '0');
+VALUES ('Serria' , 'athl2_father' , 'athl2_last', '02-10-1992' , 'MALE', '99123146' , null , 'athl2@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl3' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'FEMALE', '99123145' , null , 'athl3@gmail.com' , '0');
+VALUES ('Ambassador' , 'athl3_father' , 'athl3_last', '02-10-1997' , 'FEMALE', '99123145' , null , 'athl3@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl4' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'MALE', '98123146' , null , 'athl4@gmail.com' , '0');
+VALUES ('Blackjack' , 'athl4_father' , 'athl4_last', '02-10-1982' , 'MALE', '98123146' , null , 'athl4@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl5' , 'athl5_father' , 'athl5_last', '02-10-1999' , 'MALE', '98123145' , null , 'athl5@gmail.com' , '0');
+VALUES ('Malley' , 'athl5_father' , 'athl5_last', '02-10-1999' , 'MALE', '98123145' , null , 'athl5@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl6' , 'athl6_father' , 'athl6_last', '02-10-1991' , 'MALE', '99123146' , null , 'athl6@gmail.com' , '0');
+VALUES ('Atlas' , 'athl6_father' , 'athl6_last', '02-10-1991' , 'MALE', '99123146' , null , 'athl6@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl7' , 'athl7_father' , 'athl7_last', '02-10-2000' , 'FEMALE', '99123145' , null , 'athl7@gmail.com' , '0');
+VALUES ('Atlas' , 'athl7_father' , 'athl7_last', '02-10-2000' , 'FEMALE', '99123145' , null , 'athl7@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl8' , 'athl8_father' , 'athl8_last', '02-10-2006' , 'MALE', '98133146' , null , 'athl8@gmail.com' , '0');
+VALUES ('Margo' , 'athl8_father' , 'athl8_last', '02-10-2006' , 'MALE', '98133146' , null , 'athl8@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl9' , 'athl9_father' , 'athl9_last', '02-10-1962' , 'MALE', '98123246' , null , 'athl9@gmail.com' , '0');
+VALUES ('Bowe' , 'athl9_father' , 'athl9_last', '02-10-1962' , 'MALE', '98123246' , null , 'athl9@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl10' , 'athl10_father' , 'athl10_last', '02-10-1989' , 'MALE', '98123145' , null , 'athl10@gmail.com' , '0');
+VALUES ('Poppi' , 'athl10_father' , 'athl10_last', '02-10-1989' , 'MALE', '98123145' , null , 'athl10@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl11' , 'athl11_father' , 'athl1_last', '02-12-1991' , 'MALE', '98123146' , null , 'athl11@gmail.com' , '0');
+VALUES ('Gorten' , 'athl11_father' , 'athl11_last', '02-12-1991' , 'MALE', '98123146' , null , 'athl11@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl12' , 'athl12_father' , 'athl12_last', '12-10-2000' , 'FEMALE', '99123145' , null , 'athl12@gmail.com' , '0');
+VALUES ('Elvis' , 'athl12_father' , 'athl12_last', '12-10-2000' , 'FEMALE', '99123145' , null , 'athl12@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl13' , 'athl13_father' , 'athl13_last', '02-10-2002' , 'MALE', '98133146' , null , 'athl13@gmail.com' , '0');
+VALUES ('Olivia' , 'athl13_father' , 'athl13_last', '02-10-2002' , 'MALE', '98133146' , null , 'athl13@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl14' , 'athl14_father' , 'athl14_last', '10-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
+VALUES ('Bartholomew' , 'athl14_father' , 'athl14_last', '10-10-2006' , 'MALE', '98123146' , null , 'athl14@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl15' , 'athl15_father' , 'athl5_last', '02-12-1961' , 'MALE', '98123416' , null , 'athl15@gmail.com' , '0');
+VALUES ('Becca' , 'athl15_father' , 'athl15_last', '02-12-1961' , 'MALE', '98123416' , null , 'athl15@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl16' , 'athl16_father' , 'athl16_last', '12-10-2001' , 'FEMALE', '97133145' , null , 'athl16@gmail.com' , '0');
+VALUES ('Dallas' , 'athl16_father' , 'athl16_last', '12-10-2001' , 'FEMALE', '97133145' , null , 'athl16@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl17' , 'athl17_father' , 'athl17_last', '02-10-2003' , 'MALE', '98133146' , null , 'athl17@gmail.com' , '0');
+VALUES ('Tiernay' , 'athl17_father' , 'athl17_last', '02-10-2003' , 'MALE', '98133146' , null , 'athl17@gmail.com' , '0');
 
 INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
-VALUES ('athl18' , 'athl18_father' , 'athl18_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl18@gmail.com' , '0');
+VALUES ('Annabelle' , 'athl18_father' , 'athl18_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl18@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Amalia' , 'athl19_father' , 'athl19_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl19@gmail.com' , '0');
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Sotiroula' , 'athl20_father' , 'athl20_last', '22-10-2004' , 'MALE', '98123246' , null , 'athl20@gmail.com' , '0');
 
 -- not an athlete, to check if auto-increment (SERIAL) works... EDIT: IT DOES,
 -- BUT ONLY IF YOU NEVER ASSIGN IDs >0 MANUALLY! (Assigning 0 is OK, see above 'administrator')
@@ -658,6 +847,16 @@ INSERT INTO athletes (id, rank, club_id ) VALUES ('15', 'Black  –  1st dan',  
 INSERT INTO athletes (id, rank, club_id ) VALUES ('16', 'Orange –  4th kyu',   '3'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('17', 'Brown  –  1st kyu',   '2'  );
 INSERT INTO athletes (id, rank, club_id ) VALUES ('18', 'Yellow –  5th kyu',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('19', 'Yellow –  5th kyu',   NULL );
+INSERT INTO athletes (id, rank, club_id ) VALUES ('20', 'Yellow –  5th kyu',   NULL );
+
+
+INSERT INTO judges (id, rank, class ) VALUES ('2',  'Black  –  1st dan',   'A' );
+INSERT INTO judges (id, rank, class ) VALUES ('3',  'Blue   –  2nd kyu',   'A'  );
+INSERT INTO judges (id, rank, class ) VALUES ('4',  'White/Red – 8th dan', 'B'  );
+INSERT INTO judges (id, rank, class ) VALUES ('5',  'Green  –  3rd kyu',   'B'  );
+INSERT INTO judges (id, rank, class ) VALUES ('6',  'Red    –  9th dan',   'A' );
+
 
 INSERT INTO locations (id, name, phone, email)
 VALUES (0, 'location 1', '77778888', 'loc@locloc.com');
@@ -677,6 +876,19 @@ VALUES ('Street Fighter II (Team Kata)', 'MALE', 5, 80, 'White  –  6th kyu', '
 
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
 VALUES ('Street Fighter III (Team Kumite)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'TEAM|KUMITE', 'POINT', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Tekken 1 (Enbu)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'SYNC|EN-BU', 'SCORE', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Tekken 2 (Fugugo)', 'MALE', 5, 80, 'Yellow –  5th kyu', 'Red    –  10th dan', 'IND|FUGU-GO', 'FLAG|POINT', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Tekken 3 (Ind. Kata, score)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'IND|KATA', 'SCORE', 1);
+
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Tekken 4 (Ind. Kata, flag)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'IND|KATA', 'FLAG', 1);
+
 
 -- A NULL "ranking" means that the match hasn't taken place yet
 
@@ -845,15 +1057,140 @@ VALUES (11, 4, (SELECT rank FROM athletes WHERE id = 11), NULL, 15 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 5
 VALUES (12, 4, (SELECT rank FROM athletes WHERE id = 12), NULL, 16 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (18, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 16 );
+VALUES (13, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 16 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (14, 4, (SELECT rank FROM athletes WHERE id = 14), NULL, 16 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 6
-VALUES (13, 4, (SELECT rank FROM athletes WHERE id = 12), NULL, 17 );
+VALUES (15, 4, (SELECT rank FROM athletes WHERE id = 15), NULL, 17 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (17, 4, (SELECT rank FROM athletes WHERE id = 13), NULL, 17 );
+VALUES (16, 4, (SELECT rank FROM athletes WHERE id = 16), NULL, 17 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (15, 4, (SELECT rank FROM athletes WHERE id = 14), NULL, 17 );
+VALUES (17, 4, (SELECT rank FROM athletes WHERE id = 17), NULL, 17 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 7
+VALUES (18, 4, (SELECT rank FROM athletes WHERE id = 18), NULL, 18 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (19, 4, (SELECT rank FROM athletes WHERE id = 19), NULL, 18 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (20, 4, (SELECT rank FROM athletes WHERE id = 20), NULL, 18 );
+
+
+
+-- 'Tekken 1 (Enbu)'
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (0, 5);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (1, 5);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (2, 5);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (3, 5);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (4, 5);
+
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 1
+VALUES (1, 5, (SELECT rank FROM athletes WHERE id = 1), NULL, 19 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (2, 5, (SELECT rank FROM athletes WHERE id = 2), NULL, 19 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 2
+VALUES (3, 5, (SELECT rank FROM athletes WHERE id = 3), NULL, 20 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (5, 5, (SELECT rank FROM athletes WHERE id = 5), NULL, 20 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 3
+VALUES (6, 5, (SELECT rank FROM athletes WHERE id = 6), NULL, 21 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 5, (SELECT rank FROM athletes WHERE id = 7), NULL, 21 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 4
+VALUES (9, 5, (SELECT rank FROM athletes WHERE id = 9), NULL, 22 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (11, 5, (SELECT rank FROM athletes WHERE id = 11), NULL, 22 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 5
+VALUES (12, 5, (SELECT rank FROM athletes WHERE id = 12), NULL, 23 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (13, 5, (SELECT rank FROM athletes WHERE id = 13), NULL, 23 );
+
+-- 'Tekken 2 (Fugugo)'
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (0, 6, (SELECT rank FROM athletes WHERE id = 0), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (1, 6, (SELECT rank FROM athletes WHERE id = 1), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (2, 6, (SELECT rank FROM athletes WHERE id = 2), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (3, 6, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (4, 6, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (5, 6, (SELECT rank FROM athletes WHERE id = 5), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (6, 6, (SELECT rank FROM athletes WHERE id = 6), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 6, (SELECT rank FROM athletes WHERE id = 7), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (8, 6, (SELECT rank FROM athletes WHERE id = 8), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (9, 6, (SELECT rank FROM athletes WHERE id = 9), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (10, 6, (SELECT rank FROM athletes WHERE id = 10), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (11, 6, (SELECT rank FROM athletes WHERE id = 11), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (12, 6, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (13, 6, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (14, 6, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
+
+-- 'Tekken 3 (Ind. Kata, score)'
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (0, 7, (SELECT rank FROM athletes WHERE id = 0), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (1, 7, (SELECT rank FROM athletes WHERE id = 1), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (2, 7, (SELECT rank FROM athletes WHERE id = 2), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (3, 7, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (4, 7, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (5, 7, (SELECT rank FROM athletes WHERE id = 5), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (6, 7, (SELECT rank FROM athletes WHERE id = 6), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 7, (SELECT rank FROM athletes WHERE id = 7), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (8, 7, (SELECT rank FROM athletes WHERE id = 8), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (9, 7, (SELECT rank FROM athletes WHERE id = 9), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (10, 7, (SELECT rank FROM athletes WHERE id = 10), NULL, NULL );
+
+-- 'Tekken 4 (Ind. Kata, flag)'
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (0, 8, (SELECT rank FROM athletes WHERE id = 0), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (1, 8, (SELECT rank FROM athletes WHERE id = 1), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (2, 8, (SELECT rank FROM athletes WHERE id = 2), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (3, 8, (SELECT rank FROM athletes WHERE id = 3), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (4, 8, (SELECT rank FROM athletes WHERE id = 4), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (5, 8, (SELECT rank FROM athletes WHERE id = 5), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (6, 8, (SELECT rank FROM athletes WHERE id = 6), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 8, (SELECT rank FROM athletes WHERE id = 7), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (8, 8, (SELECT rank FROM athletes WHERE id = 8), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (9, 8, (SELECT rank FROM athletes WHERE id = 9), NULL, NULL );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (10, 8, (SELECT rank FROM athletes WHERE id = 10), NULL, NULL );
+--INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+--VALUES (11, 8, (SELECT rank FROM athletes WHERE id = 11), NULL, NULL );
+--INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+--VALUES (12, 8, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
 
 
 
