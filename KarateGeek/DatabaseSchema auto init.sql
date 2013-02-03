@@ -1187,10 +1187,10 @@ INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_tim
 VALUES (9, 8, (SELECT rank FROM athletes WHERE id = 9), NULL, NULL );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (10, 8, (SELECT rank FROM athletes WHERE id = 10), NULL, NULL );
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (11, 8, (SELECT rank FROM athletes WHERE id = 11), NULL, NULL );
-INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
-VALUES (12, 8, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
+--INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+--VALUES (11, 8, (SELECT rank FROM athletes WHERE id = 11), NULL, NULL );
+--INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+--VALUES (12, 8, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
 
 
 

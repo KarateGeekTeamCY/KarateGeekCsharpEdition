@@ -80,6 +80,11 @@ namespace KarateGeek.lottery
                 }
         }
 
+        //private readonly char spaceChar = '.';
+        //private readonly char spaceChar = '□';
+        private readonly char spaceChar = ' ';
+
+
         /** Class methods: **/
 
         public LotteryBox(string athlete, BoxTypeLeft typeLeft, BoxTypeRight typeRight)     // overloaded constructor, currently unused
@@ -177,7 +182,7 @@ namespace KarateGeek.lottery
 
             for (int i = 0; i < realHeight; ++i)
             {
-                sb.Append('.', this.realWidth - 2);
+                sb.Append(spaceChar, this.realWidth - 2);
                 tmpBox[i] = sb.ToString().ToCharArray();
                 sb.Clear();
             }
@@ -191,7 +196,7 @@ namespace KarateGeek.lottery
             /* int len = Math.Min(athlete.Length, boxWidth);
              * string athName = athlete.Substring(0, len);
              * 
-             * Cool trick, but I prefer the alternative implementation bellow this comment:
+             * Cool trick, but I prefer the alternative implementation below this comment:
              */
 
             StringBuilder sb = new StringBuilder();
@@ -202,13 +207,12 @@ namespace KarateGeek.lottery
 
             } else { // boxWidth >= athlete.Length
 
-                for (int i = 0; i < (boxWidth - athlete.Length) / 2; ++i)
-                    sb.Append(' ');
+                sb.Append(' ', (boxWidth - athlete.Length) / 2);
 
                 sb.Append(athlete);
 
-                for (int i = 0; i < (boxWidth - athlete.Length + 1) / 2; ++i)
-                    sb.Append(' ');
+                sb.Append(' ', (boxWidth - athlete.Length + 1) / 2);
+
             }
 
             Debug.Assert(sb.Length == boxWidth);
