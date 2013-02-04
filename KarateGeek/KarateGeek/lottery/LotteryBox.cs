@@ -87,16 +87,16 @@ namespace KarateGeek.lottery
 
         /** Class methods: **/
 
-        public LotteryBox(string athlete, BoxTypeLeft typeLeft, BoxTypeRight typeRight)     // overloaded constructor, currently unused
-           : this(new List<string>() { athlete }, typeLeft, typeRight) { }
+        public LotteryBox(string athlete, BoxTypeLeft typeLeft, BoxTypeRight typeRight, int maxNameLength = defaultWidth)       // overloaded constructor, currently unused
+           : this(new List<string>() { athlete }, typeLeft, typeRight, maxNameLength) { }
 
 
-        public LotteryBox(List<string> team, BoxTypeLeft typeLeft, BoxTypeRight typeRight)  // overloaded constructor
+        public LotteryBox(List<string> team, BoxTypeLeft typeLeft, BoxTypeRight typeRight, int maxNameLength = defaultWidth)    // overloaded constructor
         {
-            this.typeLeft = typeLeft;
+            this.typeLeft  = typeLeft;
             this.typeRight = typeRight;
             this.boxHeight = team.Count;
-            this.boxWidth = defaultWidth;
+            this.boxWidth  = maxNameLength;
 
             //if (team.Count == 1 && String.IsNullOrEmpty(team.ElementAt(0)) && this.typeLeft == BoxTypeLeft.unconnected)
             if (String.IsNullOrEmpty(team.ElementAt(0)) && this.typeLeft == BoxTypeLeft.unconnected)

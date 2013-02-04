@@ -30,12 +30,17 @@ namespace KarateGeek.lottery
         //private readonly char spaceChar = '□';
         private readonly char spaceChar = ' ';
 
+        private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
+        private int maxNameLength;
+
 
         /** Class methods: **/
 
-        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId)   // overloaded constructor (useful for the lotteries of "unlotterised" tournaments)
+        // overloaded constructor (useful for the lotteries of "unlotterised" tournaments)
+        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId, int maxNameLength = defaultMaxNameLength)
         {
             this.tournamentId = tournamentId;
+            this.maxNameLength = maxNameLength;
 
             switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
             {
@@ -56,9 +61,11 @@ namespace KarateGeek.lottery
         }
 
 
-        public LotteryPrinter(long tournamentId)    // overloaded constructor (useful for "lotterised" tournaments)
+        // overloaded constructor (useful for "lotterised" tournaments)
+        public LotteryPrinter(long tournamentId, int maxNameLength = defaultMaxNameLength)
         {
             this.tournamentId = tournamentId;
+            this.maxNameLength = maxNameLength;
 
             switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
             {
@@ -72,10 +79,14 @@ namespace KarateGeek.lottery
                     break;
             }
 
-            //bigBox = makeBigBox(lotterySets);
-
             /* Now get the "lotterySets" by querying the database: */
+
             LotteryPrinterConnection conn = new LotteryPrinterConnection();
+
+            var lotterySets = conn.getLotterySets(tournamentId);            // not implemented yet
+
+            bigBox = makeBigBox(lotterySets);
+
             /* ... */
         }
 
@@ -120,7 +131,7 @@ namespace KarateGeek.lottery
                                     ).Tables[0].Rows[0];
                     name = firstlast[0].ToString() + " " + firstlast[1].ToString();
 
-                    tmpBox = new LotteryBox(name, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up).get();
+                    tmpBox = new LotteryBox(name, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up, this.maxNameLength).get();
                 }
                 else {
                     var firstlast = new CoreDatabaseConnection().Query(
@@ -134,7 +145,7 @@ namespace KarateGeek.lottery
                     for (int i = 0; i < firstlast.Rows.Count; ++i)
                         nameList.Add(firstlast.Rows[i][0] + " " + firstlast.Rows[i][1]);
 
-                    tmpBox = new LotteryBox(nameList, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up).get();
+                    tmpBox = new LotteryBox(nameList, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up, this.maxNameLength).get();
                 }
 
                 for (int i = 0; i < tmpBox.Length; ++i) {
@@ -168,58 +179,58 @@ namespace KarateGeek.lottery
         }
 
 
+        private bool closingCharAhead(char[][] box, char openingChar, int row, int col)
+        {
+            char closingChar = (openingChar == '┐') ? '├' : '┘';   // else opening char is '├' or '┌'... a bit hackish ;)
+            char nonClosingChar = (openingChar == '┐') ? '┘' : '├';
+
+            for (row = row + 1; row < box.Length; ++row) {
+                if (box[row][col] == nonClosingChar)
+                    return false;
+                if (box[row][col] == closingChar)
+                    return true;
+            }
+
+            return false;   // bigBox.Length reached
+        }
+
+
         private void fixConnectionsOf(char[][] bigBox, int start, int interval) // assumes that all lines of the jagged array have the same length as the 1st one
         {
-            bool emptyCol, fillNeeded;
-            char deletionMark = ':';    // choose something unique!
+            bool fillNeeded;
+            char deletionMark = '✓';    // choose something unique!
 
             for (int col = start; col < bigBox[0].Length; col += interval) {
-
-                emptyCol = true;
                 fillNeeded = false;
-                for (int row = 0; row < bigBox.Length; ++row) {         // fill downwards
-                    if (bigBox[row][col] == '├') {
-                        fillNeeded = true;
-                        if (emptyCol)
-                            bigBox[row][col] = '┌';
-                    }
-                    if (bigBox[row][col] == '┐')
-                        fillNeeded = true;
-                    if (bigBox[row][col] != spaceChar)
-                        emptyCol = false;
-                    if (bigBox[row][col] == '┘') {
-                        emptyCol = true;
-                        fillNeeded = false;
-                    }
-                    if (fillNeeded && bigBox[row][col] == spaceChar)
-                        //bigBox[row][col] = ';';
-                        bigBox[row][col] = '│';
-                }
 
-                emptyCol = true;
-                fillNeeded = false;
-                for (int row = bigBox.Length - 1; row >= 0; --row) {    // fill upwards, a bit buggy right now
-                    if (!fillNeeded && bigBox[row][col] == '│') // or (!fillNeeded && bigBox[row][col] == '│'), useful for testing
-                        bigBox[row][col] = spaceChar;
-                    if (bigBox[row][col] == '├') {
+                for (int row = 0; row < bigBox.Length; ++row) {
+                    if (bigBox[row][col] == '┐' && closingCharAhead(bigBox, openingChar: '┐', row: row, col: col))
                         fillNeeded = true;
-                        if (emptyCol)
-                            bigBox[row][col] = '└';
-                    }
+
                     if (bigBox[row][col] == '┘')
-                        fillNeeded = true;
-                    if (bigBox[row][col] != spaceChar)
-                        emptyCol = false;
-                    if (bigBox[row][col] == '┐') {
-                        emptyCol = true;
                         fillNeeded = false;
+
+                    if (bigBox[row][col] == '├') {
+
+                        if (!fillNeeded)
+                            bigBox[row][col] = '┌';
+
+                        if (closingCharAhead(bigBox, openingChar: '├', row: row, col: col))
+                            fillNeeded = true;
+                        else {
+                            if (fillNeeded)
+                                bigBox[row][col] = '└';
+                            else
+                                bigBox[row][col] = deletionMark;            // !!
+                            fillNeeded = false;
+                        }
+                            
                     }
-                    if (!fillNeeded && bigBox[row][col] == '┌')
-                        bigBox[row][col] = deletionMark;            // !!
-                    if (fillNeeded && bigBox[row][col] == spaceChar)
-                        //bigBox[row][col] = ';';
+
+                    if (bigBox[row][col] == spaceChar && fillNeeded)
                         bigBox[row][col] = '│';
                 }
+
             }
 
             // remove unneeded "├──┤" connectors:
@@ -255,10 +266,10 @@ namespace KarateGeek.lottery
                 }
 
             var testBoxData = conn.getAthleteNameList(maxSet);
-            int smallBoxHeight = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down).realHeight;
-            int smallBoxWidthFirstPhase = new LotteryBox(testBoxData, BoxTypeLeft.unconnected, BoxTypeRight.connected_down).realWidth;
-            int smallBoxWidthMiddlePhases = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down).realWidth;
-            int smallBoxWidthLastPhase = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.unconnected).realWidth;
+            int smallBoxHeight = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down, this.maxNameLength).realHeight;
+            int smallBoxWidthFirstPhase = new LotteryBox(testBoxData, BoxTypeLeft.unconnected, BoxTypeRight.connected_down, this.maxNameLength).realWidth;
+            int smallBoxWidthMiddlePhases = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.connected_down, this.maxNameLength).realWidth;
+            int smallBoxWidthLastPhase = new LotteryBox(testBoxData, BoxTypeLeft.connected, BoxTypeRight.unconnected, this.maxNameLength).realWidth;
 
 
             /** Allocate "big box" of suitable size: */
@@ -272,7 +283,7 @@ namespace KarateGeek.lottery
             int bigBoxHeight = numOfSmallBoxesOfFirstPhase * (smallBoxHeight + 1);
             int bigBoxWidth = smallBoxWidthFirstPhase + (numOfPhases - 2) * (smallBoxWidthMiddlePhases - charOverlap) + (smallBoxWidthLastPhase - charOverlap);
 
-            char[][] tmpBigBox = allocateBigBox(bigBoxHeight, bigBoxWidth);
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight + smallBoxHeight, bigBoxWidth); // FIXME: "+ smallBoxHeight" is a workaround for a crashing bug (perhaps a rounding error?)
 
 
             /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
@@ -299,14 +310,13 @@ namespace KarateGeek.lottery
                     // the special (head == null) case is handled by the LotteryPrinterConnection.getAthleteNameList() method
                     LotteryBox smallBox = new LotteryBox( conn.getAthleteNameList(head, maxSetCount),
                                                           (phase == numOfPhases - 1) ? BoxTypeLeft.unconnected : BoxTypeLeft.connected,
-                                                          (phase == 0) ? BoxTypeRight.unconnected : directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up
+                                                          (phase == 0) ? BoxTypeRight.unconnected : directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up,
+                                                          this.maxNameLength
                                                         );
-
-                    // WRONG position calculation
-                    //insertSmallBox(tmpBigBox, smallBox, (phase == numOfPhases - 1) ? 0 : (numOfPhases - (phase + 1)) * smallBoxWidthMiddlePhases - (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase), (position - 1) * (smallBoxHeight + 1));
 
                     int depth = (numOfPhases - 1) - phase;
                     int offset = getOffset(smallBoxHeight + 1, depth);
+
                     Debug.WriteLine("TournamentTreeToBox() message:  phase: {0,6}, position: {1,3}, offset: {2,5}",
                                     phase, position, offset);
 
@@ -328,33 +338,28 @@ namespace KarateGeek.lottery
         
         private int getOffset(int boxHeight, int depth)
         {
-            //return (int) (boxHeight * Math.Pow(2, depth - 1) - boxHeight / 2.0);
-
-            //int offset = (int)(boxHeight * Math.Pow(2, depth - 1) - boxHeight / 2.0);
-            //int offset = (int)(boxHeight * Math.Pow(2, depth - 1) - (boxHeight) / Math.Pow(2, depth));
             int offset = (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));
 
             Debug.WriteLine("getOffset() debug message:      boxHeight: {0,2}, depth: {1,6}, offset: {2,5}",
                 boxHeight, depth, offset);
 
-            //return (offset >= 0) ? offset : 0;
             return offset;
         }
 
 
-        private int startingY(int bigBoxHeight, int smallBoxHeight, int depth)
-        {
-            ////depth =  numOfPhases -  currentphase
-            //int drawSpace = (bigBoxHeight / (int)Math.Pow(2, depth));
-            //int offset = drawSpace - smallBoxHeight * (int)Math.Pow(2, currentPhase);
-            ////tha kanei set to offet se mia alli methodo an einai arnitiko eimaste ston teliko
-            //return (bigBoxHeight - drawSpace) / 2;
-            return 0;
-        }
-
         public char[][] get()                   // returns the constructed bigBox (probably useless)
         {
             return bigBox;
+        }
+
+
+        private bool isEmpty(char[] line)
+        {
+            foreach (char c in line)
+                if (c != spaceChar)
+                    return false;
+
+            return true;
         }
 
 
@@ -363,7 +368,8 @@ namespace KarateGeek.lottery
             StringBuilder sb = new StringBuilder();
 
             foreach (char[] line in bigBox)
-                sb.Append(line).Append('\n');
+                if (!isEmpty(line))
+                    sb.Append(line).Append('\n');
 
             return sb.ToString();               // When using this as a GUI label, the first underscore
                                                 // always gets printed with the following character on top
