@@ -227,7 +227,7 @@ namespace KarateGeek.lottery
                             
                     }
 
-                    if (fillNeeded && bigBox[row][col] == spaceChar)
+                    if (bigBox[row][col] == spaceChar && fillNeeded)
                         bigBox[row][col] = '│';
                 }
 
@@ -283,7 +283,7 @@ namespace KarateGeek.lottery
             int bigBoxHeight = numOfSmallBoxesOfFirstPhase * (smallBoxHeight + 1);
             int bigBoxWidth = smallBoxWidthFirstPhase + (numOfPhases - 2) * (smallBoxWidthMiddlePhases - charOverlap) + (smallBoxWidthLastPhase - charOverlap);
 
-            char[][] tmpBigBox = allocateBigBox(bigBoxHeight, bigBoxWidth);
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight + smallBoxHeight, bigBoxWidth); // FIXME: "+ smallBoxHeight" is a workaround for a crashing bug (perhaps a rounding error?)
 
 
             /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
