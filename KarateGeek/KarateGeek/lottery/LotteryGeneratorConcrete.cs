@@ -164,7 +164,7 @@ namespace KarateGeek.lottery
         //public override List<long> getLottery() { return null; }
 
         /* Builds and returns game sets, sorted by phase descending, position ascending: */
-        public override List<Tuple<List<long>, bool, int, int>> buildTournamentGameSets()
+        protected override List<Tuple<List<long>, bool, int, int>> buildTournamentGameSets()
         {
             List<Tuple<List<long>, bool, int, int>> Sets = new List<Tuple<List<long>, bool, int, int>>();
 
@@ -339,29 +339,6 @@ namespace KarateGeek.lottery
         {
             return getEmptyPairs(numOfParticipants, 3); //TODO: create a field for athletesPerTeam, instead of hardcoding "3"
         }
-
-
-        //protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
-        //{
-        //    List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
-
-        //    int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
-
-        //    for (int phase = numOfPhases - 1; phase >= 0; --phase)
-        //        for (int position = 1; position <= Math.Pow(2, phase) * 3; ++position) // * 3
-        //            emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-
-        //    return emptyPairs;
-
-        //    /*
-        //     * With the implementation above, a database cleanUp() operation deleting duplicate games is needed...
-        //     * It should automatically delete the games with no participants, for which there exists a duplicate
-        //     * game (same phase/position) with participants.
-        //     */
-        //    /*
-        //     * If we imitate the base class, the cleanUp() is not needed...
-        //     */
-        //}
 
 
         public override void confirmLottery(bool doCommit = false)

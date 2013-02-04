@@ -30,10 +30,11 @@ namespace KarateGeek.lottery
      *   List<int>. That List will be used by the reporting tools.
      *
      * - The class LotteryGenerator has a constructor that takes a
-     *   tournament id and three publicly accessible methods:
+     *   tournament id and four publicly accessible methods:
      *   shuffle(), which produces a new randomisation, getLottery(),
-     *   which returns it, and confirmLottery(), which writes to the DB.
-     *   (A fourth public method might be added, printLottery(), using
+     *   which returns it, getPrintableLotterySets(), which returns it in a
+     *   special format, and confirmLottery(), which writes to the DB.
+     *   (A fifth public method might be added, printLottery(), using
      *    getLottery() to correctly initialise the LotteryPrinter class and
      *    pretty-print the lottery to the screen...)
      * - It must take into account team sports.
@@ -156,6 +157,7 @@ namespace KarateGeek.lottery
             Debug.Assert(unofficialMultiplier < 1);
             Debug.Assert(otherTypeMultiplier < 1);
 
+            #region previous implementation, showing the logic
           //  /* past achievements: */
           //  scoreAccu = conn.getNumOfGoodPlacements(athleteId, 1, true, generalGameTypesSQL) * 500 +  // first  place in   official event of the same type
           //              conn.getNumOfGoodPlacements(athleteId, 2, true, generalGameTypesSQL) * 240 +  // second place in   official event of the same type
@@ -177,6 +179,7 @@ namespace KarateGeek.lottery
           //              conn.getNumOfGoodPlacements(athleteId, 3, false) *  24 +  // third  place in unofficial event (any)
           //              conn.getNumOfGoodPlacements(athleteId, 4, false) *  16    // fourth place in unofficial event (any)
           //            ;
+            #endregion
 
             /* past achievements: */
             for (int pos = 1; pos <= 4; ++pos)
@@ -224,7 +227,7 @@ namespace KarateGeek.lottery
 
             scoreListShuffled = L;
 
-            /* EXPERIMENTAL and computationally expensive way to check whether an athlete pair belongs to the
+            /* Pretty cool (but computationally expensive) way to check whether an athlete pair belongs to the
              * same club... Some refactoring would reduce the redundancy, but it should work as-is (and it does): */
             if ( tries > 0 && pairsClubConstraintActive(getPairs(this.getLottery())) ){
                 Debug.WriteLine("\n ** AUTO-RESHUFFLING because same-club collisions were found... ** \n");
@@ -267,9 +270,13 @@ namespace KarateGeek.lottery
         protected abstract List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants); // ALWAYS RETURNS GAMES!! Participants might be teams.
 
 
-        /* The following method is designed (?) to be overriden, if needed, by child classes (team cases?).
+        /* The following method is designed (?) to be overridden, if needed, by child classes (team cases?).
          * I should probably change the structure used by getPairsToCommit(), writeAllTournamentPairs() etc.
          * to something like List<Tuple<List<long>, int, int>>, though, because not all cases are "pairs"...
+         * 
+         * EDIT: We kept the (well-tested?) implementation of getPairsToCommit() etc., but used an intermediate
+         * layer to convert the result to List<Tuple<List<long>, int, int>>. This way writeAllTournamentPairs()
+         * becomes (and is marked as) obsolete and writeAllTournamentGameSets() can be used for everyhing.
          */
         protected List<Tuple<long, long, int, int>> getPairsToCommit(List<long> Lott)
         {
@@ -278,7 +285,7 @@ namespace KarateGeek.lottery
 
 
         /* Builds and returns game sets, sorted by phase descending, position ascending: */
-        public virtual List<Tuple<List<long>, bool, int, int>> buildTournamentGameSets()
+        protected virtual List<Tuple<List<long>, bool, int, int>> buildTournamentGameSets()    // Comment: We made this one private, providing a public getPrintableLotterySets() method for the LotteryPrinter class
         {
             List<long> L = this.getLottery();
             List<Tuple<long, long, int, int>> pairsToCommit = getPairsToCommit(L);
@@ -347,6 +354,12 @@ namespace KarateGeek.lottery
             /**/
 
             //return tournamentGameSets.OrderBy(x => x.Item4).OrderByDescending(x => x.Item3).ToList();
+        }
+
+
+        public virtual List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // TODO: override this method to correct the way we pass this list in some cases...
+        {
+            return buildTournamentGameSets();
         }
 
 
@@ -439,6 +452,7 @@ namespace KarateGeek.lottery
 
         }
         #endregion
+
     }
     #endregion
 
@@ -503,6 +517,7 @@ namespace KarateGeek.lottery
 
             return emptyPairs;
         }
+
     }
     #endregion
 
@@ -743,39 +758,6 @@ namespace KarateGeek.lottery
         {
             return getEmptyPairs(numOfParticipants, 1);
         }
-
-
-        //protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants) //overloaded, TODO: reuse code above
-        //{
-        //    List<Tuple<long, long, int, int>> emptyPairs = new List<Tuple<long, long, int, int>>();
-
-        //    int numOfPhases = (int)Math.Ceiling(Math.Log(numOfParticipants, 2));
-
-        //    int p = (int)Math.Pow(2, numOfPhases);
-        //    int y = p - numOfParticipants;
-        //    int yleft = (y + 1) / 2;
-        //    int yright = y - yleft;
-
-        //    // FIXME: check boundary conditions, especially here! (according to a few tests, probably OK) -> EDIT: CHECKED, OK
-        //    int initialPos = 1 + (yleft + 1) / 2;
-        //    int finalPos = (int)Math.Pow(2, numOfPhases - 2) - (yright + 1) / 2;
-        //    for (int position = initialPos; position <= finalPos; ++position)                       // phase Y (missing games)
-        //        emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, numOfPhases - 2, position));
-
-        //    for (int phase = numOfPhases - 3; phase >= 0; --phase)                                  // phase (Y - 1) to phase 0
-        //        for (int position = 1; position <= Math.Pow(2, phase); ++position)
-        //            emptyPairs.Add(new Tuple<long, long, int, int>(-1, -1, phase, position));
-
-
-        //    { // Debug info
-        //        Debug.WriteLine("EMPTY Pairs and positions: " + emptyPairs);
-        //        foreach (var i in emptyPairs)
-        //            Debug.WriteLine("athl.1:{0,4}  athl.2:{1,4}  phase:{2,4}  position:{3,4}",
-        //                i.Item1, i.Item2, i.Item3, i.Item4);
-        //    }
-
-        //    return emptyPairs;
-        //}
 
     }
     #endregion

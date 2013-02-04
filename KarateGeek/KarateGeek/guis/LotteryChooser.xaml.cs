@@ -31,8 +31,8 @@ namespace KarateGeek.guis
         private LotteryGenerator lg;
         private Window sender; 
 
-        private const double ASCIIGraphMinFontSize = 6;
-        private const double ASCIIGraphDefFontSize = 12;    // size 10 works well for many screens
+        private const double ASCIIGraphMinFontSize =  6;
+        private const double ASCIIGraphDefFontSize = 12;    // size 12 works well for many screens
         private const double ASCIIGraphMaxFontSize = 36;
 
         private double ASCIIGraphFontSize {                 // within permitted font size range 
@@ -64,16 +64,6 @@ namespace KarateGeek.guis
 
             this.sender = sender;
 
-            //string node = "┌──────────────────┐\n"
-            //            + "│ Athlete 1's name ├──┐\n"
-            //            + "└──────────────────┘  │\n"
-            //            + "                      ├──┤\n"
-            //            + "┌──────────────────┐  │\n"
-            //            + "│ Athlete 2's name ├──┘\n"
-            //            + "└──────────────────┘\n";
-            //
-            //terminal.Content = node;
-
             terminal.Content = null;
 
             ASCIIGraphFontSize = ASCIIGraphDefFontSize; // can be set to another value using the overloaded constructor
@@ -104,7 +94,7 @@ namespace KarateGeek.guis
             /* experimental (and totally, totally broken in most cases): */
             // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
             // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
-            terminal.Content = "_\n" + new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString();
+            terminal.Content = "_\n" + new LotteryPrinter(lg.getPrintableLotterySets(), tournamentId).ToString();
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
@@ -115,7 +105,7 @@ namespace KarateGeek.guis
                 /* experimental (and totally, totally broken in most cases): */
                 // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
                 // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
-                terminal.Content = "_\n" + new LotteryPrinter(lg.buildTournamentGameSets(), tournamentId).ToString();
+                terminal.Content = "_\n" + new LotteryPrinter(lg.getPrintableLotterySets(), tournamentId).ToString();
             } catch (NullReferenceException exception) {
                 ErrorMessages.menuSelectionErrorMessage("tournament");
             }
@@ -126,13 +116,8 @@ namespace KarateGeek.guis
             try {
                 lg.confirmLottery(doCommit: true);
 
-                //
-                // call cleanUp() code here
-                //
+                new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId); // TODO: remove this example line
 
-                new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId);
-
-                //LotteryChooser lc = new LotteryChooser(this.sender);
                 LotteryChooser lc = new LotteryChooser(this.sender, this.ASCIIGraphFontSize);
                 lc.Activate();
                 this.Close();
@@ -143,7 +128,7 @@ namespace KarateGeek.guis
         }
 
 
-        /* UNUSED AND UNTESTED */
+        /** DATABASE CLEAN-UP METHOD (UNUSED, UNTESTED AND NOT NEEDED): */
         //private void cleanUp()
         //{
         //    string sql = "";
