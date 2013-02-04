@@ -27,8 +27,8 @@ namespace KarateGeek.lottery
                                                 // true:  input is a list of teams of athletes
         private long tournamentId;
 
-        //private readonly char spaceChar = '□';
-        private readonly char spaceChar = ' ';
+        private readonly char spaceChar = '□';
+        //private readonly char spaceChar = ' ';
 
         private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
         private int maxNameLength;
@@ -251,6 +251,17 @@ namespace KarateGeek.lottery
         {
             Sets = sortPhaseDescPositionAsc(Sets); // defensive coding; line probably not needed at all, we pass already-ordered Sets
 
+            { //debug
+                int i = 1;
+                foreach (var set in Sets) {
+                    Debug.WriteLine("\nset #{0,3}:", i);
+                    ++i;
+                    if (set.Item1.Count > 0)
+                        foreach (long id in set.Item1)
+                            Debug.WriteLine("  id:{0,4}  phase:{1,4}  position:{2,4}", id, set.Item3, set.Item4);
+                }
+            }
+
             LotteryPrinterConnection conn = new LotteryPrinterConnection();
 
 
@@ -260,7 +271,8 @@ namespace KarateGeek.lottery
             Tuple<List<long>, bool, int, int> maxSet = null;
 
             foreach (var set in Sets)
-                if (set.Item1.Count > maxSetCount) {
+                if (set.Item1.Count > maxSetCount)
+                {
                     maxSetCount = set.Item1.Count;
                     maxSet = set;
                 }
@@ -273,17 +285,18 @@ namespace KarateGeek.lottery
 
 
             /** Allocate "big box" of suitable size: */
-         
-            /* int numOfNonEmptySmallBoxesOfFirstPhase = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4; */ //real number of non-empty boxes of the 1st phase
+
+            /* int numOfNonEmptySmallBoxesOfFirstPhase = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4; //real number of non-empty boxes of the 1st phase */
             int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
             int numOfPhases = Sets.First().Item3 + 1;
 
             int charOverlap = 3; // hardcoded for now, TODO: find a cleaner way to do it...
 
             int bigBoxHeight = numOfSmallBoxesOfFirstPhase * (smallBoxHeight + 1);
+            //int bigBoxHeight = (int)(0.5 * smallBoxHeight) + 2 * (int)(0.5 * smallBoxHeight) * (numOfSmallBoxesOfFirstPhase - 1) + smallBoxHeight; // ??
             int bigBoxWidth = smallBoxWidthFirstPhase + (numOfPhases - 2) * (smallBoxWidthMiddlePhases - charOverlap) + (smallBoxWidthLastPhase - charOverlap);
 
-            char[][] tmpBigBox = allocateBigBox(bigBoxHeight + smallBoxHeight, bigBoxWidth); // FIXME: "+ smallBoxHeight" is a workaround for a crashing bug (perhaps a rounding error?)
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight + 100, bigBoxWidth); // FIXME: "+ 100" is a workaround for a crashing bug (perhaps a rounding error?)
 
 
             /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
@@ -306,7 +319,7 @@ namespace KarateGeek.lottery
                         else
                             head = null;
                     }
-                   
+
                     // the special (head == null) case is handled by the LotteryPrinterConnection.getAthleteNameList() method
                     LotteryBox smallBox = new LotteryBox( conn.getAthleteNameList(head, maxSetCount),
                                                           (phase == numOfPhases - 1) ? BoxTypeLeft.unconnected : BoxTypeLeft.connected,
@@ -338,7 +351,7 @@ namespace KarateGeek.lottery
         
         private int getOffset(int boxHeight, int depth)
         {
-            int offset = (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));
+            int offset = (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));  // floor??
 
             Debug.WriteLine("getOffset() debug message:      boxHeight: {0,2}, depth: {1,6}, offset: {2,5}",
                 boxHeight, depth, offset);
@@ -368,7 +381,7 @@ namespace KarateGeek.lottery
             StringBuilder sb = new StringBuilder();
 
             foreach (char[] line in bigBox)
-                if (!isEmpty(line))
+                //if (!isEmpty(line))
                     sb.Append(line).Append('\n');
 
             return sb.ToString();               // When using this as a GUI label, the first underscore

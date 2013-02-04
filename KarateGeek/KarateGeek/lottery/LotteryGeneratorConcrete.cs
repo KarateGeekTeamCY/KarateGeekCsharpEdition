@@ -126,6 +126,37 @@ namespace KarateGeek.lottery
 
         public override List<long> getLottery() { return base.getLottery(); }
 
+
+
+        public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // TODO: group sets for team kata
+        {
+            var Sets = buildTournamentGameSets();
+
+            var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
+            int middlePos = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4 / 2; // very very (not) fast
+            int i;
+            foreach (var set in Sets) {
+                //Debug.Assert(set.Item1 == null || set.Item1.Count == 0 || set.Item1.Count == 2);
+
+                int oldPos = set.Item4;
+
+                if (set.Item1.Count > 0) {
+                    //i = (oldPos < middlePos) ? 1 : 0;
+                    //foreach (long id in set.Item1){
+                    //    transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, set.Item3 + 1, (oldPos < middlePos) ? (2 * oldPos - i--) : (2 * oldPos - i++)));
+
+                    i = 1;
+                    foreach (long id in set.Item1)
+                    {
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, set.Item3 + 1, 2 * oldPos - i));
+                        --i;
+                    }
+                }
+            }
+
+            return transformedSets;
+        }
+        
     }
     #endregion
 
@@ -265,6 +296,12 @@ namespace KarateGeek.lottery
             return emptyPairs;
         }
 
+
+        public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // TODO: group sets for team kata
+        {
+            return buildTournamentGameSets();
+        }
+
     }
     #endregion
 
@@ -338,6 +375,12 @@ namespace KarateGeek.lottery
         protected override List<Tuple<long, long, int, int>> getEmptyPairs(int numOfParticipants)
         {
             return getEmptyPairs(numOfParticipants, 3); //TODO: create a field for athletesPerTeam, instead of hardcoding "3"
+        }
+
+
+        public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // TODO: group sets for team kumite
+        {
+            return buildTournamentGameSets();
         }
 
 
