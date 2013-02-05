@@ -165,7 +165,6 @@ namespace KarateGeek.guis
         //}
 
 
-
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.sender.Show();

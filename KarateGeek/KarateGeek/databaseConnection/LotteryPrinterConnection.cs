@@ -14,12 +14,14 @@ namespace KarateGeek.databaseConnection
     {
         public List<string> getAthleteNameList(Tuple<List<long>, bool, int, int> input, int emptyListSize = 1)
         {
+            if (emptyListSize < 1) emptyListSize = 1;   // workaround for a crashing bug (that would never occur with real-world data anyway)
+
             if (input == null || input.Item1.ToList().Count == 0) {
                 List<string> l = new List<string>();
                 for (int i = 0; i < emptyListSize; ++i)
                     l.Add("");
+
                 return l;
-                // return new List<string>() { "" };
             }
 
             List<long> ids = input.Item1;
