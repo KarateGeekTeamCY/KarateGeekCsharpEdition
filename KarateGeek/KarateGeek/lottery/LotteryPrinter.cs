@@ -106,7 +106,8 @@ namespace KarateGeek.lottery
         {
             // TODO: call either TournamentTreeToBox() or TournamentExpoLotteryToBox(), depending on this.tournamentId
 
-            return TournamentTreeToBox(lotterySets);
+            // return TournamentTreeToBox(lotterySets);
+            return TournamentExpoLotteryToBox(lotterySets);
         }
 
 
@@ -247,6 +248,135 @@ namespace KarateGeek.lottery
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+        private char[][] TournamentExpoLotteryToBox(List<Tuple<List<long>, bool, int, int>> Sets) // implementation ONLY for "versus"-type tournaments!
+        {
+            Sets = sortPhaseDescPositionAsc(Sets); // defensive coding; line probably not needed at all, we pass already-ordered Sets
+
+            { //debug0
+                int i = 1;
+                foreach (var set in Sets)
+                {
+                    Debug.WriteLine("\nset #{0,2}:", i);
+                    ++i;
+                    if (set.Item1.Count > 0)
+                        foreach (long id in set.Item1)
+                            Debug.WriteLine("  id:{0,4}  phase:{1,4}  position:{2,4}", id, set.Item3, set.Item4);
+                }
+            }
+
+            LotteryPrinterConnection conn = new LotteryPrinterConnection();
+
+            int rowGap = 4;
+            int columnGap = 15;
+
+
+            /** Get smallbox size (the dimensions of the largest "small box"): */
+
+            int maxSetCount = 0;
+            Tuple<List<long>, bool, int, int> maxSet = null;
+
+            foreach (var set in Sets)
+                if (set.Item1.Count > maxSetCount)
+                {
+                    maxSetCount = set.Item1.Count;
+                    maxSet = set;
+                }
+
+            var testBoxData = conn.getAthleteNameList(maxSet);
+            int smallBoxHeight = new LotteryBox(testBoxData, BoxTypeLeft.unconnected, BoxTypeRight.unconnected, this.maxNameLength).realHeight;
+            int smallBoxWidth  = new LotteryBox(testBoxData, BoxTypeLeft.unconnected, BoxTypeRight.unconnected, this.maxNameLength).realWidth;
+
+
+            /** Allocate "big box" of suitable size: */
+
+            int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
+            int numOfPhases = Sets.First().Item3 + 1;
+
+            int bigBoxHeight = numOfSmallBoxesOfFirstPhase * (smallBoxHeight + rowGap);
+            int bigBoxWidth = numOfPhases * (smallBoxWidth + columnGap);
+
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight + 200, bigBoxWidth);
+
+
+            /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
+
+            for (int phase = numOfPhases - 1; phase >= 0; --phase)
+            {
+                for (int position = 1; position <= (int)Math.Pow(2, phase + 1); ++position)
+                {
+
+                    if (phase == 0 && position > 1) //special case
+                        continue;
+
+                    Tuple<List<long>, bool, int, int> head;
+
+                    if (Sets == null || Sets.Count == 0)
+                        head = null;
+                    else
+                    {
+                        head = Sets.First();
+
+                        if (head.Item3 == phase && head.Item4 == position)  // assumes ordered set
+                            Sets = Sets.Skip(1).ToList();
+                        else
+                            head = null;
+                    }
+
+                    // the special (head == null) case is handled by the LotteryPrinterConnection.getAthleteNameList() method
+                    LotteryBox smallBox = new LotteryBox(conn.getAthleteNameList(head, maxSetCount), BoxTypeLeft.unconnected, BoxTypeRight.unconnected, this.maxNameLength);
+
+                    int depth = (numOfPhases - 1) - phase;
+                    
+                    Debug.WriteLine("TournamentTreeToBox() message:  phase: {0,6}, position: {1,3}",
+                                    phase, position);
+
+                    insertSmallBox( tmpBigBox,
+                                    smallBox,
+                                    x: depth * (smallBoxWidth + columnGap),
+                                    y: (depth == 0) ? position * (smallBoxHeight + rowGap) : (int)(position * bigBoxHeight / Math.Pow(2, phase + 1) - smallBoxHeight / 2.0)
+                                  );
+                }
+            }
+
+            return tmpBigBox;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private char[][] TournamentTreeToBox(List<Tuple<List<long>, bool, int, int>> Sets) // implementation ONLY for "versus"-type tournaments!
         {
             Sets = sortPhaseDescPositionAsc(Sets); // defensive coding; line probably not needed at all, we pass already-ordered Sets
@@ -296,7 +426,7 @@ namespace KarateGeek.lottery
             //int bigBoxHeight = (int)(0.5 * smallBoxHeight) + 2 * (int)(0.5 * smallBoxHeight) * (numOfSmallBoxesOfFirstPhase - 1) + smallBoxHeight; // ??
             int bigBoxWidth = smallBoxWidthFirstPhase + (numOfPhases - 2) * (smallBoxWidthMiddlePhases - charOverlap) + (smallBoxWidthLastPhase - charOverlap);
 
-            char[][] tmpBigBox = allocateBigBox(bigBoxHeight + 100, bigBoxWidth); // FIXME: "+ 100" is a workaround for a crashing bug (perhaps a rounding error?)
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight, bigBoxWidth); // FIXME: "+ 100" is a workaround for a crashing bug (perhaps a rounding error?)
 
 
             /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
@@ -336,7 +466,7 @@ namespace KarateGeek.lottery
                     insertSmallBox( tmpBigBox,
                                     smallBox,
                                     x: (phase == numOfPhases - 1) ? 0 : depth * (smallBoxWidthMiddlePhases - charOverlap) - (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase),
-                                    y: ((position == 1) ? offset : offset + 2 * offset * (position - 1)) - (smallBoxHeight + 1) / 2 + ((phase == numOfPhases - 1) ? position - 1 : 0)
+                                    y: ((position == 1) ? offset : offset + 2 * offset * (position - 1)) - (smallBoxHeight + 1) / 2 + ((depth == 0) ? ((smallBoxHeight % 2 == 0) ? position - 1 : 0) : 0)
                                   );
 
                     directiondown = !directiondown;
@@ -351,6 +481,8 @@ namespace KarateGeek.lottery
         
         private int getOffset(int boxHeight, int depth)
         {
+            //if (depth == 0) return 0;
+
             int offset = (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));  // floor??
 
             Debug.WriteLine("getOffset() debug message:      boxHeight: {0,2}, depth: {1,6}, offset: {2,5}",
