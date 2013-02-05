@@ -43,7 +43,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        public List<Tuple<List<long>, bool, int, int>> getLotterySets(long tournamentId)
+        public List<Tuple<List<long>, bool, int, int>> getPrintableLotterySetsFromDB(long tournamentId)    // not implemented yet
         {
             return null;
         }

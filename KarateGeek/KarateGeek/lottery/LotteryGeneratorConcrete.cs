@@ -128,29 +128,44 @@ namespace KarateGeek.lottery
 
 
 
-        public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // TODO: group sets for team kata
+        public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for ind. kumite
         {
             var Sets = buildTournamentGameSets();
-
             var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
-            int middlePos = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4 / 2; // very very (not) fast
-            int i;
-            foreach (var set in Sets) {
-                //Debug.Assert(set.Item1 == null || set.Item1.Count == 0 || set.Item1.Count == 2);
 
+            int i;
+            int j = 1;
+            foreach (var set in Sets) {
+                Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
+
+                int oldPhase = set.Item3;
                 int oldPos = set.Item4;
+                //int middlePos = Sets.OrderByDescending(x => x.Item4).First(x => x.Item3 == phase).Item4 / 2; // very very (not) fast, and maybe incorrect
+                int middlePos = (int)Math.Pow(2, oldPhase - 1); // approx.
+
+                Debug.WriteLine("Team Kata getPrintableLotterySets(): phase:{0,4}  oldPos:{1,4}  middlePos:{2,4}", oldPhase, oldPos, middlePos);
+
+                {
+                    Debug.WriteLine("from set #{0,2}:", j);
+                    ++j;
+                    if (set.Item1.Count > 0)
+                        foreach (long id in set.Item1)
+                            Debug.WriteLine("  id:{0,4}  phase:{1,4}  position:{2,4}", id, set.Item3, set.Item4);
+                }
 
                 if (set.Item1.Count > 0) {
-                    //i = (oldPos < middlePos) ? 1 : 0;
-                    //foreach (long id in set.Item1){
-                    //    transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, set.Item3 + 1, (oldPos < middlePos) ? (2 * oldPos - i--) : (2 * oldPos - i++)));
-
-                    i = 1;
-                    foreach (long id in set.Item1)
-                    {
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, set.Item3 + 1, 2 * oldPos - i));
-                        --i;
+                    i = (oldPos < middlePos) ? 1 : 0;
+                    foreach (long id in set.Item1) {
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
+                        i += (oldPos < middlePos) ? -1 : +1;
                     }
+
+                    //i = 1;
+                    //foreach (long id in set.Item1)
+                    //{
+                    //    transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, phase + 1, 2 * oldPos - i));
+                    //    --i;
+                    //}
                 }
             }
 

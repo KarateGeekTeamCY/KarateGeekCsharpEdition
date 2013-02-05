@@ -83,7 +83,7 @@ namespace KarateGeek.lottery
 
             LotteryPrinterConnection conn = new LotteryPrinterConnection();
 
-            var lotterySets = conn.getLotterySets(tournamentId);            // not implemented yet
+            var lotterySets = conn.getPrintableLotterySetsFromDB(tournamentId);            // not implemented yet
 
             bigBox = makeBigBox(lotterySets);
 
@@ -254,7 +254,7 @@ namespace KarateGeek.lottery
             { //debug
                 int i = 1;
                 foreach (var set in Sets) {
-                    Debug.WriteLine("\nset #{0,3}:", i);
+                    Debug.WriteLine("\nset #{0,2}:", i);
                     ++i;
                     if (set.Item1.Count > 0)
                         foreach (long id in set.Item1)
