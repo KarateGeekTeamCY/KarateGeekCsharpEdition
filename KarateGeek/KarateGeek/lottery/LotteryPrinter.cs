@@ -33,8 +33,8 @@ namespace KarateGeek.lottery
 
         private long tournamentId;
 
-        //private readonly char spaceChar = '□';
-        private readonly char spaceChar = ' ';
+        private readonly char spaceChar = '□';
+        //private readonly char spaceChar = ' ';
 
         private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
         private int maxNameLength;
@@ -309,13 +309,13 @@ namespace KarateGeek.lottery
 
             /** Allocate "big box" of suitable size: */
 
-            int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
+            int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3 + 1);
             int numOfPhases = Sets.First().Item3 + 1;
 
             int bigBoxHeight = (numOfSmallBoxesOfFirstPhase) * (smallBoxHeight + rowGap) + 3; // "+ 3" is for the 1-line header boxes
-            int bigBoxWidth = numOfPhases * (smallBoxWidth + columnGap);
+            int bigBoxWidth = numOfPhases * (smallBoxWidth + columnGap) - columnGap;
 
-            char[][] tmpBigBox = allocateBigBox(bigBoxHeight + 100, bigBoxWidth); // FIXME: "+ 100" is a workaround for a crashing bug
+            char[][] tmpBigBox = allocateBigBox(bigBoxHeight, bigBoxWidth);
 
 
             /** Build "small boxes" one-by-one while traversing the list "Sets", and insert them into the "big box": */
@@ -365,11 +365,10 @@ namespace KarateGeek.lottery
                     Debug.WriteLine("TournamentTreeToBox() message:  phase: {0,6}, position: {1,3}",
                                     phase, position);
 
-                    insertSmallBox(tmpBigBox,
+                    insertSmallBox( tmpBigBox,
                                     smallBox,
                                     x: depth * (smallBoxWidth + columnGap),
-                                    //y: (depth == 0) ? position * (smallBoxHeight + rowGap) - smallBoxHeight / 2 : (int)(position * bigBoxHeight / Math.Pow(2, phase) - smallBoxHeight / 2.0)
-                                    y: position * (smallBoxHeight + rowGap + 4 * depth) - smallBoxHeight / 2 + 3 // "+ 3" is for the 1-line header boxes; 4 is hardcoded! (no problem, it just looks nice)
+                                    y: position * (smallBoxHeight + rowGap + 4 * depth) - smallBoxHeight + 3 // "+ 3" is for the 1-line header boxes; 4 is hardcoded! (no problem, it just looks nice)
                                   );
                 }
             }
