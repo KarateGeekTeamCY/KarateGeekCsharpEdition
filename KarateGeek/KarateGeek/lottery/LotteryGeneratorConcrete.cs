@@ -66,7 +66,7 @@ namespace KarateGeek.lottery
         public LotteryGen_Versus_Ind(int tournamentId) : base(tournamentId)// calling base constructor first
         {
             //this.randomisationFactor = 650;
-            
+
         }
 
         /** All the code of the following region was moved to the base class (and changed there
@@ -99,7 +99,7 @@ namespace KarateGeek.lottery
         //public override List<long> getLottery()
         //{
         //    if (scoreListShuffled == null) throw new Exception("Use method shuffle() first.");
-            
+
         //    List<long> L = new List<long>();
 
         //    /* OrderByDescending() instead of OrderBy(), because we want the highest-ranked athletes first: */
@@ -139,7 +139,6 @@ namespace KarateGeek.lottery
 
                 int oldPhase = set.Item3;
                 int oldPos = set.Item4;
-                /* int middlePos = Sets.OrderByDescending(x => x.Item4).First(x => x.Item3 == phase).Item4 / 2; // slow, and incorrect (because it gets the middlePos from existing positions only) */
                 int middlePos = (int)Math.Pow(2, oldPhase);     // approx.
 
                 if (set.Item1.Count > 0) {
@@ -153,7 +152,7 @@ namespace KarateGeek.lottery
 
             return transformedSets;
         }
-        
+
     }
     #endregion
 
@@ -182,7 +181,7 @@ namespace KarateGeek.lottery
             this.athletesPerTeam = athletesPerTeam;
         }
 
-        
+
         public override void shuffle(int tries)
         {
             base.shuffle(0);                    // disable club constraint checking
@@ -323,7 +322,10 @@ namespace KarateGeek.lottery
 
                 if (team.Count == 3) {              // 3 is hardcoded! TODO: change it to athletes-per-team
                     transformedSets.Add(new Tuple<List<long>, bool, int, int>(team, isReady, phase, (pos - 1) / 3 + 1 ));
-                    team.Clear();
+
+                    // after Clear()ing the list, for some reason the Add() method stops working, so instead of calling
+                    // "team.Clear();" we re-initialize the list and let the garbage collector do its job:
+                    team = new List<long>();
                 }
             }
 
@@ -364,6 +366,7 @@ namespace KarateGeek.lottery
         public override List<long> getLottery() { return base.getLottery(); }
 
         /* EXPERIMENTAL AND TOTALLY UNTESTED METHOD, inspired from the one in the LotteryGen_Expo_Team class: */
+        /** TODO: FIXME: This (?) breaks for 5 teams and omits the last one! */ //EDIT: Fixed, I think? EDIT: Improved, but no!
         protected override List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
         {
             List<Tuple<long, long, int, int>> teamPairs = base.getPairs(Participants);
@@ -373,7 +376,7 @@ namespace KarateGeek.lottery
 
             /* Normally we would use (-1, -1) to write only empty !isReady pairs, but actually writing down the
              * real pairs is easier (!). The reason is that we cannot pass teamId to the database easily (as is)...
-             * 
+             *
              * So, we do it this way and then call a modified version of confirmLottery() to clean up athlete_id's.
              *
              * BTW, the order of athletes (which would decide the pairings) is the one of the DB query...           */
@@ -389,10 +392,10 @@ namespace KarateGeek.lottery
                     for (int i = 0; i < 3; ++i)
                         athletePairs.Add(new Tuple<long, long, int, int>(t1.ElementAt(i), -1, teamPair.Item3, (teamPair.Item4 - 1) * 3 + i + 1));
                 }
-                else if (teamPair.Item1 >= 0) {
+                else if (teamPair.Item2 >= 0) {
                     var t2 = TeamHelper.getAthletesOfTeam(teamPair.Item2, this.tournamentId);
                     for (int i = 0; i < 3; ++i)
-                        athletePairs.Add(new Tuple<long, long, int, int>(-1, t2.ElementAt(i), teamPair.Item3, (teamPair.Item4 - 1) * 3 + i + 1));
+                        athletePairs.Add(new Tuple<long, long, int, int>(-1, t2.ElementAt(i), teamPair.Item3, (teamPair.Item4 - 1) * 3 + i + 1)); // ??
                 }
             }
 
@@ -408,36 +411,20 @@ namespace KarateGeek.lottery
 
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for team kumite
         {
-            /** ** TOTALLY UNFINISHED CODE ** **/
-
             /** assumes correct ordering of input, please verify */
 
             var Sets = buildTournamentGameSets();
             var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
 
-            //if (Sets == null || Sets.Count == 0)
-            //    head = null;
-            //else
-            //{
-            //    head = Sets.First();
-
-            //    if (head.Item3 == phase && head.Item4 == position)  // assumes ordered set
-            //        Sets = Sets.Skip(1).ToList();
-            //    else
-            //        head = null;
-            //}
-
             List<long> team1 = new List<long>();
             List<long> team2 = new List<long>();
             long id1, id2;
             bool isReady;
-            int phase, pos;
+            int newPhase, pos;
 
             foreach (var set in Sets)
             {
                 Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
-
-                //if(set.Item1.Count == 1 || set.Item1.Count == 2);
 
                 if (set.Item1.Count == 0)
                 {
@@ -454,22 +441,24 @@ namespace KarateGeek.lottery
                 }
 
                 isReady = set.Item2;
-                phase = set.Item3;
+                newPhase = set.Item3 + 1;
                 pos = set.Item4;
 
                 if (team1.Count == 3) {             // 3 is hardcoded! TODO: change it to athletes-per-team
-                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, phase, 2 * (pos - 1) / 3 + 1));
-                    team1.Clear();
 
-                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, phase, 2 * (pos - 1) / 3 + 2));   // might add an empty set
-                    team2.Clear();
+                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, 2 * ((pos - 1) / 3) + 1));
+
+                    if (team2.Count > 0)            // adding an empty set shouldn't (?) be a problem, but we check anyway (it's computationally cheaper)
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, 2 * ((pos - 1) / 3) + 2));
+
+                    // after Clear()ing the lists, for some reason the Add() method stops working, so instead of calling
+                    // "team1.Clear();" or "team2.Clear();" we re-initialize the lists and let the garbage collector do its job:
+                    team1 = new List<long>();
+                    team2 = new List<long>();
                 }
             }
 
-
-
-            //return transformedSets;
-            return Sets;                // !!
+            return transformedSets;
         }
 
 

@@ -362,9 +362,6 @@ namespace KarateGeek.lottery
 
                     int depth = (numOfPhases - 1) - phase;
 
-                    Debug.WriteLine("TournamentTreeToBox() message:  phase: {0,6}, position: {1,3}",
-                                    phase, position);
-
                     insertSmallBox( tmpBigBox,
                                     smallBox,
                                     x: depth * (smallBoxWidth + columnGap),
@@ -474,9 +471,6 @@ namespace KarateGeek.lottery
                     int depth = (numOfPhases - 1) - phase;
                     int offset = getOffset(smallBoxHeight + 1, depth);
 
-                    Debug.WriteLine("TournamentTreeToBox() message:  phase: {0,6}, position: {1,3}, offset: {2,5}",
-                                    phase, position, offset);
-
                     insertSmallBox( tmpBigBox,
                                     smallBox,
                                     x: (depth == 0) ? 0 : depth * (smallBoxWidthMiddlePhases - charOverlap) - (smallBoxWidthMiddlePhases - smallBoxWidthFirstPhase),
@@ -495,12 +489,7 @@ namespace KarateGeek.lottery
         
         private int getOffset(int boxHeight, int depth)
         {
-            int offset = (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));  // floor??
-
-            Debug.WriteLine("getOffset() debug message:      boxHeight: {0,2}, depth: {1,6}, offset: {2,5}",
-                boxHeight, depth, offset);
-
-            return offset;
+            return (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));
         }
 
 
