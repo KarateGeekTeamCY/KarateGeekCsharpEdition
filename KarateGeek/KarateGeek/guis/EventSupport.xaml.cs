@@ -497,9 +497,12 @@ namespace KarateGeek.guis
 
                 temp = conn.Query(sql).Tables[0];
 
-                if (int.Parse(temp.Rows[0][1].ToString()) != int.Parse(temp.Rows[1][1].ToString()))
+                int scoreA = int.Parse(temp.Rows[0][1].ToString());
+                int scoreB = int.Parse(temp.Rows[1][1].ToString());
+
+                if (scoreA != scoreB)
                 {
-                    if (int.Parse(temp.Rows[0][1].ToString()) > int.Parse(temp.Rows[1][1].ToString()))
+                    if (scoreA > scoreB)
                         return temp.Rows[0][0].ToString();
                     else
                         return temp.Rows[1][0].ToString();
@@ -789,7 +792,6 @@ namespace KarateGeek.guis
                 Athlete temp = getKumiteIndVersusWinner(gm);
                 if (temp != null)
                     winner = temp.id;
-
             }
 
 
@@ -817,6 +819,8 @@ namespace KarateGeek.guis
                 string sql;
 
 
+                //if (this.tournament.gameType == Strings.indKumite || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
+                //{
                 currentPosition = int.Parse(gm.position);
                 nextPoss = findNextPossInd(currentPosition);
 
@@ -845,12 +849,12 @@ namespace KarateGeek.guis
                 else
                 {
 
+
                     sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
                         + " AND phase = " + nextPhase
                         + " AND position = " + nextPoss + ";";
                     CoreDatabaseConnection conn = new CoreDatabaseConnection();
                     string nextgameid = conn.Query(sql).Tables[0].Rows[0][0].ToString();
-
 
 
                     string winnertype;
@@ -860,11 +864,10 @@ namespace KarateGeek.guis
                         winnertype = "athlete_id";
 
 
+
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
-
-                        int next3 = findNextPossTeamX3(int.Parse(gm.position));
-
+                        int next3 = findnext3(nextPoss);
                         for (int i = (next3 - 2); i <= next3; i++)
                         {
                             nextgameid = findGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
@@ -889,7 +892,7 @@ namespace KarateGeek.guis
                     }
 
                 }
-
+                //}
             }
         }
 
@@ -1063,7 +1066,7 @@ namespace KarateGeek.guis
         {
             int next3 = current;
 
-            while (((next3 % 3) == 0) && (next3 != 0))
+            while (((next3 % 3) != 0) && (next3 != 0))
                 next3++;
 
             return next3;

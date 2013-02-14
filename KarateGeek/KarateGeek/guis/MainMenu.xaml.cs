@@ -14,7 +14,6 @@ using System.Diagnostics;   // has Debug.WriteLine()
 using System.Data;
 using KarateGeek.databaseConnection;
 
-using KarateGeek.lottery; // for lottery generator testing; THIS LINE WILL BE REMOVED
 
 namespace KarateGeek.guis
 {
@@ -100,14 +99,18 @@ namespace KarateGeek.guis
 
         }
 
-        /* EXPERIMENTAL and not ready, might crash 'n' burn if clicked:*/
-        /* Do not just remove this code; it's a usage example for the lottery class. */
+
+
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
             LotteryChooser lc = new LotteryChooser(this);
             lc.Activate();
             this.Hide();
             lc.Show();
+
+
+            /* Do not just remove this code; it's a usage example for the lottery class. */
+
 
             //LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 1); // use 1 to test kata
 

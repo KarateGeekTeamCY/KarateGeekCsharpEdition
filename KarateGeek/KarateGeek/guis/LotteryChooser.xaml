@@ -75,7 +75,7 @@
                     
                 <Label Name="terminal" 
                        FontFamily="Lucida Console" 
-                       HorizontalContentAlignment="Left" 
+                       HorizontalContentAlignment="Center"
                        VerticalContentAlignment="Center" 
                        Grid.ColumnSpan="2" 
                        Margin="5" 

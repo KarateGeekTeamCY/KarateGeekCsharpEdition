@@ -38,7 +38,8 @@ namespace KarateGeek.guis
 
             KarateGeek.databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
 
-            DataTable temp = conn.Query("SELECT * FROM game_participations gp JOIN games ON games.id = gp.game_id  WHERE tournament_id = '" + game.tournamentId + "' AND game_id = '" + game.gameId + "'; ").Tables[0];
+            string sql = "SELECT * FROM game_participations gp JOIN games ON games.id = gp.game_id  WHERE tournament_id = '" + game.tournamentId + "' AND game_id = '" + game.gameId + "'; ";
+            DataTable temp = conn.Query(sql).Tables[0];
 
             string phase, teamAid, teamBid;
 
@@ -48,7 +49,9 @@ namespace KarateGeek.guis
             gamePartIdA = (string)temp.Rows[0][0].ToString();
             gamePartIdB = (string)temp.Rows[1][0].ToString();
 
-            temp = conn.Query("SELECT phase FROM games WHERE tournament_id = '" + game.tournamentId + "' and id = '" + game.gameId + "' ;").Tables[0];
+
+            sql = "SELECT phase FROM games WHERE tournament_id = '" + game.tournamentId + "' and id = '" + game.gameId + "' ;";
+            temp = conn.Query(sql).Tables[0];
             phase = (string)temp.Rows[0][0].ToString();
 
 
@@ -61,7 +64,8 @@ namespace KarateGeek.guis
             sb.Append("  where  tournament_id = '").Append(game.tournamentId);
             sb.Append("' and phase = '").Append(phase).Append("' and athlete_id is not null ); ");
 
-            athsA = conn.Query(sb.ToString()).Tables[0];
+            sql = sb.ToString();
+            athsA = conn.Query(sql).Tables[0];
 
             foreach (DataRow dr in athsA.Rows)
                 listA.Add((string)dr[1].ToString() + " " + (string)dr[2].ToString());
@@ -77,7 +81,9 @@ namespace KarateGeek.guis
             sb.Append("  where  tournament_id = '").Append(game.tournamentId);
             sb.Append("' and phase = '").Append(phase).Append("' and athlete_id is not null ); ");
 
-            athsB = conn.Query(sb.ToString()).Tables[0];
+
+            sql = sb.ToString();
+            athsB = conn.Query(sql).Tables[0];
 
             foreach (DataRow dr in athsB.Rows)
                 listB.Add((string)dr[1].ToString() + " " + (string)dr[2].ToString());
@@ -122,8 +128,8 @@ namespace KarateGeek.guis
                 {
                     save();
                     this.sender.Visibility = System.Windows.Visibility.Visible;
-                    
-                    
+
+
                     this.sender.tournament.load();
                     this.sender.loadGames();
 
@@ -137,9 +143,18 @@ namespace KarateGeek.guis
         {
 
             databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+            string gameid = this.game.gameId;
+            string sql;
 
-            conn.NonQuery("update game_participations set athlete_id = '" + athsA.Rows[listBoxTeamA.SelectedIndex][0].ToString() + "' where id = '" + gamePartIdA + "'; ");
-            conn.NonQuery("update game_participations set athlete_id = '" + athsB.Rows[listBoxTeamA.SelectedIndex][0].ToString() + "' where id = '" + gamePartIdB + "'; ");
+            sql = "UPDATE game_participations SET athlete_id = '" + athsA.Rows[listBoxTeamA.SelectedIndex][0].ToString() + "' WHERE id = '" + gamePartIdA + "'; ";
+            conn.NonQuery(sql);
+            sql = "UPDATE game_participations SET athlete_id = '" + athsB.Rows[listBoxTeamA.SelectedIndex][0].ToString() + "' WHERE id = '" + gamePartIdB + "'; ";
+            conn.NonQuery(sql);
+
+            //sql = "UPDATE games SET is_ready = 't' WHERE id = " + gameid + " ;";
+            //conn.NonQuery(sql);
+
+            this.game.isReady = true;
 
             game.Update();
         }
