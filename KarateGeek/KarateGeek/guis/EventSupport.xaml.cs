@@ -497,9 +497,12 @@ namespace KarateGeek.guis
 
                 temp = conn.Query(sql).Tables[0];
 
-                if (int.Parse(temp.Rows[0][1].ToString()) != int.Parse(temp.Rows[1][1].ToString()))
+                int scoreA = int.Parse(temp.Rows[0][1].ToString());
+                int scoreB = int.Parse(temp.Rows[1][1].ToString());
+
+                if (scoreA != scoreB)
                 {
-                    if (int.Parse(temp.Rows[0][1].ToString()) > int.Parse(temp.Rows[1][1].ToString()))
+                    if (scoreA > scoreB)
                         return temp.Rows[0][0].ToString();
                     else
                         return temp.Rows[1][0].ToString();
@@ -790,7 +793,6 @@ namespace KarateGeek.guis
                 Athlete temp = getKumiteIndVersusWinner(gm);
                 if (temp != null)
                     winner = temp.id;
-
             }
 
 
@@ -818,78 +820,78 @@ namespace KarateGeek.guis
                 int currentPhase, currentPosition;
                 string sql;
 
-                if (this.tournament.gameType == Strings.indKumite || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
+                //if (this.tournament.gameType == Strings.indKumite || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
+                //{
+                currentPosition = int.Parse(gm.position);
+                nextPoss = findNextPossInd(currentPosition);
+
+                currentPhase = int.Parse(gm.phase);
+                nextPhase = currentPhase - 1;
+
+                if (nextPhase == -1)
                 {
-                    currentPosition = int.Parse(gm.position);
-                    nextPoss = findNextPossInd(currentPosition);
+                    //
+                    // TO-DO
+                    //
+                    // its the winner there is no more rounds
+                    // do something about that
+                    //
 
-                    currentPhase = int.Parse(gm.phase);
-                    nextPhase = currentPhase - 1;
-
-                    if (nextPhase == -1)
+                    if (this.tournament.gameType == Strings.teamKumite)
                     {
-                        //
-                        // TO-DO
-                        //
-                        // its the winner there is no more rounds
-                        // do something about that
-                        //
-
-                        if (this.tournament.gameType == Strings.teamKumite)
-                        {
-                            setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
-                        }
-                        else
-                        {
-                            setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
-                        }
-
+                        setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
                     }
                     else
                     {
+                        setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
+                    }
 
-                        sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
-                            + " AND phase = " + nextPhase
-                            + " AND position = " + nextPoss + ";";
-                        CoreDatabaseConnection conn = new CoreDatabaseConnection();
-                        string nextgameid = conn.Query(sql).Tables[0].Rows[0][0].ToString();
+                }
+                else
+                {
 
-
-
-                        string winnertype;
-                        if (this.tournament.gameType == Strings.teamKumite)
-                            winnertype = "team_id";
-                        else
-                            winnertype = "athlete_id";
+                    sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
+                        + " AND phase = " + nextPhase
+                        + " AND position = " + nextPoss + ";";
+                    CoreDatabaseConnection conn = new CoreDatabaseConnection();
+                    string nextgameid = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
 
-                        if (this.tournament.gameType == Strings.teamKumite)
+
+                    string winnertype;
+                    if (this.tournament.gameType == Strings.teamKumite)
+                        winnertype = "team_id";
+                    else
+                        winnertype = "athlete_id";
+
+
+                    if (this.tournament.gameType == Strings.teamKumite)
+                    {
+                        int next3 = findnext3(nextPoss);
+                        for (int i = (next3 - 2); i <= next3; i++)
                         {
-                            int next3 = findnext3(nextPoss);
-                            for (int i = (next3 - 3); i < next3; i++)
-                            {
-                                nextgameid = findGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
-
-                                sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
-                                + " VALUES (" + winner + ", " + nextgameid + "); ";
-                                conn.NonQuery(sql);
-                            }
-
-                            setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
-                        }
-                        else
-                        {
-                            nextgameid = findGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
+                            nextgameid = findGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
 
                             sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
-                                + " VALUES (" + winner + ", " + nextgameid + "); ";
+                            + " VALUES (" + winner + ", " + nextgameid + "); ";
                             conn.NonQuery(sql);
-
-                            setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
                         }
 
+                        setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
                     }
+                    else
+                    {
+                        nextgameid = findGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
+
+                        sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
+                            + " VALUES (" + winner + ", " + nextgameid + "); ";
+                        conn.NonQuery(sql);
+
+                        setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
+                    }
+
                 }
+                //}
             }
         }
 
@@ -1063,7 +1065,7 @@ namespace KarateGeek.guis
         {
             int next3 = current;
 
-            while (((next3 % 3) == 0) && (next3 != 0))
+            while (((next3 % 3) != 0) && (next3 != 0))
                 next3++;
 
             return next3;
