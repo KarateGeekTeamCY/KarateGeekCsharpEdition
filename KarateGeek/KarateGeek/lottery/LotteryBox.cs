@@ -80,9 +80,8 @@ namespace KarateGeek.lottery
                 }
         }
 
-        //private readonly char spaceChar = '.';
-        //private readonly char spaceChar = '□';
-        private readonly char spaceChar = ' ';
+        private readonly char spaceChar = '□';
+        //private readonly char spaceChar = ' ';
 
 
         /** Class methods: **/
