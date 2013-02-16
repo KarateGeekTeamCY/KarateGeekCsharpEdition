@@ -86,10 +86,34 @@ namespace KarateGeek.lottery
         {
             this.maxNameLength = maxNameLength;
 
-            bigBox = makeBigBox(lotterySets);
+            List<Tuple<List<long>, bool, int, int>> transformedLotterySets = null;
 
-            /** The following is just an experimental proof-of-concept implementation of the constructor: */
-            //bigBox = makeBox(lotteryList);
+            /* TODO: re-use athletesPerTeam as a class property, since it's also useful elsewhere... */
+            int athletesPerTeam = new LotteryGenConnection().getAthletesPerTeam(tournamentId);
+
+            switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
+            {
+                case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
+                                             transformedLotterySets = LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         break;
+
+                case Strings.indKumite:
+                case Strings.fugugo:     transformedLotterySets = LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         break;
+
+                case Strings.teamKata:   transformedLotterySets = LotteryPrinterTransformations.TeamKataSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         break;
+
+                case Strings.teamKumite: transformedLotterySets = LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         break;
+
+                default:                 transformedLotterySets = lotterySets;
+                                         break;
+            }
+
+            Debug.Assert(transformedLotterySets != null);
+
+            bigBox = makeBigBox(transformedLotterySets);
         }
 
 
@@ -103,11 +127,9 @@ namespace KarateGeek.lottery
 
             LotteryPrinterConnection conn = new LotteryPrinterConnection();
 
-            var lotterySets = conn.getPrintableLotterySetsFromDB(tournamentId);            // not implemented yet
+            var lotterySets = conn.getPrintableLotterySetsFromDB(tournamentId);
 
             bigBox = makeBigBox(lotterySets);
-
-            /* ... */
         }
 
 

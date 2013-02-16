@@ -137,6 +137,7 @@
     <Compile Include="lottery\LotteryGeneratorFactory.cs" />
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="lottery\LotteryBox.cs" />
+    <Compile Include="lottery\LotteryPrinterTransformations.cs" />
     <Compile Include="Reports\AthleteCrystalReport.cs">
       <DependentUpon>AthleteCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>

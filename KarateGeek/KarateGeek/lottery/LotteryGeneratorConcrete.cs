@@ -130,29 +130,32 @@ namespace KarateGeek.lottery
 
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for ind.kumite / fugugo / in.kata (flag)
         {
-            var Sets = buildTournamentGameSets();
-            //Sets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { 0 }, true, 0, 1)); //debug, TODO: remove this line
-            var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
-            int i;
+            return LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
+            
+            #region deprecated code
+            //var Sets = buildTournamentGameSets();
+            //var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
+            //int i;
 
-            foreach (var set in Sets) {
-                Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
+            //foreach (var set in Sets) {
+            //    Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
 
-                int oldPhase = set.Item3;
-                int oldPos = set.Item4;
-                int middlePos = (int)Math.Pow(2, oldPhase - 1);     // approx.
-                                                                    // TODO: check WINNER LotteryBox 
+            //    int oldPhase = set.Item3;
+            //    int oldPos = set.Item4;
+            //    int middlePos = (int)Math.Pow(2, oldPhase - 1);     // approx.
+            //                                                        // TODO: check WINNER LotteryBox 
 
-                if (set.Item1.Count > 0) {
-                    i = (oldPos <= middlePos) ? 1 : 0;
-                    foreach (long id in set.Item1) {
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
-                        i = (oldPos <= middlePos) ? 0 : 1;
-                    }
-                }
-            }
+            //    if (set.Item1.Count > 0) {
+            //        i = (oldPos <= middlePos) ? 1 : 0;
+            //        foreach (long id in set.Item1) {
+            //            transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
+            //            i = (oldPos <= middlePos) ? 0 : 1;
+            //        }
+            //    }
+            //}
 
-            return transformedSets;
+            //return transformedSets;
+            #endregion
         }
 
     }
@@ -278,41 +281,45 @@ namespace KarateGeek.lottery
 
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for team kata
         {
-            /** assumes correct ordering of input, please verify */
+            return LotteryPrinterTransformations.TeamKataSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
 
-            var Sets = buildTournamentGameSets();
-            var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
+            #region deprecated code
+            ///** assumes correct ordering of input, please verify */
 
-            List<long> team = new List<long>();
-            long id;
-            bool isReady;
-            int phase, pos;
+            //var Sets = buildTournamentGameSets();
+            //var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
 
-            foreach (var set in Sets) {
-                Debug.Assert(set.Item1.Count <= 1); // implementation only for this particular lottery type
+            //List<long> team = new List<long>();
+            //long id;
+            //bool isReady;
+            //int phase, pos;
 
-                if (set.Item1.Count == 0) {
-                    Debug.WriteLine("getPrintableLotterySets(): Set empty; skipped");
-                    break;
-                }
+            //foreach (var set in Sets) {
+            //    Debug.Assert(set.Item1.Count <= 1); // implementation only for this particular lottery type
 
-                id = set.Item1.First();
-                isReady = set.Item2;
-                phase = set.Item3;
-                pos = set.Item4;
+            //    if (set.Item1.Count == 0) {
+            //        Debug.WriteLine("getPrintableLotterySets(): Set empty; skipped");
+            //        break;
+            //    }
 
-                team.Add(id);
+            //    id = set.Item1.First();
+            //    isReady = set.Item2;
+            //    phase = set.Item3;
+            //    pos = set.Item4;
 
-                if (team.Count == athletesPerTeam) {
-                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team, isReady, phase, (pos - 1) / athletesPerTeam + 1));
+            //    team.Add(id);
 
-                    // after Clear()ing the list, for some reason the Add() method stops working, so instead of calling
-                    // "team.Clear();" we re-initialize the list and let the garbage collector do its job:
-                    team = new List<long>();
-                }
-            }
+            //    if (team.Count == athletesPerTeam) {
+            //        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team, isReady, phase, (pos - 1) / athletesPerTeam + 1));
 
-            return transformedSets;
+            //        // after Clear()ing the list, for some reason the Add() method stops working, so instead of calling
+            //        // "team.Clear();" we re-initialize the list and let the garbage collector do its job:
+            //        team = new List<long>();
+            //    }
+            //}
+
+            //return transformedSets;
+            #endregion
         }
 
     }
@@ -394,59 +401,63 @@ namespace KarateGeek.lottery
 
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for team kumite
         {
-            /** assumes correct ordering of input, please verify */
+            return LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
 
-            var Sets = buildTournamentGameSets();
-            var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
+            #region deprecated code
+            ///** assumes correct ordering of input, please verify */
 
-            List<long> team1 = new List<long>();
-            List<long> team2 = new List<long>();
-            long id1, id2;
-            bool isReady;
-            int newPhase, oldPos, newPos, middlePos;
+            //var Sets = buildTournamentGameSets();
+            //var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
 
-            foreach (var set in Sets)
-            {
-                Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
+            //List<long> team1 = new List<long>();
+            //List<long> team2 = new List<long>();
+            //long id1, id2;
+            //bool isReady;
+            //int newPhase, oldPos, newPos, middlePos;
 
-                if (set.Item1.Count == 0)
-                {
-                    Debug.WriteLine("getPrintableLotterySets(): Set empty; skipped");
-                    break;
-                }
+            //foreach (var set in Sets)
+            //{
+            //    Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
 
-                isReady = set.Item2;
-                newPhase = set.Item3 + 1;
-                oldPos = set.Item4;
-                newPos = 2 * ((oldPos - 1) / athletesPerTeam) + 1;
-                middlePos = (int)Math.Pow(2, set.Item3);    // approx.
+            //    if (set.Item1.Count == 0)
+            //    {
+            //        Debug.WriteLine("getPrintableLotterySets(): Set empty; skipped");
+            //        break;
+            //    }
 
-                {
-                    Debug.WriteLine("getPrintableLotterySets(): newPhase is:{0,3}, newPos is:{1,3}, middlePos is:{2,3}", newPhase, newPos, middlePos);
-                }
+            //    isReady = set.Item2;
+            //    newPhase = set.Item3 + 1;
+            //    oldPos = set.Item4;
+            //    newPos = 2 * ((oldPos - 1) / athletesPerTeam) + 1;
+            //    middlePos = (int)Math.Pow(2, set.Item3);    // approx.
 
-                id1 = set.Item1.First();
-                team1.Add(id1);
+            //    {
+            //        Debug.WriteLine("getPrintableLotterySets(): newPhase is:{0,3}, newPos is:{1,3}, middlePos is:{2,3}", newPhase, newPos, middlePos);
+            //    }
 
-                if (set.Item1.Count == 2) {
-                    id2 = set.Item1.Skip(1).First();
-                    team2.Add(id2);
-                }
+            //    id1 = set.Item1.First();
+            //    team1.Add(id1);
 
-                if (team1.Count == athletesPerTeam) {
-                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
+            //    if (set.Item1.Count == 2) {
+            //        id2 = set.Item1.Skip(1).First();
+            //        team2.Add(id2);
+            //    }
 
-                    if (team2.Count > 0)            // adding an empty set shouldn't (?) be a problem, but we check anyway (it's computationally cheaper)
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos + ((newPos <= middlePos) ? 1 : 0)));
+            //    if (team1.Count == athletesPerTeam) {
+            //        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
 
-                    // after Clear()ing the lists, for some reason the Add() method stops working, so instead of calling
-                    // "team1.Clear();" or "team2.Clear();" we re-initialize the lists and let the garbage collector do its job:
-                    team1 = new List<long>();
-                    team2 = new List<long>();
-                }
-            }
+            //        if (team2.Count > 0)            // adding an empty set shouldn't (?) be a problem, but we check anyway (it's computationally cheaper)
+            //            transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos + ((newPos <= middlePos) ? 1 : 0)));
 
-            return transformedSets;
+            //        // after Clear()ing the lists, for some reason the Add() method stops working, so instead of calling
+            //        // "team1.Clear();" or "team2.Clear();" we re-initialize the lists and let the garbage collector do its job:
+            //        team1 = new List<long>();
+            //        team2 = new List<long>();
+            //    }
+            //}
+
+            //return transformedSets;
+            #endregion
         }
 
 
