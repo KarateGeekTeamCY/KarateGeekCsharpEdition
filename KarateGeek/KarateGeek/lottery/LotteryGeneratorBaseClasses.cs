@@ -69,8 +69,8 @@ namespace KarateGeek.lottery
 
         protected bool confirmed;   // once "confirmed", a LotteryGen_Versus_Ind object cannot write to the DB anymore!
 
-        protected Int32 randomSeed = 134368;  // use a constant value with "new Random(randomSeed)",
-                                              // or "new Random()" for a time-dependent value... (UNUSED, for now)
+        protected readonly int athletesPerTeam;
+
         protected Random rgen;
 
         public readonly int tournamentId;
@@ -84,9 +84,11 @@ namespace KarateGeek.lottery
         //public abstract List<long> getLottery();
 
 
-        protected LotteryGenerator(int tournamentId) // constructor of the abstract class
+        protected LotteryGenerator(int tournamentId, int athletesPerTeam)   // constructor of the abstract class
         {
+            this.athletesPerTeam = athletesPerTeam;
             this.tournamentId = tournamentId;
+
             this.confirmed = new LotteryGenConnection().getTournamentLotteryStateReady(tournamentId);
 
             /* NOTE: This will throw an exception if the list is empty. This must be caught by the GUI code! */
@@ -462,7 +464,7 @@ namespace KarateGeek.lottery
     abstract class LotteryGen_Expo : LotteryGenerator
     {
 
-        public LotteryGen_Expo(int tournamentId) : base(tournamentId) { } //calling base constructor
+        public LotteryGen_Expo(int tournamentId, int athletesPerTeam) : base(tournamentId, athletesPerTeam) { } //calling base constructor
 
 
         protected override List<Tuple<long, long, int, int>> getPairs(List<long> Participants)
@@ -527,7 +529,7 @@ namespace KarateGeek.lottery
     abstract class LotteryGen_Versus : LotteryGenerator
     {
 
-        public LotteryGen_Versus(int tournamentId) : base(tournamentId) { } //calling base constructor
+        public LotteryGen_Versus(int tournamentId, int athletesPerTeam) : base(tournamentId, athletesPerTeam) { } //calling base constructor
 
 
         /* CONVENTION: For semi-complete pairs, we provide a negative athlete id

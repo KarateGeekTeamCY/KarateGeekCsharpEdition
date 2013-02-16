@@ -109,6 +109,19 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public int getAthletesPerTeam(long tournamentId)    // assumes Team Tournament ONLY!
+        {
+            String sql =  " SELECT MAX(t1.c) as athletesPerTeam"
+                        + " FROM (SELECT COUNT(team_id) c "
+                        +       " FROM tournament_participations "
+                        +       " WHERE tournament_id = " + tournamentId
+                        +       " GROUP BY team_id"
+                        +      " ) as t1;";
+
+            return int.Parse(this.Query(sql).Tables[0].Rows[0][0].ToString());
+        }
+
+
         public int getNumOfGoodPlacements(long athleteId, int place, bool official) // overloaded method, not used any more
         {
             /* If you don't care only about official tournaments, use the following simplified query: */

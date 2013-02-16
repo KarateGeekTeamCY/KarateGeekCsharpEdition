@@ -41,16 +41,16 @@ namespace KarateGeek.lottery
                 case Strings.fugugo:     lg = new LotteryGen_Versus_Ind(tournamentId);
                                          break;
 
-                case Strings.teamKata:   lg = new LotteryGen_Expo_Team(tournamentId);
+                case Strings.teamKata:   lg = new LotteryGen_Expo_Team(tournamentId, new LotteryGenConnection().getAthletesPerTeam(tournamentId));   // expected values: 3 or 4
                                          break;
 
-                case Strings.enbu:       lg = new LotteryGen_Expo_Sync(tournamentId, 2);
+                case Strings.enbu:       lg = new LotteryGen_Expo_Sync(tournamentId, new LotteryGenConnection().getAthletesPerTeam(tournamentId));   // expected value: 2
                                          break;
 
-                case Strings.syncKata:   lg = new LotteryGen_Expo_Sync(tournamentId, 3);
+                case Strings.syncKata:   lg = new LotteryGen_Expo_Sync(tournamentId, new LotteryGenConnection().getAthletesPerTeam(tournamentId));   // expected value: 3
                                          break;
 
-                case Strings.teamKumite: lg = new LotteryGen_Versus_Team(tournamentId);
+                case Strings.teamKumite: lg = new LotteryGen_Versus_Team(tournamentId, new LotteryGenConnection().getAthletesPerTeam(tournamentId)); // expected values: 3 or 4
                                          break;
 
                 case Strings.individual: // not enough info
