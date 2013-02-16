@@ -28,12 +28,6 @@ namespace KarateGeek.databaseConnection
             {
                 if (_conn == null)
                 {
-
-                    //
-                    //  coment this for local...
-                    //
-                    _SERVER = "192.168.1.115";
-
                     _conn = new NpgsqlConnection("Server=" + _SERVER + "; Port=" + _PORT + "; User Id=" + _USER + "; Password=" + _PASSWORD + "; Database=" + _DATABASE + ";");
 
                     /* Use the following code to test with a remote DB (to check for latency issues): */
