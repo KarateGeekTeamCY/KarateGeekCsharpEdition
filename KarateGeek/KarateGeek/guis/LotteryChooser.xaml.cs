@@ -115,8 +115,9 @@ namespace KarateGeek.guis
         {
             try {
                 lg.confirmLottery(doCommit: true);
+                new LotteryPrinterConnection().savePrintableLotteryString(this.tournamentId, new LotteryPrinter(lg.getPrintableLotterySets(), tournamentId).ToString());
 
-                new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId); // TODO: remove this example line
+                //new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId); // TODO: remove this example line
 
                 LotteryChooser lc = new LotteryChooser(this.sender, this.ASCIIGraphFontSize);
                 lc.Activate();

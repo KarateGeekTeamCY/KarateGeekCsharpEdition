@@ -223,6 +223,9 @@ namespace KarateGeek.guis
                 // final game msg
                 //
             }
+
+            LotteryGraph lg = new LotteryGraph(long.Parse(this.tournament.id));
+            lg.Show();
         }
 
 

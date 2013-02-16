@@ -16,13 +16,13 @@ namespace KarateGeek.Reports
         public ReportsForm()
         {
             InitializeComponent();
-            //gia to athlete
+           //gia to athlete
             ReportDocument cryRpt = new ReportDocument();
             TableLogOnInfos crtableLogoninfos = new TableLogOnInfos();
             TableLogOnInfo crtableLogoninfo = new TableLogOnInfo();
             ConnectionInfo crConnectionInfo = new ConnectionInfo();
             Tables CrTables ;
-            
+           
             cryRpt.Load("C:\\Users\\michael\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\AthleteCrystalReport.rpt");
 
             crConnectionInfo.ServerName = "localhost";
@@ -144,8 +144,9 @@ namespace KarateGeek.Reports
 
             crystalReportViewer6.ReportSource = cryRpt5;
             crystalReportViewer6.Refresh(); 
+           
         }
-
+            
         private void crystalReportViewer1_Load(object sender, EventArgs e)
         {
 
@@ -168,6 +169,11 @@ namespace KarateGeek.Reports
         }
 
         private void crystalReportViewer6_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ReportsForm_Load(object sender, EventArgs e)
         {
 
         }

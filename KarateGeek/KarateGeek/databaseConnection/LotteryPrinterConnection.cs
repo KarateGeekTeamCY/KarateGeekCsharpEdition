@@ -47,7 +47,71 @@ namespace KarateGeek.databaseConnection
 
         public List<Tuple<List<long>, bool, int, int>> getPrintableLotterySetsFromDB(long tournamentId)    // not implemented yet
         {
-            return null;
+            string sql = "SELECT athlete_id, is_ready, phase, position " // ", team_id" could be added here
+                       + "FROM tournaments t "
+                       + "JOIN games g ON t.id = g.tournament_id "
+                       + "LEFT JOIN game_participations gp ON gp.game_id = g.id "
+                       + "WHERE tournament_id = " + tournamentId
+                       + " ORDER BY g.phase DESC, g.position; ";
+
+            var result = this.Query(sql).Tables[0];
+
+            var sets = new List<Tuple<List<long>, bool, int, int>>();
+
+            var team = new List<long>();
+
+            bool isReady, firstTime = true;
+            int prevPhase = -1, phase, prevPosition = -1, position;
+            string id;
+
+            foreach (DataRow row in result.Rows)
+            {
+                isReady = bool.Parse(row[1].ToString());
+                phase = int.Parse(row[2].ToString());
+                position = int.Parse(row[3].ToString());
+
+                if (firstTime)
+                {
+                    prevPhase = phase;
+                    prevPosition = position;
+                    firstTime = false;
+                }
+
+                if (prevPhase == phase && prevPosition == position) {
+                    id = row[0].ToString();
+                    if(!string.IsNullOrEmpty(id))
+                        team.Add(long.Parse(id));
+                } else {
+                    sets.Add(new Tuple<List<long>, bool, int, int>(team, isReady, phase, position));
+                    team = new List<long>(); // team.Clear() is fucked up
+
+                    id = row[0].ToString();
+                    if (!string.IsNullOrEmpty(id))
+                        team.Add(long.Parse(id));
+                }
+
+                prevPhase = phase;
+                prevPosition = position;
+            }
+
+            return sets;
+        }
+
+
+        public void savePrintableLotteryString(long tournamentId, string graph)
+        {
+            string sql = "INSERT INTO lottery_graph VALUES ('" + tournamentId + "', '" + graph + "');";
+
+            this.NonQuery(sql);
+        }
+
+
+        public void updatePrintableLotteryString(long tournamentId, string graph)
+        {
+            string sql = "UPDATE lottery_graph SET graph = '" + graph + "' "
+                       +" WHERE id = '" + tournamentId + "';";
+
+            this.NonQuery(sql);
         }
 
     }

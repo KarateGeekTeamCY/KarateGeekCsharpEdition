@@ -531,7 +531,7 @@ namespace KarateGeek.lottery
                     else
                         break;
 
-                for (int line = 0; line < firstEmptyLine; ++line)      // (line <= firstEmptyLine) is more correct, but then the last line is empty anyway
+                for (int line = 0; line <= firstEmptyLine; ++line)      // (line < firstEmptyLine) might be enough, but not in all cases, so "<=" is safer
                     sb.Append(bigBox[line]).Append('\n');
 
             } else { // (this.type == PrinterType.versus)
