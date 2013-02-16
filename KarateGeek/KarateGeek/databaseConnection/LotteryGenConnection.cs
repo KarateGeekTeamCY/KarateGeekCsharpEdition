@@ -118,7 +118,9 @@ namespace KarateGeek.databaseConnection
                         +       " GROUP BY team_id"
                         +      " ) as t1;";
 
-            return int.Parse(this.Query(sql).Tables[0].Rows[0][0].ToString());
+            int result = int.Parse(this.Query(sql).Tables[0].Rows[0][0].ToString());
+
+            return (result == 0) ? 1 : result;
         }
 
 
