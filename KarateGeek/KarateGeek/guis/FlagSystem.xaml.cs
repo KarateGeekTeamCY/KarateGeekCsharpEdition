@@ -24,15 +24,13 @@ namespace KarateGeek.guis
 
         #region private declaretion
 
-        private Window _sender;
+        private EventSupport _sender;
 
         private string _judgeAId = "";
         private string _judgeBId = "";
         private string _judgeCId = "";
         private string _judgeDId = "";
         private string _judgeEId = "";
-
-        private DataTable _DTcompetitors;
 
         private Boolean _judgeAchooseWhite;
         private Boolean _judgeBchooseWhite;
@@ -45,9 +43,8 @@ namespace KarateGeek.guis
 
 
         private string _gameId = "";
-        private string _turnamentId = "";
-        private string _participationId = "";
-        private bool _isTeam ;
+        private string _participantA = "";
+        private string _participantB = "";
 
 
         private DataTable _DTjudges;
@@ -58,27 +55,28 @@ namespace KarateGeek.guis
 
         private Style darkGray = new Style { TargetType = typeof(Button) };
         private Style lightGray = new Style { TargetType = typeof(Button) };
-            
 
 
 
 
-        #endregion 
+
+        #endregion
 
 
 
 
-        public FlagSystem(Window sender, Game gm)
+        public FlagSystem(EventSupport sender, Game gm)
         {
             InitializeComponent();
 
-            this._sender = sender;
             this._game = gm;
-            this._tournament = new Tournament(this._game.tournamentId);       
+            this._sender = sender;
+
+            this._tournament = new Tournament(this._game.tournamentId);
 
 
 
-            this.darkGray.Setters.Add(new Setter(Button.BackgroundProperty , Brushes.Gray));
+            this.darkGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Gray));
             this.lightGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.LightGray));
 
 
@@ -116,30 +114,31 @@ namespace KarateGeek.guis
             }
 
 
+            this.eventJudgePickerA.SelectedIndex = 1;
+            this.eventJudgePickerB.SelectedIndex = 1;
+            this.eventJudgePickerC.SelectedIndex = 1;
+            this.eventJudgePickerD.SelectedIndex = 1;
+            this.eventJudgePickerE.SelectedIndex = 1;
+
+
             TournamentGameParticipationsConnection tourparconn = new TournamentGameParticipationsConnection();
             this._DTparticipations = tourparconn.GetParticipation(_gameId).Tables[0];
 
-            // getting paeticipant id
-            if (_isTeam)
-                _participationId = _DTparticipations.Rows[0][1].ToString();
-            else
-                _participationId = _DTparticipations.Rows[0][0].ToString();
+            _participantA = _DTparticipations.Rows[0][4].ToString();
+            _participantB = _DTparticipations.Rows[1][4].ToString();
 
+            string tourid = this._tournament.id;
+            Athlete athA = new Athlete(_participantA, tourid);
+            Athlete athB = new Athlete(_participantB, tourid);
+
+            this.RedCompetitor.Content = athA.lastName + " " + athA.firstName;
+            this.WhiteCompetitor.Content = athB.lastName + " " + athB.firstName;
+
+
+            //this._sender.Hide();
             this.Show();
 
         }
-
-
-
-
-
-
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
 
 
 
@@ -166,10 +165,10 @@ namespace KarateGeek.guis
         private void reda_Click(object sender, RoutedEventArgs e)
         {
             this._judgeAchooseWhite = false;
-            
-            this.reda.Style = darkGray ;
+
+            this.reda.Style = darkGray;
             this.whitea.Style = lightGray;
-            
+
         }
 
         private void whitea_Click(object sender, RoutedEventArgs e)
@@ -250,36 +249,93 @@ namespace KarateGeek.guis
 
         #region menu buttons save back etc
 
-        private void btnClear_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            EveSupFlagConnection conn = new EveSupFlagConnection();
+
+            //
+            //  this need testing
+            //
+            int whitecount = 0;
+
+            if (_judgeAchooseWhite)
+                whitecount++;
+
+            if (_judgeBchooseWhite)
+                whitecount++;
+
+            if (_judgeCchooseWhite)
+                whitecount++;
+
+            if (_judgeDchooseWhite)
+                whitecount++;
+
+            if (_judgeEchooseWhite)
+                whitecount++;
 
 
-            if (_isTeam)
+            EveSupFlagConnection econn = new EveSupFlagConnection();
+            if (whitecount > 2)
             {
-                conn.InsertNewflagTeam(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                econn.InsertNewflagInd(_gameId, _participantB, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
                     _judgeAchooseWhite, _judgeBchooseWhite, _judgeCchooseWhite, _judgeDchooseWhite, _judgeEchooseWhite);
             }
-            else 
+            else
             {
-                conn.InsertNewflagInd(_gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                    _judgeAchooseWhite, _judgeBchooseWhite, _judgeCchooseWhite, _judgeDchooseWhite, _judgeEchooseWhite);
+                // NOTE the _judgeAchooseWhite are with !(NOT) that means that if the judge dind't choose the white
+                // site then he automaticaly choose red site
+                econn.InsertNewflagInd(_gameId, _participantA, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                    !_judgeAchooseWhite, !_judgeBchooseWhite, !_judgeCchooseWhite, !_judgeDchooseWhite, !_judgeEchooseWhite);
             }
+
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+            string sql = "update games set is_finished = 'true' where id = '" + this._game.gameId + "'; ";
+            conn.NonQuery(sql);
+
+
+            this._sender.update();
+            _sender.Visibility = System.Windows.Visibility.Visible;
+            this.Close();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            this._sender.Show();
+            _sender.Visibility = System.Windows.Visibility.Visible;
             this.Close();
         }
 
         #endregion
 
+
+
+        #region judge listeners
+
+        private void eventJudgePickerA_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeAId = this._DTjudges.Rows[this.eventJudgePickerA.SelectedIndex][0].ToString();
+        }
+
+        private void eventJudgePickerB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeBId = this._DTjudges.Rows[this.eventJudgePickerB.SelectedIndex][0].ToString();
+        }
+
+        private void eventJudgePickerC_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeCId = this._DTjudges.Rows[this.eventJudgePickerC.SelectedIndex][0].ToString();
+        }
+
+        private void eventJudgePickerD_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeDId = this._DTjudges.Rows[this.eventJudgePickerD.SelectedIndex][0].ToString();
+        }
+
+        private void eventJudgePickerE_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._judgeEId = this._DTjudges.Rows[this.eventJudgePickerE.SelectedIndex][0].ToString();
+        }
+
+        #endregion
 
     }
 }

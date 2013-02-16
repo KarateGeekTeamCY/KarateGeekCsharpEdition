@@ -6,14 +6,20 @@ select * from addresses;
 
 select * from users;
 
+
+
 select * from persons JOIN athletes on persons.id = athletes.id where persons.first_name like 'd%';
 -- same as:
 --select * from persons NATURAL JOIN athletes where persons.first_name like 'd%';
 
+
 select * from clubs;
 
+select * from tournaments;
 
 select * from game_score;
+
+
 
 select game_participations.team_id, 
 mean_score 
@@ -23,10 +29,12 @@ join game_participations
 join game_score 
 	on team_tournament_participations.id = game_score.team_id 
 
-	where tournament_id = '2' ORDER BY mean_score DESC ;
+	where tournament_id = '8' ORDER BY mean_score DESC ;
 
 
 
+
+select * from tournament_participations;
 
 select * from team_tournament_participations where tournament_id = 2;
 
@@ -38,9 +46,16 @@ select * from game_participations join games on games.id = game_participations.g
 
 select * from games;
 
-select * from game_participations;
+
+
+
+select * from game_participations natural join athletes natural join persons;
 
 SELECT * FROM games g LEFT JOIN game_participations gp ON g.id = gp.game_id ORDER BY phase, position ;
+
+
+
+select * from  game_flag where game_id = '1' ;
 
 
 

@@ -62,7 +62,9 @@ namespace KarateGeek.guis
         public KataSystem(EventSupport sender, Game gm)
         {
             InitializeComponent();
+
             this._game = gm;
+            this._sender = sender;
 
             this.tour = new Tournament(_game.tournamentId);
 
@@ -70,7 +72,7 @@ namespace KarateGeek.guis
             this._isTeam = this.tour.isTeam;
             this._isSync = this.tour.isSync;
 
-            this._sender = sender;
+
 
 
             this._loadDataTables();
@@ -351,7 +353,7 @@ namespace KarateGeek.guis
 
 
 
-        public string InsertNewScoreInd(string gameId, string athleteId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id,
+        private string InsertNewScoreInd(string gameId, string athleteId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id,
                                                                         double score1, double score2, double score3, double score4, double score5, double mean)
         {
 
@@ -367,7 +369,7 @@ namespace KarateGeek.guis
         }
 
 
-        public string InsertNewScoreTeam(string gameId, string teamId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id,
+        private string InsertNewScoreTeam(string gameId, string teamId, string judge1Id, string judge2Id, string judge3Id, string judge4Id, string judge5Id,
                                                                         double score1, double score2, double score3, double score4, double score5, double mean)
         {
             CoreDatabaseConnection conn = new CoreDatabaseConnection();

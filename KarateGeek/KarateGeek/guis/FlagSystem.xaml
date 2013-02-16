@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="FlagSystemForm" 
         ResizeMode="NoResize"
-        Loaded="Window_Loaded">
+        Height="350"
+        Width="700">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -46,35 +47,35 @@
                       Grid.Column="1" 
                       Grid.ColumnSpan="2" 
                       VerticalAlignment="Center" 
-                      Margin="5" >
+                      Margin="5" SelectionChanged="eventJudgePickerA_SelectionChanged">
             </ComboBox>
 
             <ComboBox Name="eventJudgePickerB"
                       Grid.Column="3" 
                       Grid.ColumnSpan="2"  
                       VerticalAlignment="Center" 
-                      Margin="5">
+                      Margin="5" SelectionChanged="eventJudgePickerB_SelectionChanged">
             </ComboBox>
             
             <ComboBox Name="eventJudgePickerC" 
                       Grid.Column="5" 
                       Grid.ColumnSpan="2"  
                       VerticalAlignment="Center" 
-                      Margin="5">
+                      Margin="5" SelectionChanged="eventJudgePickerC_SelectionChanged">
             </ComboBox>
             
             <ComboBox Name="eventJudgePickerD" 
                       Grid.Column="7" 
                       Grid.ColumnSpan="2"  
                       VerticalAlignment="Center" 
-                      Margin="5">
+                      Margin="5" SelectionChanged="eventJudgePickerD_SelectionChanged">
             </ComboBox>
             
             <ComboBox Name="eventJudgePickerE" 
                       Grid.Column="9" 
                       Grid.ColumnSpan="2"  
                       VerticalAlignment="Center" 
-                      Margin="5">
+                      Margin="5" SelectionChanged="eventJudgePickerE_SelectionChanged">
                </ComboBox>
 
             <Button Name="reda"
@@ -201,22 +202,20 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Button Name="btnClear" 
-                    Grid.Column="2" 
-                    Content="clear" 
-                    VerticalAlignment="Center" 
-                    Margin="20,0,20,0"  
-                    HorizontalAlignment="Stretch" Click="btnClear_Click" />
+            
             <Button Name="btnSave" 
                     Grid.Column="3" 
                     Content="save" 
                     VerticalAlignment="Center" 
-                    Margin="20,0,20,0" Click="btnSave_Click" />
+                    Margin="20,0,20,0" 
+                    Click="btnSave_Click" />
+            
             <Button Name="btnBack" 
                     Grid.Column="4" 
                     Content="back" 
                     VerticalAlignment="Center" 
-                    Margin="20,0,20,0" Click="btnBack_Click" />
+                    Margin="20,0,20,0" 
+                    Click="btnBack_Click" />
         </Grid>
     </Grid>
 </Window>

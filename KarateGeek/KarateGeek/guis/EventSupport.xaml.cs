@@ -238,7 +238,6 @@ namespace KarateGeek.guis
             int type = 0;
 
             if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
-                            || this.tournament.gameType == Strings.indKata
                             || this.tournament.gameType == Strings.teamKata)
             { type = 1; }
 
@@ -246,7 +245,7 @@ namespace KarateGeek.guis
                         || this.tournament.gameType == Strings.enbu)
             { type = 2; }
 
-            else if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+            else if ((this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag)
                         || this.tournament.gameType == Strings.indKumite
                         || this.tournament.gameType == Strings.fugugo
                         || this.tournament.gameType == Strings.teamKumite)
@@ -386,10 +385,10 @@ namespace KarateGeek.guis
             //
             // untested sql
             //
-            sql = "select * from game_participacions join game_flag on game_participacions.game_id = game_flag.game_id where game_id = '" + id + "' ;";
+            sql = "SELECT athlete_id FROM game_flag WHERE game_id = '" + id + "' ;";
             DataTable temp = conn.Query(sql).Tables[0];
 
-            return new Athlete((string)temp.Rows[0][0].ToString(), this.tournament.id);
+            return new Athlete(temp.Rows[0][0].ToString(), this.tournament.id);
         }
 
 
