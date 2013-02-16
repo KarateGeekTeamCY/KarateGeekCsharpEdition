@@ -131,6 +131,7 @@ namespace KarateGeek.lottery
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for ind.kumite / fugugo / in.kata (flag)
         {
             var Sets = buildTournamentGameSets();
+            //Sets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { 0 }, true, 0, 1)); //debug, TODO: remove this line
             var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
             int i;
 
@@ -139,13 +140,14 @@ namespace KarateGeek.lottery
 
                 int oldPhase = set.Item3;
                 int oldPos = set.Item4;
-                int middlePos = (int)Math.Pow(2, oldPhase);     // approx.
+                int middlePos = (int)Math.Pow(2, oldPhase - 1);     // approx.
+                                                                    // TODO: check WINNER LotteryBox 
 
                 if (set.Item1.Count > 0) {
-                    i = (oldPos < middlePos) ? 1 : 0;
+                    i = (oldPos <= middlePos) ? 1 : 0;
                     foreach (long id in set.Item1) {
                         transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
-                        i = (oldPos < middlePos) ? 0 : 1;
+                        i = (oldPos <= middlePos) ? 0 : 1;
                     }
                 }
             }
@@ -420,7 +422,7 @@ namespace KarateGeek.lottery
             List<long> team2 = new List<long>();
             long id1, id2;
             bool isReady;
-            int newPhase, pos;
+            int newPhase, oldPos, newPos, middlePos;
 
             foreach (var set in Sets)
             {
@@ -432,6 +434,16 @@ namespace KarateGeek.lottery
                     break;
                 }
 
+                isReady = set.Item2;
+                newPhase = set.Item3 + 1;
+                oldPos = set.Item4;
+                newPos = 2 * ((oldPos - 1) / 3) + 1;
+                middlePos = (int)Math.Pow(2, set.Item3);    // approx.
+
+                {
+                    Debug.WriteLine("getPrintableLotterySets(): newPhase is:{0,3}, newPos is:{1,3}, middlePos is:{2,3}", newPhase, newPos, middlePos);
+                }
+
                 id1 = set.Item1.First();
                 team1.Add(id1);
 
@@ -440,16 +452,13 @@ namespace KarateGeek.lottery
                     team2.Add(id2);
                 }
 
-                isReady = set.Item2;
-                newPhase = set.Item3 + 1;
-                pos = set.Item4;
+                if (team1.Count == 3)
+                {             // 3 is hardcoded! TODO: change it to athletes-per-team
 
-                if (team1.Count == 3) {             // 3 is hardcoded! TODO: change it to athletes-per-team
-
-                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, 2 * ((pos - 1) / 3) + 1));
+                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
 
                     if (team2.Count > 0)            // adding an empty set shouldn't (?) be a problem, but we check anyway (it's computationally cheaper)
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, 2 * ((pos - 1) / 3) + 2));
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos + ((newPos <= middlePos) ? 1 : 0)));
 
                     // after Clear()ing the lists, for some reason the Add() method stops working, so instead of calling
                     // "team1.Clear();" or "team2.Clear();" we re-initialize the lists and let the garbage collector do its job:

@@ -309,8 +309,8 @@ namespace KarateGeek.lottery
 
             /** Allocate "big box" of suitable size: */
 
-            int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3 + 1);
-            int numOfPhases = Sets.First().Item3 + 1;
+            int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3 + 2);
+            int numOfPhases = Sets.First().Item3 + 2;
 
             int bigBoxHeight = (numOfSmallBoxesOfFirstPhase) * (smallBoxHeight + rowGap) + 3; // "+ 3" is for the 1-line header boxes
             int bigBoxWidth = numOfPhases * (smallBoxWidth + columnGap) - columnGap;
@@ -351,7 +351,7 @@ namespace KarateGeek.lottery
                     {
                         head = Sets.First();
 
-                        if (head.Item3 == phase && head.Item4 == position)  // assumes ordered set
+                        if (head.Item3 == phase - 1 && head.Item4 == position)  // assumes ordered set
                             Sets = Sets.Skip(1).ToList();
                         else
                             head = null;
@@ -513,20 +513,31 @@ namespace KarateGeek.lottery
         {
             StringBuilder sb = new StringBuilder();
 
-            /* The code here used to be very simple and beautiful: */
+            /* The code here used to be very simple and beautiful...  :(  */
             //foreach (char[] line in bigBox)
             //    if (!isEmpty(line))
             //        sb.Append(line).Append('\n');
 
             if (this.type == PrinterType.expo) {
 
-                foreach(char[] line in bigBox)
-                    sb.Append(line).Append('\n');
+                //foreach(char[] line in bigBox)
+                //    sb.Append(line).Append('\n');
+
+                int firstEmptyLine = bigBox.Length - 1;
+
+                for (int line = bigBox.Length - 1; line >= 0; --line)   // scanning in reverse order
+                    if (isEmpty(bigBox[line]))
+                        firstEmptyLine = line;
+                    else
+                        break;
+
+                for (int line = 0; line < firstEmptyLine; ++line)      // (line <= firstEmptyLine) is more correct, but then the last line is empty anyway
+                    sb.Append(bigBox[line]).Append('\n');
 
             } else { // (this.type == PrinterType.versus)
 
                 for (int line = 0; line < bigBox.Length; ++line)
-                    if (line <= 5 || !isEmpty(bigBox[line]))
+                    if (line <= 5 || !isEmpty(bigBox[line]))            // first 5 lines are the header; no need to scan those
                         sb.Append(bigBox[line]).Append('\n');
             }
 
