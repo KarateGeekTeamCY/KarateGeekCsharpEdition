@@ -18,7 +18,7 @@ namespace KarateGeek.lottery
      *  tournamentId to the LotteryPrinter constructor).                                  */
     class LotteryPrinter
     {
-        
+
         /** Class fields/properties: **/
 
         private char[][] bigBox = null;         // 2D character buffer, set by constructor
@@ -96,6 +96,8 @@ namespace KarateGeek.lottery
             {
                 case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
                                              transformedLotterySets = LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         else // score system
+                                             transformedLotterySets = lotterySets;
                                          break;
 
                 case Strings.indKumite:
@@ -112,7 +114,9 @@ namespace KarateGeek.lottery
                                          break;
             }
 
-            Debug.Assert(transformedLotterySets != null);
+            Debug.Assert(transformedLotterySets != null);   // This assertion sometimes fails, that is transformedLotterySets might
+                                                            // REALLY be null and the execution won't stop until something blows up
+                                                            // further in the code... Congrats C# for wasting our time!
 
             bigBox = makeBigBox(transformedLotterySets);
         }
@@ -257,7 +261,7 @@ namespace KarateGeek.lottery
                                 bigBox[row][col] = deletionMark;            // !!
                             fillNeeded = false;
                         }
-                            
+
                     }
 
                     if (bigBox[row][col] == spaceChar && fillNeeded)
@@ -335,7 +339,7 @@ namespace KarateGeek.lottery
 
             for (int phase = numOfPhases - 1; phase >= 0; --phase)
             {
-                
+
                 { // header boxes
                     int depth = (numOfPhases - 1) - phase;
                     string phaseBoxString = (phase == 0) ? "WINNER" : string.Format("PHASE {0}", depth + 1);
@@ -500,7 +504,7 @@ namespace KarateGeek.lottery
             return tmpBigBox;
         }
 
-        
+
         private int getOffset(int boxHeight, int depth)
         {
             return (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));
