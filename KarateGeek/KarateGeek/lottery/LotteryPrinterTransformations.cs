@@ -9,6 +9,36 @@ namespace KarateGeek.lottery
     static class LotteryPrinterTransformations
     {
 
+        /** groups sets for ind.kumite / fugugo / in.kata (flag) */
+        public static List<Tuple<List<long>, bool, int, int>> IndKumiteFugugoIndKataSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam)
+        {
+            var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
+            int i;
+
+            foreach (var set in initialSets)
+            {
+                Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type (LotteryGen_Versus_Ind)
+
+                int oldPhase = set.Item3;
+                int oldPos = set.Item4;
+                int middlePos = (int)Math.Pow(2, oldPhase - 1);     // approx.
+                // TODO: check WINNER LotteryBox
+
+                if (set.Item1.Count > 0)
+                {
+                    i = (oldPos <= middlePos) ? 1 : 0;
+                    foreach (long id in set.Item1)
+                    {
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
+                        i = (oldPos <= middlePos) ? 0 : 1;
+                    }
+                }
+            }
+
+            return transformedSets;
+        }
+
+
         /** groups sets for team kata */
         public static List<Tuple<List<long>, bool, int, int>> TeamKataSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam)
         {
@@ -23,7 +53,7 @@ namespace KarateGeek.lottery
 
             foreach (var set in initialSets)
             {
-                Debug.Assert(set.Item1.Count <= 1); // implementation only for this particular lottery type
+                Debug.Assert(set.Item1.Count <= 1); // implementation only for this particular lottery type (LotteryGen_Expo_Team)
 
                 if (set.Item1.Count == 0)
                 {
@@ -52,36 +82,6 @@ namespace KarateGeek.lottery
         }
 
 
-        /** groups sets for ind.kumite / fugugo / in.kata (flag) */
-        public static List<Tuple<List<long>, bool, int, int>> IndKumiteFugugoIndKataSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam)
-        {
-            var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
-            int i;
-
-            foreach (var set in initialSets)
-            {
-                Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
-
-                int oldPhase = set.Item3;
-                int oldPos = set.Item4;
-                int middlePos = (int)Math.Pow(2, oldPhase - 1);     // approx.
-                // TODO: check WINNER LotteryBox
-
-                if (set.Item1.Count > 0)
-                {
-                    i = (oldPos <= middlePos) ? 1 : 0;
-                    foreach (long id in set.Item1)
-                    {
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
-                        i = (oldPos <= middlePos) ? 0 : 1;
-                    }
-                }
-            }
-
-            return transformedSets;
-        }
-
-
         /** groups sets for team kumite */
         public static List<Tuple<List<long>, bool, int, int>> TeamKumiteSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam)
         {
@@ -96,7 +96,7 @@ namespace KarateGeek.lottery
 
             foreach (var set in initialSets)
             {
-                Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type
+                Debug.Assert(set.Item1.Count <= 2); // implementation only for this particular lottery type (LotteryGen_Versus_Team)
 
                 if (set.Item1.Count == 0)
                 {

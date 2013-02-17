@@ -19,7 +19,8 @@ namespace KarateGeek.lottery
 {
 
     /* Implementation of classes LotteryGen_Expo_Ind, LotteryGen_Versus_Ind,
-     * LotteryGen_Expo_Sync and LotteryGen_Versus_Team starts here:          */
+     * LotteryGen_Expo_Sync, LotteryGen_Expo_Team and LotteryGen_Versus_Team
+     * starts here:                                                          */
 
 
     #region concrete class LotteryGen_Expo_Ind : LotteryGen_Expo
@@ -132,7 +133,7 @@ namespace KarateGeek.lottery
         {
             return LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
             
-            #region deprecated code
+            #region code moved elsewhere
             //var Sets = buildTournamentGameSets();
             //var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
             //int i;
@@ -177,7 +178,7 @@ namespace KarateGeek.lottery
         /** Class methods: **/
 
          public LotteryGen_Expo_Sync(int tournamentId, int athletesPerTeam)
-            : base(tournamentId, athletesPerTeam) // calling base constructor first
+            : base(tournamentId, athletesPerTeam)   // calling base constructor first
         {
             this.randomisationFactor = 1000;     // overriding base constructor assignment and using a large value  EDIT: rethink about randomisationFactor
         }
@@ -230,7 +231,7 @@ namespace KarateGeek.lottery
         /** Class methods: **/
 
         public LotteryGen_Expo_Team(int tournamentId, int athletesPerTeam)
-            : base(tournamentId, athletesPerTeam)// calling base constructor first
+            : base(tournamentId, athletesPerTeam)   // calling base constructor first
         {
             this.randomisationFactor = 1000;     // overriding base constructor assignment and using a large value
         }
@@ -283,7 +284,7 @@ namespace KarateGeek.lottery
         {
             return LotteryPrinterTransformations.TeamKataSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
 
-            #region deprecated code
+            #region code moved elsewhere
             ///** assumes correct ordering of input, please verify */
 
             //var Sets = buildTournamentGameSets();
@@ -341,7 +342,7 @@ namespace KarateGeek.lottery
         /** Class methods: **/
 
         public LotteryGen_Versus_Team(int tournamentId, int athletesPerTeam)
-            : base(tournamentId, athletesPerTeam)// calling base constructor first
+            : base(tournamentId, athletesPerTeam)   // calling base constructor first
         {
             //this.randomisationFactor = 650;
         }
@@ -403,7 +404,7 @@ namespace KarateGeek.lottery
         {
             return LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
 
-            #region deprecated code
+            #region code moved elsewhere
             ///** assumes correct ordering of input, please verify */
 
             //var Sets = buildTournamentGameSets();
