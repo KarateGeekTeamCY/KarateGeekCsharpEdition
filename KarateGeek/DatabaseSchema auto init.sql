@@ -194,6 +194,13 @@ CREATE TABLE tournaments (
 );
 
 
+CREATE TABLE lottery_graph (
+    id              INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
+    graph           TEXT,
+    PRIMARY KEY(id)
+);
+
+
 CREATE TABLE games (
     id              SERIAL,
     phase           INTEGER         NOT NULL,
