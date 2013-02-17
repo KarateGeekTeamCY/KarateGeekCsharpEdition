@@ -65,7 +65,7 @@ namespace KarateGeek.lottery
                 int oldPhase = set.Item3;
                 int oldPos = set.Item4;
                 int middlePos = (int)Math.Pow(2, oldPhase - 1);     // approx.
-                // TODO: check WINNER LotteryBox 
+                // TODO: check WINNER LotteryBox
 
                 if (set.Item1.Count > 0)
                 {

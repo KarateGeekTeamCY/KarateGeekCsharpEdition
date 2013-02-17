@@ -42,6 +42,9 @@ namespace KarateGeek.guis
         private List<string> _currentGames = new List<string>();
         private List<string> _futureGames = new List<string>();
 
+        /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
+        private LotteryGraph graph;
+
 
 
         #endregion private declaretions
@@ -106,13 +109,16 @@ namespace KarateGeek.guis
             this.tournament = new Tournament(this._tournamentId);
 
             loadGames();
+
+            /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
+            this.graph = new LotteryGraph(long.Parse(this.tournament.id));
         }
 
 
 
         //
-        //  nothing here yet 
-        //  need to implement 
+        //  nothing here yet
+        //  need to implement
         //
         #region buttons
 
@@ -129,6 +135,9 @@ namespace KarateGeek.guis
         {
             _sender.Show();
             this.Close();
+
+            /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
+            if (this.graph != null) this.graph.Close();
         }
 
         #endregion
@@ -224,8 +233,8 @@ namespace KarateGeek.guis
                 //
             }
 
-            LotteryGraph lg = new LotteryGraph(long.Parse(this.tournament.id));
-            lg.Show();
+            /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
+            if (this.graph != null) this.graph.updateGraph();
         }
 
 
@@ -765,7 +774,7 @@ namespace KarateGeek.guis
             else
             {
                 //
-                //  the presentetion game winner 
+                //  the presentetion game winner
                 //  advancing method
                 //
                 if (ready)
@@ -773,7 +782,7 @@ namespace KarateGeek.guis
             }
 
             //
-            // i don't now if thats necessary here but will live it 
+            // i don't now if thats necessary here but will live it
             // as a note in case of something go wrong
             // although i am sertaind that i dont need this
             //
@@ -789,7 +798,7 @@ namespace KarateGeek.guis
 
             if (this.tournament.gameType == Strings.indKumite)
             {
-                // winner  
+                // winner
                 Athlete temp = getKumiteIndVersusWinner(gm);
                 if (temp != null)
                     winner = temp.id;

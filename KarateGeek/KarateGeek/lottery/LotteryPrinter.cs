@@ -86,6 +86,24 @@ namespace KarateGeek.lottery
         {
             this.maxNameLength = maxNameLength;
 
+            bigBox = makeBigBox(lotterySets);
+        }
+
+
+        // overloaded constructor (useful for "lotterised" tournaments)
+        public LotteryPrinter(long tournamentId, int maxNameLength = defaultMaxNameLength)
+            : this(tournamentId)
+        {
+            this.maxNameLength = maxNameLength;
+
+            /** Now get the "lotterySets" by querying the database: */
+
+            LotteryPrinterConnection conn = new LotteryPrinterConnection();
+
+            var lotterySets = conn.getPrintableLotterySetsFromDB(tournamentId);
+
+            /** ...and manually apply the transformations required for printing (normally LotteryGenerator does this): */
+
             List<Tuple<List<long>, bool, int, int>> transformedLotterySets = null;
 
             /* TODO: re-use athletesPerTeam as a class property, since it's also useful elsewhere... */
@@ -107,29 +125,13 @@ namespace KarateGeek.lottery
                 case Strings.teamKumite: transformedLotterySets = LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(lotterySets, athletesPerTeam);
                                          break;
 
-                default:                 transformedLotterySets = lotterySets;
+                default:                 transformedLotterySets = lotterySets;  // no transformation needed
                                          break;
             }
 
             Debug.Assert(transformedLotterySets != null);
 
             bigBox = makeBigBox(transformedLotterySets);
-        }
-
-
-        // overloaded constructor (useful for "lotterised" tournaments)
-        public LotteryPrinter(long tournamentId, int maxNameLength = defaultMaxNameLength)
-            : this(tournamentId)
-        {
-            this.maxNameLength = maxNameLength;
-
-            /* Now get the "lotterySets" by querying the database: */
-
-            LotteryPrinterConnection conn = new LotteryPrinterConnection();
-
-            var lotterySets = conn.getPrintableLotterySetsFromDB(tournamentId);
-
-            bigBox = makeBigBox(lotterySets);
         }
 
 

@@ -45,7 +45,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        public List<Tuple<List<long>, bool, int, int>> getPrintableLotterySetsFromDB(long tournamentId)    // not implemented yet
+        public List<Tuple<List<long>, bool, int, int>> getPrintableLotterySetsFromDB(long tournamentId)
         {
             string sql = "SELECT athlete_id, is_ready, phase, position " // ", team_id" could be added here
                        + "FROM tournaments t "

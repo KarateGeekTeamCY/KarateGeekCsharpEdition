@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using KarateGeek.databaseConnection;
+
 using KarateGeek.lottery;
 
 namespace KarateGeek.guis
@@ -20,33 +20,51 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class LotteryGraph : Window
     {
+        private long tournamentId;
 
-        private const double ASCIIGraphMinFontSize = 6;
+        private const double ASCIIGraphMinFontSize =  6;
         private const double ASCIIGraphDefFontSize = 12;    // size 12 works well for many screens
         private const double ASCIIGraphMaxFontSize = 36;
+
+        private double ASCIIGraphFontSize {                 // within permitted font size range 
+            get {
+                  return terminal.FontSize;
+                }
+            set {
+                  terminal.FontSize = (value < ASCIIGraphMinFontSize) ? ASCIIGraphMinFontSize :
+                                      (value > ASCIIGraphMaxFontSize) ? ASCIIGraphMaxFontSize :
+                                      value;
+                }
+        }
+
 
         public LotteryGraph(long tournamentId)
         {
             InitializeComponent();
-            var sets = new LotteryPrinterConnection().getPrintableLotterySetsFromDB(tournamentId);
-            
-            // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
-            // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
-            terminal.Content = "_\n" + new LotteryPrinter(sets, tournamentId).ToString();
+
+            this.tournamentId = tournamentId;
+
+            /** DO NOT EVER USE THIS CODE AGAIN! AAAAAAAAARGH! THIS IS TOTALLY WRONG; JUST CALL THE OVERLOADED LotteryPrinter(long tournamentId) CONSTRUCTOR! */
+            /* using KarateGeek.databaseConnection; */
+            //var sets = new LotteryPrinterConnection().getPrintableLotterySetsFromDB(tournamentId);
+
+            //terminal.Content = "_\n" + new LotteryPrinter(sets, tournamentId).ToString();
+            /** !! */
+
+            this.Title = "Tournament progress"; // ??
+            this.Show();
+            this.updateGraph();
         }
 
-        private double ASCIIGraphFontSize {                 // within permitted font size range 
-            get
-            {
-                return terminal.FontSize;
-            }
-            set
-            {
-                terminal.FontSize = (value < ASCIIGraphMinFontSize) ? ASCIIGraphMinFontSize :
-                                    (value > ASCIIGraphMaxFontSize) ? ASCIIGraphMaxFontSize :
-                                    value;
-            }
+
+        public void updateGraph()
+        {
+            // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
+            // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
+            terminal.Content = "_\n" + new LotteryPrinter(this.tournamentId).ToString();
+            this.Activate();    // might be annoying for the user?
         }
+
 
         private void terminal_MouseWheel(object sender, MouseWheelEventArgs e)
         {
