@@ -321,6 +321,7 @@ namespace KarateGeek.lottery
 
             /** Allocate "big box" of suitable size: */
 
+            Debug.Assert(Sets.Count != 0);
             int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3 + 2);
             int numOfPhases = Sets.First().Item3 + 2;
 
@@ -426,6 +427,7 @@ namespace KarateGeek.lottery
             /** Allocate "big box" of suitable size: */
 
             /* int numOfNonEmptySmallBoxesOfFirstPhase = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4; //real number of non-empty boxes of the 1st phase */
+            Debug.Assert(Sets.Count != 0);
             int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
             int numOfPhases = Sets.First().Item3 + 1;
 
