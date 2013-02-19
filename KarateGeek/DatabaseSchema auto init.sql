@@ -208,8 +208,6 @@ CREATE TABLE games (
     tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     is_ready        BOOLEAN         NOT NULL DEFAULT false,
     is_finished     BOOLEAN         NOT NULL DEFAULT false,
-    prev_position   INTEGER,        -- NULLABLE! This is only important for certain parts of the code, and
-                                    -- doesn't even need to be consistent (used with ORDER BY)
     PRIMARY KEY(id)
 );
 
@@ -230,7 +228,6 @@ CREATE TABLE tournament_participations (
     tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
-
     PRIMARY KEY (athlete_id, tournament_id)
 );
 
@@ -242,6 +239,8 @@ CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio
     athlete_id      INTEGER         REFERENCES athletes (id) ON DELETE RESTRICT, -- ?
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
     game_id         INTEGER         REFERENCES games (id) ON DELETE CASCADE,
+    prev_position   INTEGER,        -- NULLABLE! This is only important for certain parts of the code, and
+                                    -- doesn't even need to be consistent (used with ORDER BY)
     PRIMARY KEY (id)
 );
 
