@@ -144,7 +144,11 @@ namespace KarateGeek.guis
         private void btnReports_Click(object sender, RoutedEventArgs e)
         {
 
+<<<<<<< HEAD
             KarateGeek.Reports.ReportsForm reports = new Reports.ReportsForm();
+=======
+            KarateGeek.Reports.crystalReportTest reports = new Reports.crystalReportTest();
+>>>>>>> gg
             reports.Show();
 
         }
