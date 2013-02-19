@@ -144,7 +144,7 @@ namespace KarateGeek.guis
         private void btnReports_Click(object sender, RoutedEventArgs e)
         {
 
-            KarateGeek.Reports.ReportsForm reports = new Reports.ReportsForm();
+            KarateGeek.Reports.ReportsFormTest reports = new Reports.ReportsFormTest();
             reports.Show();
 
         }

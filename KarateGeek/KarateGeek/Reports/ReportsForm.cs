@@ -16,166 +16,167 @@ namespace KarateGeek.Reports
         public ReportsForm()
         {
             InitializeComponent();
-           //gia to athlete
-            ReportDocument cryRpt = new ReportDocument();
-            TableLogOnInfos crtableLogoninfos = new TableLogOnInfos();
-            TableLogOnInfo crtableLogoninfo = new TableLogOnInfo();
-            ConnectionInfo crConnectionInfo = new ConnectionInfo();
-            Tables CrTables ;
-           
-            cryRpt.Load("C:\\Users\\michael\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\AthleteCrystalReport.rpt");
+               //gia to athlete
+                ReportDocument cryRpt = new ReportDocument();
+                TableLogOnInfos crtableLogoninfos = new TableLogOnInfos();
+                TableLogOnInfo crtableLogoninfo = new TableLogOnInfo();
+                ConnectionInfo crConnectionInfo = new ConnectionInfo();
+                Tables CrTables ;
 
-            crConnectionInfo.ServerName = "localhost";
-            crConnectionInfo.DatabaseName = "karategeek";
-            crConnectionInfo.UserID = "postgres";
-            crConnectionInfo.Password = "admin";
+                cryRpt.Load("C:\\Users\\Tsiou\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\AthleteCrystalReport.rpt");
 
-            CrTables = cryRpt.Database.Tables ;
-            foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables)
-            {
-                crtableLogoninfo = CrTable.LogOnInfo;
-                crtableLogoninfo.ConnectionInfo = crConnectionInfo;
-                CrTable.ApplyLogOnInfo(crtableLogoninfo);
-            }
+                crConnectionInfo.ServerName = "localhost";
+                crConnectionInfo.DatabaseName = "karategeek";
+                crConnectionInfo.UserID = "postgres";
+                crConnectionInfo.Password = "admin";
 
-            crystalReportViewer1.ReportSource = cryRpt;
-            crystalReportViewer1.Refresh();
+                CrTables = cryRpt.Database.Tables ;
+                foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables)
+                {
+                    crtableLogoninfo = CrTable.LogOnInfo;
+                    crtableLogoninfo.ConnectionInfo = crConnectionInfo;
+                    CrTable.ApplyLogOnInfo(crtableLogoninfo);
+                }
 
-            //gia to judge
-            ReportDocument cryRpt2 = new ReportDocument();
-            TableLogOnInfos crtableLogoninfos2 = new TableLogOnInfos();
-            TableLogOnInfo crtableLogoninfo2 = new TableLogOnInfo();
-            ConnectionInfo crConnectionInfo2 = new ConnectionInfo();
-            Tables CrTables2;
+                crystalReportViewer1.ReportSource = cryRpt;
+                crystalReportViewer1.Refresh();
 
-            cryRpt2.Load("C:\\Users\\michael\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\JudgeCrystalReport.rpt");
+            //    //gia to judge
+            //    ReportDocument cryRpt2 = new ReportDocument();
+            //    TableLogOnInfos crtableLogoninfos2 = new TableLogOnInfos();
+            //    TableLogOnInfo crtableLogoninfo2 = new TableLogOnInfo();
+            //    ConnectionInfo crConnectionInfo2 = new ConnectionInfo();
+            //    Tables CrTables2;
 
-            crConnectionInfo2.ServerName = "localhost";
-            crConnectionInfo2.DatabaseName = "karategeek";
-            crConnectionInfo2.UserID = "postgres";
-            crConnectionInfo2.Password = "admin";
+            //    cryRpt2.Load("C:\\Users\\Tsiou\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\JudgeCrystalReport.rpt");
 
-            CrTables2 = cryRpt2.Database.Tables;
-            foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables2)
-            {
-                crtableLogoninfo2 = CrTable.LogOnInfo;
-                crtableLogoninfo2.ConnectionInfo = crConnectionInfo2;
-                CrTable.ApplyLogOnInfo(crtableLogoninfo2);
-            }
+            //    crConnectionInfo2.ServerName = "localhost";
+            //    crConnectionInfo2.DatabaseName = "karategeek";
+            //    crConnectionInfo2.UserID = "postgres";
+            //    crConnectionInfo2.Password = "admin";
 
-            crystalReportViewer5.ReportSource = cryRpt2;
-            crystalReportViewer5.Refresh(); 
-        
-            //gia to events
-            
-            ReportDocument cryRpt3 = new ReportDocument();
-            TableLogOnInfos crtableLogoninfos3 = new TableLogOnInfos();
-            TableLogOnInfo crtableLogoninfo3 = new TableLogOnInfo();
-            ConnectionInfo crConnectionInfo3 = new ConnectionInfo();
-            Tables CrTables3;
+            //    CrTables2 = cryRpt2.Database.Tables;
+            //    foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables2)
+            //    {
+            //        crtableLogoninfo2 = CrTable.LogOnInfo;
+            //        crtableLogoninfo2.ConnectionInfo = crConnectionInfo2;
+            //        CrTable.ApplyLogOnInfo(crtableLogoninfo2);
+            //    }
 
-            cryRpt3.Load("C:\\Users\\michael\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\EventCrystalReport.rpt");
+            //    crystalReportViewer5.ReportSource = cryRpt2;
+            //    crystalReportViewer5.Refresh(); 
 
-            crConnectionInfo3.ServerName = "localhost";
-            crConnectionInfo3.DatabaseName = "karategeek";
-            crConnectionInfo3.UserID = "postgres";
-            crConnectionInfo3.Password = "admin";
+            //    //gia to events
 
-            CrTables3 = cryRpt3.Database.Tables;
-            foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables3)
-            {
-                crtableLogoninfo3 = CrTable.LogOnInfo;
-                crtableLogoninfo3.ConnectionInfo = crConnectionInfo3;
-                CrTable.ApplyLogOnInfo(crtableLogoninfo3);
-            }
+            //    ReportDocument cryRpt3 = new ReportDocument();
+            //    TableLogOnInfos crtableLogoninfos3 = new TableLogOnInfos();
+            //    TableLogOnInfo crtableLogoninfo3 = new TableLogOnInfo();
+            //    ConnectionInfo crConnectionInfo3 = new ConnectionInfo();
+            //    Tables CrTables3;
 
-            crystalReportViewer4.ReportSource = cryRpt3;
-            crystalReportViewer4.Refresh(); 
+            //    cryRpt3.Load("C:\\Users\\Tsiou\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\EventCrystalReport.rpt");
+
+            //    crConnectionInfo3.ServerName = "localhost";
+            //    crConnectionInfo3.DatabaseName = "karategeek";
+            //    crConnectionInfo3.UserID = "postgres";
+            //    crConnectionInfo3.Password = "admin";
+
+            //    CrTables3 = cryRpt3.Database.Tables;
+            //    foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables3)
+            //    {
+            //        crtableLogoninfo3 = CrTable.LogOnInfo;
+            //        crtableLogoninfo3.ConnectionInfo = crConnectionInfo3;
+            //        CrTable.ApplyLogOnInfo(crtableLogoninfo3);
+            //    }
+
+            //    crystalReportViewer4.ReportSource = cryRpt3;
+            //    crystalReportViewer4.Refresh(); 
 
 
-            //gia to tournaments
+            //    //gia to tournaments
 
-            ReportDocument cryRpt4 = new ReportDocument();
-            TableLogOnInfos crtableLogoninfos4 = new TableLogOnInfos();
-            TableLogOnInfo crtableLogoninfo4 = new TableLogOnInfo();
-            ConnectionInfo crConnectionInfo4 = new ConnectionInfo();
-            Tables CrTables4;
+            //    ReportDocument cryRpt4 = new ReportDocument();
+            //    TableLogOnInfos crtableLogoninfos4 = new TableLogOnInfos();
+            //    TableLogOnInfo crtableLogoninfo4 = new TableLogOnInfo();
+            //    ConnectionInfo crConnectionInfo4 = new ConnectionInfo();
+            //    Tables CrTables4;
 
-            cryRpt4.Load("C:\\Users\\michael\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\TournamentCrystalReport.rpt");
+            //    cryRpt4.Load("C:\\Users\\Tsiou\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\TournamentCrystalReport.rpt");
 
-            crConnectionInfo4.ServerName = "localhost";
-            crConnectionInfo4.DatabaseName = "karategeek";
-            crConnectionInfo4.UserID = "postgres";
-            crConnectionInfo4.Password = "admin";
+            //    crConnectionInfo4.ServerName = "localhost";
+            //    crConnectionInfo4.DatabaseName = "karategeek";
+            //    crConnectionInfo4.UserID = "postgres";
+            //    crConnectionInfo4.Password = "admin";
 
-            CrTables4 = cryRpt4.Database.Tables;
-            foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables4)
-            {
-                crtableLogoninfo4 = CrTable.LogOnInfo;
-                crtableLogoninfo4.ConnectionInfo = crConnectionInfo4;
-                CrTable.ApplyLogOnInfo(crtableLogoninfo4);
-            }
+            //    CrTables4 = cryRpt4.Database.Tables;
+            //    foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables4)
+            //    {
+            //        crtableLogoninfo4 = CrTable.LogOnInfo;
+            //        crtableLogoninfo4.ConnectionInfo = crConnectionInfo4;
+            //        CrTable.ApplyLogOnInfo(crtableLogoninfo4);
+            //    }
 
-            crystalReportViewer2.ReportSource = cryRpt4;
-            crystalReportViewer2.Refresh();
+            //    crystalReportViewer2.ReportSource = cryRpt4;
+            //    crystalReportViewer2.Refresh();
 
-            //gia to club
+            //    //gia to club
 
-            ReportDocument cryRpt5 = new ReportDocument();
-            TableLogOnInfos crtableLogoninfos5 = new TableLogOnInfos();
-            TableLogOnInfo crtableLogoninfo5 = new TableLogOnInfo();
-            ConnectionInfo crConnectionInfo5 = new ConnectionInfo();
-            Tables CrTables5;
+            //    ReportDocument cryRpt5 = new ReportDocument();
+            //    TableLogOnInfos crtableLogoninfos5 = new TableLogOnInfos();
+            //    TableLogOnInfo crtableLogoninfo5 = new TableLogOnInfo();
+            //    ConnectionInfo crConnectionInfo5 = new ConnectionInfo();
+            //    Tables CrTables5;
 
-            cryRpt5.Load("C:\\Users\\michael\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\ClubCrystalReport.rpt");
+            //    cryRpt5.Load("C:\\Users\\michael\\Documents\\GitHub\\KarateGeekCsharpEdition\\KarateGeek\\KarateGeek\\Reports\\ClubCrystalReport.rpt");
 
-            crConnectionInfo5.ServerName = "localhost";
-            crConnectionInfo5.DatabaseName = "karategeek";
-            crConnectionInfo5.UserID = "postgres";
-            crConnectionInfo5.Password = "admin";
+            //    crConnectionInfo5.ServerName = "localhost";
+            //    crConnectionInfo5.DatabaseName = "karategeek";
+            //    crConnectionInfo5.UserID = "postgres";
+            //    crConnectionInfo5.Password = "admin";
 
-            CrTables5 = cryRpt5.Database.Tables;
-            foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables5)
-            {
-                crtableLogoninfo5 = CrTable.LogOnInfo;
-                crtableLogoninfo5.ConnectionInfo = crConnectionInfo5;
-                CrTable.ApplyLogOnInfo(crtableLogoninfo5);
-            }
+            //    CrTables5 = cryRpt5.Database.Tables;
+            //    foreach (CrystalDecisions.CrystalReports.Engine.Table CrTable in CrTables5)
+            //    {
+            //        crtableLogoninfo5 = CrTable.LogOnInfo;
+            //        crtableLogoninfo5.ConnectionInfo = crConnectionInfo5;
+            //        CrTable.ApplyLogOnInfo(crtableLogoninfo5);
+            //    }
 
-            crystalReportViewer6.ReportSource = cryRpt5;
-            crystalReportViewer6.Refresh(); 
-           
-        }
-            
-        private void crystalReportViewer1_Load(object sender, EventArgs e)
-        {
+            //    crystalReportViewer6.ReportSource = cryRpt5;
+            //    crystalReportViewer6.Refresh(); 
 
-        }
-        private void crystalReportViewer2_Load(object sender, EventArgs e)
-        {
+            //}
 
-        }
+            //private void crystalReportViewer1_Load(object sender, EventArgs e)
+            //{
 
-        private void crystalReportViewer5_Load(object sender, EventArgs e)
-        {
+            //}
+            //private void crystalReportViewer2_Load(object sender, EventArgs e)
+            //{
 
-        }
+            //}
 
-        
+            //private void crystalReportViewer5_Load(object sender, EventArgs e)
+            //{
 
-        private void crystalReportViewer4_Load(object sender, EventArgs e)
-        {
+            //}
 
-        }
 
-        private void crystalReportViewer6_Load(object sender, EventArgs e)
-        {
 
-        }
+            //private void crystalReportViewer4_Load(object sender, EventArgs e)
+            //{
 
-        private void ReportsForm_Load(object sender, EventArgs e)
-        {
+            //}
 
+            //private void crystalReportViewer6_Load(object sender, EventArgs e)
+            //{
+
+            //}
+
+            //private void ReportsForm_Load(object sender, EventArgs e)
+            //{
+
+            //}
         }
     }
 }

@@ -80,7 +80,7 @@
             this.crystalReportViewer6.Size = new System.Drawing.Size(1171, 669);
             this.crystalReportViewer6.TabIndex = 0;
             this.crystalReportViewer6.ToolPanelWidth = 267;
-            this.crystalReportViewer6.Load += new System.EventHandler(this.crystalReportViewer6_Load);
+            //this.crystalReportViewer6.Load += new System.EventHandler(this.crystalReportViewer6_Load);
             // 
             // tabPage4
             // 
@@ -105,7 +105,7 @@
             this.crystalReportViewer2.Size = new System.Drawing.Size(1171, 669);
             this.crystalReportViewer2.TabIndex = 0;
             this.crystalReportViewer2.ToolPanelWidth = 267;
-            this.crystalReportViewer2.Load += new System.EventHandler(this.crystalReportViewer2_Load);
+            //this.crystalReportViewer2.Load += new System.EventHandler(this.crystalReportViewer2_Load);
             // 
             // tabPage3
             // 
@@ -141,7 +141,7 @@
             this.crystalReportViewer4.ReportSource = this.EventCrystalReport1;
             this.crystalReportViewer4.Size = new System.Drawing.Size(1171, 669);
             this.crystalReportViewer4.TabIndex = 1;
-            this.crystalReportViewer4.Load += new System.EventHandler(this.crystalReportViewer4_Load);
+            //this.crystalReportViewer4.Load += new System.EventHandler(this.crystalReportViewer4_Load);
             // 
             // tabPage2
             // 
@@ -166,7 +166,7 @@
             this.crystalReportViewer5.Size = new System.Drawing.Size(1171, 669);
             this.crystalReportViewer5.TabIndex = 0;
             this.crystalReportViewer5.ToolPanelWidth = 267;
-            this.crystalReportViewer5.Load += new System.EventHandler(this.crystalReportViewer5_Load);
+            //this.crystalReportViewer5.Load += new System.EventHandler(this.crystalReportViewer5_Load);
             // 
             // tabPage1
             // 
@@ -190,7 +190,7 @@
             this.crystalReportViewer1.ReportSource = this.AthleteCrystalReport1;
             this.crystalReportViewer1.Size = new System.Drawing.Size(1171, 669);
             this.crystalReportViewer1.TabIndex = 0;
-            this.crystalReportViewer1.Load += new System.EventHandler(this.crystalReportViewer1_Load);
+            //this.crystalReportViewer1.Load += new System.EventHandler(this.crystalReportViewer1_Load);
             // 
             // tabControl1
             // 
@@ -238,7 +238,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "ReportsForm";
             this.Text = "ReportsForm";
-            this.Load += new System.EventHandler(this.ReportsForm_Load);
+           // this.Load += new System.EventHandler(this.ReportsForm_Load);
             this.tabPage5.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);

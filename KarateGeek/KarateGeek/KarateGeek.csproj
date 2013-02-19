@@ -99,6 +99,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Athlete.cs" />
+    <Compile Include="CrystalReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrystalReport.rpt</DependentUpon>
+    </Compile>
     <Compile Include="databaseConnection\EveSupFlagConnection.cs" />
     <Compile Include="databaseConnection\EveSupPointConnection.cs" />
     <Compile Include="databaseConnection\AthleteData.cs" />
@@ -174,6 +179,12 @@
     <Compile Include="Reports\ReportsForm.Designer.cs">
       <DependentUpon>ReportsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ReportsFormTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportsFormTest.Designer.cs">
+      <DependentUpon>ReportsFormTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\TournamentCrystalReport.cs">
       <DependentUpon>TournamentCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -242,6 +253,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="CrystalReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CrystalReport.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -268,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportsForm.resx">
       <DependentUpon>ReportsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReportsFormTest.resx">
+      <DependentUpon>ReportsFormTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\TournamentCrystalReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
