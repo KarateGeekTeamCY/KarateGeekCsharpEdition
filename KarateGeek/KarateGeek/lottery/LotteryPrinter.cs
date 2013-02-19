@@ -118,6 +118,12 @@ namespace KarateGeek.lottery
                                                             // REALLY be null and the execution won't stop until something blows up
                                                             // further in the code... Congrats C# for wasting our time!
 
+
+
+            var winnerTuple = new LotteryPrinterConnection().getWinnerTuple(tournamentId);
+            if (winnerTuple != null)
+                transformedLotterySets.Add(winnerTuple);
+
             bigBox = makeBigBox(transformedLotterySets);
         }
 

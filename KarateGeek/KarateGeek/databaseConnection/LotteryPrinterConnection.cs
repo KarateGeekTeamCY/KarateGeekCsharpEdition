@@ -104,8 +104,8 @@ namespace KarateGeek.databaseConnection
                        + "FROM tournaments t "
                        + "JOIN games g ON t.id = g.tournament_id "
                        + "LEFT JOIN game_participations gp ON gp.game_id = g.id "
-                       + "WHERE tournament_id = " + tournamentId
-                       + " ORDER BY g.phase DESC, g.position; ";
+                       + "WHERE tournament_id = " + tournamentId + " "
+                       + "ORDER BY g.phase DESC, g.position, gp.prev_position; ";
 
             var result = this.Query(sql).Tables[0];
 
@@ -143,6 +143,25 @@ namespace KarateGeek.databaseConnection
 
             Debug.Assert(sets.Count > 0);   // What should we do here? (this is false sometimes, eg. Team kumite, and may cause further crashes)
             return sets;
+        }
+
+
+        public Tuple<List<long>, bool, int, int> getWinnerTuple(long tournamentId)  // works for both team and individual cases
+        {
+            string sql = "SELECT athlete_id "
+                       + "FROM tournament_participations "
+                       + "WHERE ranking = 1 AND tournament_id = " + tournamentId + " ;";
+
+            var result = this.Query(sql).Tables[0];
+
+            if (result.Rows.Count == 0)
+                return null;
+
+            var l = new List<long>();
+            foreach (DataRow row in result.Rows)
+                l.Add(int.Parse(row[0].ToString()));
+
+            return new Tuple<List<long>, bool, int, int>(l, true, 0, 1);    // bool value is irrelevant
         }
 
 
