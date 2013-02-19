@@ -150,6 +150,12 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\crystalReportTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\crystalReportTest.Designer.cs">
+      <DependentUpon>crystalReportTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\EventCrystalReport.cs">
       <DependentUpon>EventCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -253,6 +259,9 @@
     <EmbeddedResource Include="Reports\ClubCrystalReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>ClubCrystalReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\crystalReportTest.resx">
+      <DependentUpon>crystalReportTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\EventCrystalReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
