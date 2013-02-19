@@ -208,7 +208,8 @@ CREATE TABLE games (
     tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     is_ready        BOOLEAN         NOT NULL DEFAULT false,
     is_finished     BOOLEAN         NOT NULL DEFAULT false,
-
+    prev_position   INTEGER,        -- NULLABLE! This is only important for certain parts of the code, and
+                                    -- doesn't even need to be consistent (used with ORDER BY)
     PRIMARY KEY(id)
 );
 

@@ -885,8 +885,8 @@ namespace KarateGeek.guis
                             {
                                 nextgameid = findGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
 
-                                sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
-                                + " VALUES (" + winner + ", " + nextgameid + "); ";
+                                sql = "INSERT INTO game_participations (" + winnertype + ", game_id, prev_position )"
+                                + " VALUES (" + winner + ", " + nextgameid + ", " + gm.position + "); ";
                                 conn.NonQuery(sql);
                             }
 
@@ -896,8 +896,8 @@ namespace KarateGeek.guis
                         {
                             nextgameid = findGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
 
-                            sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
-                                + " VALUES (" + winner + ", " + nextgameid + "); ";
+                            sql = "INSERT INTO game_participations (" + winnertype + ", game_id, prev_position )"
+                                + " VALUES (" + winner + ", " + nextgameid + ", " + gm.position + "); ";
                             conn.NonQuery(sql);
 
                             setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());

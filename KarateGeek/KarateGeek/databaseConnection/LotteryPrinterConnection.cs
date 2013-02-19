@@ -104,8 +104,8 @@ namespace KarateGeek.databaseConnection
                        + "FROM tournaments t "
                        + "JOIN games g ON t.id = g.tournament_id "
                        + "LEFT JOIN game_participations gp ON gp.game_id = g.id "
-                       + "WHERE tournament_id = " + tournamentId
-                       + " ORDER BY g.phase DESC, g.position; ";
+                       + "WHERE tournament_id = " + tournamentId + " "
+                       + "ORDER BY g.phase DESC, g.position, gp.prev_position; ";
 
             var result = this.Query(sql).Tables[0];
 
