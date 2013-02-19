@@ -146,6 +146,25 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public Tuple<List<long>, bool, int, int> getWinnerTuple(long tournamentId)  // works for both team and individual cases
+        {
+            string sql = "SELECT athlete_id "
+                       + "FROM tournament_participations "
+                       + "WHERE ranking = 1 AND tournament_id = " + tournamentId + " ;";
+
+            var result = this.Query(sql).Tables[0];
+
+            if (result.Rows.Count == 0)
+                return null;
+
+            var l = new List<long>();
+            foreach (DataRow row in result.Rows)
+                l.Add(int.Parse(row[0].ToString()));
+
+            return new Tuple<List<long>, bool, int, int>(l, true, 0, 1);    // bool value is irrelevant
+        }
+
+
         public void savePrintableLotteryString(long tournamentId, string graph)
         {
             string sql = "INSERT INTO lottery_graph VALUES ('" + tournamentId + "', '" + graph + "');";

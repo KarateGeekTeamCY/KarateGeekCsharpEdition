@@ -856,6 +856,9 @@ namespace KarateGeek.guis
                             setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
                         }
 
+                        /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
+                        if (this.graph != null) this.graph.updateGraph();
+
                     }
                     else
                     {
