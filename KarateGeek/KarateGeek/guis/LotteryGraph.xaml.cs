@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using KarateGeek.lottery;
+using KarateGeek.databaseConnection;
 
 namespace KarateGeek.guis
 {
@@ -21,6 +22,8 @@ namespace KarateGeek.guis
     public partial class LotteryGraph : Window
     {
         private long tournamentId;
+
+        private bool teamKumiteCheckEnabled = false;
 
         private const double ASCIIGraphMinFontSize =  6;
         private const double ASCIIGraphDefFontSize = 12;    // size 12 works well for many screens
@@ -52,13 +55,28 @@ namespace KarateGeek.guis
             /** !! */
 
             this.Title = "Tournament progress"; // ??
-            this.Show();
+
+            if (Strings.teamKumite.Equals(new LotteryGenConnection().getTournamentGameType(this.tournamentId), StringComparison.Ordinal))
+                teamKumiteCheckEnabled = true;
+            else
+                this.Show();
+
             this.updateGraph();
         }
 
 
         public void updateGraph()
         {
+            if (teamKumiteCheckEnabled) {
+                if (!new LotteryPrinterConnection().hasEnoughElementsToPrint(this.tournamentId))  // prevent crashes in the Team Kumite case
+                    return;
+            } else {
+                try {
+                    this.Show();     // the red X button should be overridden so that it calls this.Hide() instead of this.Close()          
+                } catch {
+                }
+            }
+
             // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
             // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
             terminal.Content = "_\n" + new LotteryPrinter(this.tournamentId).ToString();

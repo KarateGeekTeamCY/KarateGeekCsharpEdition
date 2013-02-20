@@ -65,7 +65,7 @@ namespace KarateGeek.databaseConnection
         public Boolean NonQuery(string sql)
         {
             Debug.WriteLine("Executing SQL NonQuery: " + sql);  // Much faster than Console.WriteLine()
-            // and auto-disabled in release mode.
+                                                                // and auto-disabled in release mode.
 
 
             NpgsqlCommand comm = this.conn.CreateCommand();
@@ -81,7 +81,7 @@ namespace KarateGeek.databaseConnection
         public DataSet Query(string sql)
         {
             Debug.WriteLine("Executing SQL Query:    " + sql);  // Much faster than Console.WriteLine()
-            // and auto-disabled in release mode.
+                                                                // and auto-disabled in release mode.
 
             NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
 

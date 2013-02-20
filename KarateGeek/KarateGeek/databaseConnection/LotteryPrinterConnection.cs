@@ -181,5 +181,13 @@ namespace KarateGeek.databaseConnection
             this.NonQuery(sql);
         }
 
+
+        public bool hasEnoughElementsToPrint(long tournamentId)
+        {
+            string sql = "SELECT COUNT(t1.athlete_id) FROM (SELECT * FROM tournaments t JOIN games g ON t.id = g.tournament_id  LEFT JOIN game_participations gp ON gp.game_id = g.id  WHERE tournament_id = '" + tournamentId + "' ) as t1;";
+
+            return (int.Parse(this.Query(sql).Tables[0].Rows[0][0].ToString()) >= 8); // optimised query!
+        }
+
     }
 }
