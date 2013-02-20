@@ -333,26 +333,26 @@ CREATE OR REPLACE VIEW athletes_total_details AS
     SELECT athletes.id, first_name, last_name, fathers_name, sex, date_of_birth,
         persons.phone, secondary_phone, persons.email, rank, clubs.name AS club_name, street,
         addresses.number, addresses.postal_code, cities.name as city, countries.name as country,
-		athlete_first_places_ind.count AS first_places,
-		athlete_second_places_ind.count AS second_places,
-		athlete_third_places_ind.count AS third_places
+        athlete_first_places_ind.count AS first_places,
+        athlete_second_places_ind.count AS second_places,
+        athlete_third_places_ind.count AS third_places
 FROM persons
 JOIN athletes
-	ON athletes.id = persons.id
+    ON athletes.id = persons.id
 LEFT JOIN addresses
-	ON persons.address_id = addresses.id
+    ON persons.address_id = addresses.id
 LEFT JOIN clubs
-	ON athletes.club_id = clubs.id
+    ON athletes.club_id = clubs.id
 LEFT JOIN cities
-	ON cities.id = addresses.city_id
+    ON cities.id = addresses.city_id
 LEFT JOIN countries
-	ON countries.code = cities.country_code
+    ON countries.code = cities.country_code
 LEFT JOIN athlete_first_places_ind
-	ON athlete_first_places_ind.athlete_id = athletes.id
+    ON athlete_first_places_ind.athlete_id = athletes.id
 LEFT JOIN athlete_second_places_ind
-	ON athlete_second_places_ind.athlete_id = athletes.id
+    ON athlete_second_places_ind.athlete_id = athletes.id
 LEFT JOIN athlete_third_places_ind
-	ON athlete_third_places_ind.athlete_id = athletes.id;
+    ON athlete_third_places_ind.athlete_id = athletes.id;
 
 
 CREATE OR REPLACE VIEW judges_total_details AS
@@ -360,13 +360,13 @@ CREATE OR REPLACE VIEW judges_total_details AS
         rank, street, addresses.number, cities.name AS city, countries.name AS country
 FROM persons
 JOIN judges
-	ON judges.id = persons.id
+    ON judges.id = persons.id
 JOIN addresses
-	ON persons.address_id = addresses.id
+    ON persons.address_id = addresses.id
 JOIN cities
-	ON cities.id = addresses.city_id
+    ON cities.id = addresses.city_id
 JOIN countries
-	ON countries.code = cities.country_code;
+    ON countries.code = cities.country_code;
 
 
 CREATE or REPLACE VIEW clubs_total_details AS
@@ -374,15 +374,15 @@ CREATE or REPLACE VIEW clubs_total_details AS
         street, addresses.number, cities.name AS city, countries.name AS country
 FROM clubs
 JOIN athletes
-	ON athletes.club_id = clubs.id
+    ON athletes.club_id = clubs.id
 LEFT JOIN persons
-	ON persons.id = athletes.id
+    ON persons.id = athletes.id
 LEFT JOIN addresses
-	ON addresses.id = clubs.address_id
+    ON addresses.id = clubs.address_id
 LEFT JOIN cities
-	ON cities.id = addresses.city_id
+    ON cities.id = addresses.city_id
 LEFT JOIN countries
-	ON countries.code = cities.country_code;
+    ON countries.code = cities.country_code;
 
 
 CREATE or REPLACE VIEW events_total_details AS
@@ -406,22 +406,22 @@ LEFT JOIN countries
 
 CREATE OR REPLACE VIEW tournaments_total_details AS
 SELECT events.name AS event, events.date,locations.name AS location,
-	tournaments.id, tournaments.name AS tournament, tournaments.sex, tournaments.age_from, tournaments.age_to,
-	tournaments.level_from,tournaments.level_to, tournaments.game_type, tournaments.scoring_type,
-	team_tournament_participations.ranking AS rankingTeam,
-	tournament_participations.athlete_id, tournament_participations.ranking AS ranking,
-	persons.last_name, persons.first_name
+    tournaments.id, tournaments.name AS tournament, tournaments.sex, tournaments.age_from, tournaments.age_to,
+    tournaments.level_from,tournaments.level_to, tournaments.game_type, tournaments.scoring_type,
+    team_tournament_participations.ranking AS rankingTeam,
+    tournament_participations.athlete_id, tournament_participations.ranking AS ranking,
+    persons.last_name, persons.first_name
 FROM tournaments
 JOIN events
-	ON tournaments.event_id = events.id
+    ON tournaments.event_id = events.id
 LEFT JOIN tournament_participations
-	ON tournaments.id = tournament_participations.tournament_id
+    ON tournaments.id = tournament_participations.tournament_id
 LEFT JOIN team_tournament_participations
-	ON tournaments.id = team_tournament_participations.tournament_id
+    ON tournaments.id = team_tournament_participations.tournament_id
 LEFT JOIN persons
-	ON tournament_participations.athlete_id = persons.id
+    ON tournament_participations.athlete_id = persons.id
 LEFT JOIN locations
-	ON events.location_id = locations.id;
+    ON events.location_id = locations.id;
 
 
 CREATE OR REPLACE VIEW game_participants_total_det AS
@@ -429,15 +429,15 @@ CREATE OR REPLACE VIEW game_participants_total_det AS
         athletes.id AS athlete_id, last_name, first_name
 FROM events
 JOIN tournaments
-	ON events.id = tournaments.event_id
+    ON events.id = tournaments.event_id
 JOIN games
-	ON tournaments.id = games.tournament_id
+    ON tournaments.id = games.tournament_id
 JOIN game_participations
-	ON game_participations.game_id = games.id
+    ON game_participations.game_id = games.id
 JOIN athletes
-	ON game_participations.athlete_id = athletes.id
+    ON game_participations.athlete_id = athletes.id
 JOIN persons
-	ON athletes.id = persons.id;
+    ON athletes.id = persons.id;
 
 
 CREATE OR REPLACE VIEW total_point_system AS
@@ -482,6 +482,11 @@ JOIN countries
     ON addresses.country_code = countries.code
 JOIN cities
     ON cities.id = addresses.city_id;
+
+
+CREATE OR REPLACE VIEW graph_view AS
+    SELECT graph, name
+FROM lottery_graph NATURAL JOIN tournaments;
 
 
 -- rollback transaction (useful for checking syntax):
