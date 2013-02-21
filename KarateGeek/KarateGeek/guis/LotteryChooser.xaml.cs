@@ -115,8 +115,12 @@ namespace KarateGeek.guis
         {
             try {
                 lg.confirmLottery(doCommit: true);
+                new LotteryPrinterConnection().savePrintableLotteryString(this.tournamentId, new LotteryPrinter(lg.getPrintableLotterySets(), tournamentId).ToString());
 
-                new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId); // TODO: remove this example line
+                //new KarateGeek.databaseConnection.LotteryGenConnection().printTournamentGameTableWithNames(tournamentId); // TODO: remove this example line
+                /** EXPERIMENTAL code, for testing purposes (next 2 lines added by Nicholas): */
+                //new LotteryGraph(this.tournamentId);
+                //new LotteryGraph(this.tournamentId).updateGraph(terminal.Content.ToString(), "Displaying contents from the Generator"); // updating with custom content for comparison
 
                 LotteryChooser lc = new LotteryChooser(this.sender, this.ASCIIGraphFontSize);
                 lc.Activate();

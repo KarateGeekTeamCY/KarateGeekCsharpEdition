@@ -18,13 +18,11 @@ namespace KarateGeek.lottery
      *  tournamentId to the LotteryPrinter constructor).                                  */
     class LotteryPrinter
     {
-        
+
         /** Class fields/properties: **/
 
         private char[][] bigBox = null;         // 2D character buffer, set by constructor
 
-        private bool isListOfTeams;             // false: input is a list of athletes          (a bit ugly)
-                                                // true:  input is a list of teams of athletes
         enum PrinterType {
             versus,
             expo
@@ -33,8 +31,8 @@ namespace KarateGeek.lottery
 
         private long tournamentId;
 
-        private readonly char spaceChar = '□';
-        //private readonly char spaceChar = ' ';
+        //private readonly char spaceChar = '□';
+        private readonly char spaceChar = ' ';
 
         private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
         private int maxNameLength;
@@ -47,22 +45,7 @@ namespace KarateGeek.lottery
         {
             this.tournamentId = tournamentId;
 
-            string tournamentGameType = new LotteryGenConnection().getTournamentGameType(tournamentId);
-
-            /** isListOfTeams is USELESS! TO BE REMOVED! */
-            switch (tournamentGameType)
-            {
-                case Strings.enbu:
-                case Strings.syncKata:
-                case Strings.teamKata:
-                case Strings.teamKumite: this.isListOfTeams = true;
-                                         break;
-
-                default:                 this.isListOfTeams = false;
-                                         break;
-            }
-
-            switch (tournamentGameType)
+            switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
             {
                 case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
                                              this.type = PrinterType.versus;
@@ -87,9 +70,6 @@ namespace KarateGeek.lottery
             this.maxNameLength = maxNameLength;
 
             bigBox = makeBigBox(lotterySets);
-
-            /** The following is just an experimental proof-of-concept implementation of the constructor: */
-            //bigBox = makeBox(lotteryList);
         }
 
 
@@ -99,15 +79,52 @@ namespace KarateGeek.lottery
         {
             this.maxNameLength = maxNameLength;
 
-            /* Now get the "lotterySets" by querying the database: */
+            /** Now get the "lotterySets" by querying the database: */
 
             LotteryPrinterConnection conn = new LotteryPrinterConnection();
 
-            var lotterySets = conn.getPrintableLotterySetsFromDB(tournamentId);            // not implemented yet
+            var lotterySets = conn.getPrintableLotterySetsFromDB(tournamentId);
 
-            bigBox = makeBigBox(lotterySets);
+            /** ...and manually apply the transformations required for printing (normally LotteryGenerator does this): */
 
-            /* ... */
+            List<Tuple<List<long>, bool, int, int>> transformedLotterySets = null;
+
+            /* TODO: re-use athletesPerTeam as a class property, since it's also useful elsewhere... */
+            int athletesPerTeam = new LotteryGenConnection().getAthletesPerTeam(tournamentId);
+
+            switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
+            {
+                case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
+                                             transformedLotterySets = LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         else // score system
+                                             transformedLotterySets = lotterySets;
+                                         break;
+
+                case Strings.indKumite:
+                case Strings.fugugo:     transformedLotterySets = LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         break;
+
+                case Strings.teamKata:   transformedLotterySets = LotteryPrinterTransformations.TeamKataSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         break;
+
+                case Strings.teamKumite: transformedLotterySets = LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(lotterySets, athletesPerTeam);
+                                         break;
+
+                default:                 transformedLotterySets = lotterySets;  // no transformation needed
+                                         break;
+            }
+
+            Debug.Assert(transformedLotterySets != null);   // This assertion sometimes fails, that is transformedLotterySets might
+                                                            // REALLY be null and the execution won't stop until something blows up
+                                                            // further in the code... Congrats C# for wasting our time!
+
+
+
+            var winnerTuple = new LotteryPrinterConnection().getWinnerTuple(tournamentId);
+            if (winnerTuple != null)
+                transformedLotterySets.Add(winnerTuple);
+
+            bigBox = makeBigBox(transformedLotterySets);
         }
 
 
@@ -130,55 +147,60 @@ namespace KarateGeek.lottery
                 return TournamentExpoLotteryToBox(lotterySets);
         }
 
-
+        #region Older, proof-of-concept code (totally obsolete)
         /** The following is just an obsolete, experimental proof-of-concept implementation of makeBigBox(): */
-        private char[][] makeBox(List<long> lotteryList) // monster method, and it doesn't even work for all cases...
-                                                         // only useful as a template
-        {
-            char[][] tmpBigBox = new char[lotteryList.Count * (isListOfTeams ? 5 : 3) + (lotteryList.Count - 1)][]; // 5 is WRONG!
+        //private bool isListOfTeams;             // false: input is a list of athletes
+        //                                        // true:  input is a list of teams of athletes
+        //                                        // supposed to be set by the constructor, see the commit history for older versions
 
-            int line = 0;
-            bool directiondown = true;
-
-            foreach (var memberId in lotteryList) {
-                string name;
-                List<string> nameList;
-                char[][] tmpBox;
-
-                if (!isListOfTeams) {
-                    var firstlast = new CoreDatabaseConnection().Query(
-                                        "SELECT last_name, first_name FROM athletes NATURAL JOIN persons "
-                                      + "WHERE id = " + memberId + " ;"
-                                    ).Tables[0].Rows[0];
-                    name = firstlast[0].ToString() + " " + firstlast[1].ToString();
-
-                    tmpBox = new LotteryBox(name, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up, this.maxNameLength).get();
-                }
-                else {
-                    var firstlast = new CoreDatabaseConnection().Query(
-                                        " SELECT p.last_name, p.first_name"
-                                      + " FROM (tournament_participations t JOIN athletes a ON t.athlete_id = a.id)"
-                                      + " NATURAL JOIN persons p"
-                                      + " WHERE tournament_id = " + tournamentId + " AND team_id = " + memberId + " ;"
-                                    ).Tables[0];
-
-                    nameList = new List<string>();
-                    for (int i = 0; i < firstlast.Rows.Count; ++i)
-                        nameList.Add(firstlast.Rows[i][0] + " " + firstlast.Rows[i][1]);
-
-                    tmpBox = new LotteryBox(nameList, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up, this.maxNameLength).get();
-                }
-
-                for (int i = 0; i < tmpBox.Length; ++i) {
-                    tmpBigBox[line] = tmpBox[i];
-                    ++line;
-                }
-
-                directiondown = !directiondown;
-                ++line;
-            }
-            return tmpBigBox;
-        }
+        //private char[][] makeBox(List<long> lotteryList) // monster method, and it doesn't even work for all cases...
+        //                                                 // only useful as a template
+        //{
+        //    char[][] tmpBigBox = new char[lotteryList.Count * (isListOfTeams ? 5 : 3) + (lotteryList.Count - 1)][]; // 5 is WRONG!
+        //
+        //    int line = 0;
+        //    bool directiondown = true;
+        //
+        //    foreach (var memberId in lotteryList) {
+        //        string name;
+        //        List<string> nameList;
+        //        char[][] tmpBox;
+        //
+        //        if (!isListOfTeams) {
+        //            var firstlast = new CoreDatabaseConnection().Query(
+        //                                "SELECT last_name, first_name FROM athletes NATURAL JOIN persons "
+        //                              + "WHERE id = " + memberId + " ;"
+        //                            ).Tables[0].Rows[0];
+        //            name = firstlast[0].ToString() + " " + firstlast[1].ToString();
+        //
+        //            tmpBox = new LotteryBox(name, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up, this.maxNameLength).get();
+        //        }
+        //        else {
+        //            var firstlast = new CoreDatabaseConnection().Query(
+        //                                " SELECT p.last_name, p.first_name"
+        //                              + " FROM (tournament_participations t JOIN athletes a ON t.athlete_id = a.id)"
+        //                              + " NATURAL JOIN persons p"
+        //                              + " WHERE tournament_id = " + tournamentId + " AND team_id = " + memberId + " ;"
+        //                            ).Tables[0];
+        //
+        //            nameList = new List<string>();
+        //            for (int i = 0; i < firstlast.Rows.Count; ++i)
+        //                nameList.Add(firstlast.Rows[i][0] + " " + firstlast.Rows[i][1]);
+        //
+        //            tmpBox = new LotteryBox(nameList, BoxTypeLeft.unconnected, directiondown ? BoxTypeRight.connected_down : BoxTypeRight.connected_up, this.maxNameLength).get();
+        //        }
+        //
+        //        for (int i = 0; i < tmpBox.Length; ++i) {
+        //            tmpBigBox[line] = tmpBox[i];
+        //            ++line;
+        //        }
+        //
+        //        directiondown = !directiondown;
+        //        ++line;
+        //    }
+        //    return tmpBigBox;
+        //}
+        #endregion
 
 
         private void insertSmallBox(char[][] bigBox, LotteryBox smallBox, int x, int y)
@@ -245,7 +267,7 @@ namespace KarateGeek.lottery
                                 bigBox[row][col] = deletionMark;            // !!
                             fillNeeded = false;
                         }
-                            
+
                     }
 
                     if (bigBox[row][col] == spaceChar && fillNeeded)
@@ -309,6 +331,7 @@ namespace KarateGeek.lottery
 
             /** Allocate "big box" of suitable size: */
 
+            Debug.Assert(Sets.Count != 0);
             int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3 + 2);
             int numOfPhases = Sets.First().Item3 + 2;
 
@@ -322,7 +345,7 @@ namespace KarateGeek.lottery
 
             for (int phase = numOfPhases - 1; phase >= 0; --phase)
             {
-                
+
                 { // header boxes
                     int depth = (numOfPhases - 1) - phase;
                     string phaseBoxString = (phase == 0) ? "WINNER" : string.Format("PHASE {0}", depth + 1);
@@ -414,6 +437,7 @@ namespace KarateGeek.lottery
             /** Allocate "big box" of suitable size: */
 
             /* int numOfNonEmptySmallBoxesOfFirstPhase = Sets.OrderByDescending(x => x.Item4).OrderByDescending(x => x.Item3).First().Item4; //real number of non-empty boxes of the 1st phase */
+            Debug.Assert(Sets.Count != 0);
             int numOfSmallBoxesOfFirstPhase = (int)Math.Pow(2, Sets.First().Item3);
             int numOfPhases = Sets.First().Item3 + 1;
 
@@ -486,7 +510,7 @@ namespace KarateGeek.lottery
             return tmpBigBox;
         }
 
-        
+
         private int getOffset(int boxHeight, int depth)
         {
             return (int)Math.Floor(boxHeight * Math.Pow(2, depth - 1));
@@ -531,7 +555,7 @@ namespace KarateGeek.lottery
                     else
                         break;
 
-                for (int line = 0; line < firstEmptyLine; ++line)      // (line <= firstEmptyLine) is more correct, but then the last line is empty anyway
+                for (int line = 0; line <= firstEmptyLine; ++line)      // (line < firstEmptyLine) might be enough, but not in all cases, so "<=" is safer
                     sb.Append(bigBox[line]).Append('\n');
 
             } else { // (this.type == PrinterType.versus)

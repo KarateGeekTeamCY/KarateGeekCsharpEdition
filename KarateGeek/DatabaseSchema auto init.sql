@@ -194,6 +194,13 @@ CREATE TABLE tournaments (
 );
 
 
+CREATE TABLE lottery_graph (
+    id              INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
+    graph           TEXT,
+    PRIMARY KEY(id)
+);
+
+
 CREATE TABLE games (
     id              SERIAL,
     phase           INTEGER         NOT NULL,
@@ -201,7 +208,6 @@ CREATE TABLE games (
     tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     is_ready        BOOLEAN         NOT NULL DEFAULT false,
     is_finished     BOOLEAN         NOT NULL DEFAULT false,
-
     PRIMARY KEY(id)
 );
 
@@ -222,7 +228,6 @@ CREATE TABLE tournament_participations (
     tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
-
     PRIMARY KEY (athlete_id, tournament_id)
 );
 
@@ -234,6 +239,8 @@ CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio
     athlete_id      INTEGER         REFERENCES athletes (id) ON DELETE RESTRICT, -- ?
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
     game_id         INTEGER         REFERENCES games (id) ON DELETE CASCADE,
+    prev_position   INTEGER,        -- NULLABLE! This is only important for certain parts of the code, and
+                                    -- doesn't even need to be consistent (used with ORDER BY)
     PRIMARY KEY (id)
 );
 
@@ -326,26 +333,26 @@ CREATE OR REPLACE VIEW athletes_total_details AS
     SELECT athletes.id, first_name, last_name, fathers_name, sex, date_of_birth,
         persons.phone, secondary_phone, persons.email, rank, clubs.name AS club_name, street,
         addresses.number, addresses.postal_code, cities.name as city, countries.name as country,
-		athlete_first_places_ind.count AS first_places,
-		athlete_second_places_ind.count AS second_places,
-		athlete_third_places_ind.count AS third_places
+        athlete_first_places_ind.count AS first_places,
+        athlete_second_places_ind.count AS second_places,
+        athlete_third_places_ind.count AS third_places
 FROM persons
 JOIN athletes
-	ON athletes.id = persons.id
+    ON athletes.id = persons.id
 LEFT JOIN addresses
-	ON persons.address_id = addresses.id
+    ON persons.address_id = addresses.id
 LEFT JOIN clubs
-	ON athletes.club_id = clubs.id
+    ON athletes.club_id = clubs.id
 LEFT JOIN cities
-	ON cities.id = addresses.city_id
+    ON cities.id = addresses.city_id
 LEFT JOIN countries
-	ON countries.code = cities.country_code
+    ON countries.code = cities.country_code
 LEFT JOIN athlete_first_places_ind
-	ON athlete_first_places_ind.athlete_id = athletes.id
+    ON athlete_first_places_ind.athlete_id = athletes.id
 LEFT JOIN athlete_second_places_ind
-	ON athlete_second_places_ind.athlete_id = athletes.id
+    ON athlete_second_places_ind.athlete_id = athletes.id
 LEFT JOIN athlete_third_places_ind
-	ON athlete_third_places_ind.athlete_id = athletes.id;
+    ON athlete_third_places_ind.athlete_id = athletes.id;
 
 
 CREATE OR REPLACE VIEW judges_total_details AS
@@ -353,13 +360,13 @@ CREATE OR REPLACE VIEW judges_total_details AS
         rank, street, addresses.number, cities.name AS city, countries.name AS country
 FROM persons
 JOIN judges
-	ON judges.id = persons.id
+    ON judges.id = persons.id
 JOIN addresses
-	ON persons.address_id = addresses.id
+    ON persons.address_id = addresses.id
 JOIN cities
-	ON cities.id = addresses.city_id
+    ON cities.id = addresses.city_id
 JOIN countries
-	ON countries.code = cities.country_code;
+    ON countries.code = cities.country_code;
 
 
 CREATE or REPLACE VIEW clubs_total_details AS
@@ -367,15 +374,15 @@ CREATE or REPLACE VIEW clubs_total_details AS
         street, addresses.number, cities.name AS city, countries.name AS country
 FROM clubs
 JOIN athletes
-	ON athletes.club_id = clubs.id
+    ON athletes.club_id = clubs.id
 LEFT JOIN persons
-	ON persons.id = athletes.id
+    ON persons.id = athletes.id
 LEFT JOIN addresses
-	ON addresses.id = clubs.address_id
+    ON addresses.id = clubs.address_id
 LEFT JOIN cities
-	ON cities.id = addresses.city_id
+    ON cities.id = addresses.city_id
 LEFT JOIN countries
-	ON countries.code = cities.country_code;
+    ON countries.code = cities.country_code;
 
 
 CREATE or REPLACE VIEW events_total_details AS
@@ -399,22 +406,22 @@ LEFT JOIN countries
 
 CREATE OR REPLACE VIEW tournaments_total_details AS
 SELECT events.name AS event, events.date,locations.name AS location,
-	tournaments.id, tournaments.name AS tournament, tournaments.sex, tournaments.age_from, tournaments.age_to,
-	tournaments.level_from,tournaments.level_to, tournaments.game_type, tournaments.scoring_type,
-	team_tournament_participations.ranking AS rankingTeam,
-	tournament_participations.athlete_id, tournament_participations.ranking AS ranking,
-	persons.last_name, persons.first_name
+    tournaments.id, tournaments.name AS tournament, tournaments.sex, tournaments.age_from, tournaments.age_to,
+    tournaments.level_from,tournaments.level_to, tournaments.game_type, tournaments.scoring_type,
+    team_tournament_participations.ranking AS rankingTeam,
+    tournament_participations.athlete_id, tournament_participations.ranking AS ranking,
+    persons.last_name, persons.first_name
 FROM tournaments
 JOIN events
-	ON tournaments.event_id = events.id
+    ON tournaments.event_id = events.id
 LEFT JOIN tournament_participations
-	ON tournaments.id = tournament_participations.tournament_id
+    ON tournaments.id = tournament_participations.tournament_id
 LEFT JOIN team_tournament_participations
-	ON tournaments.id = team_tournament_participations.tournament_id
+    ON tournaments.id = team_tournament_participations.tournament_id
 LEFT JOIN persons
-	ON tournament_participations.athlete_id = persons.id
+    ON tournament_participations.athlete_id = persons.id
 LEFT JOIN locations
-	ON events.location_id = locations.id;
+    ON events.location_id = locations.id;
 
 
 CREATE OR REPLACE VIEW game_participants_total_det AS
@@ -422,15 +429,15 @@ CREATE OR REPLACE VIEW game_participants_total_det AS
         athletes.id AS athlete_id, last_name, first_name
 FROM events
 JOIN tournaments
-	ON events.id = tournaments.event_id
+    ON events.id = tournaments.event_id
 JOIN games
-	ON tournaments.id = games.tournament_id
+    ON tournaments.id = games.tournament_id
 JOIN game_participations
-	ON game_participations.game_id = games.id
+    ON game_participations.game_id = games.id
 JOIN athletes
-	ON game_participations.athlete_id = athletes.id
+    ON game_participations.athlete_id = athletes.id
 JOIN persons
-	ON athletes.id = persons.id;
+    ON athletes.id = persons.id;
 
 
 CREATE OR REPLACE VIEW total_point_system AS
@@ -475,6 +482,11 @@ JOIN countries
     ON addresses.country_code = countries.code
 JOIN cities
     ON cities.id = addresses.city_id;
+
+
+CREATE OR REPLACE VIEW graph_view AS
+    SELECT graph, name
+FROM lottery_graph NATURAL JOIN tournaments;
 
 
 -- rollback transaction (useful for checking syntax):
@@ -889,6 +901,9 @@ VALUES ('Tekken 3 (Ind. Kata, score)', 'MALE', 5, 80, 'White  –  6th kyu', 'Wh
 INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
 VALUES ('Tekken 4 (Ind. Kata, flag)', 'MALE', 5, 80, 'White  –  6th kyu', 'White/Red – 8th dan', 'IND|KATA', 'FLAG', 1);
 
+INSERT INTO tournaments (name, sex, age_from, age_to, level_from, level_to, game_type, scoring_type, event_id)
+VALUES ('Tekken 5 (Team Kumite)', 'MALE', 6, 75, 'White  –  6th kyu', 'Red    –  10th dan', 'TEAM|KUMITE', 'FLAG', 1);
+
 
 -- A NULL "ranking" means that the match hasn't taken place yet
 
@@ -1073,8 +1088,6 @@ VALUES (19, 4, (SELECT rank FROM athletes WHERE id = 19), NULL, 18 );
 INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 VALUES (20, 4, (SELECT rank FROM athletes WHERE id = 20), NULL, 18 );
 
-
-
 -- 'Tekken 1 (Enbu)'
 INSERT INTO team_tournament_participations (team, tournament_id)
 VALUES (0, 5);
@@ -1191,6 +1204,59 @@ VALUES (10, 8, (SELECT rank FROM athletes WHERE id = 10), NULL, NULL );
 --VALUES (11, 8, (SELECT rank FROM athletes WHERE id = 11), NULL, NULL );
 --INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
 --VALUES (12, 8, (SELECT rank FROM athletes WHERE id = 12), NULL, NULL );
+
+--'Tekken 5 (Team Kumite)'
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (0, 9);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (1, 9);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (2, 9);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (3, 9);
+INSERT INTO team_tournament_participations (team, tournament_id)
+VALUES (4, 9);
+
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 1
+VALUES (1, 9, (SELECT rank FROM athletes WHERE id = 1), NULL, 24 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (2, 9, (SELECT rank FROM athletes WHERE id = 2), NULL, 24 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (3, 9, (SELECT rank FROM athletes WHERE id = 3), NULL, 24 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (4, 9, (SELECT rank FROM athletes WHERE id = 4), NULL, 24 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 2
+VALUES (5, 9, (SELECT rank FROM athletes WHERE id = 5), NULL, 25 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (6, 9, (SELECT rank FROM athletes WHERE id = 6), NULL, 25 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (7, 9, (SELECT rank FROM athletes WHERE id = 7), NULL, 25 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (8, 9, (SELECT rank FROM athletes WHERE id = 8), NULL, 25 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 3
+VALUES (9, 9, (SELECT rank FROM athletes WHERE id = 9), NULL, 26 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (10, 9, (SELECT rank FROM athletes WHERE id = 10), NULL, 26 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (11, 9, (SELECT rank FROM athletes WHERE id = 11), NULL, 26 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (12, 9, (SELECT rank FROM athletes WHERE id = 12), NULL, 26 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 4
+VALUES (13, 9, (SELECT rank FROM athletes WHERE id = 13), NULL, 27 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (14, 9, (SELECT rank FROM athletes WHERE id = 14), NULL, 27 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (15, 9, (SELECT rank FROM athletes WHERE id = 15), NULL, 27 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (16, 9, (SELECT rank FROM athletes WHERE id = 16), NULL, 27 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id) -- team 5
+VALUES (17, 9, (SELECT rank FROM athletes WHERE id = 17), NULL, 28 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (18, 9, (SELECT rank FROM athletes WHERE id = 18), NULL, 28 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (19, 9, (SELECT rank FROM athletes WHERE id = 19), NULL, 28 );
+INSERT INTO tournament_participations ( athlete_id , tournament_id , rank_at_time , ranking , team_id)
+VALUES (20, 9, (SELECT rank FROM athletes WHERE id = 20), NULL, 28 );
 
 
 

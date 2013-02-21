@@ -44,7 +44,7 @@ namespace KarateGeek.guis
             string phase, teamAid, teamBid;
 
             teamAid = (string)temp.Rows[0][2].ToString();
-            teamBid = (string)temp.Rows[1][2].ToString();
+            teamBid = (string)temp.Rows[1][2].ToString();   /** WILL CRASH AND BURN... when the query of line 41 returns only 1 row as a result **/
 
             gamePartIdA = (string)temp.Rows[0][0].ToString();
             gamePartIdB = (string)temp.Rows[1][0].ToString();

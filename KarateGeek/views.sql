@@ -220,6 +220,10 @@ join cities on cities.id = addresses.city_id;
 
     
 
+--mixalis an graph view
+
+create or replace view graph_view as 
+select graph, name from lottery_graph join tournaments on lottery_graph.id = tournaments.id;
 
 
 

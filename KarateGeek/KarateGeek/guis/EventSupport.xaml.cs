@@ -42,6 +42,9 @@ namespace KarateGeek.guis
         private List<string> _currentGames = new List<string>();
         private List<string> _futureGames = new List<string>();
 
+        /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
+        private LotteryGraph graph;
+
 
 
         #endregion private declaretions
@@ -106,13 +109,17 @@ namespace KarateGeek.guis
             this.tournament = new Tournament(this._tournamentId);
 
             loadGames();
+
+            /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
+            this.graph = new LotteryGraph(long.Parse(this.tournament.id));      // predictably, this could crash for Team Kumite because it needs at least 1 record in the table (tournaments JOIN games ON tournaments.id = games.tournament_id)
+            // solution: we used the hasEnoughElementsToPrint() method in the LotteryGraph GUI, especially for team kumite.
         }
 
 
 
         //
-        //  nothing here yet 
-        //  need to implement 
+        //  nothing here yet
+        //  need to implement
         //
         #region buttons
 
@@ -129,6 +136,9 @@ namespace KarateGeek.guis
         {
             _sender.Show();
             this.Close();
+
+            /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
+            if (this.graph != null) this.graph.Close();
         }
 
         #endregion
@@ -223,6 +233,9 @@ namespace KarateGeek.guis
                 // final game msg
                 //
             }
+
+            /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
+            if (this.graph != null) this.graph.updateGraph();
         }
 
 
@@ -764,7 +777,7 @@ namespace KarateGeek.guis
             else
             {
                 //
-                //  the presentetion game winner 
+                //  the presentetion game winner
                 //  advancing method
                 //
                 if (ready)
@@ -772,7 +785,7 @@ namespace KarateGeek.guis
             }
 
             //
-            // i don't now if thats necessary here but will live it 
+            // i don't now if thats necessary here but will live it
             // as a note in case of something go wrong
             // although i am sertaind that i dont need this
             //
@@ -817,9 +830,6 @@ namespace KarateGeek.guis
                 int currentPhase, currentPosition;
                 string sql;
 
-
-                //if (this.tournament.gameType == Strings.indKumite || (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.flag))
-                //{
                 currentPosition = int.Parse(gm.position);
                 nextPoss = findNextPossInd(currentPosition);
 
@@ -838,17 +848,20 @@ namespace KarateGeek.guis
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
                         setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
+
+                        /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
+                        if (this.graph != null) this.graph.updateGraph();
                     }
                     else
                     {
                         setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
-                    }
 
+                        /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
+                        if (this.graph != null) this.graph.updateGraph();
+                    }
                 }
                 else
                 {
-
-
                     sql = "SELECT id FROM games WHERE tournament_id = " + this.tournament.id
                         + " AND phase = " + nextPhase
                         + " AND position = " + nextPoss + ";";
@@ -862,8 +875,6 @@ namespace KarateGeek.guis
                     else
                         winnertype = "athlete_id";
 
-
-
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
                         int next3 = findnext3(nextPoss);
@@ -871,27 +882,26 @@ namespace KarateGeek.guis
                         {
                             nextgameid = findGameId(this.tournament.id, nextPhase.ToString(), i.ToString());
 
-                            sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
-                            + " VALUES (" + winner + ", " + nextgameid + "); ";
+                            sql = "INSERT INTO game_participations (" + winnertype + ", game_id, prev_position )"
+                                + " VALUES (" + winner + ", " + nextgameid + ", " + gm.position + "); ";
+
                             conn.NonQuery(sql);
                         }
 
                         setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
-
                     }
                     else
                     {
                         nextgameid = findGameId(this.tournament.id.ToString(), nextPhase.ToString(), nextPoss.ToString());
 
-                        sql = "INSERT INTO game_participations (" + winnertype + ", game_id )"
-                            + " VALUES (" + winner + ", " + nextgameid + "); ";
+                        sql = "INSERT INTO game_participations (" + winnertype + ", game_id, prev_position )"
+                                + " VALUES (" + winner + ", " + nextgameid + ", " + gm.position + "); ";
                         conn.NonQuery(sql);
 
                         setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
                     }
 
                 }
-                //}
             }
         }
 

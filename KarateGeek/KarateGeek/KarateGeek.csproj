@@ -122,6 +122,9 @@
     <Compile Include="guis\LotteryChooser.xaml.cs">
       <DependentUpon>LotteryChooser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="guis\LotteryGraph.xaml.cs">
+      <DependentUpon>LotteryGraph.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\UserManagement.xaml.cs">
       <DependentUpon>UserManagement.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,7 @@
     <Compile Include="lottery\LotteryGeneratorFactory.cs" />
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="lottery\LotteryBox.cs" />
+    <Compile Include="lottery\LotteryPrinterTransformations.cs" />
     <Compile Include="Reports\AthleteCrystalReport.cs">
       <DependentUpon>AthleteCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -288,6 +292,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="guis\LotteryChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="guis\LotteryGraph.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
