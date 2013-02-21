@@ -656,7 +656,7 @@ namespace KarateGeek.guis
                             }
                             else
                             {
-                                kataSys = new KataSystem(this, gm);
+                                flagSys = new FlagSystem(this, gm);
                             }
 
                             break;
