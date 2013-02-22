@@ -163,6 +163,32 @@ namespace KarateGeek.guis
                     this.clubName.Text = filteredClubs.Tables[0].Rows[index][1].ToString();
                     this.clubPhone.Text = filteredClubs.Tables[0].Rows[index][2].ToString();
                     this.clubEmail.Text = filteredClubs.Tables[0].Rows[index][3].ToString();
+                  
+                    /*
+                    helpers.ImageConverter ic = new helpers.ImageConverter();
+                    System.Drawing.Image image = ic.ToImage((byte[])filteredClubs.Tables[0].Rows[index][4]);
+
+                    var bitmap = new System.Windows.Media.Imaging.BitmapImage();
+                    bitmap.BeginInit();
+                    MemoryStream memoryStream = new MemoryStream();
+                    // Save to a memory stream...
+                    image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Bmp);
+                    // Rewind the stream...
+                    memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    bitmap.StreamSource = memoryStream;
+                    bitmap.EndInit();
+                    this.clubLogo.Source = bitmap;
+                    */
+                  
+                    Byte[] productImageByte = (Byte[])filteredClubs.Tables[0].Rows[0][4];
+                    if (productImageByte != null)
+                    {
+                        using (Stream productImageStream = new System.IO.MemoryStream(productImageByte))
+                        {
+                            System.Drawing.Image im =  System.Drawing.Image.FromStream(productImageStream);
+                            this.clubLogo = helpers.ImageConverter.ConvertDrawingImageToWPFImage(im);
+                        }
+                    }
                     
                     ds = addressConnection.getAddress(address_id);
 
@@ -173,6 +199,8 @@ namespace KarateGeek.guis
                     string clubCity = ds.Tables[0].Rows[0][3].ToString();
                     int ix = ds.Tables[0].Columns.Count;
                     string clubCountry = ds.Tables[0].Rows[0][5].ToString();
+
+
 
 
                     //
