@@ -236,6 +236,8 @@ namespace KarateGeek.guis
 
             /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
             if (this.graph != null) this.graph.updateGraph();
+
+            this.listBoxCurrentGameList.UnselectAll();
         }
 
 
