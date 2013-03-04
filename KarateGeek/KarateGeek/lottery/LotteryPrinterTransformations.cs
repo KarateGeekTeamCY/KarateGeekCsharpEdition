@@ -22,17 +22,26 @@ namespace KarateGeek.lottery
                 int oldPhase = set.Item3;
                 int oldPos = set.Item4;
                 int middlePos = (int)Math.Pow(2, oldPhase - 1);     // approx.
-                // TODO: check WINNER LotteryBox
 
-                if (set.Item1.Count > 0)
-                {
+                //if (set.Item1.Count > 0)
+                //{
+                //    i = (oldPos <= middlePos) ? 1 : 0;
+                //    foreach (long id in set.Item1)
+                //    {
+                //        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
+                //        i = (oldPos <= middlePos) ? 0 : 1;
+                //    }
+                //}
+                /**/
+                if (set.Item1.Count == 1) {
                     i = (oldPos <= middlePos) ? 1 : 0;
-                    foreach (long id in set.Item1)
-                    {
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { id }, set.Item2, oldPhase + 1, 2 * oldPos - i));
-                        i = (oldPos <= middlePos) ? 0 : 1;
-                    }
+                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { set.Item1.ElementAt(0) }, set.Item2, oldPhase + 1, 2 * oldPos - i));
                 }
+                if (set.Item1.Count == 2) {
+                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { set.Item1.ElementAt(0) }, set.Item2, oldPhase + 1, 2 * oldPos - 1));
+                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { set.Item1.ElementAt(1) }, set.Item2, oldPhase + 1, 2 * oldPos));
+                }
+                /**/
             }
 
             return transformedSets;
@@ -122,17 +131,32 @@ namespace KarateGeek.lottery
                     team2.Add(id2);
                 }
 
-                if (team1.Count == athletesPerTeam) {
-                    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
+                //if (team1.Count == athletesPerTeam) {
+                //    transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
 
-                    if (team2.Count > 0)            // adding an empty set shouldn't (?) be a problem, but we check anyway (it's computationally cheaper)
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos + ((newPos <= middlePos) ? 1 : 0)));
+                //    if (team2.Count > 0)            // adding an empty set shouldn't (?) be a problem, but we check anyway (it's computationally cheaper)
+                //        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos + ((newPos <= middlePos) ? 1 : 0)));
+
+                //    // after Clear()ing the lists, for some reason the Add() method stops working, so instead of calling
+                //    // "team1.Clear();" or "team2.Clear();" we re-initialize the lists and let the garbage collector do its job:
+                //    team1 = new List<long>();
+                //    team2 = new List<long>();
+                //}
+                /**/
+                if (team1.Count == athletesPerTeam) {
+                    if (team2.Count == 0)
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
+                    else {
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos));
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos + 1));
+                    }
 
                     // after Clear()ing the lists, for some reason the Add() method stops working, so instead of calling
                     // "team1.Clear();" or "team2.Clear();" we re-initialize the lists and let the garbage collector do its job:
                     team1 = new List<long>();
                     team2 = new List<long>();
                 }
+                /**/
             }
 
             return transformedSets;
