@@ -50,7 +50,8 @@ namespace KarateGeek.lottery
                 case Strings.syncKata:   lg = new LotteryGen_Expo_Sync(tournamentId, new LotteryGenConnection().getAthletesPerTeam(tournamentId));   // expected value: 3
                                          break;
 
-                case Strings.teamKumite: lg = new LotteryGen_Versus_Team(tournamentId, new LotteryGenConnection().getAthletesPerTeam(tournamentId)); // expected values: 3 or 4
+                case Strings.teamKumite: //lg = new LotteryGen_Versus_Team(tournamentId, new LotteryGenConnection().getAthletesPerTeam(tournamentId)); // expected values: 3 or 4
+                                         lg = new LotteryGen_Versus_Team(tournamentId, 3); // god help us (after this "fix")
                                          break;
 
                 case Strings.individual: // not enough info

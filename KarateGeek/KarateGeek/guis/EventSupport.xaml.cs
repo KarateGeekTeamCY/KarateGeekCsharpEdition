@@ -99,12 +99,14 @@ namespace KarateGeek.guis
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
         }
 
-
+        
 
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
             this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
+
+            //cleanTeamKumite();
 
             this.tournament = new Tournament(this._tournamentId);
 
@@ -113,6 +115,16 @@ namespace KarateGeek.guis
             /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
             this.graph = new LotteryGraph(long.Parse(this.tournament.id));      // predictably, this could crash for Team Kumite because it needs at least 1 record in the table (tournaments JOIN games ON tournaments.id = games.tournament_id)
             // solution: we used the hasEnoughElementsToPrint() method in the LotteryGraph GUI, especially for team kumite.
+        }
+
+
+        private void cleanTeamKumite()
+        {
+            CoreDatabaseConnection con = new CoreDatabaseConnection();
+            string sql = "";
+
+        
+        
         }
 
 

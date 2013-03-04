@@ -67,13 +67,14 @@ namespace KarateGeek.guis
 
         public void updateGraph()
         {
-            if (teamKumiteCheckEnabled) {
+            if (teamKumiteCheckEnabled) { // else Show()n in the constructor
                 if (!new LotteryPrinterConnection().hasEnoughElementsToPrint(this.tournamentId))  // prevent crashes in the Team Kumite case
                     return;
-            } else {
-                try {
-                    this.Show();     // the red X button should be overridden so that it calls this.Hide() instead of this.Close()          
-                } catch {
+                else {
+                    try {
+                        this.Show();     // the red X button should be overridden so that it calls this.Hide() instead of this.Close()          
+                    } catch {
+                    }
                 }
             }
 

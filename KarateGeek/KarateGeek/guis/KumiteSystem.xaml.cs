@@ -269,11 +269,17 @@ namespace KarateGeek.guis
 
             bool ist = (new Tournament(this.game.tournamentId).isTeam);
 
-                if (!ist)
-                {
-                    insertPointToDB(_leftAthleteId, new Point("init", 0, pointsIndex, Strings.left));
-                    insertPointToDB(_rightAthleteId, new Point("init", 0, pointsIndex, Strings.right));
-                }
+            if (ist)
+            {
+                insertPointToDB(_leftAthleteId, _leftAthleteTeamId, new Point("init", 0, pointsIndex, Strings.left));
+                insertPointToDB(_rightAthleteId, _rightAthleteTeamId, new Point("init", 0, pointsIndex, Strings.right));
+            }
+            else
+            {
+                insertPointToDB(_leftAthleteId, new Point("init", 0, pointsIndex, Strings.left));
+                insertPointToDB(_rightAthleteId, new Point("init", 0, pointsIndex, Strings.right));
+            
+            }
 
             foreach (Point p in _pointsHistory)
             {
