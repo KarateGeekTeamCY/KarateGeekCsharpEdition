@@ -326,25 +326,27 @@ namespace KarateGeek.guis
 
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
-                        temp.Append("Click to add game members.");
+                        temp.Append("\nClick to add game members.\n");
                     }
                     else
                     {
-                        temp.Append("Empty...");
+                        temp.Append("\nEmpty...\n");
                     }
 
                     break;
                 case 1:
 
                     A = gm.participants.ElementAt(0);
-                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+                    //temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+                    temp.Append(string.Format("\n{0,-25} VS {1,-25}\n", A.lastName + " " + A.firstName, "Waiting...")); //TODO: align correctly
 
                     break;
                 case 2:
 
                     A = gm.participants.ElementAt(0);
                     B = gm.participants.ElementAt(1);
-                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    //temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    temp.Append(string.Format("\n{0,-25} VS {1,-25}\n", A.lastName + " " + A.firstName, B.lastName + " " + B.firstName)); //TODO: align correctly
 
                     break;
             }
