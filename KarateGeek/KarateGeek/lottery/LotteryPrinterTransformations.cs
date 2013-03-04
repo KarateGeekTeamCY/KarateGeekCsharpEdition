@@ -147,7 +147,7 @@ namespace KarateGeek.lottery
                     if (team2.Count == 0)
                         transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
                     else {
-                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos));
+                        transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos));
                         transformedSets.Add(new Tuple<List<long>, bool, int, int>(team2, isReady, newPhase, newPos + 1));
                     }
 
