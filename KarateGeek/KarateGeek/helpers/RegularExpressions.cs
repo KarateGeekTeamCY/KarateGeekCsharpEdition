@@ -45,6 +45,17 @@ namespace KarateGeek.helpers
                 return false;
         }
 
+        public bool isCharsSpaceOrDots(string str)
+        {
+            Regex regex = new Regex(@"^[a-zA-Z .]+$");
+            Match match = regex.Match(str);
+            if (match.Success)
+                return true;
+            else
+                return false;
+        }
+
+
         public bool isDigitsOnly(string str)
         {
             foreach (char c in str)

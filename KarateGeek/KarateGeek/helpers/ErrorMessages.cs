@@ -43,7 +43,15 @@ namespace KarateGeek.helpers
 
         public void charsSpaceErrorMessage(string formField)
         {
-            string message = "Please enter Characters in the " + formField + " field";
+            string message = "Please enter Characters or spaces in the " + formField + " field";
+            MessageBox.Show(message, "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+        }
+
+        public void charsSpaceDotsErrorMessage(string formField)
+        {
+            string message = "Please enter Characters, Spaces or Dots in the " + formField + " field";
             MessageBox.Show(message, "Message!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
