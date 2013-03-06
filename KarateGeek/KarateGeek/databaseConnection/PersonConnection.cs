@@ -12,7 +12,7 @@ namespace KarateGeek.databaseConnection
     {
 
         protected string insertNewPerson(string firstName, string lastName, string fathersName, string sex,
-           DateTime dateOfBirth,
+           string dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email, string addressId)
         {
             string sql;
@@ -25,7 +25,7 @@ namespace KarateGeek.databaseConnection
                 + lastName + "', '"
                 + fathersName + "', '"
                 + sex + "', '"
-                + dateOfBirth.ToShortDateString() + "', '"
+                + dateOfBirth + "', '"
                 + primaryPhoneNo + "', '"
                 + secondaryPhoneNo + "', '"
                 + email + "', '"
@@ -42,7 +42,7 @@ namespace KarateGeek.databaseConnection
 
 
         protected string updatePerson(int id, string firstName, string lastName, string fathersName, string sex,
-           DateTime dateOfBirth,
+           string dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email, int addressId)
         {
             string sql;
@@ -52,7 +52,7 @@ namespace KarateGeek.databaseConnection
                 "last_name = '" + lastName + "', " +
                 "fathers_name = '" + fathersName + "', " +
                 "sex = '" + sex + "', " +
-                "date_of_birth = '" + dateOfBirth.ToShortDateString() + "', " +
+                "date_of_birth = '" + dateOfBirth + "', " +
                 "phone = '" + primaryPhoneNo + "', " +
                 "secondary_phone = '" + secondaryPhoneNo + "', " +
                 "email = '" + email + "'," + "address_id = '" + addressId + "' where id = '" + id + "' ;";

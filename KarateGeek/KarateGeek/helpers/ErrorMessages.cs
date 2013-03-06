@@ -65,6 +65,14 @@ namespace KarateGeek.helpers
                 MessageBoxImage.Information).ToString();
         }
 
+        public void sqlSpecialChar(string formField)
+        {
+            string message = "The charachters ; and ' are not allowded " + formField + " field";
+            MessageBox.Show(message, "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+        }
+
         public void errorMessage(string formField)
         {
             string message = "Please complete " + formField;

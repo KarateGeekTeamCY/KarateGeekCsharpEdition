@@ -65,7 +65,7 @@ namespace KarateGeek.guis
         private string _newAthleteCountryCode = null;
         private string _newAthleteRank = null;
         private string _newAthleteClubId = null;
-        private DateTime _newAthleteDateOfBirth;
+        private string _newAthleteDateOfBirth;
 
         //Edit athlete variables
 
@@ -84,7 +84,7 @@ namespace KarateGeek.guis
         private string _editAthleteCountryCode = null;
         private string _editAthleteRank = null;
         private string _editAthleteClubId = null;
-        private DateTime _editAthleteDateOfBirth;
+        private string _editAthleteDateOfBirth;
 
 
 
@@ -110,7 +110,7 @@ namespace KarateGeek.guis
         private string _newJudgeCountryCode = null;
         private string _newJudgeRank = null;
         private string _newJudgeClass = null;
-        private DateTime _newJudgeDateOfBirth;
+        private string _newJudgeDateOfBirth;
 
         //edit judge variables
         private int _editJudgeId = -1;
@@ -128,7 +128,7 @@ namespace KarateGeek.guis
         private string _editJudgeCountryCode = null;
         private string _editJudgeRank = null;
         private string _editJudgeClass = null;
-        private DateTime _editJudgeDateOfBirth;
+        private string _editJudgeDateOfBirth;
 
 
         //
@@ -508,7 +508,11 @@ namespace KarateGeek.guis
 
         private void NewAthleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _newAthleteDateOfBirth = NewAthleteDateOfBirth.SelectedDate.Value;
+            Nullable<DateTime> selectedDate = NewAthleteDateOfBirth.SelectedDate;
+            if (selectedDate.HasValue)
+                _newAthleteDateOfBirth = selectedDate.Value.ToShortDateString();
+            else
+                _newAthleteDateOfBirth = string.Empty;
         }
 
         private void NewAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -632,12 +636,12 @@ namespace KarateGeek.guis
                 insertAthlete = athleteConnection.InsertNewAthlete(_newPersonId, _newAthleteFirstName, _newAthleteLastName, _newAthleteFathersName, _newAthleteSex, _newAthleteDateOfBirth, _newAthleteFirstPhone, _newAthleteSecondPhone, _newAthleteEmail, _newAthleteAddress, _newAthleteAddressNum, _newAthleteTK, _newAthleteCountryCode, _newAthleteCity, _newAthleteRank, _newAthleteClubId);
                 if (insertAthlete)
                 {
-                    MessageBox.Show("Succesfully saved!");
+                    MessageBox.Show("Succesfully saved!", "Athlete Add", MessageBoxButton.OK);
                     initializeNewAthlete();
                 }
                 else
                 {
-                    MessageBox.Show("Error. Athlete not succesfully saved!");
+                    MessageBox.Show("Error. Athlete not succesfully saved!", "Athlete add", MessageBoxButton.OK , MessageBoxImage.Error);
                 }
             }
 
@@ -865,7 +869,11 @@ namespace KarateGeek.guis
 
         private void EditAthleteDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _editAthleteDateOfBirth = EditAthleteDateOfBirth.SelectedDate.Value;
+            Nullable<DateTime> selectedDate = EditAthleteDateOfBirth.SelectedDate;
+            if (selectedDate.HasValue)
+                _editAthleteDateOfBirth = selectedDate.Value.ToShortDateString();
+            else
+                _editAthleteDateOfBirth = string.Empty;
         }
 
         private void EditAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -990,7 +998,7 @@ namespace KarateGeek.guis
             if (checkNullOrEmptyFields("athlete", false) && checkWrongFields("athlete", false) && _editPersonId != -1)
             {
                 athleteConnection.UpdateAthlete(_editPersonId, _editAthleteFirstName, _editAthleteLastName, _editAthleteFathersName, _editAthleteSex, _editAthleteDateOfBirth, _editAthleteFirstPhone, _editAthleteSecondPhone, _editAthleteEmail, _editAthleteAddress, _editAthleteAddressNum, _editAthleteTK, _editAthleteCountryCode, _editAthleteCity, _editAthleteRank, _editAthleteClubId);
-                MessageBox.Show("Succesfully saved!");
+                MessageBox.Show("Succesfully saved!", "Athlete Edit" , MessageBoxButton.OK );
                 initializeEditAthlete();
             }
         }
@@ -1001,21 +1009,17 @@ namespace KarateGeek.guis
             {
                 if (athleteConnection.deleteAthlete(_editPersonId))
                 {
-                    MessageBox.Show("Succesfully deleted!");
+                    MessageBox.Show("Succesfully deleted!", "Athlete Delete" , MessageBoxButton.OK);
                     initializeEditAthlete();
                 }
                 else
                 {
-                    MessageBox.Show("Cannot be deleted because of tournament participation!");
-                    PersonManagement pm = new PersonManagement(this);
-                    pm.Activate();
-                    pm.Show();
-                    this.Close();
+                    MessageBox.Show("Cannot be deleted because of tournament participation!", "Athlete Delete", MessageBoxButton.OK , MessageBoxImage.Information);
                 }
             }
             else
             {
-                MessageBox.Show("Please selectge one athlete to delete.");
+                MessageBox.Show("Please select one athlete to delete.", "Athlete Delete" , MessageBoxButton.OK , MessageBoxImage.Information);
             }
 
         }
@@ -1259,7 +1263,11 @@ namespace KarateGeek.guis
 
         private void newJudgeDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _newJudgeDateOfBirth = newJudgeDateOfBirth.SelectedDate.Value;
+            Nullable<DateTime> selectedDate = newJudgeDateOfBirth.SelectedDate;
+            if (selectedDate.HasValue)
+                _newJudgeDateOfBirth = selectedDate.Value.ToShortDateString();
+            else
+                _newJudgeDateOfBirth = string.Empty;
         }
 
         private void newJudgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -1382,15 +1390,12 @@ namespace KarateGeek.guis
                 judgeInsert = judgeConnection.InsertNewJudge(_newJudgeId, _newJudgeFirstName, _newJudgeLastName, _newJudgeFathersName, _newJudgeSex, _newJudgeDateOfBirth, _newJudgeFirstPhone, _newJudgeSecondPhone, _newJudgeEmail, _newJudgeAddress, _newJudgeAddressNum, _newJudgeTK, _newJudgeCountryCode, _newJudgeCity, _newJudgeRank, _newJudgeClass);
                 if (judgeInsert)
                 {
-                    MessageBox.Show("Succesfully saved!");
-                    PersonManagement pm = new PersonManagement(this.sender);
-                    pm.Activate();
-                    pm.Show();
-                    this.Hide();
+                    MessageBox.Show("Succesfully saved!","Judge Add",MessageBoxButton.OK);
+                    initializeNewJudge();
                 }
                 else
                 {
-                    MessageBox.Show("Error. Judge not succesfully inserted");
+                    MessageBox.Show("Error. Judge not succesfully inserted","Judge Add", MessageBoxButton.OK , MessageBoxImage.Error);
                 }
 
             }
@@ -1637,7 +1642,11 @@ namespace KarateGeek.guis
 
         private void editJudgeDateOfBirth_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            _editJudgeDateOfBirth = editJudgeDateOfBirth.SelectedDate.Value;
+            Nullable<DateTime> selectedDate = editJudgeDateOfBirth.SelectedDate;
+            if (selectedDate.HasValue)
+                _editAthleteDateOfBirth = selectedDate.Value.ToShortDateString();
+            else
+                _editAthleteDateOfBirth = string.Empty;
         }
 
         private void editJudgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -1757,12 +1766,7 @@ namespace KarateGeek.guis
             if (checkNullOrEmptyFields("judge", false) && checkWrongFields("judge", false) && _editJudgeId != -1)
             {
                 judgeConnection.UpdateJudge(_editJudgeId, _editJudgeFirstName, _editJudgeLastName, _editJudgeFathersName, _editJudgeSex, _editJudgeDateOfBirth, _editJudgeFirstPhone, _editJudgeSecondPhone, _editJudgeEmail, _editJudgeAddress, _editJudgeAddressNum, _editJudgeTK, _editJudgeCountryCode, _editJudgeCity, _editJudgeRank, _editJudgeClass);
-                MessageBox.Show("Succesfully saved!");
-
-                PersonManagement pm = new PersonManagement(this.sender);
-                pm.Activate();
-                pm.Show();
-                this.Hide();
+                MessageBox.Show("Succesfully saved!","Judge Edit", MessageBoxButton.OK);
             }
 
 
@@ -1774,24 +1778,17 @@ namespace KarateGeek.guis
             {
                 if (judgeConnection.deleteJudge(_editJudgeId))
                 {
-                    MessageBox.Show("Succesfully deleted!");
-                    PersonManagement pm = new PersonManagement(this.sender);
-                    pm.Activate();
-                    pm.Show();
-                    this.Close();
+                    MessageBox.Show("Succesfully deleted!","Judge Delete",MessageBoxButton.OK);
+                    initializeEditJudge();
                 }
                 else
                 {
-                    MessageBox.Show("Cannot be deleted because of tournament participation!");
-                    PersonManagement pm = new PersonManagement(this.sender);
-                    pm.Activate();
-                    pm.Show();
-                    this.Close();
+                    MessageBox.Show("Cannot be deleted because of tournament participation!","Judge Delete",MessageBoxButton.OK,MessageBoxImage.Information);
                 }
             }
             else
             {
-                MessageBox.Show("Please select one judge to delete.");
+                MessageBox.Show("Please select one judge to delete.","Judge Delete",MessageBoxButton.OK,MessageBoxImage.Information);
             }
 
 
@@ -1823,6 +1820,10 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Sex");
                         return false;
                     }
+                    else if(string.IsNullOrEmpty(_newAthleteDateOfBirth)){
+                        em.nullErrorMessage("Date Of Birth");
+                        return false;
+                    }
                     else if (string.IsNullOrEmpty(_newAthleteFirstPhone))
                     {
                         em.nullErrorMessage("Phone Num.");
@@ -1848,6 +1849,11 @@ namespace KarateGeek.guis
                     else if (string.IsNullOrEmpty(_editAthleteSex))
                     {
                         em.nullErrorMessage("Sex");
+                        return false;
+                    }
+                    else if (string.IsNullOrEmpty(_editAthleteDateOfBirth))
+                    {
+                        em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
                     else if (string.IsNullOrEmpty(_editAthleteFirstPhone))
@@ -1880,6 +1886,11 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Sex");
                         return false;
                     }
+                    else if (string.IsNullOrEmpty(_newJudgeDateOfBirth))
+                    {
+                        em.nullErrorMessage("Date Of Birth");
+                        return false;
+                    }
                     else if (string.IsNullOrEmpty(_newJudgeFirstPhone))
                     {
                         em.nullErrorMessage("Phone Num.");
@@ -1905,6 +1916,11 @@ namespace KarateGeek.guis
                     else if (string.IsNullOrEmpty(_editJudgeSex))
                     {
                         em.nullErrorMessage("Sex");
+                        return false;
+                    }
+                    else if (string.IsNullOrEmpty(_editJudgeDateOfBirth))
+                    {
+                        em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
                     else if (string.IsNullOrEmpty(_editJudgeFirstPhone))
@@ -2181,6 +2197,7 @@ namespace KarateGeek.guis
             NewAthleteFatherName.Text = null;
             NewArdButton1.IsChecked = false;
             NewArdButton2.IsChecked = false;
+            NewAthleteDateOfBirth.SelectedDate = null;
             NewAthleteFirstPhone.Text = null;
             NewAthleteSecondPhone.Text = null;
             NewAthleteEmail.Text = null;
@@ -2201,6 +2218,7 @@ namespace KarateGeek.guis
             EditAthleteFatherName.Text = null;
             EditArdButton1.IsChecked = false;
             EditArdButton2.IsChecked = false;
+            EditAthleteDateOfBirth.SelectedDate = null;
             EditAthleteFirstPhone.Text = null;
             EditAthleteSecondPhone.Text = null;
             EditAthleteEmail.Text = null;
@@ -2221,6 +2239,7 @@ namespace KarateGeek.guis
             newJudgeFatherName.Text = null;
             newJrdButton1.IsChecked = false;
             newJrdButton2.IsChecked = false;
+            newJudgeDateOfBirth.SelectedDate = null;
             newJudgeFirstPhone.Text = null;
             newJudgeSecondPhone.Text = null;
             newJudgeEmail.Text = null;
@@ -2241,6 +2260,7 @@ namespace KarateGeek.guis
             editJudgeFatherName.Text = null;
             editJrdButton1.IsChecked = false;
             editJrdButton2.IsChecked = false;
+            editJudgeDateOfBirth.SelectedDate = null;
             editJudgeFirstPhone.Text = null;
             editJudgeSecondPhone.Text = null;
             editJudgeEmail.Text = null;

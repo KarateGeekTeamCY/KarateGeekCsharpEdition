@@ -79,12 +79,24 @@ namespace KarateGeek.helpers
 
         public bool isCharsDigitsOrSpace(string str)
         {
-            Regex regex = new Regex(@"^[a-zA-Z0-9\(\) ]+$");
+            Regex regex = new Regex(@"^[a-zA-Z0-9 ]+$");
             Match match = regex.Match(str);
             if (match.Success)
                 return true;
             else
                 return false;
+        }
+
+        public bool isSqlSpecialChar(string str)
+        {
+            foreach (char c in str)
+            {
+                if (c == ';' || c == '\'')
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
