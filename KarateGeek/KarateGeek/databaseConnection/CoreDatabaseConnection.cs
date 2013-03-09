@@ -94,5 +94,16 @@ namespace KarateGeek.databaseConnection
         }
 
 
+        public NpgsqlDataAdapter AdapterForQuery(string sql)
+        {
+            Debug.WriteLine("Executing SQL Query:    " + sql);  // Much faster than Console.WriteLine()
+            // and auto-disabled in release mode.
+
+            NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(sql, conn);
+
+            this.Disconnect();
+            return adapter;
+        }
+
     }
 }
