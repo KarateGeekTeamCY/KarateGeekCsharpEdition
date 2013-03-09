@@ -25,24 +25,34 @@ namespace KarateGeek.helpers
             }
         }
 
+        /* NOTE: This class was "fixed" using LINQ (and lambda expressions) instead of
+         *       regular expressions, so that non-latin characters are supported properly
+         *       (can be done with regex usage, too, but it would be awkward and wouldn't
+         *       work for ALL languages).
+         *       The class name wasn't changed fo compatibility purposes.
+         */
         public bool isCharsOnly(string str)
         {
-            Regex regex = new Regex(@"^[a-zA-Z]+$");
-            Match match = regex.Match(str);
-            if (match.Success)
-                return true;
-            else
-                return false;
+            //Regex regex = new Regex(@"^[a-zA-Z]+$");
+            //Match match = regex.Match(str);
+            //if (match.Success)
+            //    return true;
+            //else
+            //    return false;
+
+            return str.All(Char.IsLetter);  // using LINQ and ;)
         }
 
         public bool isCharsOrSpace(string str)
         {
-            Regex regex = new Regex(@"^[a-zA-Z ]+$");
-            Match match = regex.Match(str);
-            if (match.Success)
-                return true;
-            else
-                return false;
+            //Regex regex = new Regex(@"^[a-zA-Z ]+$");
+            //Match match = regex.Match(str);
+            //if (match.Success)
+            //    return true;
+            //else
+            //    return false;
+
+            return str.All(c => (Char.IsLetter(c) || c == ' '));
         }
 
         public bool isDigitsOnly(string str)
@@ -58,22 +68,26 @@ namespace KarateGeek.helpers
 
         public bool isCharsOrDigits(string str)
         {
-            Regex regex = new Regex(@"^[a-zA-Z0-9]+$");
-            Match match = regex.Match(str);
-            if (match.Success)
-                return true;
-            else
-                return false;
+            //Regex regex = new Regex(@"^[a-zA-Z0-9]+$");
+            //Match match = regex.Match(str);
+            //if (match.Success)
+            //    return true;
+            //else
+            //    return false;
+
+            return str.All(Char.IsLetterOrDigit);
         }
 
         public bool isCharsDigitsOrSpace(string str)
         {
-            Regex regex = new Regex(@"^[a-zA-Z0-9\(\) ]+$");
-            Match match = regex.Match(str);
-            if (match.Success)
-                return true;
-            else
-                return false;
+            //Regex regex = new Regex(@"^[a-zA-Z0-9\(\) ]+$");
+            //Match match = regex.Match(str);
+            //if (match.Success)
+            //    return true;
+            //else
+            //    return false;
+
+            return str.All(c => (Char.IsLetterOrDigit(c) || c == ' '));
         }
     }
 }
