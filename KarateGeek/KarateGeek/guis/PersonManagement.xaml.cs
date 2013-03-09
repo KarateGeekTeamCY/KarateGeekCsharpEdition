@@ -598,12 +598,12 @@ namespace KarateGeek.guis
 
         private void NewArdButton1_Checked(object sender, RoutedEventArgs e)
         {
-            _newAthleteSex = "male";
+            _newAthleteSex = Strings.male;
         }
 
         private void NewArdButton2_Checked(object sender, RoutedEventArgs e)
         {
-            _newAthleteSex = "female";
+            _newAthleteSex = Strings.female;
         }
 
         #region other listeners
@@ -963,12 +963,12 @@ namespace KarateGeek.guis
 
         private void EditArdButton1_Checked(object sender, RoutedEventArgs e)
         {
-            _editAthleteSex = "male";
+            _editAthleteSex = Strings.male;
         }
 
         private void EditArdButton2_Checked(object sender, RoutedEventArgs e)
         {
-            _editAthleteSex = "female";
+            _editAthleteSex = Strings.female;
         }
 
         #region other listeners
@@ -1340,12 +1340,12 @@ namespace KarateGeek.guis
 
         private void newJrdButton1_Checked(object sender, RoutedEventArgs e)
         {
-            _newJudgeSex = "male";
+            _newJudgeSex = Strings.male;
         }
 
         private void newJrdButton2_Checked(object sender, RoutedEventArgs e)
         {
-            _newJudgeSex = "female";
+            _newJudgeSex = Strings.female;
         }
 
         private void cmbNewJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1719,12 +1719,12 @@ namespace KarateGeek.guis
 
         private void editJrdButton1_Checked(object sender, RoutedEventArgs e)
         {
-            _editJudgeSex = "male";
+            _editJudgeSex = Strings.male;
         }
 
         private void editJrdButton2_Checked(object sender, RoutedEventArgs e)
         {
-            _editJudgeSex = "female";
+            _editJudgeSex = Strings.female;
         }
 
         private void cmbEditJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
