@@ -25,6 +25,7 @@ namespace KarateGeek.helpers
             }
         }
 
+
         /* NOTE: This class was "fixed" using LINQ (and lambda expressions) instead of
          *       regular expressions, so that non-latin characters are supported properly
          *       (can be done with regex usage, too, but it would be awkward and wouldn't
@@ -43,6 +44,7 @@ namespace KarateGeek.helpers
             return str.All(Char.IsLetter);  // using LINQ ;)
         }
 
+
         public bool isCharsOrSpace(string str)
         {
             //Regex regex = new Regex(@"^[a-zA-Z ]+$");
@@ -55,14 +57,17 @@ namespace KarateGeek.helpers
             return str.All(c => (Char.IsLetter(c) || c == ' '));
         }
 
+
         public bool isCharsSpaceOrDots(string str)
         {
-            Regex regex = new Regex(@"^[a-zA-Z .]+$");
-            Match match = regex.Match(str);
-            if (match.Success)
-                return true;
-            else
-                return false;
+            //Regex regex = new Regex(@"^[a-zA-Z .]+$");
+            //Match match = regex.Match(str);
+            //if (match.Success)
+            //    return true;
+            //else
+            //    return false;
+
+            return str.All(c => (Char.IsLetter(c) || c == ' ' || c == '.'));
         }
 
 
@@ -77,6 +82,7 @@ namespace KarateGeek.helpers
             return true;
         }
 
+
         public bool isCharsOrDigits(string str)
         {
             //Regex regex = new Regex(@"^[a-zA-Z0-9]+$");
@@ -89,6 +95,7 @@ namespace KarateGeek.helpers
             return str.All(Char.IsLetterOrDigit);
         }
 
+
         public bool isCharsDigitsOrSpace(string str)
         {
             //Regex regex = new Regex(@"^[a-zA-Z0-9 ]+$");
@@ -100,6 +107,7 @@ namespace KarateGeek.helpers
 
             return str.All(c => (Char.IsLetterOrDigit(c) || c == ' '));
         }
+
 
         public bool isSqlSpecialChar(string str)
         {
