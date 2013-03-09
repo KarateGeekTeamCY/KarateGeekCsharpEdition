@@ -18,5 +18,10 @@ namespace KarateGeek.Reports
             InitializeComponent();
                
         }
+
+        private void crystalReportViewer4_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -16,14 +16,14 @@ namespace KarateGeek.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class EventCrystalReport : ReportClass {
+    public class Graph : ReportClass {
         
-        public EventCrystalReport() {
+        public Graph() {
         }
         
         public override string ResourceName {
             get {
-                return "EventCrystalReport.rpt";
+                return "Graph.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace KarateGeek.Reports {
         
         public override string FullResourceName {
             get {
-                return "KarateGeek.Reports.EventCrystalReport.rpt";
+                return "KarateGeek.Reports.Graph.rpt";
             }
             set {
                 // Do nothing
@@ -66,7 +66,7 @@ namespace KarateGeek.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupHeaderSection1 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace KarateGeek.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,33 +82,17 @@ namespace KarateGeek.Reports {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section GroupFooterSection1 {
-            get {
-                return this.ReportDefinition.Sections[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[5];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[6];
+                return this.ReportDefinition.Sections[4];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedEventCrystalReport : Component, ICachedReport {
+    public class CachedGraph : Component, ICachedReport {
         
-        public CachedEventCrystalReport() {
+        public CachedGraph() {
         }
         
         [Browsable(false)]
@@ -145,7 +129,7 @@ namespace KarateGeek.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            EventCrystalReport rpt = new EventCrystalReport();
+            Graph rpt = new Graph();
             rpt.Site = this.Site;
             return rpt;
         }

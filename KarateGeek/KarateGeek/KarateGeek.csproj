@@ -156,11 +156,28 @@
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Reports\Graph.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Graph.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\JudgeCrystalReport.cs">
       <DependentUpon>JudgeCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LotteryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports\LotteryForm.Designer.cs">
+      <DependentUpon>LotteryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\GraphDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GraphDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\ReportsForm.cs">
       <SubType>Form</SubType>
@@ -252,9 +269,16 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EventCrystalReport.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Graph.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Graph.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\JudgeCrystalReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>JudgeCrystalReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LotteryForm.resx">
+      <DependentUpon>LotteryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportsForm.resx">
       <DependentUpon>ReportsForm.cs</DependentUpon>
@@ -269,6 +293,18 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Reports\GraphDataSet.xsc">
+      <DependentUpon>GraphDataSet.xsd</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Reports\GraphDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GraphDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\GraphDataSet.xss">
+      <DependentUpon>GraphDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="guis\ChooseWinner.xaml">
@@ -358,6 +394,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\fudokan.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ReportDatasets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

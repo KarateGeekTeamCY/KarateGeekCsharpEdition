@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="myDataSet" targetNamespace="http://tempuri.org/myDataSet.xsd" xmlns:mstns="http://tempuri.org/myDataSet.xsd" xmlns="http://tempuri.org/myDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="myDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="myDataSet" msprop:Generator_UserDSName="myDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="graph_dt" msprop:Generator_TableClassName="graph_dtDataTable" msprop:Generator_TableVarName="tablegraph_dt" msprop:Generator_TablePropName="graph_dt" msprop:Generator_RowDeletingName="graph_dtRowDeleting" msprop:Generator_RowChangingName="graph_dtRowChanging" msprop:Generator_RowEvHandlerName="graph_dtRowChangeEventHandler" msprop:Generator_RowDeletedName="graph_dtRowDeleted" msprop:Generator_UserTableName="graph_dt" msprop:Generator_RowChangedName="graph_dtRowChanged" msprop:Generator_RowEvArgName="graph_dtRowChangeEvent" msprop:Generator_RowClassName="graph_dtRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="graph" msprop:Generator_ColumnVarNameInTable="columngraph" msprop:Generator_ColumnPropNameInRow="graph" msprop:Generator_ColumnPropNameInTable="graphColumn" msprop:Generator_UserColumnName="graph" type="xs:string" minOccurs="0" />
+              <xs:element name="name" msprop:Generator_ColumnVarNameInTable="columnname" msprop:Generator_ColumnPropNameInRow="name" msprop:Generator_ColumnPropNameInTable="nameColumn" msprop:Generator_UserColumnName="name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
