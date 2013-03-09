@@ -29,7 +29,7 @@ namespace KarateGeek.helpers
          *       regular expressions, so that non-latin characters are supported properly
          *       (can be done with regex usage, too, but it would be awkward and wouldn't
          *       work for ALL languages).
-         *       The class name wasn't changed fo compatibility purposes.
+         *       The class name wasn't changed for compatibility purposes.
          */
         public bool isCharsOnly(string str)
         {
@@ -40,7 +40,7 @@ namespace KarateGeek.helpers
             //else
             //    return false;
 
-            return str.All(Char.IsLetter);  // using LINQ and ;)
+            return str.All(Char.IsLetter);  // using LINQ ;)
         }
 
         public bool isCharsOrSpace(string str)
