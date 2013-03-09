@@ -12,7 +12,7 @@ namespace KarateGeek.databaseConnection
         DataTable judges = new DataTable();
 
         public bool InsertNewJudge(int personId, string firstName, string lastName, string fathersName, string sex,
-           DateTime dateOfBirth,
+           string dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
            string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
            string rank, string judge_class)
@@ -56,7 +56,7 @@ namespace KarateGeek.databaseConnection
         }
 
         public string UpdateJudge(int id, string firstName, string lastName, string fathersName, string sex,
-          DateTime dateOfBirth,
+          string dateOfBirth,
           string primaryPhoneNo, string secondaryPhoneNo, string email,
           string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
           string rank, string judge_class)

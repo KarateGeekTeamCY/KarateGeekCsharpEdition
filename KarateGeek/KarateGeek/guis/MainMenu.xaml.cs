@@ -30,9 +30,10 @@ namespace KarateGeek.guis
 
             //myCalendar.SelectedDates.Add(CType(reader.GetDateTime(0), Date))
             EventConnection evCon = new EventConnection();
-            DataTable dt = evCon.getEvents().Tables[0];
+            DataTable dt = evCon.getEventsWithDate().Tables[0];
             DataTable dt2 = evCon.getUnlotterisedEvents();
-
+            //autos o kwdikas gia na ananaiwnei ta events sto imerologio den trexei pera apo tin prwti fora giati
+            //kanoume hide to main window kai etsi den ksanaekteleitai
             foreach (DataRow dr in dt.Rows)
             {
                 this.mainCalendar.SelectedDates.Add((DateTime)dr[2]);

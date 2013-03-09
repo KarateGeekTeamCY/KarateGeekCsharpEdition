@@ -55,6 +55,17 @@ namespace KarateGeek.helpers
             return str.All(c => (Char.IsLetter(c) || c == ' '));
         }
 
+        public bool isCharsSpaceOrDots(string str)
+        {
+            Regex regex = new Regex(@"^[a-zA-Z .]+$");
+            Match match = regex.Match(str);
+            if (match.Success)
+                return true;
+            else
+                return false;
+        }
+
+
         public bool isDigitsOnly(string str)
         {
             foreach (char c in str)
@@ -80,7 +91,7 @@ namespace KarateGeek.helpers
 
         public bool isCharsDigitsOrSpace(string str)
         {
-            //Regex regex = new Regex(@"^[a-zA-Z0-9\(\) ]+$");
+            //Regex regex = new Regex(@"^[a-zA-Z0-9 ]+$");
             //Match match = regex.Match(str);
             //if (match.Success)
             //    return true;
@@ -88,6 +99,18 @@ namespace KarateGeek.helpers
             //    return false;
 
             return str.All(c => (Char.IsLetterOrDigit(c) || c == ' '));
+        }
+
+        public bool isSqlSpecialChar(string str)
+        {
+            foreach (char c in str)
+            {
+                if (c == ';' || c == '\'')
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
