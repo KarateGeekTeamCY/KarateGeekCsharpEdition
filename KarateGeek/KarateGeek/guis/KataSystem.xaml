@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
             <Label Name="lblInfo" 
-                     Content="kata competitor and match info"
+                     Content="Kata Competitor and Match Info"
                      VerticalAlignment="Center" 
                      HorizontalAlignment="Center"
                      FontSize="16" 

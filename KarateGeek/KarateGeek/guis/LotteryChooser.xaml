@@ -10,12 +10,11 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Label Name="lbllotteryChooserInfo" 
-               Content="Info" 
-               FontSize="20" 
+            <Label
+               Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
+               FontSize="16" 
                VerticalAlignment="Center" 
-               HorizontalContentAlignment="Center"
-               Margin="5"/>
+               HorizontalContentAlignment="Center" Margin="0,16,0,16" />
 
         </Grid>
         <Grid Grid.Row="1" Name="content">

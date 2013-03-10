@@ -118,22 +118,22 @@ namespace KarateGeek.guis
 
         private void chuiA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.chui, 4, Strings.left);
+            addPointToHistory(Strings.chui, 4, Strings.right);
         }
 
         private void keikokuA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.keikoku, 2, Strings.left);
+            addPointToHistory(Strings.keikoku, 2, Strings.right);
         }
 
         private void tentoA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.tento, 1, Strings.left);
+            addPointToHistory(Strings.tento, 1, Strings.right);
         }
 
         private void doctorStopA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.doctorStop, 4, Strings.left);
+            addPointToHistory(Strings.doctorStop, 8, Strings.right);
         }
 
         //
@@ -158,22 +158,22 @@ namespace KarateGeek.guis
 
         private void chuiB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.chui, 4, Strings.right);
+            addPointToHistory(Strings.chui, 4, Strings.left);
         }
 
         private void keikokuB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.keikoku, 2, Strings.right);
+            addPointToHistory(Strings.keikoku, 2, Strings.left);
         }
 
         private void tentoB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.tento, 1, Strings.right);
+            addPointToHistory(Strings.tento, 1, Strings.left);
         }
 
         private void doctorstopB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.doctorStop, 4, Strings.right);
+            addPointToHistory(Strings.doctorStop, 8, Strings.left);
         }
 
         #endregion
@@ -205,6 +205,23 @@ namespace KarateGeek.guis
                 {
                     scoreLeft += p.points;
                     sb.Append("Comp. A -> ");
+                }
+
+                if (scoreLeft >= 8 )
+                {
+                    Style red =  new Style { TargetType = typeof(TextBox) };
+                    red.Setters.Add(new Setter(TextBox.BackgroundProperty, Brushes.Red));
+
+                    scoreA.Style = red;              
+                }
+
+                if (scoreRight >= 8)
+                {
+                    Style red = new Style { TargetType = typeof(TextBox) };
+                    red.Setters.Add(new Setter(TextBox.BackgroundProperty, Brushes.Red));
+
+                    scoreB.Style = red;
+                
                 }
 
 

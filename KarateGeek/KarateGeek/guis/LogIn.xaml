@@ -23,7 +23,7 @@
             
         </Grid.ColumnDefinitions>
         
-        <Label Content="Username" 
+        <Label Content="Username:" 
                Grid.Column="1" 
                Grid.Row="1" 
                VerticalAlignment="Center" 
@@ -42,7 +42,7 @@
                  Text="" 
                  />
         
-        <Label Content="Password" 
+        <Label Content="Password:" 
                Grid.Column="1" 
                Grid.Row="2" 
                VerticalAlignment="Center" 
@@ -60,7 +60,7 @@
                  Password=""
                  BorderThickness="2"  />
 
-        <Label Content="server" 
+        <Label Content="Server IP:" 
                Grid.Column="1" 
                Grid.Row="3" 
                VerticalAlignment="Center" 

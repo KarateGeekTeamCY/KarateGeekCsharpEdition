@@ -7,18 +7,16 @@
         Height="650" Loaded="Window_Loaded">
     <Grid Width="Auto">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="100"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-         
-        
-        
-        <Label Name="lblPersonManagementMenuInfo" 
-               Content="Info" 
-               FontSize="20" 
+        <Grid Grid.Row="0" Margin="0,10,0,10">
+            <Label
+               Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
+               FontSize="16" 
                VerticalAlignment="Center" 
-               HorizontalContentAlignment="Center"
-               Width="Auto"/>
+               HorizontalContentAlignment="Center" Margin="0,24,0,24" />
+        </Grid>
 
         <TabControl Grid.Row="1">
 
