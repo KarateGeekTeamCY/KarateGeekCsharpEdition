@@ -7,11 +7,14 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
         <Label
                Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
                FontSize="16" 
                VerticalAlignment="Center" 
                HorizontalContentAlignment="Center"  />
+        </Grid>
+        <Grid Grid.Row="1">
         <ScrollViewer Name="treeView"
                               HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Auto" >
@@ -29,5 +32,6 @@
 
 
         </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>

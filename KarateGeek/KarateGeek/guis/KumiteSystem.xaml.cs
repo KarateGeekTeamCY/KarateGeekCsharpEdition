@@ -113,7 +113,7 @@ namespace KarateGeek.guis
 
         private void jyogaiA_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.jyogai, 2, Strings.left);
+            addPointToHistory(Strings.jyogai, 2, Strings.right);
         }
 
         private void chuiA_Click(object sender, RoutedEventArgs e)
@@ -153,7 +153,7 @@ namespace KarateGeek.guis
 
         private void jyogaiB_Click(object sender, RoutedEventArgs e)
         {
-            addPointToHistory(Strings.jyogai, 2, Strings.right);
+            addPointToHistory(Strings.jyogai, 2, Strings.left);
         }
 
         private void chuiB_Click(object sender, RoutedEventArgs e)

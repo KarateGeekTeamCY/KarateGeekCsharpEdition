@@ -767,6 +767,53 @@ INSERT INTO clubs (name, address_id, country_code) VALUES ('Σύλλογος Fud
 
 INSERT INTO users (username , password, person_management, event_management , lottery , event_support , club_management , user_management , reports)
 VALUES ('admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1', '1');
+
+
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Χαΐκο' , null , 'Σιαταρεβιάν', '01-01-1970' , 'MALE', '99123140' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Γιώργος' , null , 'Κατσαράς', '01-01-1970' , 'MALE', '99123142' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Νεόφυτος' , null , 'Δημητρίου', '01-01-1970' , 'MALE', '99123141' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Ανδρέας' , null , 'Φεσάς', '01-01-1970' , 'MALE', '99123144' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Χριστόδουλος' , null , 'Γαβριήλ', '01-01-1970' , 'MALE', '99123143' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Μάριος' , null , 'Νικολάου', '01-01-1970' , 'MALE', '99123145' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Σάββας' , null , 'Βασιλείου', '01-01-1970' , 'MALE', '99123149' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Γιώργος' , null , 'Γεωργίου', '01-01-1970' , 'MALE', '99123146' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Δημήτρης' , null , 'Κωνσταντίνου', '01-01-1970' , 'MALE', '99123148' , null , NULL , '0');
+INSERT INTO persons (first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)
+VALUES ('Μάριος' , null , 'Εγγλέζος', '01-01-1970' , 'MALE', '99123147' , null , NULL , '0');
+
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('1',  'Black  –  1st dan',   '1'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('2',  'Black  –  1st dan',   '1'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('3',  'Black  –  1st dan',   '1'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('4',  'Black  –  1st dan',   '1'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('5',  'Black  –  1st dan',   '1'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('6',  'Black  –  1st dan',   '1'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('7',  'Black  –  1st dan',   '1'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('8',  'Black  –  1st dan',   '2'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('9',  'Black  –  1st dan',   '2'  );
+
+INSERT INTO athletes (id, rank, club_id ) VALUES ('10',  'Black  –  1st dan',   '3'  );
+
+
+
+VALUES ('admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1', '1');
 -- rollback transaction (useful for checking syntax):
 --ROLLBACK;
 

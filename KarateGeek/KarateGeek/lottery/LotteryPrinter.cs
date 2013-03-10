@@ -34,7 +34,7 @@ namespace KarateGeek.lottery
         //private readonly char spaceChar = '□';
         private readonly char spaceChar = ' ';
 
-        private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
+        private const int defaultMaxNameLength = 22;    // default 18, same as the "defaultWidth" for the LotteryBox class
         private int maxNameLength;
 
 
