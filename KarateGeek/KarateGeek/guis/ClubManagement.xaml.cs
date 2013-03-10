@@ -179,17 +179,28 @@ namespace KarateGeek.guis
                     bitmap.EndInit();
                     this.clubLogo.Source = bitmap;
                     */
-                  
-                    Byte[] productImageByte = (Byte[])filteredClubs.Tables[0].Rows[0][4];
+                  /*
+                    byte[] productImageByte = (byte[])filteredClubs.Tables[0].Rows[0][4];
                     if (productImageByte != null)
                     {
-                        using (Stream productImageStream = new System.IO.MemoryStream(productImageByte))
+                        using (System.IO.MemoryStream stream = new System.IO.MemoryStream(productImageByte))
                         {
-                            System.Drawing.Image im =  System.Drawing.Image.FromStream(productImageStream);
-                            this.clubLogo = helpers.ImageConverter.ConvertDrawingImageToWPFImage(im);
+                           // stream.Write(productImageByte, 0, productImageByte.Length);
+                           // stream.Position = 0;
+
+                            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                            BitmapImage bi = new BitmapImage();
+                            bi.BeginInit();
+
+                            MemoryStream ms = new MemoryStream();
+                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                            ms.Seek(0, SeekOrigin.Begin);
+                            bi.StreamSource = ms;
+                            bi.EndInit();
+                            this.clubLogo.Source = bi;
                         }
                     }
-                    
+                    */
                     ds = addressConnection.getAddress(address_id);
 
                     this.clubAddress.Text = ds.Tables[0].Rows[0][1].ToString();

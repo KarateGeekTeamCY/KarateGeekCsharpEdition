@@ -349,7 +349,7 @@ namespace KarateGeek.guis
                     this.NewAthleteLastName.Text = newFilteredAthletes.Tables[0].Rows[index][2].ToString();
                     this.NewAthleteFatherName.Text = newFilteredAthletes.Tables[0].Rows[index][3].ToString();
 
-                    if (sex.Equals("male"))
+                    if (sex.Equals(Strings.male))
                     {
                         this.NewArdButton1.IsChecked = true;
                     }
@@ -713,7 +713,7 @@ namespace KarateGeek.guis
                     this.EditAthleteLastName.Text = editFilteredAthletes.Tables[0].Rows[index][2].ToString();
                     this.EditAthleteFatherName.Text = editFilteredAthletes.Tables[0].Rows[index][3].ToString();
 
-                    if (sex.Equals("male"))
+                    if (sex.Equals(Strings.male))
                     {
                         this.EditArdButton1.IsChecked = true;
                     }
@@ -1089,7 +1089,7 @@ namespace KarateGeek.guis
                     this.newJudgeLastName.Text = newFilteredJudges.Tables[0].Rows[index][2].ToString();
                     this.newJudgeFatherName.Text = newFilteredJudges.Tables[0].Rows[index][3].ToString();
 
-                    if (sex.Equals("male"))
+                    if (sex.Equals(Strings.male))
                     {
                         this.newJrdButton1.IsChecked = true;
                     }
@@ -1467,7 +1467,7 @@ namespace KarateGeek.guis
                     this.editJudgeLastName.Text = editFilteredJudges.Tables[0].Rows[index][2].ToString();
                     this.editJudgeFatherName.Text = editFilteredJudges.Tables[0].Rows[index][3].ToString();
 
-                    if (sex.Equals("male"))
+                    if (sex.Equals(Strings.male))
                     {
                         this.editJrdButton1.IsChecked = true;
                     }
