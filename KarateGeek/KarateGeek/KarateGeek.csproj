@@ -156,6 +156,15 @@
     <Compile Include="lottery\LotteryGeneratorConcrete.cs" />
     <Compile Include="lottery\LotteryBox.cs" />
     <Compile Include="lottery\LotteryPrinterTransformations.cs" />
+    <Compile Include="ReportDatasets\DataSets.cs">
+      <DependentUpon>DataSets.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ReportDatasets\DataSets.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSets.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\AthleteCrystalReport.cs">
       <DependentUpon>AthleteCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -163,39 +172,28 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\ClubCrystalReport.cs">
-      <DependentUpon>ClubCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ClubCrystalReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\EventCrystalReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>EventCrystalReport.rpt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Reports\Graph.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Graph.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Reports\JudgeCrystalReport.cs">
-      <DependentUpon>JudgeCrystalReport.rpt</DependentUpon>
+    <Compile Include="Reports\GraphCrystalReport.cs">
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GraphCrystalReport.rpt</DependentUpon>
       <SubType>Component</SubType>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Reports\LotteryForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Reports\LotteryForm.Designer.cs">
-      <DependentUpon>LotteryForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Reports\GraphDataSet.Designer.cs">
+    <Compile Include="Reports\JudgeCrystalRport.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GraphDataSet.xsd</DependentUpon>
+      <DependentUpon>JudgeCrystalRport.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\ReportsForm.cs">
       <SubType>Form</SubType>
@@ -204,10 +202,10 @@
       <DependentUpon>ReportsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Reports\TournamentCrystalReport.cs">
-      <DependentUpon>TournamentCrystalReport.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <DependentUpon>TournamentCrystalReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Strings.cs" />
     <Compile Include="Team.cs" />
@@ -287,16 +285,13 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>EventCrystalReport.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\Graph.rpt">
+    <EmbeddedResource Include="Reports\GraphCrystalReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Graph.cs</LastGenOutput>
+      <LastGenOutput>GraphCrystalReport.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\JudgeCrystalReport.rpt">
+    <EmbeddedResource Include="Reports\JudgeCrystalRport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>JudgeCrystalReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\LotteryForm.resx">
-      <DependentUpon>LotteryForm.cs</DependentUpon>
+      <LastGenOutput>JudgeCrystalRport.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\ReportsForm.resx">
       <DependentUpon>ReportsForm.cs</DependentUpon>
@@ -311,17 +306,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Reports\GraphDataSet.xsc">
-      <DependentUpon>GraphDataSet.xsd</DependentUpon>
-      <SubType>Designer</SubType>
+    <None Include="ReportDatasets\DataSets.xsc">
+      <DependentUpon>DataSets.xsd</DependentUpon>
     </None>
-    <None Include="Reports\GraphDataSet.xsd">
+    <None Include="ReportDatasets\DataSets.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>GraphDataSet.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataSets.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Reports\GraphDataSet.xss">
-      <DependentUpon>GraphDataSet.xsd</DependentUpon>
+    <None Include="ReportDatasets\DataSets.xss">
+      <DependentUpon>DataSets.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -438,9 +432,7 @@
   <ItemGroup>
     <Resource Include="karate_logo.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ReportDatasets\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

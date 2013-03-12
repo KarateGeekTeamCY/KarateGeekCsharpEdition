@@ -146,7 +146,7 @@ namespace KarateGeek.guis
         {
 
 
-            KarateGeek.Reports.LotteryForm reports = new Reports.LotteryForm();
+            KarateGeek.Reports.ReportsForm reports = new Reports.ReportsForm();
 
             reports.Show();
 

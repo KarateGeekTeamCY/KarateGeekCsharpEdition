@@ -28,125 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.AthleteCrystalReport1 = new KarateGeek.Reports.AthleteCrystalReport();
-            this.JudgeCrystalReport1 = new KarateGeek.Reports.JudgeCrystalReport();
-            this.TournamentCrystalReport1 = new KarateGeek.Reports.TournamentCrystalReport();
-            this.ClubCrystalReport1 = new KarateGeek.Reports.ClubCrystalReport();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.crystalReportViewer6 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.crystalReportViewer2 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.crystalReportViewer3 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.crystalReportViewer5 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.crystalReportViewer1 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.AthleteCrystalReport1 = new KarateGeek.Reports.AthleteCrystalReport();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.crystalReportViewer4 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.crystalReportViewer2 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.JudgeCrystalRport1 = new KarateGeek.Reports.JudgeCrystalRport();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.crystalReportViewer3 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.EventCrystalReport1 = new KarateGeek.Reports.EventCrystalReport();
-            this.tabPage5.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.crystalReportViewer4 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.TournamentCrystalReport1 = new KarateGeek.Reports.TournamentCrystalReport();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.crystalReportViewer5 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.ClubCrystalReport1 = new KarateGeek.Reports.ClubCrystalReport();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.crystalReportViewer6 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.GraphCrystalReport1 = new KarateGeek.Reports.GraphCrystalReport();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.crystalReportViewer6);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(1177, 675);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Clubs";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // crystalReportViewer6
-            // 
-            this.crystalReportViewer6.ActiveViewIndex = 0;
-            this.crystalReportViewer6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer6.Cursor = System.Windows.Forms.Cursors.Default;
-            this.crystalReportViewer6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crystalReportViewer6.Location = new System.Drawing.Point(3, 3);
-            this.crystalReportViewer6.Name = "crystalReportViewer6";
-            this.crystalReportViewer6.ReportSource = this.ClubCrystalReport1;
-            this.crystalReportViewer6.Size = new System.Drawing.Size(1171, 669);
-            this.crystalReportViewer6.TabIndex = 0;
-            this.crystalReportViewer6.ToolPanelWidth = 267;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.crystalReportViewer2);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1177, 675);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Tournaments";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // crystalReportViewer2
-            // 
-            this.crystalReportViewer2.ActiveViewIndex = 0;
-            this.crystalReportViewer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer2.Cursor = System.Windows.Forms.Cursors.Default;
-            this.crystalReportViewer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crystalReportViewer2.Location = new System.Drawing.Point(3, 3);
-            this.crystalReportViewer2.Name = "crystalReportViewer2";
-            this.crystalReportViewer2.ReportSource = this.TournamentCrystalReport1;
-            this.crystalReportViewer2.Size = new System.Drawing.Size(1171, 669);
-            this.crystalReportViewer2.TabIndex = 0;
-            this.crystalReportViewer2.ToolPanelWidth = 267;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.crystalReportViewer4);
-            this.tabPage3.Controls.Add(this.crystalReportViewer3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1177, 675);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Events";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // crystalReportViewer3
-            // 
-            this.crystalReportViewer3.ActiveViewIndex = -1;
-            this.crystalReportViewer3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer3.Cursor = System.Windows.Forms.Cursors.Default;
-            this.crystalReportViewer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crystalReportViewer3.Location = new System.Drawing.Point(3, 3);
-            this.crystalReportViewer3.Name = "crystalReportViewer3";
-            this.crystalReportViewer3.Size = new System.Drawing.Size(1171, 669);
-            this.crystalReportViewer3.TabIndex = 0;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.crystalReportViewer5);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1177, 675);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Judges";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // crystalReportViewer5
-            // 
-            this.crystalReportViewer5.ActiveViewIndex = 0;
-            this.crystalReportViewer5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crystalReportViewer5.Cursor = System.Windows.Forms.Cursors.Default;
-            this.crystalReportViewer5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crystalReportViewer5.Location = new System.Drawing.Point(3, 3);
-            this.crystalReportViewer5.Name = "crystalReportViewer5";
-            this.crystalReportViewer5.ReportSource = this.JudgeCrystalReport1;
-            this.crystalReportViewer5.Size = new System.Drawing.Size(1171, 669);
-            this.crystalReportViewer5.TabIndex = 0;
-            this.crystalReportViewer5.ToolPanelWidth = 267;
             // 
             // tabPage1
             // 
@@ -178,12 +86,70 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1185, 701);
             this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.crystalReportViewer2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1177, 675);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Judges";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // crystalReportViewer2
+            // 
+            this.crystalReportViewer2.ActiveViewIndex = 0;
+            this.crystalReportViewer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crystalReportViewer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crystalReportViewer2.Location = new System.Drawing.Point(3, 3);
+            this.crystalReportViewer2.Name = "crystalReportViewer2";
+            this.crystalReportViewer2.ReportSource = this.JudgeCrystalRport1;
+            this.crystalReportViewer2.Size = new System.Drawing.Size(1171, 669);
+            this.crystalReportViewer2.TabIndex = 0;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.crystalReportViewer3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1177, 675);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Events";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // crystalReportViewer3
+            // 
+            this.crystalReportViewer3.ActiveViewIndex = 0;
+            this.crystalReportViewer3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer3.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crystalReportViewer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crystalReportViewer3.Location = new System.Drawing.Point(3, 3);
+            this.crystalReportViewer3.Name = "crystalReportViewer3";
+            this.crystalReportViewer3.ReportSource = this.EventCrystalReport1;
+            this.crystalReportViewer3.Size = new System.Drawing.Size(1171, 669);
+            this.crystalReportViewer3.TabIndex = 0;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.crystalReportViewer4);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1177, 675);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Tournaments";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // crystalReportViewer4
             // 
@@ -193,10 +159,55 @@
             this.crystalReportViewer4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.crystalReportViewer4.Location = new System.Drawing.Point(3, 3);
             this.crystalReportViewer4.Name = "crystalReportViewer4";
-            this.crystalReportViewer4.ReportSource = this.EventCrystalReport1;
+            this.crystalReportViewer4.ReportSource = this.TournamentCrystalReport1;
             this.crystalReportViewer4.Size = new System.Drawing.Size(1171, 669);
-            this.crystalReportViewer4.TabIndex = 1;
-            this.crystalReportViewer4.Load += new System.EventHandler(this.crystalReportViewer4_Load);
+            this.crystalReportViewer4.TabIndex = 0;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.crystalReportViewer5);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(1177, 675);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Clubs";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // crystalReportViewer5
+            // 
+            this.crystalReportViewer5.ActiveViewIndex = 0;
+            this.crystalReportViewer5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer5.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crystalReportViewer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crystalReportViewer5.Location = new System.Drawing.Point(3, 3);
+            this.crystalReportViewer5.Name = "crystalReportViewer5";
+            this.crystalReportViewer5.ReportSource = this.ClubCrystalReport1;
+            this.crystalReportViewer5.Size = new System.Drawing.Size(1171, 669);
+            this.crystalReportViewer5.TabIndex = 0;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.crystalReportViewer6);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(1177, 675);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "Lottery";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // crystalReportViewer6
+            // 
+            this.crystalReportViewer6.ActiveViewIndex = 0;
+            this.crystalReportViewer6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer6.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crystalReportViewer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crystalReportViewer6.Location = new System.Drawing.Point(3, 3);
+            this.crystalReportViewer6.Name = "crystalReportViewer6";
+            this.crystalReportViewer6.ReportSource = this.GraphCrystalReport1;
+            this.crystalReportViewer6.Size = new System.Drawing.Size(1171, 669);
+            this.crystalReportViewer6.TabIndex = 0;
             // 
             // ReportsForm
             // 
@@ -206,12 +217,13 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "ReportsForm";
             this.Text = "ReportsForm";
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -219,21 +231,24 @@
         #endregion
 
         private AthleteCrystalReport AthleteCrystalReport1;
-        private JudgeCrystalReport JudgeCrystalReport1;
-        private ClubCrystalReport ClubCrystalReport1;
-        private EventCrystalReport EventCrystalReport1;
-        private TournamentCrystalReport TournamentCrystalReport1;
-        private System.Windows.Forms.TabPage tabPage5;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer6;
-        private System.Windows.Forms.TabPage tabPage4;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer4;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer3;
-        private System.Windows.Forms.TabPage tabPage2;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer5;
         private System.Windows.Forms.TabPage tabPage1;
         private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer1;
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer2;
+        private JudgeCrystalRport JudgeCrystalRport1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer3;
+        private EventCrystalReport EventCrystalReport1;
+        private System.Windows.Forms.TabPage tabPage4;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer4;
+        private TournamentCrystalReport TournamentCrystalReport1;
+        private System.Windows.Forms.TabPage tabPage5;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer5;
+        private ClubCrystalReport ClubCrystalReport1;
+        private System.Windows.Forms.TabPage tabPage6;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer6;
+        private GraphCrystalReport GraphCrystalReport1;
+
     }
 }
