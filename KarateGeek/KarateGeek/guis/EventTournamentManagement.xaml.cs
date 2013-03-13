@@ -134,7 +134,7 @@ namespace KarateGeek.guis
             InitializeComponent();
 
             initialize();   //initialize gui and others
-
+            
             this.sender = sender;
         }
 
@@ -164,7 +164,8 @@ namespace KarateGeek.guis
 
         private void initialize()
         {
-
+            slogan1.Content = "  Karate Triple Threat\n Patience,Respect,Fury";
+            
             newSelectedParticipants.Add(new List<AthleteData>());
             bteditDeleteParticipant.Content = "<<";
             btnewDeleteParticipant.Content = "<<";
@@ -3765,9 +3766,22 @@ namespace KarateGeek.guis
 
         #endregion
 
+        private void Window_closed(object sender, EventArgs e)
+        {
+            MainMenu menu = (MainMenu)this.sender;
+            menu.reloadCalendarEvents();
+            this.Close();
+            this.sender.Show();
+            
+        }
+
+      
+
 
 
         #endregion
+
+       
 
     }
 }

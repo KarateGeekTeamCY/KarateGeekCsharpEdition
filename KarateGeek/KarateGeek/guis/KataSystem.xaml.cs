@@ -387,6 +387,12 @@ namespace KarateGeek.guis
 
         #endregion
 
+        private void Window_close(object sender, EventArgs e)
+        {
+            this.Close();
+            this._sender.Show();
+        }
+
 
 
 

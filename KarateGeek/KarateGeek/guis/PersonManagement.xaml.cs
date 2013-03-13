@@ -1824,11 +1824,6 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
-                    else if (string.IsNullOrEmpty(_newAthleteFirstPhone))
-                    {
-                        em.nullErrorMessage("Phone Num.");
-                        return false;
-                    }
                     else
                     {
                         return true;
@@ -1854,11 +1849,6 @@ namespace KarateGeek.guis
                     else if (string.IsNullOrEmpty(_editAthleteDateOfBirth))
                     {
                         em.nullErrorMessage("Date Of Birth");
-                        return false;
-                    }
-                    else if (string.IsNullOrEmpty(_editAthleteFirstPhone))
-                    {
-                        em.nullErrorMessage("Phone Num.");
                         return false;
                     }
                     else
@@ -1891,11 +1881,6 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
-                    else if (string.IsNullOrEmpty(_newJudgeFirstPhone))
-                    {
-                        em.nullErrorMessage("Phone Num.");
-                        return false;
-                    }
                     else
                     {
                         return true;
@@ -1921,11 +1906,6 @@ namespace KarateGeek.guis
                     else if (string.IsNullOrEmpty(_editJudgeDateOfBirth))
                     {
                         em.nullErrorMessage("Date Of Birth");
-                        return false;
-                    }
-                    else if (string.IsNullOrEmpty(_editJudgeFirstPhone))
-                    {
-                        em.nullErrorMessage("Phone Num.");
                         return false;
                     }
                     else
@@ -1959,7 +1939,7 @@ namespace KarateGeek.guis
                         return false;
 
                     }
-                    else if (!regex.isDigitsOnly(_newAthleteFirstPhone))
+                    else if (!string.IsNullOrEmpty(_newAthleteFirstPhone) && !regex.isDigitsOnly(_newAthleteFirstPhone))
                     {
                         em.digitsErrorMessage("Phone Num.");
                         return false;
@@ -2016,7 +1996,7 @@ namespace KarateGeek.guis
                         em.charsSpaceErrorMessage("Fathers Name");
                         return false;
                     }
-                    else if (!regex.isDigitsOnly(_editAthleteFirstPhone))
+                    else if (!string.IsNullOrEmpty(_editAthleteFirstPhone) && !regex.isDigitsOnly(_editAthleteFirstPhone))
                     {
                         em.digitsErrorMessage("Phone Num.");
                         return false;
@@ -2076,7 +2056,7 @@ namespace KarateGeek.guis
                         return false;
 
                     }
-                    else if (!regex.isDigitsOnly(_newJudgeFirstPhone))
+                    else if (!string.IsNullOrEmpty(_newJudgeFirstPhone) && !regex.isDigitsOnly(_newJudgeFirstPhone))
                     {
                         em.digitsErrorMessage("Phone Num.");
                         return false;
@@ -2138,7 +2118,7 @@ namespace KarateGeek.guis
                         return false;
 
                     }
-                    else if (!regex.isDigitsOnly(_editJudgeFirstPhone))
+                    else if (!string.IsNullOrEmpty(_editJudgeFirstPhone) && !regex.isDigitsOnly(_editJudgeFirstPhone))
                     {
                         em.digitsErrorMessage("Phone Num.");
                         return false;
@@ -2279,6 +2259,13 @@ namespace KarateGeek.guis
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+
+        private void Window_close(object sender, EventArgs e)
+        {
+            this.Close();
+            this.sender.Show();
         }
     }
 }

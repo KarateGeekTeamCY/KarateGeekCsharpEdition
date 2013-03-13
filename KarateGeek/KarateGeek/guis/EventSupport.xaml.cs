@@ -1096,6 +1096,12 @@ namespace KarateGeek.guis
 
             return next3;
         }
+
+        private void Window_close(object sender, EventArgs e)
+        {
+            this.Close();
+            this._sender.Show();
+        }
     }
 }
 

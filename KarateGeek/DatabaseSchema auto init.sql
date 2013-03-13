@@ -123,7 +123,7 @@ CREATE TABLE persons (
     fathers_name    VARCHAR(50),
     sex             VARCHAR(10)     NOT NULL,
     date_of_birth   DATE            NOT NULL,
-    phone           VARCHAR(15)        NOT NULL,   -- E.164 standard
+    phone           VARCHAR(15),   -- E.164 standard
     secondary_phone VARCHAR(15),
     email           VARCHAR(50),
     address_id      INTEGER         REFERENCES addresses( id ),

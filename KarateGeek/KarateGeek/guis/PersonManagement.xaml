@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Person management" 
         ResizeMode="NoResize"
-        Width="500"
-        Height="650" Loaded="Window_Loaded">
+        Width="550"
+        Height="650" Loaded="Window_Loaded" Closed="Window_close">
     <Grid Width="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -51,7 +51,8 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="6*"/>
                             <ColumnDefinition Width="*"/>
 
@@ -61,9 +62,15 @@
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="NewAthleteFirstName" 
+                        <Label Content="*"
                                Grid.Row="1"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="NewAthleteFirstName" 
+                               Grid.Row="1"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="NewAthleteFirstName_TextChanged" LostFocus="NewAthleteFirstName_LostFocus" PreviewMouseLeftButtonDown="NewAthleteFirstName_PreviewMouseLeftButtonDown" />
 
@@ -71,9 +78,15 @@
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="NewAthleteLastName" 
+                        <Label Content="*"
                                Grid.Row="2"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="NewAthleteLastName" 
+                               Grid.Row="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center"
                                TextChanged="NewAthleteLastName_TextChanged"/>
                         <Label Content="Fathers name"
@@ -82,7 +95,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="NewAthleteFatherName" 
                                Grid.Row="3"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="NewAthleteFathersName_TextChanged"/>
 
@@ -90,7 +103,15 @@
                                Grid.Row="4"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+
+                        <Label Content="*"
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+
+                        <Grid Grid.Column="3"
                               Grid.Row="4">
 
                             <Grid.ColumnDefinitions>
@@ -116,8 +137,14 @@
                                Grid.Column="1"
                                Grid.Row="5"
                                VerticalAlignment="Center"/>
+                        <Label Content="*"
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                         <DatePicker Name="NewAthleteDateOfBirth" 
-                                Grid.Column="2"
+                                Grid.Column="3"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
@@ -129,7 +156,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="NewAthleteFirstPhone" 
                                Grid.Row="6"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center"
                                TextChanged="NewAthleteFirstPhone_TextChanged" />
 
@@ -139,7 +166,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="NewAthleteSecondPhone" 
                                Grid.Row="7"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center"
                                TextChanged="NewAthleteSecondPhone_TextChanged" />
                         <Label Content="Email"
@@ -148,7 +175,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="NewAthleteEmail" 
                                Grid.Row="8"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="NewAthleteEmail_TextChanged" />
 
@@ -156,7 +183,7 @@
                                Grid.Row="9"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="9">
                             <TextBox Name="NewAthleteStreetName"
                                      Grid.Column="0" 
@@ -164,7 +191,7 @@
                                      TextChanged="NewAthleteStreetName_TextChanged" />
 
                         </Grid>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="10">
 
                             <Grid.ColumnDefinitions>
@@ -192,27 +219,28 @@
                                      VerticalAlignment="Center" 
                                      TextChanged="NewAthleteTK_TextChanged" />
                         </Grid>
-                        <Label Content="City"
+                       
+
+                        <Label Content="Country"
                                Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbNewAthleteCityChooses"
+                        <ComboBox Name="cmbNewACountryChooses"
                                   Grid.Row="11"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbNewACityChooses_SelectionChanged">
+                                  SelectionChanged="cmbNewACountryChooses_SelectionChanged">
 
                         </ComboBox>
-
-                        <Label Content="Country"
+                        <Label Content="City"
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbNewACountryChooses"
+                        <ComboBox Name="cmbNewAthleteCityChooses"
                                   Grid.Row="12"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbNewACountryChooses_SelectionChanged">
+                                  SelectionChanged="cmbNewACityChooses_SelectionChanged">
 
                         </ComboBox>
 
@@ -222,7 +250,7 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbNewAthleteRankChooses"
                                   Grid.Row="13"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbNewARankChooses_SelectionChanged">
 
@@ -234,14 +262,14 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbNewAClubChooses"
                                   Grid.Row="14"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbNewAClubChooses_SelectionChanged">
                         </ComboBox>
 
 
                         <ListBox Name="NewASuggestionList" 
-                                 Grid.Column="2" 
+                                 Grid.Column="3" 
                                  Grid.Row="1" 
                                  Margin="0,25,0,0" 
                                  Grid.RowSpan="4" 
@@ -320,7 +348,8 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="6*"/>
                             <ColumnDefinition Width="*"/>
 
@@ -330,9 +359,15 @@
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="EditAthleteFirstName" 
+                        <Label Content="*"
                                Grid.Row="1"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="EditAthleteFirstName" 
+                               Grid.Row="1"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="EditAthleteFirstName_TextChanged" LostFocus="EditAthleteFirstName_LostFocus" PreviewMouseLeftButtonDown="EditAthleteFirstName_PreviewMouseLeftButtonDown"  />
 
@@ -340,9 +375,15 @@
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="EditAthleteLastName" 
+                        <Label Content="*"
                                Grid.Row="2"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="EditAthleteLastName" 
+                               Grid.Row="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center"
                                TextChanged="EditAthleteLastName_TextChanged"/>
                         <Label Content="Fathers name"
@@ -351,7 +392,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="EditAthleteFatherName" 
                                Grid.Row="3"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="EditAthleteFathersName_TextChanged"/>
 
@@ -359,7 +400,13 @@
                                Grid.Row="4"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+                        <Label Content="*"
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <Grid Grid.Column="3"
                               Grid.Row="4">
 
                             <Grid.ColumnDefinitions>
@@ -385,8 +432,14 @@
                                Grid.Column="1"
                                Grid.Row="5"
                                VerticalAlignment="Center"/>
+                        <Label Content="*"
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                         <DatePicker Name="EditAthleteDateOfBirth" 
-                                Grid.Column="2"
+                                Grid.Column="3"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
@@ -398,7 +451,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="EditAthleteFirstPhone" 
                                Grid.Row="6"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center"
                                TextChanged="EditAthleteFirstPhone_TextChanged" />
 
@@ -408,7 +461,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="EditAthleteSecondPhone" 
                                Grid.Row="7"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center"
                                TextChanged="EditAthleteSecondPhone_TextChanged" />
                         <Label Content="Email"
@@ -417,7 +470,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="EditAthleteEmail" 
                                Grid.Row="8"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="EditAthleteEmail_TextChanged" />
 
@@ -425,7 +478,7 @@
                                Grid.Row="9"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="9">
                             <TextBox Name="EditAthleteStreetName"
                                      Grid.Column="0" 
@@ -433,7 +486,7 @@
                                      TextChanged="EditAthleteStreetName_TextChanged" />
 
                         </Grid>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="10">
 
                             <Grid.ColumnDefinitions>
@@ -461,27 +514,30 @@
                                      VerticalAlignment="Center" 
                                      TextChanged="EditAthleteTK_TextChanged" />
                         </Grid>
-                        <Label Content="City"
+                        
+                         
+                        <Label Content="Country"
                                Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbEditAthleteCityChooses"
+                        <ComboBox Name="cmbEditACountryChooses"
                                   Grid.Row="11"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbEditACityChooses_SelectionChanged">
+                                  SelectionChanged="cmbEditACountryChooses_SelectionChanged">
 
                         </ComboBox>
 
-                        <Label Content="Country"
+
+                        <Label Content="City"
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbEditACountryChooses"
+                        <ComboBox Name="cmbEditAthleteCityChooses"
                                   Grid.Row="12"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbEditACountryChooses_SelectionChanged">
+                                  SelectionChanged="cmbEditACityChooses_SelectionChanged">
 
                         </ComboBox>
 
@@ -491,7 +547,7 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbEditAthleteRankChooses"
                                   Grid.Row="13"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbEditARankChooses_SelectionChanged">
 
@@ -503,14 +559,14 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbEditAClubChooses"
                                   Grid.Row="14"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbEditAClubChooses_SelectionChanged">
                         </ComboBox>
 
 
                         <ListBox Name="EditASuggestionList" 
-                                 Grid.Column="2" 
+                                 Grid.Column="3" 
                                  Grid.Row="1" 
                                  Margin="0,25,0,0" 
                                  Grid.RowSpan="4" 
@@ -590,7 +646,8 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="6*"/>
                             <ColumnDefinition Width="*"/>
 
@@ -601,18 +658,30 @@
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="newJudgeFirstName" 
+                        <Label Content="*"
                                Grid.Row="1"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="newJudgeFirstName" 
+                               Grid.Row="1"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newJudgeFirstName_TextChanged" LostFocus="newJudgeFirstName_LostFocus" PreviewMouseLeftButtonDown="newJudgeFirstName_PreviewMouseLeftButtonDown" />
                         <Label Content="Last name"
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="newJudgeLastName" 
+                        <Label Content="*"
                                Grid.Row="2"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="newJudgeLastName" 
+                               Grid.Row="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newJudgeLastName_TextChanged" />
                         <Label Content="Fathers name"
@@ -621,14 +690,20 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="newJudgeFatherName" 
                                Grid.Row="3"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newJudgeFatherName_TextChanged" />
                         <Label Content="Sex"
                                Grid.Row="4"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+                        <Label Content="*"
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <Grid Grid.Column="3"
                               Grid.Row="4">
 
                             <Grid.ColumnDefinitions>
@@ -655,8 +730,14 @@
                                Grid.Column="1"
                                Grid.Row="5"
                                VerticalAlignment="Center"/>
+                        <Label Content="*"
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                         <DatePicker Name="newJudgeDateOfBirth" 
-                                Grid.Column="2"
+                                Grid.Column="3"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
                                 VerticalContentAlignment="Center" 
@@ -668,7 +749,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="newJudgeFirstPhone" 
                                Grid.Row="6"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newJudgeFirstPhone_TextChanged" />
 
@@ -678,7 +759,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="newJudgeSecondPhone" 
                                Grid.Row="7"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newJudgeSecondPhone_TextChanged" />
                         <Label Content="Email"
@@ -688,7 +769,7 @@
 
                         <TextBox Name="newJudgeEmail" 
                                Grid.Row="8"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newJudgeEmail_TextChanged" />
 
@@ -696,13 +777,13 @@
                                Grid.Row="9"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="9">
                             <TextBox Name="newJudgeStreetName"
                                      VerticalAlignment="Center"
                                      TextChanged="newJudgeStreetName_TextChanged" />
                         </Grid>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="10">
 
                             <Grid.ColumnDefinitions>
@@ -730,27 +811,29 @@
                                      VerticalAlignment="Center" 
                                      TextChanged="newJudgeTK_TextChanged" />
                         </Grid>
-                        <Label Content="City"
+                        
+
+                        <Label Content="Country"
                                Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbNewJCityChooses"
+                        <ComboBox Name="cmbNewJCountryChooses"
                                   Grid.Row="11"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbNewJCityChooses_SelectionChanged">
+                                  SelectionChanged="cmbNewJCountryChooses_SelectionChanged">
 
                         </ComboBox>
 
-                        <Label Content="Country"
+                        <Label Content="City"
                                Grid.Row="12"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbNewJCountryChooses"
+                        <ComboBox Name="cmbNewJCityChooses"
                                   Grid.Row="12"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
-                                  SelectionChanged="cmbNewJCountryChooses_SelectionChanged">
+                                  SelectionChanged="cmbNewJCityChooses_SelectionChanged">
 
                         </ComboBox>
 
@@ -760,7 +843,7 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbNewJudgeRankChooses"
                                   Grid.Row="13"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbNewJRankChooses_SelectionChanged">
 
@@ -772,14 +855,14 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbNewJClassChooses"
                                   Grid.Row="14"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbNewJClassChooses_SelectionChanged">
 
                         </ComboBox>
 
                         <ListBox Name="newJSuggestionList" 
-                                 Grid.Column="2" 
+                                 Grid.Column="3" 
                                  Grid.Row="1" 
                                  Grid.RowSpan="4" 
                                  VerticalAlignment="Top"
@@ -855,7 +938,8 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="6*"/>
                             <ColumnDefinition Width="*"/>
 
@@ -866,18 +950,30 @@
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="editJudgeFirstName" 
+                        <Label Content="*"
                                Grid.Row="1"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="editJudgeFirstName" 
+                               Grid.Row="1"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editJudgeFirstName_TextChanged" LostFocus="editJudgeFirstName_LostFocus" PreviewMouseLeftButtonDown="editJudgeFirstName_PreviewMouseLeftButtonDown" />
                         <Label Content="Last name"
                                Grid.Row="2"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="editJudgeLastName" 
+                        <Label Content="*"
                                Grid.Row="2"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="editJudgeLastName" 
+                               Grid.Row="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editJudgeLastName_TextChanged" />
                         <Label Content="Fathers name"
@@ -886,14 +982,20 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="editJudgeFatherName" 
                                Grid.Row="3"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editJudgeFatherName_TextChanged" />
                         <Label Content="Sex"
                                Grid.Row="4"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+                        <Label Content="*"
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <Grid Grid.Column="3"
                               Grid.Row="4">
 
                             <Grid.ColumnDefinitions>
@@ -920,8 +1022,14 @@
                                Grid.Column="1"
                                Grid.Row="5"
                                VerticalAlignment="Center"/>
+                        <Label Content="*"
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                         <DatePicker Name="editJudgeDateOfBirth" 
-                                Grid.Column="2"
+                                Grid.Column="3"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
                                 VerticalContentAlignment="Center" 
@@ -933,7 +1041,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="editJudgeFirstPhone" 
                                Grid.Row="6"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editJudgeFirstPhone_TextChanged" />
 
@@ -943,7 +1051,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="editJudgeSecondPhone" 
                                Grid.Row="7"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editJudgeSecondPhone_TextChanged" />
                         <Label Content="Email"
@@ -953,7 +1061,7 @@
 
                         <TextBox Name="editJudgeEmail" 
                                Grid.Row="8"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editJudgeEmail_TextChanged" />
 
@@ -961,13 +1069,13 @@
                                Grid.Row="9"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="9">
                             <TextBox Name="editJudgeStreetName"
                                      VerticalAlignment="Center"
                                      TextChanged="editJudgeStreetName_TextChanged" />
                         </Grid>
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="10">
 
                             <Grid.ColumnDefinitions>
@@ -995,29 +1103,31 @@
                                      VerticalAlignment="Center" 
                                      TextChanged="editJudgeTK_TextChanged" />
                         </Grid>
-                        <Label Content="City"
+                        
+                        <Label Content="Country"
                                Grid.Row="11"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbEditJCityChooses"
+                        <ComboBox Name="cmbEditJCountryChooses"
                                   Grid.Row="11"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
+                                  Margin="0,3,0,3" 
+                                  SelectionChanged="cmbEditJCountryChooses_SelectionChanged">
+
+                        </ComboBox>
+
+                        <Label Content="City"
+                               Grid.Row="12"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
+                        <ComboBox Name="cmbEditJCityChooses"
+                                  Grid.Row="12"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbEditJCityChooses_SelectionChanged">
 
                         </ComboBox>
 
-                        <Label Content="Country"
-                               Grid.Row="12"
-                               Grid.Column="1"
-                               VerticalAlignment="Center"/>
-                        <ComboBox Name="cmbEditJCountryChooses"
-                                  Grid.Row="12"
-                                  Grid.Column="2"
-                                  Margin="0,3,0,3" 
-                                  SelectionChanged="cmbEditJCountryChooses_SelectionChanged">
-
-                        </ComboBox>
 
                         <Label Content="Rank"
                                Grid.Row="13"
@@ -1025,7 +1135,7 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbEditJudgeRankChooses"
                                   Grid.Row="13"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbEditJRankChooses_SelectionChanged">
 
@@ -1037,14 +1147,14 @@
                                VerticalAlignment="Center"/>
                         <ComboBox Name="cmbEditJClassChooses"
                                   Grid.Row="14"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbEditJClassChooses_SelectionChanged">
 
                         </ComboBox>
 
                         <ListBox Name="editJSuggestionList" 
-                                 Grid.Column="2" 
+                                 Grid.Column="3" 
                                  Grid.Row="1" 
                                  Grid.RowSpan="4" 
                                  VerticalAlignment="Top"

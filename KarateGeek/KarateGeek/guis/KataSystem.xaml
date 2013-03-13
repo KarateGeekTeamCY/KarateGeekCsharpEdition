@@ -4,7 +4,7 @@
         Title="KataSystemForm" 
         ResizeMode="NoResize"
         Width="650"
-        Height="320" >
+        Height="320" Closed="Window_close">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
