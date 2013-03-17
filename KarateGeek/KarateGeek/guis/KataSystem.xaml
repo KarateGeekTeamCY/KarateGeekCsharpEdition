@@ -4,7 +4,7 @@
         Title="KataSystemForm" 
         ResizeMode="NoResize"
         Width="650"
-        Height="320" >
+        Height="320" Closed="Window_close">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" >
             <Label Name="lblInfo" 
-                     Content="kata competitor and match info"
+                     Content="Kata Competitor and Match Info"
                      VerticalAlignment="Center" 
                      HorizontalAlignment="Center"
                      FontSize="16" 

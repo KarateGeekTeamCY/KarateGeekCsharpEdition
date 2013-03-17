@@ -43,7 +43,15 @@ namespace KarateGeek.helpers
 
         public void charsSpaceErrorMessage(string formField)
         {
-            string message = "Please enter Characters in the " + formField + " field";
+            string message = "Please enter Characters or spaces in the " + formField + " field";
+            MessageBox.Show(message, "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+        }
+
+        public void charsSpaceDotsErrorMessage(string formField)
+        {
+            string message = "Please enter Characters, Spaces or Dots in the " + formField + " field";
             MessageBox.Show(message, "Message!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
@@ -52,6 +60,14 @@ namespace KarateGeek.helpers
         public void charsSpaceDigitsErrorMessage(string formField)
         {
             string message = "Please enter Characters,Digits and spaces " + formField + " field";
+            MessageBox.Show(message, "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
+        }
+
+        public void sqlSpecialChar(string formField)
+        {
+            string message = "The charachters ; and ' are not allowded " + formField + " field";
             MessageBox.Show(message, "Message!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();

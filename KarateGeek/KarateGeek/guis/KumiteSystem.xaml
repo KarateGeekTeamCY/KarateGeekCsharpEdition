@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KarateGeek.guis.KumiteSystem"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KumiteSystemForm" Height="500" Width="400">
+        Title="KumiteSystemForm" Height="550" Width="550" Closed="Window_close">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -10,7 +10,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <TextBox Text="kata competitor and match info"
+        <TextBox Text="Kumite Competitor and Match Info"
                  TextAlignment="Center"
                  VerticalAlignment="Center" 
                  FontSize="16" />
@@ -18,10 +18,10 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
@@ -36,6 +36,7 @@
                 />
             <TextBox Name="scoreA"
                      Text="score a"
+                     FontSize="22"
                      TextAlignment="Center"
                      Grid.Row="2"
                      Grid.Column="2"
@@ -44,6 +45,7 @@
                 />
             <TextBox Name="scoreB"
                      Text="score b"
+                     FontSize="22"
                      TextAlignment="Center"
                      Grid.Row="2"
                      Grid.Column="3"
@@ -119,7 +121,7 @@
             <Button Name="doctorStopA" 
                     Grid.Column="1" 
                     Grid.Row="6" 
-                    Content="doctorstopA" 
+                    Content="doctor stop" 
                     VerticalAlignment="Center" 
                     Margin="10,0,10,0" Click="doctorStopA_Click" />
             <Button Name="ipponB" Grid.Column="3" 
@@ -154,7 +156,7 @@
                     Margin="10,0,10,0" Click="tentoB_Click" />
             <Button Name="doctorstopB" Grid.Column="3" 
                     Grid.Row="6" 
-                    Content="doctor-stop" 
+                    Content="doctor stop" 
                     VerticalAlignment="Center" 
                     Margin="10,0,10,0" Click="doctorstopB_Click" />
             

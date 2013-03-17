@@ -99,12 +99,14 @@ namespace KarateGeek.guis
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
         }
 
-
+        
 
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int i = this.cboTurnamentSelector.SelectedIndex;
             this._tournamentId = _TournamantsDT.Rows[i][0].ToString();
+
+            //cleanTeamKumite();
 
             this.tournament = new Tournament(this._tournamentId);
 
@@ -113,6 +115,16 @@ namespace KarateGeek.guis
             /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
             this.graph = new LotteryGraph(long.Parse(this.tournament.id));      // predictably, this could crash for Team Kumite because it needs at least 1 record in the table (tournaments JOIN games ON tournaments.id = games.tournament_id)
             // solution: we used the hasEnoughElementsToPrint() method in the LotteryGraph GUI, especially for team kumite.
+        }
+
+
+        private void cleanTeamKumite()
+        {
+            CoreDatabaseConnection con = new CoreDatabaseConnection();
+            string sql = "";
+
+        
+        
         }
 
 
@@ -314,25 +326,27 @@ namespace KarateGeek.guis
 
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
-                        temp.Append("Click to add game members.");
+                        temp.Append("\nClick to add game members.\n");
                     }
                     else
                     {
-                        temp.Append("Empty...");
+                        temp.Append("\nEmpty...\n");
                     }
 
                     break;
                 case 1:
 
                     A = gm.participants.ElementAt(0);
-                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+                    //temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + "Waiting...");
+                    temp.Append(string.Format("\n{0,-25} VS {1,-25}\n", A.lastName + " " + A.firstName, "Waiting...")); //TODO: align correctly
 
                     break;
                 case 2:
 
                     A = gm.participants.ElementAt(0);
                     B = gm.participants.ElementAt(1);
-                    temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    //temp.Append(A.lastName + " " + A.firstName + "\nVS\n" + B.lastName + " " + B.firstName);
+                    temp.Append(string.Format("\n{0,-25} VS {1,-25}\n", A.lastName + " " + A.firstName, B.lastName + " " + B.firstName)); //TODO: align correctly
 
                     break;
             }
@@ -1081,6 +1095,12 @@ namespace KarateGeek.guis
                 next3++;
 
             return next3;
+        }
+
+        private void Window_close(object sender, EventArgs e)
+        {
+            this.Close();
+            this._sender.Show();
         }
     }
 }

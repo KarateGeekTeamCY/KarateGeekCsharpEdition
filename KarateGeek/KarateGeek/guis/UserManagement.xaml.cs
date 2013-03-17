@@ -259,6 +259,12 @@ namespace KarateGeek.guis
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
+        private void Window_close(object sender, EventArgs e)
+        {
+            this.Close();
+            this.sender.Show();
+        }
+
        
         
     }

@@ -16,14 +16,14 @@ namespace KarateGeek.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class EventCrystalReport : ReportClass {
+    public class GraphCrystalReport : ReportClass {
         
-        public EventCrystalReport() {
+        public GraphCrystalReport() {
         }
         
         public override string ResourceName {
             get {
-                return "EventCrystalReport.rpt";
+                return "GraphCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace KarateGeek.Reports {
         
         public override string FullResourceName {
             get {
-                return "KarateGeek.Reports.EventCrystalReport.rpt";
+                return "KarateGeek.Reports.GraphCrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -106,9 +106,9 @@ namespace KarateGeek.Reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedEventCrystalReport : Component, ICachedReport {
+    public class CachedGraphCrystalReport : Component, ICachedReport {
         
-        public CachedEventCrystalReport() {
+        public CachedGraphCrystalReport() {
         }
         
         [Browsable(false)]
@@ -145,7 +145,7 @@ namespace KarateGeek.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            EventCrystalReport rpt = new EventCrystalReport();
+            GraphCrystalReport rpt = new GraphCrystalReport();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -11,7 +11,7 @@ namespace KarateGeek.databaseConnection
         DataTable eventDT = new DataTable();
         DataSet dr = null;
 
-        public string InsertNewEvent(string name, DateTime eventdate, string addressStreetName,
+        public string InsertNewEvent(string name, string eventdate, string addressStreetName,
            string addressStreetNumber, string addressPostalCode, string location, string phone,
            string email, string city , string countryCode, Boolean official)
         {
@@ -26,7 +26,7 @@ namespace KarateGeek.databaseConnection
             return eventId;
         }
 
-        public string UpdateEvent(int eventId, string name, DateTime eventdate, string addressStreetName,
+        public string UpdateEvent(int eventId, string name, string eventdate, string addressStreetName,
            string addressStreetNumber, string addressPostalCode, string location, string phone,
            string email, string city, string countryCode, Boolean official)
         {
@@ -64,9 +64,7 @@ namespace KarateGeek.databaseConnection
             sql = "delete from events where id='" + id + "';";
             this.Query(sql);
 
-            //delete addresses and locations cascade
-            sql = "delete from addresses where id='" + address_id + "';";
-            this.Query(sql);
+            new AddressConnection().deleteEventAddress(address_id, id);
         }
 
         public DataSet findSimilar(string filter)
@@ -75,15 +73,25 @@ namespace KarateGeek.databaseConnection
             return this.Query(sql);
         }
 
-        private string _InsertEvent(string name, DateTime eventdate, Boolean official, string locationId)
+        private string _InsertEvent(string name, string eventdate, Boolean official, string locationId)
         {
+            string sql;
+            if (string.IsNullOrEmpty(eventdate))
+            {
+                sql = "insert into events ( name, official, location_id) values ( '"
+                    + name + "', '"
+                    + official + "', '"
+                    + locationId + "' );";
 
-            string sql = "insert into events ( name, date, official, location_id) values ( '"
-                + name + "', '"
-                + eventdate.ToShortDateString() + "', '"
-                + official + "', '"
-                + locationId + "' );"; 
-
+            }
+            else
+            {
+                sql = "insert into events ( name, date, official, location_id) values ( '"
+                    + name + "', '"
+                    + eventdate + "', '"
+                    + official + "', '"
+                    + locationId + "' );";
+            }
             this.NonQuery(sql);
 
             sql = "select currval('events_id_seq');";
@@ -93,15 +101,26 @@ namespace KarateGeek.databaseConnection
             return "" + eventId;
         }
 
-        private string _UpdateEvent(int eventId, string name, DateTime eventdate, Boolean official, int locationId)
+        private string _UpdateEvent(int eventId, string name, string eventdate, Boolean official, int locationId)
         {
-
-            string sql = "update events set " +
+            string sql;
+            if (string.IsNullOrEmpty(eventdate))
+            {
+                sql = "update events set " +
                  "name = '" + name + "', " +
-                 "date = '" + eventdate.ToShortDateString() + "', " +
+                 "official = '" + official + "', " +
+                 "location_id = '" + locationId + "' where id = '" + eventId + "' ;";
+            }
+            else
+            {
+                sql = "update events set " +
+                 "name = '" + name + "', " +
+                 "date = '" + eventdate + "', " +
                  "official = '" + official + "', " +
                  "location_id = '" + locationId + "' where id = '" + eventId + "' ;";
 
+            }
+            
             this.NonQuery(sql);
 
             return "";
@@ -110,6 +129,12 @@ namespace KarateGeek.databaseConnection
         public DataSet getEvents()
         {
             string sql = "select * from events;";
+            return this.Query(sql);
+        }
+
+        public DataSet getEventsWithDate()
+        {
+            string sql = "select * from events where date is not null;";
             return this.Query(sql);
         }
 
@@ -133,7 +158,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet getEventsBydate(string date)
         {
-            string sql = "select * from events where date = '" + date + "';";
+            string sql = "select * from events where date = '" + date + "' and date is not null;";
             return this.Query(sql);
         }
 

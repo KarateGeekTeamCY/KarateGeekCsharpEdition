@@ -25,14 +25,14 @@
             <ColumnDefinition Width="*"/>
             
         </Grid.ColumnDefinitions>
-        
-        <Label Name="lblInfo" 
-               Grid.Column="1"
-               Grid.ColumnSpan="3"
-               VerticalAlignment="Center"
-               Content="info"
-               HorizontalContentAlignment="Center"/>
-        
+
+        <Label
+               Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
+               FontSize="16" 
+               VerticalAlignment="Center" 
+                Grid.ColumnSpan="19"
+               HorizontalContentAlignment="Center" Margin="121,24,123,24" />
+
         <ListBox Name="listBoxTeamA"
                  Grid.Row="2"
                  Grid.Column="1"

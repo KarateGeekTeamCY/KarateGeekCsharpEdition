@@ -12,7 +12,7 @@ namespace KarateGeek.databaseConnection
         DataTable judges = new DataTable();
 
         public bool InsertNewJudge(int personId, string firstName, string lastName, string fathersName, string sex,
-           DateTime dateOfBirth,
+           string dateOfBirth,
            string primaryPhoneNo, string secondaryPhoneNo, string email,
            string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
            string rank, string judge_class)
@@ -26,13 +26,13 @@ namespace KarateGeek.databaseConnection
                 AddressConnection addConn = new AddressConnection();
                 addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
                 judgeId = insertNewPerson(firstName, lastName, fathersName, sex, dateOfBirth, primaryPhoneNo, secondaryPhoneNo, email, addressId);
-                this._InsertJudge(personId, rank, judge_class);
+                this._InsertJudge(judgeId, rank, judge_class);
                 judgeInsertion = true;
             }
             else if (personId >= 0)
             {
 
-                this._InsertJudge(personId, rank, judge_class);
+                this._InsertJudge(personId.ToString(), rank, judge_class);
                 judgeInsertion = true;
             }
 
@@ -41,7 +41,7 @@ namespace KarateGeek.databaseConnection
         }
 
 
-        private string _InsertJudge(int id, string rank, string judge_class)
+        private string _InsertJudge(string id, string rank, string judge_class)
         {
 
             string sql = "insert into judges ( id, rank, class) values ( '"
@@ -56,7 +56,7 @@ namespace KarateGeek.databaseConnection
         }
 
         public string UpdateJudge(int id, string firstName, string lastName, string fathersName, string sex,
-          DateTime dateOfBirth,
+          string dateOfBirth,
           string primaryPhoneNo, string secondaryPhoneNo, string email,
           string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City,
           string rank, string judge_class)
