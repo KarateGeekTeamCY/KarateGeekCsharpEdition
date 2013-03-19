@@ -99,7 +99,7 @@ namespace KarateGeek.guis
             this.cboTurnamentSelector.ItemsSource = _availableTournaments;
         }
 
-        
+
 
         private void cboTurnamentSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -123,8 +123,8 @@ namespace KarateGeek.guis
             CoreDatabaseConnection con = new CoreDatabaseConnection();
             string sql = "";
 
-        
-        
+
+
         }
 
 
@@ -389,10 +389,16 @@ namespace KarateGeek.guis
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            //
-            // untested sql
-            //
-            sql = "select game_participations.athlete_id, mean_score from tournament_participations join game_participacions on tournament_participations.athlete_id = game_participations.athlete_id join game_score on game_participation.athlete_id = game_score.athlete_id where tournament_id = '" + this.tournament.id + "' AND phase '" + this._indexCurrentphase + "' ORDER BY mean_score DESC ;";
+
+            sql = "select gp.athlete_id, mean_score FROM game_participations gp join games g on gp.game_id = g.id join game_score gs on gs.game_id = g.id where tournament_id = '"
+                + this.tournament.id
+                + "' AND  phase = '" + this._indexCurrentphase
+                + "' ORDER BY mean_score DESC ;";
+
+
+            //sql = "select game_participations.athlete_id, mean_score from tournament_participations join game_participacions on tournament_participations.athlete_id = game_participations.athlete_id join game_score on game_participation.athlete_id = 
+            //game_score.athlete_id where tournament_id = '" + this.tournament.id + "' AND phase '" + this._indexCurrentphase + "' ORDER BY mean_score DESC ;";
+
             DataTable temp = conn.Query(sql).Tables[0];
 
             List<Athlete> aths = new List<Athlete>();
@@ -402,6 +408,9 @@ namespace KarateGeek.guis
 
             return aths;
         }
+
+
+
 
 
 
@@ -724,6 +733,7 @@ namespace KarateGeek.guis
             this.advanceVsGame(gm);
         }
 
+
         public void advanceAthletes()
         {
             //
@@ -940,44 +950,117 @@ namespace KarateGeek.guis
             if (this.tournament.gameType == Strings.syncKata)
                 tWinners = getSyncKataWinner(_indexCurrentphase.ToString());
 
+            aWinners = checkTie(aWinners, _indexCurrentphase);
+            tWinners = checkTie(tWinners, _indexCurrentphase);
+
+            if ((aWinners != null) && (tWinners != null))
+            {
+
+                int i = 1;
+                double last = Math.Pow(2, (_indexCurrentphase + 1));
 
 
-            int i = 1;
-            double last = Math.Pow(2, (_indexCurrentphase + 1));
+                if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
+                    foreach (Athlete athlete in aWinners)
+                    {
+
+                        if ((double)i < last + 1)
+                            if (!(_indexNextPhase == -1))
+                                addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
+
+                        insertRank(athlete, i.ToString());
+                        i++;
+                    }
 
 
-            if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
-                foreach (Athlete athlete in aWinners)
-                {
+                i = 1;
+                //double last = Math.Pow(2, (_indexCurrentphase + 1));
 
-                    if ((double)i < last + 1)
-                        if (!(_indexNextPhase == -1))
-                            addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), athlete);
+                if (this.tournament.gameType == Strings.teamKata
+                || this.tournament.gameType == Strings.enbu
+                || this.tournament.gameType == Strings.syncKata)
+                    foreach (Team team in tWinners)
+                    {
 
-                    insertRank(athlete, i.ToString());
-                    i++;
-                }
+                        if ((double)i < last + 1)
+                            if (!(_indexNextPhase == -1))
+                                addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
 
-
-            i = 1;
-            //double last = Math.Pow(2, (_indexCurrentphase + 1));
-
-            if (this.tournament.gameType == Strings.teamKata
-            || this.tournament.gameType == Strings.enbu
-            || this.tournament.gameType == Strings.syncKata)
-                foreach (Team team in tWinners)
-                {
-
-                    if ((double)i < last + 1)
-                        if (!(_indexNextPhase == -1))
-                            addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), team);
-
-                    insertRank(team, i.ToString());
-                    i++;
-                }
+                        insertRank(team, i.ToString());
+                        i++;
+                    }
+            }
         }
 
+        List<Athlete> checkTie(List<Athlete> aths, int phase)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
+            int last = (int)Math.Pow(2, (_indexCurrentphase + 1));
+            string lastid = aths.ElementAt(last).id;
+
+            sql = "SELECT mean_score FROM game_score WHERE athlete_id = '" + lastid + "' AND game_id"
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') ;";
+
+            string score = conn.Query(sql).Tables[0].Rows[0][0].ToString(); ;
+
+
+            sql = "select gp.athlete_id, mean_score FROM game_participations gp join games g on gp.game_id = g.id join game_score gs on gs.game_id = g.id "
+                + "where tournament_id = '" + this.tournament.id
+                + "' AND  phase = '" + this._indexCurrentphase
+                + "' AND  mean_score = '" + score
+                + "' ORDER BY mean_score DESC ;";
+
+            DataTable temp = conn.Query(sql).Tables[0];
+
+            if (temp.Rows.Count > 1)
+            {
+                ChooseKataWinner katawin = new ChooseKataWinner(this, this.tournament, temp);
+                return null;
+            }
+            else
+            {
+                return aths;
+            }
+
+        }
+
+        List<Team> checkTie(List<Team> teams, int phase)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            int last = (int)Math.Pow(2, (_indexCurrentphase + 1));
+            string lastid = teams.ElementAt(last).id;
+
+            sql = "SELECT SUM(mean_score) FROM game_score WHERE team_id = '" + lastid + "' AND game_id"
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') GROUP BY team_id ;";
+
+            string score = conn.Query(sql).Tables[0].Rows[0][0].ToString(); ;
+
+
+            sql = "select gp.team_id, SUM (mean_score) FROM game_participations gp join games g on gp.game_id = g.id join game_score gs on gs.game_id = g.id "
+                + "where tournament_id = '" + this.tournament.id
+                + "' AND  phase = '" + this._indexCurrentphase
+                + "' AND  SUM(mean_score) = '" + score
+                + "' ORDER BY mean_score DESC GROUP BY team_id ;";
+
+            DataTable temp = conn.Query(sql).Tables[0];
+
+            if (temp.Rows.Count > 1)
+            {
+                ChooseKataWinner katawin = new ChooseKataWinner(this, this.tournament, temp);
+                return null;
+            }
+            else
+            {
+                return teams;
+            }
+
+
+            return null;
+        }
 
         private void insertRank(Athlete ath, string rank)
         {

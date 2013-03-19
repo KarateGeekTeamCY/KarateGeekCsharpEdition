@@ -128,6 +128,9 @@
     <Compile Include="databaseConnection\EveSupScoreConnection.cs" />
     <Compile Include="databaseConnection\TournamentGameParticipationsConnection.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="guis\ChooseKataWinner.xaml.cs">
+      <DependentUpon>ChooseKataWinner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="guis\ChooseWinner.xaml.cs">
       <DependentUpon>ChooseWinner.xaml</DependentUpon>
     </Compile>
@@ -319,6 +322,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="guis\ChooseKataWinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="guis\ChooseWinner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

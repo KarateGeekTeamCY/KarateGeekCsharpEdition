@@ -39,6 +39,9 @@ namespace KarateGeek.guis
         private double _scoreE = 0;
         private double _treamdMean = 0;
 
+
+
+
         private Game _game;
         private Tournament tour;
 
@@ -87,11 +90,11 @@ namespace KarateGeek.guis
             }
             //string runka = Strings.rank1;
 
-            this.eventJudgePickerA.SelectedIndex = 1;
-            this.eventJudgePickerB.SelectedIndex = 1;
-            this.eventJudgePickerC.SelectedIndex = 1;
-            this.eventJudgePickerD.SelectedIndex = 1;
-            this.eventJudgePickerE.SelectedIndex = 1;
+            this.eventJudgePickerA.SelectedIndex = 0;
+            this.eventJudgePickerB.SelectedIndex = 0;
+            this.eventJudgePickerC.SelectedIndex = 0;
+            this.eventJudgePickerD.SelectedIndex = 0;
+            this.eventJudgePickerE.SelectedIndex = 0;
 
             string gametype = this._DTgame.Rows[0][4].ToString();
 
@@ -111,11 +114,11 @@ namespace KarateGeek.guis
 
             }
 
-            this.scoreA.Text = "5";
-            this.scoreB.Text = "5";
-            this.scoreC.Text = "5";
-            this.scoreD.Text = "5";
-            this.scoreE.Text = "5";
+            this.scoreA.Text = "";
+            this.scoreB.Text = "";
+            this.scoreC.Text = "";
+            this.scoreD.Text = "";
+            this.scoreE.Text = "";
 
 
             this._sender.Hide();
@@ -299,11 +302,11 @@ namespace KarateGeek.guis
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            this.scoreA.Text = "0";
-            this.scoreB.Text = "0";
-            this.scoreC.Text = "0";
-            this.scoreD.Text = "0";
-            this.scoreE.Text = "0";
+            this.scoreA.Text = "";
+            this.scoreB.Text = "";
+            this.scoreC.Text = "";
+            this.scoreD.Text = "";
+            this.scoreE.Text = "";
 
             this.lblSmallestScore.Content = "smallest score";
             this.lblLargestScore.Content = "largest score";
@@ -315,22 +318,35 @@ namespace KarateGeek.guis
         {
             //EveSupScoreConnection scoreconn = new EveSupScoreConnection();
 
+            int _scoreAts = 0;
+            int _scoreBts = 0;
+            int _scoreCts = 0;
+            int _scoreDts = 0;
+            int _scoreEts = 0;
+            int _treamdMeants = 0;
+
+            _scoreAts = (int)(_scoreA * 10);
+            _scoreBts = (int)(_scoreB * 10);
+            _scoreCts = (int)(_scoreC * 10);
+            _scoreDts = (int)(_scoreD * 10);
+            _scoreEts = (int)(_scoreE * 10);
+            _treamdMeants = (int)(_treamdMean * 10);
 
 
             if (_isTeam)
             {
                 this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
+                _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
             }
             else if (_isSync)
             {
                 this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                    _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
+                    _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
             }
             else
             {
                 this.InsertNewScoreInd(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                _scoreA, _scoreB, _scoreC, _scoreD, _scoreE, _treamdMean);
+                _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
             }
 
 

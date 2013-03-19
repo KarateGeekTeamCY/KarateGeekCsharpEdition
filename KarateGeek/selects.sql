@@ -58,11 +58,19 @@ SELECT * FROM games g LEFT JOIN game_participations gp ON g.id = gp.game_id ORDE
 select * from  game_flag where game_id = '1' ;
 
 
+select gp.athlete_id, mean_score 
+
+FROM game_participations gp
+join games g
+	on gp.game_id = g.id 
+join game_score gs
+	on gs.game_id = g.id 
+
+where tournament_id = '7' AND  phase = '0' ORDER BY mean_score DESC ;
 
 
 
-
-
+select * from game_score;
 
 
 
