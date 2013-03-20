@@ -63,32 +63,7 @@ namespace KarateGeek.guis
             this.sender = sender;
         }
 
-       
-        
-        private void btCBrowse_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Filter = "Image files (*.gif,*.jpg,*.jpeg,*.bmp,*.png)|*.gif;*.jpg;*.jpeg;*.bmp;*.png";
-            dlg.InitialDirectory = "C:\\Users\\Public\\Pictures";
-            dlg.Title = "Select image for logo";
-            Nullable<bool> result = dlg.ShowDialog();
-            if (result == true)
-            {
-                // Open document
-                string filename = dlg.FileName;
-                _clubLogoSource = filename;
-                
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(filename, UriKind.Absolute);
-                bitmap.EndInit();
-                clubLogo.Source = bitmap;
-            }
-        }
-
-       
-
-        private void clubName_TextChanged(object sender, TextChangedEventArgs e)
+        private void newClubList()
         {
             _clubName = clubName.Text;
             List<ListData> autoList = new List<ListData>();
@@ -98,24 +73,34 @@ namespace KarateGeek.guis
 
             foreach (ListData item in clubNameListForAutoComplete)
             {
-                 autoList.Add(item);   
+                autoList.Add(item);
             }
 
             if (autoList.Count > 0)
             {
-                cSuggestionList.DataContext = autoList;
+                cSuggestionList.ItemsSource = autoList;
                 cSuggestionList.Visibility = System.Windows.Visibility.Visible;
             }
             else if (clubName.Text.Equals(""))
             {
                 cSuggestionList.Visibility = Visibility.Collapsed;
-                cSuggestionList.DataContext = null;
+                cSuggestionList.ItemsSource = null;
             }
             else
             {
                 cSuggestionList.Visibility = Visibility.Collapsed;
-                cSuggestionList.DataContext = null;
+                cSuggestionList.ItemsSource = null;
             }
+        }
+
+        private void clubName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = clubName.Text;
+            if (name == "")
+            {
+                initializeNewClub();
+            }
+            newClubList();
         }
 
         private List<ListData> ClubfilterNames()
@@ -132,8 +117,6 @@ namespace KarateGeek.guis
                 list.Add(suggestion);
             }
             return list;
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            //this.sugestionList.ItemsSource = list;
         }
 
         private void cSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -307,6 +290,20 @@ namespace KarateGeek.guis
 
         }
 
-        
+
+        #region initialize methods
+        private void initializeNewClub()
+        {
+            _clubName = null;
+            _clubPhone = null;
+            _clubEmail = null;
+            _clubAddress = null;
+            _clubAddressNum = null;
+            _clubTK = null;
+            cmbCCountryChooses.SelectedIndex = 54;
+
+        }
+        #endregion
+
     }
 }
