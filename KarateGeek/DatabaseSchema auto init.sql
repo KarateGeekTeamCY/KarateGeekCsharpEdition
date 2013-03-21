@@ -109,9 +109,9 @@ CREATE TABLE clubs (
     name            VARCHAR(50)     NOT NULL UNIQUE,
     phone           CHAR(50),
     email           VARCHAR(50),
-    logo            BYTEA,          -- "binary string" data type
+ -- logo            BYTEA,          -- "binary string" data type
     address_id      INTEGER         REFERENCES addresses( id ),
-    country_code    CHAR(2)         DEFAULT 'CY' REFERENCES countries(code),
+ -- country_code    CHAR(2)         DEFAULT 'CY' REFERENCES countries(code),
     PRIMARY KEY (id)
 );
 
@@ -761,9 +761,9 @@ INSERT INTO cities (name, country_code) VALUES ('Thessaloniki', 'GR');
 INSERT INTO addresses (id , street, "number", city_id , postal_code , country_code ) VALUES ('0' , 'tepak' , '1' , '1' , '3025' , 'CY');
 
 
-INSERT INTO clubs (name, address_id, country_code) VALUES ('Fight Club', 0, 'CY');
-INSERT INTO clubs (name, address_id, country_code) VALUES ('Night Club', 0, 'GR'); --address is CY!
-INSERT INTO clubs (name, address_id, country_code) VALUES ('Fight''n''Fitness', 0, 'IN');
+INSERT INTO clubs (name, address_id) VALUES ('Fight Club', 0);
+INSERT INTO clubs (name, address_id) VALUES ('Night Club', 0);
+INSERT INTO clubs (name, address_id) VALUES ('Fight''n''Fitness', 0);
 
 
 INSERT INTO persons (id , first_name, fathers_name, last_name, date_of_birth, sex,  phone, secondary_phone, email, address_id)

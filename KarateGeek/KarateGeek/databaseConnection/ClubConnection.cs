@@ -12,58 +12,66 @@ namespace KarateGeek.databaseConnection
 
     class ClubConnection : CoreDatabaseConnection
     {
-
-        private string sql = "";
-
-
-        public string InsertNewCLub(string name, string phone, string email, string logosource, string addressStreetName, string addressStreetNumber, string addressPostalCode , string countryCode, string City)
+        public bool insertNewCLub(string name, string phone, string email, string addressStreetName, string addressStreetNumber, string addressPostalCode , string countryCode, string City)
         {
-            //FileStream fs = new FileStream(logosource, FileMode.Open, FileAccess.Read);
-            //BinaryReader binr = new BinaryReader(new BufferedStream(fs));
-            //byte[] logoinbites = binr.ReadBytes(Convert.ToInt32(fs.Length));
-
-            ImageConverter ic = new ImageConverter();
             AddressConnection addConn = new AddressConnection();
             string addressId = addConn.InsertNewAddress(addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
 
-            sql = "insert into Clubs (name, phone, email, logo, address_id, country_code) values ("+
+            string sql = "insert into Clubs (name, phone, email, address_id) values ("+
                 "'" + name + "', " +
                 "'" + phone + "', " +
                 "'" + email + "', " +
-                "'" + ic.ToByteTable(logosource) + "' , " +
-                "'" + addressId + "', " +
-                "'" + countryCode + "' " +
-                ")";
-            this.NonQuery(sql);
-
-            return "";
+                "'" + addressId + "')";
+            
+            return this.NonQuery(sql);
         }
 
         public DataSet findSimilar(string filter)
         {
-            string sql = "select * from clubs where name like '" + filter + "%';";
+            string sql = "select * from clubs where name like lower('" + filter + "%');";
             return this.Query(sql);
         }
 
-        public string UpdateClub()
+        public bool updateClub(int id,string name, string phone, string email, string addressStreetName, string addressStreetNumber, string addressPostalCode, string countryCode, string City)
         {
-    
-    
-            return "";
+            DataSet dr = null;
+            string sql1 = "select address_id from clubs where id = '" + id + "'; ";
+            
+            dr = this.Query(sql1);
+            int addressId = int.Parse(dr.Tables[0].Rows[0][0].ToString());
+
+            AddressConnection addConn = new AddressConnection();
+            addConn.UpdateAddress(addressId, addressStreetName, addressStreetNumber, City, addressPostalCode, countryCode);
+
+            string sql2 = "update clubs set " +
+                "name = '" + name + "', " +
+                "phone = '" + phone + "', " +
+                "email = '" + email + "', " +
+                "address_id = '" + addressId + "' where id = '" + id + "' ;";
+
+            return this.NonQuery(sql2);
         }
 
 
-
-        public DataSet GetClubs()
+        public bool deleteClub(int id)
         {
-            sql = "select * from clubs ;";
+            DataSet ds = this.Query("select * from athletes where club_id = '" + id + "';");
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                string sql = "delete from clubs where id = '" + id + "';";
+                return this.NonQuery(sql);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public DataSet getClubs()
+        {
+            string sql = "select * from clubs ;";
             return this.Query(sql);
         }
-
-
-
-
-       
     }
 
 }

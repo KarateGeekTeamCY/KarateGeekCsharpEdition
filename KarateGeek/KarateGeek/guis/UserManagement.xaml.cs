@@ -46,7 +46,6 @@ namespace KarateGeek.guis
         public UserManagement(Window sender)
         {
             this.sender = sender;
-            this.sender.Hide();
             InitializeComponent();
         }
 

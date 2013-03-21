@@ -7,16 +7,19 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
-        <Label
-               Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
+        <Grid Grid.Row="0">
+            <Label
+               Content="Tournament Progress" FontWeight="DemiBold"
                FontSize="16" 
                VerticalAlignment="Center" 
                HorizontalContentAlignment="Center"  />
-        <ScrollViewer Name="treeView"
+        </Grid>
+        <Grid Grid.Row="1">
+            <ScrollViewer Name="treeView"
                               HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Auto" >
-            
-            <Label Name="terminal" 
+
+                <Label Name="terminal" 
                        FontFamily="Lucida Console" 
                        HorizontalContentAlignment="Center"
                        VerticalContentAlignment="Center" 
@@ -28,6 +31,7 @@
                        />
 
 
-        </ScrollViewer>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>

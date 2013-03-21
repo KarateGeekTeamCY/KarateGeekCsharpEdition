@@ -5,7 +5,7 @@
         WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize"
         Width="640"
-        Height="400"
+        Height="420"
         >
     
     <Grid >
@@ -14,8 +14,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="0,10,0,10">
-            <Image Height="80" HorizontalAlignment="Left" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="74" DataContext="{Binding}" Source="/KarateGeek;component/Images/logofudokan_1.gif" Margin="41,0,0,0" />
-            <Image Height="80" HorizontalAlignment="Right" Margin="0,0,43,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="74" Source="/KarateGeek;component/Images/fudokan.gif" />
+            <Image Height="80" HorizontalAlignment="Left" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="64" DataContext="{Binding}" Source="/KarateGeek;component/Images/logofudokan_1.gif" Margin="41,0,0,0" />
+            <Image Height="80" HorizontalAlignment="Right" Margin="0,0,43,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="80" Source="/KarateGeek;component/Images/fudokan.gif" />
             <Label Name="lblmainMenuInfo" 
                Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
                FontSize="16" 
