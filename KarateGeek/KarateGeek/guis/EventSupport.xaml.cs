@@ -1003,7 +1003,7 @@ namespace KarateGeek.guis
 
                     foreach (Team team in tWinners)
                     {
-                        if ((double)i < last + 1)
+                        if ((double)rank < last + 1)
                             if (!(_indexNextPhase == -1))
                                 foreach (Athlete a in team.participants)
                                 {
