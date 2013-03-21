@@ -155,12 +155,14 @@ namespace KarateGeek.guis
         private void btnEventSupport_Click(object sender, RoutedEventArgs e)
         {
             EventSupport eventSup = new EventSupport(this);
-
+            //eventSupport calls the Show() method (and sender.Hide()) in its contructor, because it does some checks first
         }
 
         private void btnUserManagement_Click(object sender, RoutedEventArgs e)
         {
             UserManagement userMan = new UserManagement(this);
+            userMan.Activate();
+            this.Hide();
             userMan.Show();
         }
 

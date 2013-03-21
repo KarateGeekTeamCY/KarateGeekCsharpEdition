@@ -22,23 +22,51 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class ClubManagement : Window
     {
-        private int _clubId;
-        private string _clubName = null;
-        private string _clubPhone = null;
-        private string _clubEmail = null;
-        private string _clubAddress = null;
-        private string _clubAddressNum = null;
-        private string _clubTK = null;
-        private string _clubCity = null;
-        private string _clubCountryCode = null;
-        private string _clubLogoSource = null;
-        private DataSet countries;
-        private DataSet cities;
-        private DataSet filteredClubs;
         private ClubConnection clubConnection;
         private CountryConnection countryConnection;
         private AddressConnection addressConnection;
-        List<ListData> clubNameListForAutoComplete;
+        private DataSet clubCountries;
+        private DataSet clubCities;
+
+        #region new Club Definitions
+
+        private string _newClubName = null;
+        private string _newClubPhone = null;
+        private string _newClubEmail = null;
+        private string _newClubAddress = null;
+        private string _newClubAddressNum = null;
+        private string _newClubTK = null;
+        private string _newClubCity = null;
+        private string _newClubCountryCode = null;
+     //   private DataSet filteredNewClubs;
+     //   List<ListData> newClubNameListForAutoComplete;
+        
+        #endregion
+
+        #region edit Club Definitions
+
+
+        private int _editClubId = -1;
+        private string _editClubName = null;
+        private string _editClubPhone = null;
+        private string _editClubEmail = null;
+        private string _editClubAddress = null;
+        private string _editClubAddressNum = null;
+        private string _editClubTK = null;
+        private string _editClubCity = null;
+        private string _editClubCountryCode = null;
+        private DataSet filteredEditClubs;
+        List<ListData> editClubNameListForAutoComplete;
+
+        #endregion
+
+
+        #region edit Club Definitions
+
+        #endregion
+
+
+
         private Window sender;
 
         public ClubManagement(Window sender)
@@ -49,82 +77,162 @@ namespace KarateGeek.guis
             clubConnection = new ClubConnection();
 
             countryConnection = new CountryConnection();
-            this.countries = countryConnection.GetCountries();
+            this.clubCountries = countryConnection.GetCountries();
 
-            foreach (DataRow dr in countries.Tables[0].Rows)
+            foreach (DataRow dr in clubCountries.Tables[0].Rows)
             {
-                cmbCCountryChooses.Items.Add(dr[1].ToString());
+                cmbNewCCountryChooses.Items.Add(dr[1].ToString());
+                cmbEditCCountryChooses.Items.Add(dr[1].ToString());
                 
             }
-            cmbCCountryChooses.SelectedIndex = 0;
+            cmbNewCCountryChooses.SelectedIndex = 54;
+            cmbEditCCountryChooses.SelectedIndex = 54;
 
-            this.clubUpdateCities("CY");
+            this.newClubUpdateCities("CY");
+            this.editClubUpdateCities("CY");
 
             this.sender = sender;
         }
 
-       
-        
-        private void btCBrowse_Click(object sender, RoutedEventArgs e)
+        #region new Club
+        private void newClubName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Filter = "Image files (*.gif,*.jpg,*.jpeg,*.bmp,*.png)|*.gif;*.jpg;*.jpeg;*.bmp;*.png";
-            dlg.InitialDirectory = "C:\\Users\\Public\\Pictures";
-            dlg.Title = "Select image for logo";
-            Nullable<bool> result = dlg.ShowDialog();
-            if (result == true)
-            {
-                // Open document
-                string filename = dlg.FileName;
-                _clubLogoSource = filename;
-                
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(filename, UriKind.Absolute);
-                bitmap.EndInit();
-                clubLogo.Source = bitmap;
-            }
+            _newClubName = newClubName.Text;
         }
 
-       
-
-        private void clubName_TextChanged(object sender, TextChangedEventArgs e)
+        private void newClubUpdateCities(string countryCode)
         {
-            _clubName = clubName.Text;
+            CityConnection citiesconn = new CityConnection();
+            this.clubCities = citiesconn.GetCities(countryCode);
+
+            //cmbACityChooses = new ComboBox();
+
+            int count = cmbNewCCityChooses.Items.Count;
+            for (int i = 0; i < count; i++)
+            {
+                cmbNewCCityChooses.Items.RemoveAt(0);
+            }
+
+            foreach (DataRow dr in clubCities.Tables[0].Rows)
+            {
+                cmbNewCCityChooses.Items.Add(dr[1].ToString());
+            }
+            cmbNewCCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+
+            cmbNewCCityChooses.Items.Refresh();
+
+        }
+
+        private void newClubPhone_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _newClubPhone = newClubPhone.Text;
+        }
+
+        private void newClubEmail_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _newClubEmail = newClubEmail.Text;
+        }
+
+        private void newClubAddress_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _newClubAddress = newClubAddress.Text;
+        }
+
+        private void newClubAddressNum_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _newClubAddressNum = newClubAddressNum.Text;
+        }
+
+        private void newClubTK_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _newClubTK = newClubTK.Text;
+        }
+
+        private void cmbNewCCityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbNewCCityChooses.SelectedIndex;
+            if (index < cmbNewCCityChooses.Items.Count && index != -1)
+                _newClubCity = cmbNewCCityChooses.Items[index].ToString();
+        }
+
+        private void cmbNewCCountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = cmbNewCCountryChooses.SelectedIndex;
+            //athlete_country = cmbACountryChooses.Items[index].ToString();
+            _newClubCountryCode = clubCountries.Tables[0].Rows[index][0].ToString();
+            //setCountryCode(athlete_country);
+            this.newClubUpdateCities(_newClubCountryCode);
+        }
+
+        private void btnNewCSave_Click(object sender, RoutedEventArgs e)
+        {
+            bool insertClub;
+            insertClub = clubConnection.insertNewCLub(_newClubName, _newClubPhone , _newClubEmail , _newClubAddress , _newClubAddressNum , _newClubTK , _newClubCountryCode , _newClubCity);
+            if (insertClub)
+            {
+                MessageBox.Show("Succesfully saved!","Club Add",MessageBoxButton.OK);
+                initializeNewClub();
+            }
+            else
+            {
+                MessageBox.Show("Error. Club not succesfully saved!", "Club add", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+
+        private void btnNewCBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            this.sender.Show();
+        }
+
+
+
+
+        #endregion
+
+        #region edit Club
+
+        
+        private void editClubList()
+        {
+            _editClubName = editClubName.Text;
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
-            clubNameListForAutoComplete = this.ClubfilterNames();
+            editClubNameListForAutoComplete = this.ClubfilterNames();
 
-            foreach (ListData item in clubNameListForAutoComplete)
+            foreach (ListData item in editClubNameListForAutoComplete)
             {
-                 autoList.Add(item);   
+                autoList.Add(item);
             }
 
             if (autoList.Count > 0)
             {
-                cSuggestionList.DataContext = autoList;
+                cSuggestionList.ItemsSource = autoList;
                 cSuggestionList.Visibility = System.Windows.Visibility.Visible;
             }
-            else if (clubName.Text.Equals(""))
+            else if (editClubName.Text.Equals(""))
             {
                 cSuggestionList.Visibility = Visibility.Collapsed;
-                cSuggestionList.DataContext = null;
+                cSuggestionList.ItemsSource = null;
             }
             else
             {
                 cSuggestionList.Visibility = Visibility.Collapsed;
-                cSuggestionList.DataContext = null;
+                cSuggestionList.ItemsSource = null;
             }
         }
+
+       
 
         private List<ListData> ClubfilterNames()
         {
             List<ListData> list = new List<ListData>();
      
-            this.filteredClubs = clubConnection.findSimilar(this.clubName.Text);
+            this.filteredEditClubs = clubConnection.findSimilar(this.editClubName.Text);
 
-            foreach (DataRow dr in filteredClubs.Tables[0].Rows)
+            foreach (DataRow dr in filteredEditClubs.Tables[0].Rows)
             {
                 ListData suggestion = new ListData();
                 suggestion.id = int.Parse(dr[0].ToString());
@@ -132,8 +240,6 @@ namespace KarateGeek.guis
                 list.Add(suggestion);
             }
             return list;
-            //this.sugestioListScroler.Visibility = System.Windows.Visibility.Visible;
-            //this.sugestionList.ItemsSource = list;
         }
 
         private void cSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -149,63 +255,26 @@ namespace KarateGeek.guis
             if (cSuggestionList.ItemsSource != null)
             {
                 cSuggestionList.Visibility = System.Windows.Visibility.Collapsed;
-                clubName.TextChanged -= new TextChangedEventHandler(clubName_TextChanged);
+                editClubName.TextChanged -= new TextChangedEventHandler(editClubName_TextChanged);
 
                 index = cSuggestionList.SelectedIndex;
 
                 if (cSuggestionList.SelectedIndex != -1)
                 {
                     ListData item = (ListData)cSuggestionList.SelectedItem;
-                    _clubId = item.id;
+                    _editClubId = item.id;
                     name = cSuggestionList.SelectedItem.ToString();
-                    address_id = int.Parse(filteredClubs.Tables[0].Rows[index][5].ToString());
+                    address_id = int.Parse(filteredEditClubs.Tables[0].Rows[index][4].ToString());
 
-                    this.clubName.Text = filteredClubs.Tables[0].Rows[index][1].ToString();
-                    this.clubPhone.Text = filteredClubs.Tables[0].Rows[index][2].ToString();
-                    this.clubEmail.Text = filteredClubs.Tables[0].Rows[index][3].ToString();
+                    this.editClubName.Text = filteredEditClubs.Tables[0].Rows[index][1].ToString();
+                    this.editClubPhone.Text = filteredEditClubs.Tables[0].Rows[index][2].ToString();
+                    this.editClubEmail.Text = filteredEditClubs.Tables[0].Rows[index][3].ToString();
                   
-                    /*
-                    helpers.ImageConverter ic = new helpers.ImageConverter();
-                    System.Drawing.Image image = ic.ToImage((byte[])filteredClubs.Tables[0].Rows[index][4]);
-
-                    var bitmap = new System.Windows.Media.Imaging.BitmapImage();
-                    bitmap.BeginInit();
-                    MemoryStream memoryStream = new MemoryStream();
-                    // Save to a memory stream...
-                    image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Bmp);
-                    // Rewind the stream...
-                    memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
-                    bitmap.StreamSource = memoryStream;
-                    bitmap.EndInit();
-                    this.clubLogo.Source = bitmap;
-                    */
-                  /*
-                    byte[] productImageByte = (byte[])filteredClubs.Tables[0].Rows[0][4];
-                    if (productImageByte != null)
-                    {
-                        using (System.IO.MemoryStream stream = new System.IO.MemoryStream(productImageByte))
-                        {
-                           // stream.Write(productImageByte, 0, productImageByte.Length);
-                           // stream.Position = 0;
-
-                            System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-                            BitmapImage bi = new BitmapImage();
-                            bi.BeginInit();
-
-                            MemoryStream ms = new MemoryStream();
-                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                            ms.Seek(0, SeekOrigin.Begin);
-                            bi.StreamSource = ms;
-                            bi.EndInit();
-                            this.clubLogo.Source = bi;
-                        }
-                    }
-                    */
                     ds = addressConnection.getAddress(address_id);
 
-                    this.clubAddress.Text = ds.Tables[0].Rows[0][1].ToString();
-                    this.clubAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
-                    this.clubTK.Text = ds.Tables[0].Rows[0][4].ToString();
+                    this.editClubAddress.Text = ds.Tables[0].Rows[0][1].ToString();
+                    this.editClubAddressNum.Text = ds.Tables[0].Rows[0][2].ToString();
+                    this.editClubTK.Text = ds.Tables[0].Rows[0][4].ToString();
 
                     string clubCity = ds.Tables[0].Rows[0][3].ToString();
                     int ix = ds.Tables[0].Columns.Count;
@@ -224,9 +293,9 @@ namespace KarateGeek.guis
 
 
 
-                    for (int i = 0; i < this.cmbCCountryChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbEditCCountryChooses.Items.Count; i++)
                     {
-                        if (clubCountry.Equals(cmbCCountryChooses.Items[i].ToString()))
+                        if (clubCountry.Equals(cmbEditCCountryChooses.Items[i].ToString()))
                         {
                             country_position = i;
                             break;
@@ -234,117 +303,173 @@ namespace KarateGeek.guis
                     }
 
 
-                    this.cmbCCountryChooses.SelectedIndex = country_position;
+                    this.cmbEditCCountryChooses.SelectedIndex = country_position;
 
 
                     CityConnection cityConnection = new CityConnection();
                     DataSet cityNa = cityConnection.GetCityNameByCityId(int.Parse(clubCity));
                     clubCity = cityNa.Tables[0].Rows[0][0].ToString();
 
-                    for (int i = 0; i < this.cmbCCityChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbEditCCityChooses.Items.Count; i++)
                     {
-                        if (clubCity.Equals(cmbCCityChooses.Items[i].ToString()))
+                        if (clubCity.Equals(cmbEditCCityChooses.Items[i].ToString()))
                         {
                             city_position = i;
                             break;
                         }
                     }
-                    this.cmbCCityChooses.SelectedIndex = city_position;
+                    this.cmbEditCCityChooses.SelectedIndex = city_position;
                     
                 }
-                clubName.TextChanged += new TextChangedEventHandler(clubName_TextChanged);
+                editClubName.TextChanged += new TextChangedEventHandler(editClubName_TextChanged);
             }
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
         }
 
-        private void clubUpdateCities(string countryCode)
+       
+
+        private void editClubName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string name = editClubName.Text;
+
+            if (name == "")
+            {
+                initializeEditClub();
+            }
+
+            editClubList();
+        }
+
+        private void editClubUpdateCities(string countryCode)
         {
             CityConnection citiesconn = new CityConnection();
-            this.cities = citiesconn.GetCities(countryCode);
+            this.clubCities = citiesconn.GetCities(countryCode);
 
             //cmbACityChooses = new ComboBox();
 
-            int count = cmbCCityChooses.Items.Count;
+            int count = cmbEditCCityChooses.Items.Count;
             for (int i = 0; i < count; i++)
             {
-                cmbCCityChooses.Items.RemoveAt(0);
+                cmbEditCCityChooses.Items.RemoveAt(0);
             }
 
-            foreach (DataRow dr in cities.Tables[0].Rows)
+            foreach (DataRow dr in clubCities.Tables[0].Rows)
             {
-                cmbCCityChooses.Items.Add(dr[1].ToString());
+                cmbEditCCityChooses.Items.Add(dr[1].ToString());
             }
-            cmbCCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
+            cmbEditCCityChooses.SelectedIndex = 0; //deixnei poio tha einai to proepilegmeno
 
-            cmbCCityChooses.Items.Refresh();
+            cmbEditCCityChooses.Items.Refresh();
 
 
 
 
         }
 
-        private void clubPhone_TextChanged(object sender, TextChangedEventArgs e)
+        private void editClubPhone_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _clubPhone = clubPhone.Text;
+            _editClubPhone = editClubPhone.Text;
         }
 
-        private void clubEmail_TextChanged(object sender, TextChangedEventArgs e)
+        private void editClubEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _clubEmail = clubEmail.Text;
+            _editClubEmail = editClubEmail.Text;
         }
 
-        private void clubAddress_TextChanged(object sender, TextChangedEventArgs e)
+        private void editClubAddress_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _clubAddress = clubAddress.Text;
+            _editClubAddress = editClubAddress.Text;
         }
 
-        private void clubAddressNum_TextChanged(object sender, TextChangedEventArgs e)
+        private void editClubAddressNum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _clubAddressNum = clubAddressNum.Text;
+            _editClubAddressNum = editClubAddressNum.Text;
         }
 
-        private void clubTK_TextChanged(object sender, TextChangedEventArgs e)
+        private void editClubTK_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _clubTK = clubTK.Text;
+            _editClubTK = editClubTK.Text;
         }
 
-        private void cmbCCityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void cmbEditCCountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = cmbCCityChooses.SelectedIndex;
-            if (index < cmbCCityChooses.Items.Count && index != -1)
-                _clubCity = cmbCCityChooses.Items[index].ToString();
-        }
-
-        private void cmbCCountryChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int index = cmbCCountryChooses.SelectedIndex;
+            int index = cmbEditCCountryChooses.SelectedIndex;
             //athlete_country = cmbACountryChooses.Items[index].ToString();
-            _clubCountryCode = countries.Tables[0].Rows[index][0].ToString();
+            _editClubCountryCode = clubCountries.Tables[0].Rows[index][0].ToString();
             //setCountryCode(athlete_country);
-            this.clubUpdateCities(_clubCountryCode);
+            this.editClubUpdateCities(_editClubCountryCode);
         }
 
-        private void btnCSaveNew_Click(object sender, RoutedEventArgs e)
+        private void cmbEditCCityChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            clubConnection.InsertNewCLub(_clubName, _clubPhone , _clubEmail , _clubLogoSource , _clubAddress , _clubAddressNum , _clubTK , _clubCountryCode , _clubCity);
-            MessageBox.Show("Succesfully saved!");
+            int index = cmbEditCCityChooses.SelectedIndex;
+            if (index < cmbEditCCityChooses.Items.Count && index != -1)
+                _editClubCity = cmbEditCCityChooses.Items[index].ToString();
         }
 
-        private void btnCBack_Click(object sender, RoutedEventArgs e)
+        private void btnEditCBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
             this.sender.Show();
         }
 
-        private void btnCSave_Click(object sender, RoutedEventArgs e)
+        private void btnEditCSave_Click(object sender, RoutedEventArgs e)
         {
-
+            bool saveClub;
+            saveClub = clubConnection.updateClub(_editClubId, _editClubName, _editClubPhone, _editClubEmail, _editClubAddress, _editClubAddressNum, _editClubTK, _editClubCountryCode, _editClubCity);
+            if (saveClub)
+            {
+                MessageBox.Show("Succesfully updated!", "Club Edit", MessageBoxButton.OK);
+                initializeEditClub();
+            }
+            else
+            {
+                MessageBox.Show("Error. Club not succesfully updated!", "Club edit", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        private void btnCDelete_Click(object sender, RoutedEventArgs e)
+        private void btnEditCDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            bool deleteClub;
+            deleteClub = clubConnection.deleteClub(_editClubId);
+            if (deleteClub)
+            {
+                MessageBox.Show("Succesfully deleted", "Club Edit", MessageBoxButton.OK);
+                initializeEditClub();
+            }
+            else
+            {
+                MessageBox.Show("Error. Club not succesfully deleted! There are athletes on this club!", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+        #endregion
+
+        #region initialize methods
+        private void initializeNewClub()
+        {
+            newClubName.Text = null;
+            newClubPhone.Text = null;
+            newClubEmail.Text = null;
+            newClubAddress.Text = null;
+            newClubAddressNum.Text = null;
+            newClubTK.Text = null;
+            cmbNewCCountryChooses.SelectedIndex = 54;
+            Dispatcher.BeginInvoke(new Action(() => { newClubName.Focus(); }));
+        }
+
+        private void initializeEditClub()
+        {
+            editClubName.Text = null;
+            editClubPhone.Text = null;
+            editClubEmail.Text = null;
+            editClubAddress.Text = null;
+            editClubAddressNum.Text = null;
+            editClubTK.Text = null;
+            cmbEditCCountryChooses.SelectedIndex = 54;
+            Dispatcher.BeginInvoke(new Action(() => { editClubName.Focus(); }));
+        }
+        #endregion
 
         private void Window_close(object sender, EventArgs e)
         {
@@ -352,6 +477,17 @@ namespace KarateGeek.guis
             this.sender.Show();
         }
 
-        
+        private void editClubName_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            editClubList();
+        }
+
+        private void editClubName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            cSuggestionList.Visibility = Visibility.Collapsed;
+        }
+
+       
+
     }
 }

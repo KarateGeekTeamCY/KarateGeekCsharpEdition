@@ -251,7 +251,7 @@ namespace KarateGeek.guis
             cmbEditJudgeRankChooses.SelectedIndex = 0;
 
             //prosthetoume clubs gia new athlete
-            this.clubs = clubConnection.GetClubs();
+            this.clubs = clubConnection.getClubs();
 
             foreach (DataRow dr in clubs.Tables[0].Rows)
             {
@@ -262,7 +262,7 @@ namespace KarateGeek.guis
             cmbNewAClubChooses.SelectedIndex = 0;
 
             //prosthetoume clubs gia edit athlete
-            this.clubs = clubConnection.GetClubs();
+            this.clubs = clubConnection.getClubs();
 
             foreach (DataRow dr in clubs.Tables[0].Rows)
             {
@@ -1644,9 +1644,9 @@ namespace KarateGeek.guis
         {
             Nullable<DateTime> selectedDate = editJudgeDateOfBirth.SelectedDate;
             if (selectedDate.HasValue)
-                _editAthleteDateOfBirth = selectedDate.Value.ToShortDateString();
+                _editJudgeDateOfBirth = selectedDate.Value.ToShortDateString();
             else
-                _editAthleteDateOfBirth = string.Empty;
+                _editJudgeDateOfBirth = string.Empty;
         }
 
         private void editJudgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
