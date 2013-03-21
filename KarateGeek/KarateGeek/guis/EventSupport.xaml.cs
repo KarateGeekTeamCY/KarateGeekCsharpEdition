@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics;
 using KarateGeek.databaseConnection;
 using System.Data;
 
@@ -932,7 +933,7 @@ namespace KarateGeek.guis
         }
 
 
-        private void advancePresentationWinners()
+        public void advancePresentationWinners()
         {
             List<Athlete> aWinners = null;
             List<Team> tWinners = null;
@@ -950,12 +951,16 @@ namespace KarateGeek.guis
             if (this.tournament.gameType == Strings.syncKata)
                 tWinners = getSyncKataWinner(_indexCurrentphase.ToString());
 
-            aWinners = checkTie(aWinners, _indexCurrentphase);
-            tWinners = checkTie(tWinners, _indexCurrentphase);
 
-            if ((aWinners != null) && (tWinners != null))
+            if (aWinners != null)
+                aWinners = checkTie(aWinners);
+
+            if (tWinners != null)
+                tWinners = checkTie(tWinners);
+
+
+            if ((aWinners != null) || (tWinners != null))
             {
-
                 int i = 1;
                 double last = Math.Pow(2, (_indexCurrentphase + 1));
 
@@ -989,34 +994,54 @@ namespace KarateGeek.guis
                         insertRank(team, i.ToString());
                         i++;
                     }
+
+                this.tournament.load();
+                this.loadGames();
             }
+
         }
 
-        List<Athlete> checkTie(List<Athlete> aths, int phase)
+        //aths list is ordered
+        List<Athlete> checkTie(List<Athlete> aths)
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
+            //int last = (_indexCurrentphase == 1) ? 0 : (int)Math.Pow(2, (_indexCurrentphase + 1));
+            Debug.Assert(_indexCurrentphase != 0);
             int last = (int)Math.Pow(2, (_indexCurrentphase + 1));
+
+            last--; // zero based array system what a weird thing 
+
             string lastid = aths.ElementAt(last).id;
+
 
             sql = "SELECT mean_score FROM game_score WHERE athlete_id = '" + lastid + "' AND game_id"
                 + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') ;";
 
-            string score = conn.Query(sql).Tables[0].Rows[0][0].ToString(); ;
+            string scorea = conn.Query(sql).Tables[0].Rows[0][0].ToString();
+
+            string nextid = aths.ElementAt(last + 1).id;
+
+            sql = "SELECT mean_score FROM game_score WHERE athlete_id = '" + nextid + "' AND game_id"
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') ;";
+
+            string scoreb = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
 
-            sql = "select gp.athlete_id, mean_score FROM game_participations gp join games g on gp.game_id = g.id join game_score gs on gs.game_id = g.id "
-                + "where tournament_id = '" + this.tournament.id
-                + "' AND  phase = '" + this._indexCurrentphase
-                + "' AND  mean_score = '" + score
-                + "' ORDER BY mean_score DESC ;";
-
-            DataTable temp = conn.Query(sql).Tables[0];
-
-            if (temp.Rows.Count > 1)
+            if (scorea == scoreb)
             {
-                ChooseKataWinner katawin = new ChooseKataWinner(this, this.tournament, temp);
+                sql = "select gp.athlete_id, mean_score FROM game_participations gp "
+                    + "join games g on gp.game_id = g.id join game_score gs on gs.game_id = g.id "
+                    + "where tournament_id = '" + this.tournament.id
+                    + "' AND  phase = '" + this._indexCurrentphase
+                    + "' AND  mean_score = '" + scorea
+                    + "' ORDER BY mean_score DESC ;";
+
+                DataTable temp = conn.Query(sql).Tables[0];
+
+
+                ChooseKataWinner katawin = new ChooseKataWinner(this, this.tournament, temp, this._indexCurrentphase);
                 return null;
             }
             else
@@ -1026,41 +1051,62 @@ namespace KarateGeek.guis
 
         }
 
-        List<Team> checkTie(List<Team> teams, int phase)
+
+        List<Team> checkTie(List<Team> teams)
         {
             string sql;
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
+            Debug.Assert(_indexCurrentphase != 0);
             int last = (int)Math.Pow(2, (_indexCurrentphase + 1));
+
+            last--; // zero based array system what a weird thing 
+
             string lastid = teams.ElementAt(last).id;
+
 
             sql = "SELECT SUM(mean_score) FROM game_score WHERE team_id = '" + lastid + "' AND game_id"
                 + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') GROUP BY team_id ;";
 
-            string score = conn.Query(sql).Tables[0].Rows[0][0].ToString(); ;
+            string scorea = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
 
-            sql = "select gp.team_id, SUM (mean_score) FROM game_participations gp join games g on gp.game_id = g.id join game_score gs on gs.game_id = g.id "
-                + "where tournament_id = '" + this.tournament.id
-                + "' AND  phase = '" + this._indexCurrentphase
-                + "' AND  SUM(mean_score) = '" + score
-                + "' ORDER BY mean_score DESC GROUP BY team_id ;";
 
-            DataTable temp = conn.Query(sql).Tables[0];
+            string nextid = teams.ElementAt(last + 1).id;
 
-            if (temp.Rows.Count > 1)
+            sql = "SELECT SUM(mean_score) FROM game_score WHERE team_id = '" + nextid + "' AND game_id"
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') GROUP BY team_id ;";
+
+            string scoreb = conn.Query(sql).Tables[0].Rows[0][0].ToString();
+
+
+            if (scorea == scoreb)
             {
-                ChooseKataWinner katawin = new ChooseKataWinner(this, this.tournament, temp);
+                sql = "SELECT gp.team_id, SUM(mean_score)"
+                    + "FROM game_participations gp "
+                    + "JOIN games g ON gp.game_id = g.id "
+                    + "JOIN game_score gs ON gs.game_id = g.id "
+                    + "WHERE tournament_id = '" + this.tournament.id + "' AND  phase = '" + this._indexCurrentphase + "' AND '" + scoreb + "' = "
+                            + "(SELECT SUM(mean_score) "
+                                + "FROM game_score WHERE game_id IN "
+                                + "(SELECT ig.id FROM game_participations igp "
+                                                + "JOIN games ig ON igp.game_id = ig.id "
+                                                + "JOIN game_score igs ON igs.game_id = ig.id "
+                                + "WHERE ig.tournament_id = g.tournament_id AND ig.phase = g.phase AND igp.team_id = gp.team_id )) "
+                    + "GROUP BY gp.team_id ORDER BY SUM(mean_score) DESC  ;";
+
+
+                DataTable temp = conn.Query(sql).Tables[0];
+
+                ChooseKataWinner katawin = new ChooseKataWinner(this, this.tournament, temp, this._indexCurrentphase);
                 return null;
             }
             else
             {
                 return teams;
             }
-
-
-            return null;
         }
+
 
         private void insertRank(Athlete ath, string rank)
         {
@@ -1072,7 +1118,6 @@ namespace KarateGeek.guis
 
             conn.NonQuery(sql);
         }
-
 
 
         private void insertRank(Team team, string rank)
@@ -1090,7 +1135,6 @@ namespace KarateGeek.guis
         }
 
 
-
         //
         //  for vs games
         //
@@ -1102,14 +1146,12 @@ namespace KarateGeek.guis
         }
 
 
-
         private void setRankingByPhase(Team team, string phase)
         {
             string ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
 
             insertRank(team, ranking);
         }
-
 
 
         private void addParticipantToGame(string gameid, Athlete ath)
@@ -1120,7 +1162,6 @@ namespace KarateGeek.guis
             sql = "INSERT INTO game_participations (athlete_id, game_id) VAlUES ( " + ath.id + ", " + gameid + " ); ";
             conn.NonQuery(sql);
         }
-
 
 
         private void addParticipantToGame(string gameid, Team team)
@@ -1136,7 +1177,6 @@ namespace KarateGeek.guis
         }
 
 
-
         private string findGameId(string tourid, string phase, string poss)
         {
             string sql = "SELECT id FROM games WHERE tournament_id = " + tourid
@@ -1148,14 +1188,12 @@ namespace KarateGeek.guis
         }
 
 
-
         private int findNextPossInd(int current)
         {
             double temp = ((double)current + 1) / 2;
             int next = (int)Math.Floor(temp);
             return next;
         }
-
 
 
         private int findNextPossTeamX3(int current)
@@ -1169,7 +1207,6 @@ namespace KarateGeek.guis
         }
 
 
-
         private int findnext3(int current)
         {
             int next3 = current;
@@ -1180,11 +1217,14 @@ namespace KarateGeek.guis
             return next3;
         }
 
+
         private void Window_close(object sender, EventArgs e)
         {
             this.Close();
             this._sender.Show();
         }
+
+
     }
 }
 

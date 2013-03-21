@@ -354,7 +354,13 @@ namespace KarateGeek.guis
             string sql = "update games set is_finished = 'true' where id = '" + this._game.gameId + "'; ";
             conn.NonQuery(sql);
 
-            this._sender.update();
+            //this._sender.update();
+
+            this._sender.tournament.load();
+            this._sender.advanceAthletes();
+            this._sender.tournament.load();
+            
+            
             _sender.Visibility = System.Windows.Visibility.Visible;
             this.Close();
 
