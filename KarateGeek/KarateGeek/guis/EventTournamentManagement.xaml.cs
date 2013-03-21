@@ -1676,10 +1676,27 @@ namespace KarateGeek.guis
                         _editTournamentCatType = Strings.individual;
                         this.EditTrdButtonIndiv.IsChecked = true;
                     }
-                    else
+                    else if (gameCatType[0].Equals(Strings.team))
                     {
                         _editTournamentCatType = Strings.team;
                         this.EditTrdButtonTeam.IsChecked = true;
+                        teamsNum = participantConnection.getNumTeams(_editTournamentId);
+
+                        editSelectedParticipants = new List<List<AthleteData>>();
+                        tempEditSelectedParticipants = new List<List<AthleteData>>();
+
+                        for (int i = 0; i < teamsNum; i++)
+                        {
+                            editSelectedParticipants.Add(new List<AthleteData>());
+                            tempEditSelectedParticipants.Add(new List<AthleteData>());
+                        }
+
+                        cmbEditTteamsNumber.SelectedIndex = teamsNum - 1;
+                    }
+                    else
+                    {
+                        _editTournamentCatType = Strings.synchronized;
+                        this.EditTrdButtonSync.IsChecked = true;
                         teamsNum = participantConnection.getNumTeams(_editTournamentId);
 
                         editSelectedParticipants = new List<List<AthleteData>>();

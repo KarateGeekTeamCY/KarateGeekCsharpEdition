@@ -36,26 +36,32 @@ join game_score
 
 select * from tournament_participations where tournament_id = 7;
 
-select * from team_tournament_participations where tournament_id = 2;
 
 
 
-select * from game_participations join games on games.id = game_participations.game_id ;
+select * from team_tournament_participations where tournament_id = 3;
 
 
 
-select * from games;
+select * from game_participations join games on games.id = game_participations.game_id  where tournament_id = 3;
+
+
+
+select * from games where tournament_id = 3;
 
 
 
 
 select * from game_participations natural join athletes natural join persons;
 
+
+
 SELECT * FROM games g LEFT JOIN game_participations gp ON g.id = gp.game_id ORDER BY phase, position ;
 
 
 
 select * from  game_flag where game_id = '1' ;
+
 
 
 select gp.athlete_id, mean_score 

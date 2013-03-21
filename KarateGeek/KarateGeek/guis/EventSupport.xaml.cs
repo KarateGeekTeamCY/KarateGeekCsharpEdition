@@ -327,7 +327,8 @@ namespace KarateGeek.guis
 
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
-                        temp.Append("\nClick to add game members.\n");
+                        //VV           Click to add game members
+                        temp.Append("Click to add game members.");
                     }
                     else
                     {
@@ -964,7 +965,6 @@ namespace KarateGeek.guis
                 int i = 1;
                 double last = Math.Pow(2, (_indexCurrentphase + 1));
 
-
                 if (this.tournament.gameType == Strings.indKata && this.tournament.judgingType == Strings.score)
                     foreach (Athlete athlete in aWinners)
                     {
@@ -979,10 +979,8 @@ namespace KarateGeek.guis
 
 
                 i = 1;
-                //double last = Math.Pow(2, (_indexCurrentphase + 1));
 
-                if (this.tournament.gameType == Strings.teamKata
-                || this.tournament.gameType == Strings.enbu
+                if (this.tournament.gameType == Strings.enbu
                 || this.tournament.gameType == Strings.syncKata)
                     foreach (Team team in tWinners)
                     {
@@ -995,9 +993,34 @@ namespace KarateGeek.guis
                         i++;
                     }
 
+
+                i = 1;
+                last = Math.Pow(2, (_indexCurrentphase + 1));
+                
+                if (this.tournament.gameType == Strings.teamKata)
+                {
+                    int rank = 1;
+
+                    foreach (Team team in tWinners)
+                    {
+                        if ((double)i < last + 1)
+                            if (!(_indexNextPhase == -1))
+                                foreach (Athlete a in team.participants)
+                                {
+                                    addParticipantToGame(findGameId(this.tournament.id.ToString(), _indexNextPhase.ToString(), i.ToString()), a, team);
+                                    i++;
+                                }
+                        insertRank(team, rank.ToString());
+                        rank++;
+                    }
+                }
+
+
                 this.tournament.load();
                 this.loadGames();
             }
+
+
 
         }
 
@@ -1160,6 +1183,15 @@ namespace KarateGeek.guis
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
             sql = "INSERT INTO game_participations (athlete_id, game_id) VAlUES ( " + ath.id + ", " + gameid + " ); ";
+            conn.NonQuery(sql);
+        }
+
+        private void addParticipantToGame(string gameid, Athlete ath, Team tm)
+        {
+            string sql;
+            CoreDatabaseConnection conn = new CoreDatabaseConnection();
+
+            sql = "INSERT INTO game_participations (team_id, athlete_id, game_id) VAlUES ( " + tm.id + ", " + ath.id + " , " + gameid + " ); ";
             conn.NonQuery(sql);
         }
 

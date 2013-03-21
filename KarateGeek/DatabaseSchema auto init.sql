@@ -107,7 +107,7 @@ CREATE TABLE locations (
 CREATE TABLE clubs (
     id              SERIAL,
     name            VARCHAR(50)     NOT NULL UNIQUE,
-    phone           CHAR(50),
+    phone           VARCHAR(15),    -- E.164 standard
     email           VARCHAR(50),
  -- logo            BYTEA,          -- "binary string" data type
     address_id      INTEGER         REFERENCES addresses( id ),
@@ -123,7 +123,7 @@ CREATE TABLE persons (
     fathers_name    VARCHAR(50),
     sex             VARCHAR(10)     NOT NULL,
     date_of_birth   DATE            NOT NULL,
-    phone           VARCHAR(15),   -- E.164 standard
+    phone           VARCHAR(15),    -- E.164 standard
     secondary_phone VARCHAR(15),
     email           VARCHAR(50),
     address_id      INTEGER         REFERENCES addresses( id ),
