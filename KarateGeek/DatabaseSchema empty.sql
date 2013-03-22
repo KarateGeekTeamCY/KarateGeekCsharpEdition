@@ -79,7 +79,9 @@ CREATE TABLE cities (
   id                SERIAL,       -- "SERIAL" as a data type means an auto-incrementing integer
   name              VARCHAR(80)     NOT NULL UNIQUE,
   country_code      VARCHAR(2)      REFERENCES countries(code),
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+
+  UNIQUE(name, country_code)
 );
 
 
@@ -753,6 +755,7 @@ INSERT INTO countries (code, name) VALUES('US', 'United States');
 -- adding user: "admin" pass: "admin" (will be removed in the final releases!)
 INSERT INTO users (username , password, person_management, event_management , lottery , event_support , club_management , user_management , reports)
 VALUES ('admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1', '1');
+
 
 -- rollback transaction (useful for checking syntax):
 --ROLLBACK;
