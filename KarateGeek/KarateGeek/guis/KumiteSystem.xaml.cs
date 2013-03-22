@@ -76,6 +76,26 @@ namespace KarateGeek.guis
         }
 
 
+        private void switchSides_Click(object sender, RoutedEventArgs e)
+        {
+            string temp;
+
+            temp = this._leftAthleteId;
+            this._leftAthleteId = this._rightAthleteId;
+            this._rightAthleteId = temp;
+
+            temp = this._leftAthleteTeamId;
+            this._leftAthleteTeamId = this._rightAthleteTeamId;
+            this._rightAthleteTeamId = temp;
+
+            temp = this.competitorA.Text;
+            this.competitorA.Text = this.competitorB.Text;
+            this.competitorB.Text = temp;
+
+
+        }
+
+
 
 
         #region point buttons
@@ -366,6 +386,8 @@ namespace KarateGeek.guis
             this.Close();
             this._sender.Show();
         }
+
+        
 
         
     }
