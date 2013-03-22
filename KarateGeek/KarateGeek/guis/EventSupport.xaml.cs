@@ -1031,7 +1031,7 @@ namespace KarateGeek.guis
             CoreDatabaseConnection conn = new CoreDatabaseConnection();
 
             //int last = (_indexCurrentphase == 1) ? 0 : (int)Math.Pow(2, (_indexCurrentphase + 1));
-            Debug.Assert(_indexCurrentphase != 0);
+            //Debug.Assert(_indexCurrentphase != 0);
             int last = (int)Math.Pow(2, (_indexCurrentphase + 1));
 
             last--; // zero based array system what a weird thing 
@@ -1040,14 +1040,14 @@ namespace KarateGeek.guis
 
 
             sql = "SELECT mean_score FROM game_score WHERE athlete_id = '" + lastid + "' AND game_id"
-                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') ;";
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "' AND phase = '" + _indexCurrentphase + "') ;";
 
             string scorea = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
             string nextid = aths.ElementAt(last + 1).id;
 
             sql = "SELECT mean_score FROM game_score WHERE athlete_id = '" + nextid + "' AND game_id"
-                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') ;";
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "' AND phase = '" + _indexCurrentphase + "') ;";
 
             string scoreb = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
@@ -1089,7 +1089,7 @@ namespace KarateGeek.guis
 
 
             sql = "SELECT SUM(mean_score) FROM game_score WHERE team_id = '" + lastid + "' AND game_id"
-                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') GROUP BY team_id ;";
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "' AND phase = '" + _indexCurrentphase + "') GROUP BY team_id ;";
 
             string scorea = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 
@@ -1098,7 +1098,7 @@ namespace KarateGeek.guis
             string nextid = teams.ElementAt(last + 1).id;
 
             sql = "SELECT SUM(mean_score) FROM game_score WHERE team_id = '" + nextid + "' AND game_id"
-                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "') GROUP BY team_id ;";
+                + " IN (SELECT id FROM games WHERE tournament_id = '" + this.tournament.id + "' AND phase = '" + _indexCurrentphase + "') GROUP BY team_id ;";
 
             string scoreb = conn.Query(sql).Tables[0].Rows[0][0].ToString();
 

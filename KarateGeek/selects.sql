@@ -6,6 +6,14 @@ select * from addresses;
 
 select * from users;
 
+select * from clubs;
+
+select * from tournaments;
+
+
+
+
+
 
 
 select * from persons JOIN athletes on persons.id = athletes.id where persons.first_name like 'd%';
@@ -13,11 +21,6 @@ select * from persons JOIN athletes on persons.id = athletes.id where persons.fi
 --select * from persons NATURAL JOIN athletes where persons.first_name like 'd%';
 
 
-select * from clubs;
-
-select * from tournaments;
-
-select * from game_score;
 
 
 
@@ -29,7 +32,7 @@ join game_participations
 join game_score 
 	on team_tournament_participations.id = game_score.team_id 
 
-	where tournament_id = '8' ORDER BY mean_score DESC ;
+	where tournament_id = '7' ORDER BY mean_score DESC ;
 
 
 
@@ -39,11 +42,11 @@ select * from tournament_participations where tournament_id = 7;
 
 
 
-select * from team_tournament_participations where tournament_id = 3;
+select * from team_tournament_participations where tournament_id = 7;
 
 
 
-select * from game_participations join games on games.id = game_participations.game_id  where tournament_id = 3;
+select * from game_participations join games on games.id = game_participations.game_id  where tournament_id = 7;
 
 
 
@@ -76,7 +79,13 @@ where tournament_id = '7' AND  phase = '0' ORDER BY mean_score DESC ;
 
 
 
-select * from game_score ;
+select * from game_score gs 
+	join games g
+		on g.id = gs.game_id
+	join tournament_participations tp   
+		on g.tournament_id = tp.tournament_id
+WHERE g.tournament_id = 7 order by g.phase , g.position ;
+
 
 
 select gp.team_id, SUM (mean_score) FROM game_participations gp join games g on gp.game_id = g.id join game_score gs on gs.game_id = g.id where tournament_id = '3' AND  phase = '1' AND  SUM(mean_score) = '150' GROUP BY gp.team_id ORDER BY mean_score DESC  ;
