@@ -51,6 +51,8 @@ namespace KarateGeek.guis
         RegularExpressions regex = new RegularExpressions();
         ErrorMessages em = new ErrorMessages();
 
+        private static string defaultCountry = "CY";
+        private int countryIndex;
         //
         //event variables
         //
@@ -178,8 +180,9 @@ namespace KarateGeek.guis
                 cmbEditECountryChooses.Items.Add(dr[1].ToString());
 
             }
-            cmbNewECountryChooses.SelectedIndex = 54;
-            cmbEditECountryChooses.SelectedIndex = 54;
+            countryIndex = countryConnection.getIndexOfCountryCode(defaultCountry);
+            cmbNewECountryChooses.SelectedIndex = countryIndex;
+            cmbEditECountryChooses.SelectedIndex = countryIndex;
 
             this.newEventUpdateCities("CY");
             this.editEventUpdateCities("CY");
@@ -3477,7 +3480,7 @@ namespace KarateGeek.guis
             newEventAddress.Text = null;
             newEventAddressNum.Text = null;
             newEventPCode.Text = null;
-            cmbNewECountryChooses.SelectedIndex = 54;
+            cmbNewECountryChooses.SelectedIndex = countryIndex;
             newEventOfficial.IsChecked = true;
             Dispatcher.BeginInvoke(new Action(() => { newEventName.Focus(); }));
         }
@@ -3493,7 +3496,7 @@ namespace KarateGeek.guis
             editEventAddress.Text = null;
             editEventAddressNum.Text = null;
             editEventPCode.Text = null;
-            cmbEditECountryChooses.SelectedIndex = 54;
+            cmbEditECountryChooses.SelectedIndex = countryIndex;
             editEventOfficial.IsChecked = true;
             Dispatcher.BeginInvoke(new Action(() => { editEventName.Focus(); }));
         }

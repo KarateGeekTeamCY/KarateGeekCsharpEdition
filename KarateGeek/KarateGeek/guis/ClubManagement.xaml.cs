@@ -27,6 +27,9 @@ namespace KarateGeek.guis
         private AddressConnection addressConnection;
         private DataSet clubCountries;
         private DataSet clubCities;
+        private static string defaultCountry = "CY";
+        private int countryIndex;
+
 
         #region new Club Definitions
 
@@ -85,11 +88,12 @@ namespace KarateGeek.guis
                 cmbEditCCountryChooses.Items.Add(dr[1].ToString());
                 
             }
-            cmbNewCCountryChooses.SelectedIndex = 54;
-            cmbEditCCountryChooses.SelectedIndex = 54;
+            countryIndex = countryConnection.getIndexOfCountryCode(defaultCountry);
+            cmbNewCCountryChooses.SelectedIndex = countryIndex;
+            cmbEditCCountryChooses.SelectedIndex = countryIndex;
 
-            this.newClubUpdateCities("CY");
-            this.editClubUpdateCities("CY");
+            this.newClubUpdateCities(defaultCountry);
+            this.editClubUpdateCities(defaultCountry);
 
             this.sender = sender;
         }
@@ -454,7 +458,7 @@ namespace KarateGeek.guis
             newClubAddress.Text = null;
             newClubAddressNum.Text = null;
             newClubTK.Text = null;
-            cmbNewCCountryChooses.SelectedIndex = 54;
+            cmbNewCCountryChooses.SelectedIndex = countryIndex;
             Dispatcher.BeginInvoke(new Action(() => { newClubName.Focus(); }));
         }
 
@@ -466,7 +470,7 @@ namespace KarateGeek.guis
             editClubAddress.Text = null;
             editClubAddressNum.Text = null;
             editClubTK.Text = null;
-            cmbEditCCountryChooses.SelectedIndex = 54;
+            cmbEditCCountryChooses.SelectedIndex = countryIndex;
             Dispatcher.BeginInvoke(new Action(() => { editClubName.Focus(); }));
         }
         #endregion

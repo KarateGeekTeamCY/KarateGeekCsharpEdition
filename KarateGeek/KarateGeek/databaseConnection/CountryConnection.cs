@@ -10,7 +10,7 @@ namespace KarateGeek.databaseConnection
     class CountryConnection : CoreDatabaseConnection
     {
 
-        private string sql = "";
+        private string sql;
 
         public string InsertNewCountry(string code, string name)
         {
@@ -29,7 +29,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet GetCountries()
         {
-            sql = "select * from countries";
+            sql = "select * from countries order by name;";
             return this.Query(sql);
         }
 
@@ -42,6 +42,11 @@ namespace KarateGeek.databaseConnection
             //return "";
         }
 
+        public int getIndexOfCountryCode(string countryCode)
+        {   
+            sql = "select rnum from (select code,row_number() OVER () as rnum from countries) as t where t.code = '" + countryCode + "';";
+            return int.Parse(this.Query(sql).Tables[0].Rows[0][0].ToString());
+        }
 
 
     }

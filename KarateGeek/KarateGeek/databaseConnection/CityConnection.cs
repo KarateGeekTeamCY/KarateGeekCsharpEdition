@@ -28,7 +28,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet GetCities(string countryId)
         {
-            sql = "select * from cities where country_code = '" + countryId + "' ";
+            sql = "select * from cities where country_code = '" + countryId + "' order by name;";
             return this.Query(sql);
         }
 

@@ -137,6 +137,8 @@ namespace KarateGeek.guis
         //lai telion me #endregion
         //
         private Window sender;
+        private static string defaultCountry = "CY";
+        private int countryIndex;
 
         public PersonManagement(Window sender)
         {
@@ -156,16 +158,19 @@ namespace KarateGeek.guis
                 cmbEditACountryChooses.Items.Add(dr[1].ToString());
                 cmbEditJCountryChooses.Items.Add(dr[1].ToString());
             }
-            cmbNewACountryChooses.SelectedIndex = 54;
-            cmbNewJCountryChooses.SelectedIndex = 54;
-            cmbEditACountryChooses.SelectedIndex = 54;
-            cmbEditJCountryChooses.SelectedIndex = 54;
 
-            this.athleteUpdateCities("CY");
+            countryIndex = countryConnection.getIndexOfCountryCode(defaultCountry);
+            cmbNewACountryChooses.SelectedIndex = countryIndex;
+            cmbNewJCountryChooses.SelectedIndex = countryIndex;
+            cmbEditACountryChooses.SelectedIndex = countryIndex;
+            cmbEditJCountryChooses.SelectedIndex = countryIndex;
+
+            this.athleteUpdateCities(defaultCountry);
 
 
 
             //prosthetoume athlete_rank gia new athlete
+            cmbNewAthleteRankChooses.Items.Add("Select Athlete Rank");
             cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
             cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
             cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
@@ -186,6 +191,7 @@ namespace KarateGeek.guis
             cmbNewAthleteRankChooses.SelectedIndex = 0;
 
             //prosthetoume athlete_rank gia edit athlete
+            cmbEditAthleteRankChooses.Items.Add("Select Athlete Rank");
             cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
             cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
             cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
@@ -207,6 +213,7 @@ namespace KarateGeek.guis
 
 
             //prosthetoume judge class gia new judge
+            cmbNewJudgeRankChooses.Items.Add("Select Judge Rank");
             cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
             cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
             cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
@@ -229,6 +236,7 @@ namespace KarateGeek.guis
             cmbNewJudgeRankChooses.SelectedIndex = 0;
 
             //prosthetoume judge class gia edit judge
+            cmbEditJudgeRankChooses.Items.Add("Select Judge Rank");
             cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
             cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
             cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
@@ -252,33 +260,27 @@ namespace KarateGeek.guis
 
             //prosthetoume clubs gia new athlete
             this.clubs = clubConnection.getClubs();
+            cmbNewAClubChooses.Items.Add("Select club");
+            cmbEditAClubChooses.Items.Add("Select club");
 
             foreach (DataRow dr in clubs.Tables[0].Rows)
             {
                 cmbNewAClubChooses.Items.Add(dr[1]);
-
+                cmbEditAClubChooses.Items.Add(dr[1]);
 
             }
             cmbNewAClubChooses.SelectedIndex = 0;
-
-            //prosthetoume clubs gia edit athlete
-            this.clubs = clubConnection.getClubs();
-
-            foreach (DataRow dr in clubs.Tables[0].Rows)
-            {
-                cmbEditAClubChooses.Items.Add(dr[1]);
-
-
-            }
             cmbEditAClubChooses.SelectedIndex = 0;
 
 
             //prosthetoume judge classes gia new judge
+            cmbNewJClassChooses.Items.Add("Select Class");
             cmbNewJClassChooses.Items.Add("A");
             cmbNewJClassChooses.Items.Add("B");
             cmbNewJClassChooses.SelectedIndex = 0;
 
             //prosthetoume judge classes gia edit judge
+            cmbEditJClassChooses.Items.Add("Select Class");
             cmbEditJClassChooses.Items.Add("A");
             cmbEditJClassChooses.Items.Add("B");
             cmbEditJClassChooses.SelectedIndex = 0;
@@ -587,13 +589,21 @@ namespace KarateGeek.guis
         private void cmbNewARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbNewAthleteRankChooses.SelectedIndex;
-            _newAthleteRank = cmbNewAthleteRankChooses.Items[index].ToString();
+            if (index != 0)
+            {
+                if (index < cmbNewAthleteRankChooses.Items.Count && index != -1)
+                    _newAthleteRank = cmbNewAthleteRankChooses.Items[index].ToString();
+            }
         }
 
         private void cmbNewAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbNewAClubChooses.SelectedIndex;
-            _newAthleteClubId = clubs.Tables[0].Rows[index][0].ToString();
+            if (index != 0)
+            {
+                if (index < cmbNewAClubChooses.Items.Count && index != -1)
+                    _newAthleteClubId = clubs.Tables[0].Rows[index - 1][0].ToString();
+            }
         }
 
         private void NewArdButton1_Checked(object sender, RoutedEventArgs e)
@@ -952,13 +962,22 @@ namespace KarateGeek.guis
         private void cmbEditARankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbEditAthleteRankChooses.SelectedIndex;
-            _editAthleteRank = cmbEditAthleteRankChooses.Items[index].ToString();
+
+            if (index != 0)
+            {
+                if (index < cmbEditAthleteRankChooses.Items.Count && index != -1)
+                    _editAthleteRank = cmbEditAthleteRankChooses.Items[index].ToString();
+            }
         }
 
         private void cmbEditAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbEditAClubChooses.SelectedIndex;
-            _editAthleteClubId = clubs.Tables[0].Rows[index][0].ToString();
+            if (index != 0)
+            {
+                if (index < cmbEditAClubChooses.Items.Count && index != -1)
+                    _editAthleteClubId = clubs.Tables[0].Rows[index - 1][0].ToString();
+            }
         }
 
         private void EditArdButton1_Checked(object sender, RoutedEventArgs e)
@@ -1076,8 +1095,8 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)newJSuggestionList.SelectedItem;
                     _newJudgeId = item.id;
-                    ds2 = judgeConnection.findJudge(_newPersonId);
-                    ds3 = athleteConnection.findAthlete(_newPersonId);
+                    ds2 = judgeConnection.findJudge(_newJudgeId);
+                    ds3 = athleteConnection.findAthlete(_newJudgeId);
 
                     name = newJSuggestionList.SelectedItem.ToString();
                     sex = newFilteredJudges.Tables[0].Rows[index][4].ToString();
@@ -1111,22 +1130,22 @@ namespace KarateGeek.guis
 
                     string athCity = ds.Tables[0].Rows[0][3].ToString();
                     int ix = ds.Tables[0].Columns.Count;
-                    string athCountry = ds.Tables[0].Rows[0][5].ToString();
+                    string judgeCountry = ds.Tables[0].Rows[0][5].ToString();
 
 
                     //
                     //the fix for the country selection error
                     //
                     CountryConnection countryconn = new CountryConnection();
-                    DataSet countriname = countryconn.getCountryNameByCode(athCountry);
-                    athCountry = countriname.Tables[0].Rows[0][0].ToString();
+                    DataSet countriname = countryconn.getCountryNameByCode(judgeCountry);
+                    judgeCountry = countriname.Tables[0].Rows[0][0].ToString();
 
 
 
 
-                    for (int i = 0; i < this.cmbNewACountryChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbNewJCountryChooses.Items.Count; i++)
                     {
-                        if (athCountry.Equals(cmbNewACountryChooses.Items[i].ToString()))
+                        if (judgeCountry.Equals(cmbNewJCountryChooses.Items[i].ToString()))
                         {
                             country_position = i;
                             break;
@@ -1351,13 +1370,22 @@ namespace KarateGeek.guis
         private void cmbNewJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbNewJudgeRankChooses.SelectedIndex;
-            _newJudgeRank = cmbNewAthleteRankChooses.Items[index].ToString();
+
+            if (index != 0)
+            {
+                if (index < cmbNewJudgeRankChooses.Items.Count && index != -1)
+                    _newJudgeRank = cmbNewJudgeRankChooses.Items[index].ToString();
+            }
         }
 
         private void cmbNewJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbNewJClassChooses.SelectedIndex;
-            _newJudgeClass = cmbNewJClassChooses.Items[index].ToString();
+            if (index != 0)
+            {
+                if (index < cmbNewJClassChooses.Items.Count && index != -1)
+                    _newJudgeClass = cmbNewJClassChooses.Items[index].ToString();
+            }
         }
 
         #region other listeners
@@ -1454,8 +1482,8 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)editJSuggestionList.SelectedItem;
                     _editJudgeId = item.id;
-                    ds2 = judgeConnection.findJudge(_editPersonId);
-                    ds3 = athleteConnection.findAthlete(_editPersonId);
+                    ds2 = judgeConnection.findJudge(_editJudgeId);
+                    ds3 = athleteConnection.findAthlete(_editJudgeId);
 
                     name = editJSuggestionList.SelectedItem.ToString();
                     sex = editFilteredJudges.Tables[0].Rows[index][4].ToString();
@@ -1489,22 +1517,22 @@ namespace KarateGeek.guis
 
                     string athCity = ds.Tables[0].Rows[0][3].ToString();
                     int ix = ds.Tables[0].Columns.Count;
-                    string athCountry = ds.Tables[0].Rows[0][5].ToString();
+                    string judgeCountry = ds.Tables[0].Rows[0][5].ToString();
 
 
                     //
                     //the fix for the country selection error
                     //
                     CountryConnection countryconn = new CountryConnection();
-                    DataSet countriname = countryconn.getCountryNameByCode(athCountry);
-                    athCountry = countriname.Tables[0].Rows[0][0].ToString();
+                    DataSet countriname = countryconn.getCountryNameByCode(judgeCountry);
+                    judgeCountry = countriname.Tables[0].Rows[0][0].ToString();
 
 
 
 
-                    for (int i = 0; i < this.cmbEditACountryChooses.Items.Count; i++)
+                    for (int i = 0; i < this.cmbEditJCountryChooses.Items.Count; i++)
                     {
-                        if (athCountry.Equals(cmbEditACountryChooses.Items[i].ToString()))
+                        if (judgeCountry.Equals(cmbEditJCountryChooses.Items[i].ToString()))
                         {
                             country_position = i;
                             break;
@@ -1730,13 +1758,21 @@ namespace KarateGeek.guis
         private void cmbEditJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbEditJudgeRankChooses.SelectedIndex;
-            _editJudgeRank = cmbEditAthleteRankChooses.Items[index].ToString();
+            if (index != 0)
+            {
+                if (index < cmbEditJudgeRankChooses.Items.Count && index != -1)
+                    _editJudgeRank = cmbEditJudgeRankChooses.Items[index].ToString();
+            }
         }
 
         private void cmbEditJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbEditJClassChooses.SelectedIndex;
-            _editJudgeClass = cmbEditJClassChooses.Items[index].ToString();
+            if (index != 0)
+            {
+                if (index < cmbEditJudgeRankChooses.Items.Count && index != -1)
+                    _editJudgeClass = cmbEditJClassChooses.Items[index].ToString();
+            }
         }
 
         #region other listeners
@@ -1767,6 +1803,7 @@ namespace KarateGeek.guis
             {
                 judgeConnection.UpdateJudge(_editJudgeId, _editJudgeFirstName, _editJudgeLastName, _editJudgeFathersName, _editJudgeSex, _editJudgeDateOfBirth, _editJudgeFirstPhone, _editJudgeSecondPhone, _editJudgeEmail, _editJudgeAddress, _editJudgeAddressNum, _editJudgeTK, _editJudgeCountryCode, _editJudgeCity, _editJudgeRank, _editJudgeClass);
                 MessageBox.Show("Succesfully saved!","Judge Edit", MessageBoxButton.OK);
+                initializeEditJudge();
             }
 
 
@@ -1824,6 +1861,14 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
+                    else if(cmbNewAthleteRankChooses.SelectedIndex == 0){
+                        em.errorMessage("Rank");
+                        return false;
+                    }
+                    else if(cmbNewAClubChooses.SelectedIndex == 0){
+                        em.errorMessage("Club");
+                        return false;
+                    }
                     else
                     {
                         return true;
@@ -1849,6 +1894,16 @@ namespace KarateGeek.guis
                     else if (string.IsNullOrEmpty(_editAthleteDateOfBirth))
                     {
                         em.nullErrorMessage("Date Of Birth");
+                        return false;
+                    }
+                    else if (cmbEditAthleteRankChooses.SelectedIndex == 0)
+                    {
+                        em.errorMessage("Rank");
+                        return false;
+                    }
+                    else if (cmbEditAClubChooses.SelectedIndex == 0)
+                    {
+                        em.errorMessage("Club");
                         return false;
                     }
                     else
@@ -1881,6 +1936,14 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
+                    else if(cmbNewJudgeRankChooses.SelectedIndex == 0){
+                        em.errorMessage("Rank");
+                        return false;
+                    }
+                    else if(cmbNewJClassChooses.SelectedIndex == 0){
+                        em.errorMessage("Class");
+                        return false;
+                    }
                     else
                     {
                         return true;
@@ -1906,6 +1969,16 @@ namespace KarateGeek.guis
                     else if (string.IsNullOrEmpty(_editJudgeDateOfBirth))
                     {
                         em.nullErrorMessage("Date Of Birth");
+                        return false;
+                    }
+                    else if (cmbEditJudgeRankChooses.SelectedIndex == 0)
+                    {
+                        em.errorMessage("Rank");
+                        return false;
+                    }
+                    else if (cmbEditJClassChooses.SelectedIndex == 0)
+                    {
+                        em.errorMessage("Class");
                         return false;
                     }
                     else
@@ -2184,7 +2257,7 @@ namespace KarateGeek.guis
             NewAthleteStreetName.Text = null;
             NewAthleteAddressNum.Text = null;
             NewAthleteTK.Text = null;
-            cmbNewACountryChooses.SelectedIndex = 54;
+            cmbNewACountryChooses.SelectedIndex = countryIndex;
             cmbNewAthleteRankChooses.SelectedIndex = 0;
             cmbNewAClubChooses.SelectedIndex = 0;
             Dispatcher.BeginInvoke(new Action(() => { NewAthleteFirstName.Focus(); }));  //dinei to focus sto newathletefirstName
@@ -2205,7 +2278,7 @@ namespace KarateGeek.guis
             EditAthleteStreetName.Text = null;
             EditAthleteAddressNum.Text = null;
             EditAthleteTK.Text = null;
-            cmbEditACountryChooses.SelectedIndex = 54;
+            cmbEditACountryChooses.SelectedIndex = countryIndex;
             cmbEditAthleteRankChooses.SelectedIndex = 0;
             cmbEditAClubChooses.SelectedIndex = 0;
             Dispatcher.BeginInvoke(new Action(() => { EditAthleteFirstName.Focus(); }));
@@ -2226,7 +2299,7 @@ namespace KarateGeek.guis
             newJudgeStreetName.Text = null;
             newJudgeAddressNum.Text = null;
             newJudgeTK.Text = null;
-            cmbNewJCountryChooses.SelectedIndex = 54;
+            cmbNewJCountryChooses.SelectedIndex = countryIndex;
             cmbNewJudgeRankChooses.SelectedIndex = 0;
             cmbNewJClassChooses.SelectedIndex = 0;
             Dispatcher.BeginInvoke(new Action(() => { newJudgeFirstName.Focus(); }));
@@ -2247,7 +2320,7 @@ namespace KarateGeek.guis
             editJudgeStreetName.Text = null;
             editJudgeAddressNum.Text = null;
             editJudgeTK.Text = null;
-            cmbEditJCountryChooses.SelectedIndex = 54;
+            cmbEditJCountryChooses.SelectedIndex = countryIndex;
             cmbEditJudgeRankChooses.SelectedIndex = 0;
             cmbEditJClassChooses.SelectedIndex = 0;
             Dispatcher.BeginInvoke(new Action(() => { editJudgeFirstName.Focus(); }));
