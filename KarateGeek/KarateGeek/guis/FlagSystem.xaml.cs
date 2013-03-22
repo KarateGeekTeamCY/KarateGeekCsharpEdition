@@ -53,8 +53,8 @@ namespace KarateGeek.guis
 
 
 
-        private Style darkGray = new Style { TargetType = typeof(Button) };
-        private Style lightGray = new Style { TargetType = typeof(Button) };
+        //private Style darkGray = new Style { TargetType = typeof(Button) };
+        //private Style lightGray = new Style { TargetType = typeof(Button) };
 
 
 
@@ -76,22 +76,34 @@ namespace KarateGeek.guis
 
 
 
-            this.darkGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Gray));
-            this.lightGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.LightGray));
+            //this.darkGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Gray));
+            //this.lightGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.LightGray));
+            
 
 
-            this.reda.Style = lightGray;
-            this.redb.Style = lightGray;
-            this.redc.Style = lightGray;
-            this.redd.Style = lightGray;
-            this.rede.Style = lightGray;
+            //this.reda.Style = lightGray;
+            //this.redb.Style = lightGray;
+            //this.redc.Style = lightGray;
+            //this.redd.Style = lightGray;
+            //this.rede.Style = lightGray;
 
+            this.reda.Content = Strings.aka;
+            this.redb.Content = Strings.aka;
+            this.redc.Content = Strings.aka;
+            this.redd.Content = Strings.aka;
+            this.rede.Content = Strings.aka;
 
-            this.whitea.Style = lightGray;
-            this.whiteb.Style = lightGray;
-            this.whitec.Style = lightGray;
-            this.whited.Style = lightGray;
-            this.whitee.Style = lightGray;
+            //this.whitea.Style = lightGray;
+            //this.whiteb.Style = lightGray;
+            //this.whitec.Style = lightGray;
+            //this.whited.Style = lightGray;
+            //this.whitee.Style = lightGray;
+
+            this.whitea.Content = Strings.shiro;
+            this.whiteb.Content = Strings.shiro;
+            this.whitec.Content = Strings.shiro;
+            this.whited.Content = Strings.shiro;
+            this.whitee.Content = Strings.shiro;
 
             //
             //  to be removed
@@ -166,17 +178,17 @@ namespace KarateGeek.guis
         {
             this._judgeAchooseWhite = false;
 
-            this.reda.Style = darkGray;
-            this.whitea.Style = lightGray;
+            this.reda.Background = Brushes.Red;
+            this.whitea.Background = Brushes.DarkGray;
 
         }
 
         private void whitea_Click(object sender, RoutedEventArgs e)
         {
             this._judgeAchooseWhite = true;
-
-            this.reda.Style = lightGray;
-            this.whitea.Style = darkGray;
+            
+            this.reda.Background = Brushes.DarkGray;
+            this.whitea.Background = Brushes.White;
         }
 
         private void redb_Click(object sender, RoutedEventArgs e)
@@ -184,8 +196,8 @@ namespace KarateGeek.guis
 
             this._judgeBchooseWhite = false;
 
-            this.redb.Style = darkGray;
-            this.whiteb.Style = lightGray;
+            this.redb.Background = Brushes.Red;
+            this.whiteb.Background = Brushes.DarkGray;
 
         }
 
@@ -193,56 +205,56 @@ namespace KarateGeek.guis
         {
             this._judgeBchooseWhite = true;
 
-            this.redb.Style = lightGray;
-            this.whiteb.Style = darkGray;
+            this.redb.Background = Brushes.DarkGray;
+            this.whiteb.Background = Brushes.White;
         }
 
         private void redc_Click(object sender, RoutedEventArgs e)
         {
             this._judgeCchooseWhite = false;
 
-            this.redc.Style = darkGray;
-            this.whitec.Style = lightGray;
+            this.redc.Background = Brushes.Red;
+            this.whitec.Background = Brushes.DarkGray;
         }
 
         private void whitec_Click(object sender, RoutedEventArgs e)
         {
             this._judgeCchooseWhite = true;
 
-            this.redc.Style = lightGray;
-            this.whitec.Style = darkGray;
+            this.redc.Background = Brushes.DarkGray;
+            this.whitec.Background = Brushes.White;
         }
 
         private void redd_Click(object sender, RoutedEventArgs e)
         {
             this._judgeDchooseWhite = false;
 
-            this.redd.Style = darkGray;
-            this.whited.Style = lightGray;
+            this.redd.Background = Brushes.Red;
+            this.whited.Background = Brushes.DarkGray;
         }
 
         private void whited_Click(object sender, RoutedEventArgs e)
         {
             this._judgeDchooseWhite = true;
 
-            this.redd.Style = lightGray;
-            this.whited.Style = darkGray;
+            this.redd.Background = Brushes.DarkGray;
+            this.whited.Background = Brushes.White;
         }
 
         private void rede_Click(object sender, RoutedEventArgs e)
         {
             this._judgeEchooseWhite = false;
 
-            this.rede.Style = darkGray;
-            this.whitee.Style = lightGray;
+            this.rede.Background = Brushes.Red;
+            this.whitee.Background = Brushes.DarkGray;
         }
 
         private void whitee_Click(object sender, RoutedEventArgs e)
         {
             this._judgeEchooseWhite = true;
 
-            this.rede.Style = lightGray;
-            this.whitee.Style = darkGray;
+            this.rede.Background = Brushes.DarkGray;
+            this.whitee.Background = Brushes.White;
         }
 
         #endregion
@@ -341,6 +353,21 @@ namespace KarateGeek.guis
         {
             this.Close();
             this._sender.Show();
+        }
+
+        private void switchSides_Click(object sender, RoutedEventArgs e)
+        {
+            string temp;
+
+
+            temp = _participantB;
+            _participantB = _participantA;
+            _participantA = temp;
+
+            temp = this.RedCompetitor.Content.ToString();
+            this.RedCompetitor.Content = this.WhiteCompetitor.Content;
+            this.WhiteCompetitor.Content = temp;
+
         }
 
     }

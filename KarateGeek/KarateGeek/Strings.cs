@@ -72,6 +72,9 @@ namespace KarateGeek
         public const string left = "LEFT";
         public const string right = "RIGHT";
 
+        public const string aka = "白-AKA";
+        public const string shiro = "赤-SHIRO";
+
         public const string prefixInd  = "IND";
         public const string prefixTeam = "TEAM";
         public const string prefixSync = "SYNC";
