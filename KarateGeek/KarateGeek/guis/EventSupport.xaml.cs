@@ -113,9 +113,6 @@ namespace KarateGeek.guis
 
             loadGames();
 
-            /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
-            this.graph = new LotteryGraph(long.Parse(this.tournament.id));      // predictably, this could crash for Team Kumite because it needs at least 1 record in the table (tournaments JOIN games ON tournaments.id = games.tournament_id)
-            // solution: we used the hasEnoughElementsToPrint() method in the LotteryGraph GUI, especially for team kumite.
         }
 
 
@@ -248,10 +245,26 @@ namespace KarateGeek.guis
             }
 
             /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
-            if (this.graph != null) this.graph.updateGraph();
+            if (this.graph == null)
+            {
+                /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
+                this.graph = new LotteryGraph(long.Parse(this.tournament.id));      // predictably, this could crash for Team Kumite because it needs at least 1 record in the table (tournaments JOIN games ON tournaments.id = games.tournament_id)
+                // solution: we used the hasEnoughElementsToPrint() method in the LotteryGraph GUI, especially for team kumite.
+            }
+            else { this.graph.updateGraph(); }
+
+
+            try { this.graph.Show(); }
+            catch (InvalidOperationException e)
+            { this.graph = new LotteryGraph(long.Parse(this.tournament.id)); }
+
+
+            this.Activate();
 
             this.listBoxCurrentGameList.UnselectAll();
         }
+
+
 
 
 
@@ -877,15 +890,13 @@ namespace KarateGeek.guis
                     {
                         setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
 
-                        /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
-                        if (this.graph != null) this.graph.updateGraph();
+
                     }
                     else
                     {
                         setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
 
-                        /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
-                        if (this.graph != null) this.graph.updateGraph();
+
                     }
                 }
                 else
@@ -996,7 +1007,7 @@ namespace KarateGeek.guis
 
                 i = 1;
                 last = Math.Pow(2, (_indexCurrentphase + 1));
-                
+
                 if (this.tournament.gameType == Strings.teamKata)
                 {
                     int rank = 1;
