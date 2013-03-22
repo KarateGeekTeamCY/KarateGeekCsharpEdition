@@ -76,34 +76,49 @@ namespace KarateGeek.guis
         }
 
         private void checkRights(){
-            if (lgConn.getPersonMngPerm())
-            {
-                menu.btnPersonManagement.IsEnabled = true;
-            }
-            if (lgConn.getEventMngPerm())
-            {
-                menu.btnEventmanagement.IsEnabled = true;
-            }
-            if (lgConn.getLotteryPerm())
-            {
-                menu.btnLottery.IsEnabled = true;
-            }
-            if (lgConn.getEventSupPerm())
-            {
-                menu.btnEventSupport.IsEnabled = true;
-            }
-            if (lgConn.getClubMngPerm())
-            {
-                menu.btnClubmanagement.IsEnabled = true;
-            }
-            if (lgConn.getUserMngPerm())
-            {
-                menu.btnUserManagement.IsEnabled = true;
-            }
-            if (lgConn.getReportsPerm())
-            {
-                menu.btnReports.IsEnabled = true;
-            }
+            //if (lgConn.getPersonMngPerm())
+            //{
+            //    menu.btnPersonManagement.IsEnabled = true;
+            //}
+            //if (lgConn.getEventMngPerm())
+            //{
+            //    menu.btnEventmanagement.IsEnabled = true;
+            //}
+            //if (lgConn.getLotteryPerm())
+            //{
+            //    menu.btnLottery.IsEnabled = true;
+            //}
+            //if (lgConn.getEventSupPerm())
+            //{
+            //    menu.btnEventSupport.IsEnabled = true;
+            //}
+            //if (lgConn.getClubMngPerm())
+            //{
+            //    menu.btnClubmanagement.IsEnabled = true;
+            //}
+            //if (lgConn.getUserMngPerm())
+            //{
+            //    menu.btnUserManagement.IsEnabled = true;
+            //}
+            //if (lgConn.getReportsPerm())
+            //{
+            //    menu.btnReports.IsEnabled = true;
+            //}
+
+            menu.btnPersonManagement.IsEnabled = lgConn.getPersonMngPerm();
+
+            menu.btnEventmanagement.IsEnabled = lgConn.getEventMngPerm();
+
+            menu.btnLottery.IsEnabled = lgConn.getLotteryPerm();
+
+            menu.btnEventSupport.IsEnabled = lgConn.getEventSupPerm();
+
+            menu.btnClubmanagement.IsEnabled = lgConn.getClubMngPerm();
+
+            menu.btnUserManagement.IsEnabled = lgConn.getUserMngPerm();
+
+            menu.btnReports.IsEnabled = lgConn.getReportsPerm();
+
         }
 
         private void host_TextChanged(object sender, TextChangedEventArgs e)

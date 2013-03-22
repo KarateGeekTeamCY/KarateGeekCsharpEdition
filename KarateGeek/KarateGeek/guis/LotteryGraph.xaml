@@ -1,6 +1,10 @@
 ﻿<Window x:Class="KarateGeek.guis.LotteryGraph"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStartupLocation="Manual"
+        Left="10"
+        Top="10"
+        ResizeMode="NoResize"
         Title="Tournament Progress" Height="600" Width="500">
     <Grid>
         <Grid.RowDefinitions>

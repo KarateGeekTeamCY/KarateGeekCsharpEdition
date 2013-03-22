@@ -2,6 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="UserManagement" 
+         WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize"
         Height="420"  
         Width="400" Closed="Window_close">
     <Grid>
@@ -12,7 +14,7 @@
         </Grid.RowDefinitions>
         
         <Label Name="lblInfo"
-               Content="New user"
+               Content="Access Management"
                HorizontalContentAlignment="Center"
                VerticalAlignment="Center"
                Padding="10"
@@ -172,7 +174,7 @@
                     Margin="5,10" 
                     Click="btnBack_Click" />
             <Button Name="btnSave" 
-                    Content="Save"
+                    Content="Update"
                     Grid.Column="2"
                     VerticalAlignment="Center"
                     Margin="5,10" 

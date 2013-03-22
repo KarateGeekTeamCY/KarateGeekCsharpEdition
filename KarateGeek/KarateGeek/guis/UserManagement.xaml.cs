@@ -260,6 +260,22 @@ namespace KarateGeek.guis
 
         private void Window_close(object sender, EventArgs e)
         {
+            //var lgConn = new LoginConnection();
+
+            //this.sender.btnPersonManagement.IsEnabled = lgConn.getPersonMngPerm();
+
+            //this.sender.btnEventmanagement.IsEnabled = lgConn.getEventMngPerm();
+
+            //this.sender.btnLottery.IsEnabled = lgConn.getLotteryPerm();
+
+            //this.sender.btnEventSupport.IsEnabled = lgConn.getEventSupPerm();
+
+            //this.sender.btnClubmanagement.IsEnabled = lgConn.getClubMngPerm();
+
+            //this.sender.btnUserManagement.IsEnabled = lgConn.getUserMngPerm();
+
+            //this.sender.btnReports.IsEnabled = lgConn.getReportsPerm();
+
             this.Close();
             this.sender.Show();
         }
