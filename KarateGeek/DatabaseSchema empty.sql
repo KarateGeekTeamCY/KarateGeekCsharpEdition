@@ -79,7 +79,9 @@ CREATE TABLE cities (
   id                SERIAL,       -- "SERIAL" as a data type means an auto-incrementing integer
   name              VARCHAR(80)     NOT NULL UNIQUE,
   country_code      VARCHAR(2)      REFERENCES countries(code),
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+
+  UNIQUE(name, country_code)
 );
 
 
@@ -107,11 +109,11 @@ CREATE TABLE locations (
 CREATE TABLE clubs (
     id              SERIAL,
     name            VARCHAR(50)     NOT NULL UNIQUE,
-    phone           CHAR(50),
+    phone           VARCHAR(15),    -- E.164 standard
     email           VARCHAR(50),
-    logo            BYTEA,          -- "binary string" data type
+ -- logo            BYTEA,          -- "binary string" data type
     address_id      INTEGER         REFERENCES addresses( id ),
-    country_code    CHAR(2)         DEFAULT 'CY' REFERENCES countries(code),
+ -- country_code    CHAR(2)         DEFAULT 'CY' REFERENCES countries(code),
     PRIMARY KEY (id)
 );
 
@@ -123,7 +125,7 @@ CREATE TABLE persons (
     fathers_name    VARCHAR(50),
     sex             VARCHAR(10)     NOT NULL,
     date_of_birth   DATE            NOT NULL,
-    phone           VARCHAR(15)        NOT NULL,   -- E.164 standard
+    phone           VARCHAR(15),    -- E.164 standard
     secondary_phone VARCHAR(15),
     email           VARCHAR(50),
     address_id      INTEGER         REFERENCES addresses( id ),
@@ -330,7 +332,7 @@ GROUP BY athlete_id;
 
 
 CREATE OR REPLACE VIEW athletes_total_details AS
-    SELECT athletes.id, first_name, last_name, fathers_name, sex, date_of_birth,
+    SELECT athletes.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth,
         persons.phone, secondary_phone, persons.email, rank, clubs.name AS club_name, street,
         addresses.number, addresses.postal_code, cities.name as city, countries.name as country,
         athlete_first_places_ind.count AS first_places,
@@ -356,8 +358,8 @@ LEFT JOIN athlete_third_places_ind
 
 
 CREATE OR REPLACE VIEW judges_total_details AS
-    SELECT judges.id, first_name, last_name, sex, date_of_birth, persons.phone, persons.email,
-        rank, street, addresses.number, cities.name AS city, countries.name AS country
+    SELECT judges.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth, persons.phone, persons.email,
+        rank, street, addresses.number, addresses.postal_code, cities.name AS city, countries.name AS country
 FROM persons
 JOIN judges
     ON judges.id = persons.id
@@ -389,8 +391,8 @@ CREATE or REPLACE VIEW events_total_details AS
     SELECT events.name AS event, events.date,official,locations.name AS location,
         locations.phone, street, addresses.number, cities.name AS city,
         countries.name AS country, tournaments.id, tournaments.name AS tournament,
-        tournaments.sex, tournaments.age_from, tournaments.age_to, tournaments.level_from,
-        tournaments.level_to, tournaments.game_type, tournaments.scoring_type
+        initcap(tournaments.sex) as sex, tournaments.age_from, tournaments.age_to, tournaments.level_from,
+        tournaments.level_to, tournaments.game_type, initcap(tournaments.scoring_type) as scoring_type
 FROM events
 JOIN locations
     ON events.location_id = locations.id
@@ -406,8 +408,8 @@ LEFT JOIN countries
 
 CREATE OR REPLACE VIEW tournaments_total_details AS
 SELECT events.name AS event, events.date,locations.name AS location,
-    tournaments.id, tournaments.name AS tournament, tournaments.sex, tournaments.age_from, tournaments.age_to,
-    tournaments.level_from,tournaments.level_to, tournaments.game_type, tournaments.scoring_type,
+    tournaments.id, tournaments.name AS tournament, initcap(tournaments.sex) as sex, tournaments.age_from, tournaments.age_to,
+    tournaments.level_from,tournaments.level_to, tournaments.game_type, initcap(tournaments.scoring_type) as scoring_type,
     team_tournament_participations.ranking AS rankingTeam,
     tournament_participations.athlete_id, tournament_participations.ranking AS ranking,
     persons.last_name, persons.first_name
@@ -417,7 +419,7 @@ JOIN events
 LEFT JOIN tournament_participations
     ON tournaments.id = tournament_participations.tournament_id
 LEFT JOIN team_tournament_participations
-    ON tournaments.id = team_tournament_participations.tournament_id
+    ON team_id = team_tournament_participations.id
 LEFT JOIN persons
     ON tournament_participations.athlete_id = persons.id
 LEFT JOIN locations
@@ -750,23 +752,11 @@ INSERT INTO countries (code, name) VALUES('GB', 'United Kingdom');
 INSERT INTO countries (code, name) VALUES('US', 'United States');
 
 
-INSERT INTO cities (name, country_code) VALUES ('Limassol', 'CY');
-INSERT INTO cities (name, country_code) VALUES ('Nicosia', 'CY');
-INSERT INTO cities (name, country_code) VALUES ('Paphos', 'CY');
-INSERT INTO cities (name, country_code) VALUES ('Larnaca', 'CY');
-INSERT INTO cities (name, country_code) VALUES ('Amochostos', 'CY');
-INSERT INTO cities (name, country_code) VALUES ('Thessaloniki', 'GR');
-
-
-INSERT INTO addresses (id , street, "number", city_id , postal_code , country_code ) VALUES ('0' , 'tepak' , '1' , '1' , '3025' , 'CY');
-
-
-INSERT INTO clubs (name, address_id, country_code) VALUES ('Σύλλογος Παραδοσιακό Καράτε Λεμεσού', 0, 'CY');
-INSERT INTO clubs (name, address_id, country_code) VALUES ('Σύλλογος Παραδοσιακό Καράτε Πάφου', 0, 'CY'); --address is CY!
-INSERT INTO clubs (name, address_id, country_code) VALUES ('Σύλλογος Fudoshinkan Dojo Κόρνος Λάρνακα', 0, 'IN');
-
+-- adding user: "admin" pass: "admin" (will be removed in the final releases!)
 INSERT INTO users (username , password, person_management, event_management , lottery , event_support , club_management , user_management , reports)
 VALUES ('admin' , '3039283064aa2a9ca939b1fe23954698' , '1' , '1' , '1' , '1' , '1' , '1', '1');
+
+
 -- rollback transaction (useful for checking syntax):
 --ROLLBACK;
 
