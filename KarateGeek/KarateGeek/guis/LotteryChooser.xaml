@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="LotteryChooser" Height="600" Width="600"
         WindowStartupLocation="CenterScreen" 
-        ResizeMode="NoResize"
         Closed="Window_close">
     <Grid>
         <Grid.RowDefinitions>

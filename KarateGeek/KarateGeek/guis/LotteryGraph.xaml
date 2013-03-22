@@ -4,7 +4,6 @@
         WindowStartupLocation="Manual"
         Left="10"
         Top="10"
-        ResizeMode="NoResize"
         Title="Tournament Progress" Height="600" Width="500">
     <Grid>
         <Grid.RowDefinitions>
