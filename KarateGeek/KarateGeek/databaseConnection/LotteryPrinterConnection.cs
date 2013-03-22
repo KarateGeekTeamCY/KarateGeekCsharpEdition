@@ -161,7 +161,25 @@ namespace KarateGeek.databaseConnection
             foreach (DataRow row in result.Rows)
                 l.Add(int.Parse(row[0].ToString()));
 
-            return new Tuple<List<long>, bool, int, int>(l, true, 0, 1);    // bool value is irrelevant
+            int winnerPhase;
+
+            switch (new LotteryGenConnection().getTournamentGameType(tournamentId))
+            {
+                case Strings.indKata:    if (new LotteryGenConnection().getTournamentScoringType(tournamentId).Equals(Strings.flag, StringComparison.Ordinal))
+                                             winnerPhase = 0;
+                                         else // score system
+                                             winnerPhase = -1;
+                                         break;
+                case Strings.indKumite:
+                case Strings.fugugo:
+                case Strings.teamKumite: winnerPhase = 0;
+                                         break;
+
+                default:                 winnerPhase = -1;
+                                         break;
+            }
+
+            return new Tuple<List<long>, bool, int, int>(l, true, winnerPhase, 1);  // bool value is irrelevant
         }
 
 
