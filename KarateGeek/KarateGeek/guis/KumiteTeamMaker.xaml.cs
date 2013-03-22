@@ -98,19 +98,17 @@ namespace KarateGeek.guis
 
         private void listBoxTeamA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!aFlag)
+            if (!aFlag && listBoxTeamA.SelectedIndex != -1)
                 aFlag = true;
-            else
-            { }
+
             confirm();
         }
 
         private void listBoxTeamB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!bFlag)
+            if (!bFlag && listBoxTeamB.SelectedIndex != -1)
                 bFlag = true;
-            else
-            { }
+
             confirm();
         }
 
@@ -121,10 +119,10 @@ namespace KarateGeek.guis
                 string result = MessageBox.Show("Are you sure you want to assign "
                     + (string)athsA.Rows[this.listBoxTeamA.SelectedIndex][1].ToString() + " " + (string)athsA.Rows[this.listBoxTeamA.SelectedIndex][2].ToString()
                     + " to " + (string)athsB.Rows[this.listBoxTeamB.SelectedIndex][1].ToString() + "" + (string)athsB.Rows[this.listBoxTeamB.SelectedIndex][2].ToString() + " in this game?", "Pair ready!",
-                MessageBoxButton.OK,
+                MessageBoxButton.YesNo,
                 MessageBoxImage.Information).ToString();
 
-                if (result == "OK")
+                if (result == "Yes")
                 {
                     save();
                     this.sender.Visibility = System.Windows.Visibility.Visible;
@@ -134,6 +132,15 @@ namespace KarateGeek.guis
                     this.sender.loadGames();
 
                     this.Close();
+                }
+                else
+                {
+                    aFlag = false;
+                    bFlag = false;
+                    listBoxTeamA.UnselectAll();
+                    listBoxTeamB.UnselectAll();
+                    aFlag = false;
+                    bFlag = false;
                 }
             }
         }
@@ -148,7 +155,7 @@ namespace KarateGeek.guis
 
             sql = "UPDATE game_participations SET athlete_id = '" + athsA.Rows[listBoxTeamA.SelectedIndex][0].ToString() + "' WHERE id = '" + gamePartIdA + "'; ";
             conn.NonQuery(sql);
-            sql = "UPDATE game_participations SET athlete_id = '" + athsB.Rows[listBoxTeamA.SelectedIndex][0].ToString() + "' WHERE id = '" + gamePartIdB + "'; ";
+            sql = "UPDATE game_participations SET athlete_id = '" + athsB.Rows[listBoxTeamB.SelectedIndex][0].ToString() + "' WHERE id = '" + gamePartIdB + "'; ";
             conn.NonQuery(sql);
 
             //sql = "UPDATE games SET is_ready = 't' WHERE id = " + gameid + " ;";
