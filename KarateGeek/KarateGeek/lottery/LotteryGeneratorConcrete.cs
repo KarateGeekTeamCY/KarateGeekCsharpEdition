@@ -403,7 +403,15 @@ namespace KarateGeek.lottery
 
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for team kumite
         {
-            return LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam, lotteryMode: true);
+            //return LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam, lotteryMode: true);
+
+            /* VERY UGLY FIX: in Team Kumite, the field athletesPerTeam should be either 3 or 4 (for 1 substitute athlete), but
+             * is on purpose hardcoded to "3" in the LotteryGeneratorFactory.Create() method (because it makes certain calculations
+             * easier). This would break the transformation, so we use a DB query to actually set it to its correct value here...
+             * 
+             * WARNING: This "FIX" is untested and might not fix the lotteryprinter...
+             */
+            return LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(buildTournamentGameSets(), new LotteryGenConnection().getAthletesPerTeam(this.tournamentId), lotteryMode: true);
 
             #region code moved elsewhere
             ///** assumes correct ordering of input, please verify */
