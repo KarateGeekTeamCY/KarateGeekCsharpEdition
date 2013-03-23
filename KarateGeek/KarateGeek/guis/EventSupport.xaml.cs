@@ -341,7 +341,7 @@ namespace KarateGeek.guis
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
                         //VV           Click to add game members
-                        temp.Append("Click to add game members.");
+                        temp.Append("\nClick to add game members.\n");
                     }
                     else
                     {
@@ -707,7 +707,7 @@ namespace KarateGeek.guis
                             break;
                         case Strings.teamKumite:
 
-                            if (this.listBoxCurrentGameList.SelectedItem.ToString() == "Click to add game members.")
+                            if (this.listBoxCurrentGameList.SelectedItem.ToString() == "\nClick to add game members.\n")
                             {
                                 KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
                             }

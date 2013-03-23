@@ -14,8 +14,8 @@ namespace KarateGeek.databaseConnection
     {
         private NpgsqlConnection _conn = null;
 
-        public static string _SERVER    = "192.168.1.103";
-        //public static string _SERVER    = "127.0.0.1";
+        //public static string _SERVER    = "192.168.1.103";
+        public static string _SERVER    = "127.0.0.1";
         public static string _PORT      = "5432";
         public static string _USER      = "postgres";
         public static string _PASSWORD  = "admin";

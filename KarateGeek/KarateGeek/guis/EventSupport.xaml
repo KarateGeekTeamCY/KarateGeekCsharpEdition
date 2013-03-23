@@ -80,9 +80,10 @@
                 
 
                 <ListBox Name="listBoxCurrentGameList" 
-                     Grid.Column="0"
-                     Grid.Row="1"
-                         Margin="3" SelectionChanged="listBoxCurrentGameList_SelectionChanged" />
+                        Grid.Column="0"
+                        Grid.Row="1"
+                         Margin="3" 
+                         SelectionChanged="listBoxCurrentGameList_SelectionChanged" />
 
                 <ListBox Name="listBoxNextGameList" 
                      Grid.Column="1"
