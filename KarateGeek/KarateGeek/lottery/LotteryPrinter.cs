@@ -34,8 +34,10 @@ namespace KarateGeek.lottery
         //private readonly char spaceChar = '□';
         private readonly char spaceChar = ' ';
 
-        private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
+        //private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
         private int maxNameLength;
+        private int maxNameLengthUpperBound = 38;
+        private int maxNameLengthLowerBound =  8;
 
 
         /** Class methods: **/
@@ -61,23 +63,25 @@ namespace KarateGeek.lottery
                                          break;
             }
 
+            int max = new LotteryPrinterConnection().getMaxLengthOfNames(tournamentId);
+
+            this.maxNameLength = (max < maxNameLengthLowerBound) ? maxNameLengthLowerBound :
+                                 (max > maxNameLengthUpperBound) ? maxNameLengthUpperBound :
+                                 max;
         }
 
         // overloaded constructor (useful for the lotteries of "unlotterised" tournaments)
-        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId, int maxNameLength = defaultMaxNameLength)
+        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId)
             : this(tournamentId)
         {
-            this.maxNameLength = maxNameLength;
-
             bigBox = makeBigBox(lotterySets);
         }
 
 
         // overloaded constructor (useful for "lotterised" tournaments)
-        public LotteryPrinter(long tournamentId, int maxNameLength = defaultMaxNameLength)
+        public LotteryPrinter(long tournamentId, bool dummyParameter = true)    // dummyParameter is a quick hack!
             : this(tournamentId)
         {
-            this.maxNameLength = maxNameLength;
 
             /** Now get the "lotterySets" by querying the database: */
 
