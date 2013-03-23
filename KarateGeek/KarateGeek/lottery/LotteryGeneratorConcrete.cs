@@ -131,7 +131,7 @@ namespace KarateGeek.lottery
 
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for ind.kumite / fugugo / in.kata (flag)
         {
-            return LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
+            return LotteryPrinterTransformations.IndKumiteFugugoIndKataSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam, lotteryMode: true);
             
             #region code moved elsewhere
             //var Sets = buildTournamentGameSets();
@@ -403,7 +403,7 @@ namespace KarateGeek.lottery
 
         public override List<Tuple<List<long>, bool, int, int>> getPrintableLotterySets() // groups sets for team kumite
         {
-            return LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam);
+            return LotteryPrinterTransformations.TeamKumiteSetsToPrintableSets(buildTournamentGameSets(), this.athletesPerTeam, lotteryMode: true);
 
             #region code moved elsewhere
             ///** assumes correct ordering of input, please verify */

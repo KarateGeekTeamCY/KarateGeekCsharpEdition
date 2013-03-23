@@ -9,8 +9,9 @@ namespace KarateGeek.lottery
     static class LotteryPrinterTransformations
     {
 
-        /** groups sets for ind.kumite / fugugo / in.kata (flag) */
-        public static List<Tuple<List<long>, bool, int, int>> IndKumiteFugugoIndKataSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam)
+        /** groups sets for ind.kumite / fugugo / in.kata (flag)
+         *  → lotteryMode allows printing of single (waiting) athletes (disabled by default because the printing order cannot be controlled during tournaments) */
+        public static List<Tuple<List<long>, bool, int, int>> IndKumiteFugugoIndKataSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam, bool lotteryMode = false)
         {
             var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
             int i;
@@ -33,7 +34,7 @@ namespace KarateGeek.lottery
                 //    }
                 //}
                 /**/
-                if (set.Item1.Count == 1) {
+                if (set.Item1.Count == 1 && lotteryMode) {
                     i = (oldPos <= middlePos) ? 1 : 0;
                     transformedSets.Add(new Tuple<List<long>, bool, int, int>(new List<long>() { set.Item1.ElementAt(0) }, set.Item2, oldPhase + 1, 2 * oldPos - i));
                 }
@@ -91,8 +92,9 @@ namespace KarateGeek.lottery
         }
 
 
-        /** groups sets for team kumite */
-        public static List<Tuple<List<long>, bool, int, int>> TeamKumiteSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam)
+        /** groups sets for team kumite
+         *  → lotteryMode allows printing of single (waiting) teams (disabled by default because the printing order cannot be controlled during tournaments) */
+        public static List<Tuple<List<long>, bool, int, int>> TeamKumiteSetsToPrintableSets(List<Tuple<List<long>, bool, int, int>> initialSets, int athletesPerTeam, bool lotteryMode = false)
         {
             /** assumes correct ordering of input, please verify */
             var transformedSets = new List<Tuple<List<long>, bool, int, int>>();
@@ -144,7 +146,7 @@ namespace KarateGeek.lottery
                 //}
                 /**/
                 if (team1.Count == athletesPerTeam) {
-                    if (team2.Count == 0)
+                    if (team2.Count == 0 && lotteryMode)
                         transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos + ((newPos <= middlePos) ? 0 : 1)));
                     else {
                         transformedSets.Add(new Tuple<List<long>, bool, int, int>(team1, isReady, newPhase, newPos));
