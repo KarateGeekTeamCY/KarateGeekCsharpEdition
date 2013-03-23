@@ -207,5 +207,22 @@ namespace KarateGeek.databaseConnection
             return (int.Parse(this.Query(sql).Tables[0].Rows[0][0].ToString()) >= 8); // optimised query!
         }
 
+
+        public int getMaxLengthOfNames(long tournamentId)
+        {
+            string sql =  "SELECT MAX(LENGTH(first_name || ' ' || last_name)) "
+                        + "FROM athletes "
+                        + "     NATURAL JOIN persons "
+                        + "     JOIN tournament_participations ON athlete_id = id "
+                        + "WHERE tournament_id = '" + tournamentId + "' ;";
+
+            string result = this.Query(sql).Tables[0].Rows[0][0].ToString();
+
+            if (string.IsNullOrEmpty(result))
+                return 0;
+            else
+                return int.Parse(result) + 1;   // adding 1 for the delimiter
+        }
+
     }
 }
