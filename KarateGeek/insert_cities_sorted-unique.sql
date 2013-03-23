@@ -32,16 +32,16 @@ CREATE TEMPORARY TABLE temp_cities_15000 (
 
 -- DROP TABLE IF EXISTS cities;
 
---CREATE TABLE cities (
---  id                SERIAL,       -- "SERIAL" as a data type means an auto-incrementing integer
---  name              VARCHAR(80)     NOT NULL UNIQUE,
---  country_code      VARCHAR(2)      REFERENCES countries(code),
---  PRIMARY KEY(id),
+--  CREATE TABLE cities (
+--    id                SERIAL,       -- "SERIAL" as a data type means an auto-incrementing integer
+--    name              VARCHAR(80)     NOT NULL UNIQUE,
+--    country_code      VARCHAR(2)      REFERENCES countries(code),
+--    PRIMARY KEY(id),
 --
---  UNIQUE(name, country_code)
---);
+--    UNIQUE(name, country_code)
+--  );
 
-DELETE FROM cities;
+-- DELETE FROM cities;
 
 COPY temp_cities_1000(name, country_code) FROM STDIN WITH DELIMITER '	';
 'Ali Sabieh	DJ
@@ -139759,22 +139759,25 @@ Zyryanovsk	KZ
 
 
 INSERT INTO cities(name,country_code)
-    SELECT DISTINCT name, country_code FROM temp_cities_1000 WHERE country_code = 'CY'
+    SELECT DISTINCT name, country_code
+    FROM temp_cities_1000
+    WHERE country_code = 'CY'
 UNION
-    SELECT DISTINCT name, country_code FROM temp_cities_15000 WHERE country_code <> 'CY';
-
---INSERT INTO cities(name,country_code)
---SELECT DISTINCT * FROM(
---    SELECT DISTINCT name, country_code FROM temp_cities_1000 WHERE country_code = 'CY'
---UNION
---    SELECT DISTINCT name, country_code FROM temp_cities_15000 WHERE country_code <> 'CY'
---) AS j;
-
---INSERT INTO cities(name,country_code)
---    SELECT DISTINCT name, country_code FROM temp_cities_1000 WHERE country_code = 'CY';
---
---INSERT INTO cities(name,country_code)
---    SELECT DISTINCT name, country_code FROM temp_cities_15000 WHERE country_code <> 'CY';
+    SELECT DISTINCT name, country_code
+    FROM temp_cities_15000
+    WHERE country_code <> 'CY'  -- remove Cyprus
+      AND country_code <> 'SS'  -- ...and also some invalid country codes (ours are ISO)
+      AND country_code <> 'RS'
+      AND country_code <> 'MF'
+      AND country_code <> 'CW'
+      AND country_code <> 'BL'
+      AND country_code <> 'XK'
+      AND country_code <> 'SX'
+      AND country_code <> 'ME'
+      AND country_code <> 'IM'
+      AND country_code <> 'AX'
+      AND country_code <> 'GG'
+      AND country_code <> 'JE';
 
 
 COMMIT;
