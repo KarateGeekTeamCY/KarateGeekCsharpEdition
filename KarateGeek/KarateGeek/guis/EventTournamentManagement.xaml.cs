@@ -166,8 +166,6 @@ namespace KarateGeek.guis
 
         private void initialize()
         {
-            slogan1.Content = "  Karate Triple Threat\n Patience,Respect,Fury";
-            
             newSelectedParticipants.Add(new List<AthleteData>());
             bteditDeleteParticipant.Content = "<<";
             btnewDeleteParticipant.Content = "<<";
@@ -752,6 +750,47 @@ namespace KarateGeek.guis
             _newTournamentName = tbNewTName.Text;
         }
 
+        private void NewTrdButtonMixed_Checked(object sender, RoutedEventArgs e)
+        {
+            if (newAreParticipantsForDeletion())
+            {
+                switch (warningParticipantsDeletionMessage())
+                {
+                    case "OK":
+                        _newTournamentSex = KarateGeek.Strings.mixed;
+
+                        newSelectedParticipants = new List<List<AthleteData>>();
+                        newSelectedParticipants.Add(new List<AthleteData>());
+                        if (_newTournamentCatType == Strings.individual)
+                        {
+                            newShowPossibleParticipantsByDB();
+                            newShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            newInitializeTeams();
+                            newShowPossibleParticipantsByDB();
+                            newShowSelectedParticipantsT(0);
+                        }
+                        break;
+                    case "Cancel":
+                        //disables the female radio button listener in order to restore female checked. after that it enables it again
+                        NewTrdButtonMale.Checked -= new RoutedEventHandler(NewTrdButtonMale_Checked);
+                        NewTrdButtonMale.IsChecked = true;
+                        NewTrdButtonMale.Checked += new RoutedEventHandler(NewTrdButtonMale_Checked);
+                        NewTrdButtonFemale.Checked -= new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                        NewTrdButtonFemale.IsChecked = true;
+                        NewTrdButtonFemale.Checked += new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                        break;
+                }
+            }
+            else
+            {
+                _newTournamentSex = KarateGeek.Strings.mixed;
+                newShowPossibleParticipantsByDB();
+            }
+        }
+
         private void NewTrdButtonMale_Checked(object sender, RoutedEventArgs e)
         {
             if (newAreParticipantsForDeletion())
@@ -777,6 +816,9 @@ namespace KarateGeek.guis
                         break;
                     case "Cancel":
                         //disables the female radio button listener in order to restore female checked. after that it enables it again
+                        NewTrdButtonMixed.Checked -= new RoutedEventHandler(NewTrdButtonMixed_Checked);
+                        NewTrdButtonMixed.IsChecked = true;
+                        NewTrdButtonMixed.Checked += new RoutedEventHandler(NewTrdButtonMixed_Checked);
                         NewTrdButtonFemale.Checked -= new RoutedEventHandler(NewTrdButtonFemale_Checked);
                         NewTrdButtonFemale.IsChecked = true;
                         NewTrdButtonFemale.Checked += new RoutedEventHandler(NewTrdButtonFemale_Checked);
@@ -815,6 +857,9 @@ namespace KarateGeek.guis
                         }
                         break;
                     case "Cancel":
+                        NewTrdButtonMixed.Checked -= new RoutedEventHandler(NewTrdButtonMixed_Checked);
+                        NewTrdButtonMixed.IsChecked = true;
+                        NewTrdButtonMixed.Checked += new RoutedEventHandler(NewTrdButtonMixed_Checked);
                         NewTrdButtonMale.Checked -= new RoutedEventHandler(NewTrdButtonMale_Checked);
                         NewTrdButtonMale.IsChecked = true;
                         NewTrdButtonMale.Checked += new RoutedEventHandler(NewTrdButtonMale_Checked);
@@ -1629,9 +1674,13 @@ namespace KarateGeek.guis
                     {
                         this.EditTrdButtonMale.IsChecked = true;
                     }
-                    else
+                    else if (sex.Equals(KarateGeek.Strings.female))
                     {
                         this.EditTrdButtonFemale.IsChecked = true;
+                    }
+                    else
+                    {
+                        this.EditTrdButtonMixed.IsChecked = true;
                     }
 
                     for (int i = 0; i < this.cmbEditTAgeFrom.Items.Count; i++)
@@ -1744,6 +1793,47 @@ namespace KarateGeek.guis
             }
         }
 
+        private void EditTrdButtonMixed_Checked(object sender, RoutedEventArgs e)
+        {
+            if (editAreParticipantsForDeletion() && !editSuggestionChange)
+            {
+                switch (warningParticipantsDeletionMessage())
+                {
+                    case "OK":
+                        _editTournamentSex = KarateGeek.Strings.mixed;
+                        editParticpantsDeletionDB();
+
+                        editSelectedParticipants = new List<List<AthleteData>>();
+                        editSelectedParticipants.Add(new List<AthleteData>());
+                        if (_editTournamentCatType == Strings.individual)
+                        {
+                            editShowPossibleParticipantsByDB();
+                            editShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            editInitializeTeams();
+                            editShowPossibleParticipantsByDB();
+                            editShowSelectedParticipantsT(0);
+                        }
+                        break;
+                    case "Cancel":
+                        EditTrdButtonMale.Checked -= new RoutedEventHandler(EditTrdButtonMale_Checked);
+                        EditTrdButtonMale.IsChecked = true;
+                        EditTrdButtonMale.Checked += new RoutedEventHandler(EditTrdButtonMale_Checked);
+                        EditTrdButtonFemale.Checked -= new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                        EditTrdButtonFemale.IsChecked = true;
+                        EditTrdButtonFemale.Checked += new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                        break;
+                }
+            }
+            else
+            {
+                _editTournamentSex = KarateGeek.Strings.mixed;
+                editShowPossibleParticipantsByDB();
+            }
+        }
+
         private void EditTrdButtonMale_Checked(object sender, RoutedEventArgs e)
         {
             if (editAreParticipantsForDeletion() && !editSuggestionChange)
@@ -1769,6 +1859,9 @@ namespace KarateGeek.guis
                         }
                         break;
                     case "Cancel":
+                        EditTrdButtonMixed.Checked -= new RoutedEventHandler(EditTrdButtonMixed_Checked);
+                        EditTrdButtonMixed.IsChecked = true;
+                        EditTrdButtonMixed.Checked += new RoutedEventHandler(EditTrdButtonMixed_Checked);
                         EditTrdButtonFemale.Checked -= new RoutedEventHandler(EditTrdButtonFemale_Checked);
                         EditTrdButtonFemale.IsChecked = true;
                         EditTrdButtonFemale.Checked += new RoutedEventHandler(EditTrdButtonFemale_Checked);
@@ -1808,6 +1901,9 @@ namespace KarateGeek.guis
                         }
                         break;
                     case "Cancel":
+                        EditTrdButtonMixed.Checked -= new RoutedEventHandler(EditTrdButtonMixed_Checked);
+                        EditTrdButtonMixed.IsChecked = true;
+                        EditTrdButtonMixed.Checked += new RoutedEventHandler(EditTrdButtonMixed_Checked);
                         EditTrdButtonMale.Checked -= new RoutedEventHandler(EditTrdButtonMale_Checked);
                         EditTrdButtonMale.IsChecked = true;
                         EditTrdButtonMale.Checked += new RoutedEventHandler(EditTrdButtonMale_Checked);
@@ -3801,7 +3897,7 @@ namespace KarateGeek.guis
 
         #endregion
 
-       
+        
 
     }
 }

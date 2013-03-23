@@ -134,6 +134,7 @@ namespace KarateGeek
 
         public const string male   = "MALE";
         public const string female = "FEMALE";
+        public const string mixed = "MIXED";
 
     }
 }

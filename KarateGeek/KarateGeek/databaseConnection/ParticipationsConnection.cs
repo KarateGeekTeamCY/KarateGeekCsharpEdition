@@ -123,7 +123,7 @@ namespace KarateGeek.databaseConnection
             string filter = "where";
             string sql = null;
             int num = 0;
-            if (sex != null)
+            if (sex != null && sex != Strings.mixed)
             {
                 if (num == 0)
                 {
