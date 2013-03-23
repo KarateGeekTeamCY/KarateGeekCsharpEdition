@@ -49,6 +49,7 @@ namespace KarateGeek
         public const string rank07 = "Brown I";
         public const string rank08 = "Brown II";
         public const string rank09 = "Brown III";
+        public const string rank10 = "Black";
         //public const string rank10 = "Black  –  4th dan";
         //public const string rank11 = "Black  –  5th dan";
         //public const string rank12 = "White/Red – 6th dan";
@@ -59,7 +60,7 @@ namespace KarateGeek
 
         public static readonly string[] rank = { rank01, rank02, rank03, rank04,
                                                  rank05, rank06, rank07, rank08,
-                                                 rank09
+                                                 rank09, rank10
                                                };
 
 
