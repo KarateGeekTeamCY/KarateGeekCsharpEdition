@@ -171,91 +171,39 @@ namespace KarateGeek.guis
 
             //prosthetoume athlete_rank gia new athlete
             cmbNewAthleteRankChooses.Items.Add("Select Athlete Rank");
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank04);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank05);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank06);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank07);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank08);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank09);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank10);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank11);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank12);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank13);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank14);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank15);
-            cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank16);
+            for (int i = 0; i < Strings.rank.Length; i++)
+            {
+                cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
+            }
 
             cmbNewAthleteRankChooses.SelectedIndex = 0;
 
             //prosthetoume athlete_rank gia edit athlete
             cmbEditAthleteRankChooses.Items.Add("Select Athlete Rank");
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank01);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank02);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank03);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank04);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank05);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank06);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank07);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank08);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank09);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank10);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank11);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank12);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank13);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank14);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank15);
-            cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank16);
+            for (int i = 0; i < Strings.rank.Length; i++)
+            {
+                cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
+            }
 
             cmbEditAthleteRankChooses.SelectedIndex = 0;
 
 
             //prosthetoume judge class gia new judge
             cmbNewJudgeRankChooses.Items.Add("Select Judge Rank");
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank04);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank05);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank06);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank07);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank08);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank09);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank10);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank11);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank12);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank13);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank14);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank15);
-            cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank16);
-
-
+            for (int i = 0; i < Strings.rank.Length; i++)
+            {
+                cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
+            }
 
             cmbNewJudgeRankChooses.SelectedIndex = 0;
 
             //prosthetoume judge class gia edit judge
             cmbEditJudgeRankChooses.Items.Add("Select Judge Rank");
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank01);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank02);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank03);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank04);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank05);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank06);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank07);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank08);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank09);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank10);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank11);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank12);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank13);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank14);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank15);
-            cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank16);
-
-
-
+            for (int i = 0; i < Strings.rank.Length; i++)
+            {
+                cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
+            }
+            
             cmbEditJudgeRankChooses.SelectedIndex = 0;
 
             //prosthetoume clubs gia new athlete
