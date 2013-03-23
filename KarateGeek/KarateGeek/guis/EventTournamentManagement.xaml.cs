@@ -73,6 +73,7 @@ namespace KarateGeek.guis
 
         //edit event variables
         private int _editEventId = -1;
+        private bool _editEventSelected = false;
         private string _editEventName = null;
         private string _editEventDate;
         private string _editEventLocation = null;
