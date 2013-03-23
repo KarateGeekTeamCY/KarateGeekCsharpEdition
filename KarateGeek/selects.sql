@@ -1,14 +1,32 @@
-﻿select * from persons;
+﻿
+
+
+
+select * from persons;
+
+
 
 select * from athletes;
 
+
+
 select * from addresses;
+
+
 
 select * from users;
 
+
+
 select * from clubs;
 
+
+
 select * from tournaments;
+
+
+
+select * from cities;
 
 
 

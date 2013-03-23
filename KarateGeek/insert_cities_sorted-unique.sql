@@ -6,7 +6,7 @@
 -- and the list of cities with population > 15000 for all other countries
 
 -- Execute with the command (path is an example):
---    psql --username=postgres karategeek < "C:\Users\michael\Documents\GitHub\KarateGeekCsharpEdition\KarateGeek\insert_cities.sql"
+--    psql.exe --username=postgres karategeek < "C:\Users\michael\Documents\GitHub\KarateGeekCsharpEdition\KarateGeek\insert_cities_sorted-unique.sql"
 
 -- regex used to clean the geonames data: search string: ^([^\t]*\t)([^\t]*\t)([^\t]*\t)([^\t]*\t)([^\t]*\t)([^\t]*\t)([^\t]*\t)([^\t]*\t)([^\t]*).*
 --                                        replace with: \2\9
