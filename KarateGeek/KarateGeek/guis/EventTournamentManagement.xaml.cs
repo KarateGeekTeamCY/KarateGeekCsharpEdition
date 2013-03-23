@@ -112,6 +112,7 @@ namespace KarateGeek.guis
 
         //edit tournament variables
         private int _editTournamentEventId;
+        private bool _editTournamentSelected = false;
         private string _editTournamentEvent;
         private string _editTournamentName = null;
         private string _editTournamentSex = null;
@@ -413,6 +414,7 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)editESuggestionList.SelectedItem;
                     _editEventId = item.id;
+                    _editEventSelected = true;
                     location_id = int.Parse(editFilteredEvents.Tables[0].Rows[index][4].ToString());
 
                     this.editEventName.Text = editFilteredEvents.Tables[0].Rows[index][1].ToString();
@@ -487,7 +489,7 @@ namespace KarateGeek.guis
         private void editEventName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string name = editEventName.Text;
-            if (name == "")
+            if (name == "" && !_editEventSelected)
             {
                 initializeEditEvent();
             }
@@ -1621,7 +1623,7 @@ namespace KarateGeek.guis
         private void tbEditTName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string name = tbEditTName.Text;
-            if (name == "")
+            if (name == "" && !_editTournamentSelected)
             {
                 initializeEditTournament(false);
             }
@@ -1658,6 +1660,7 @@ namespace KarateGeek.guis
                     editSuggestionChange = true;  //dixnei oti ginetai allagi twn listeners mesa apo suggestion change
                     ListData item = (ListData)editTSuggestionList.SelectedItem;
                     _editTournamentId = item.id;
+                    _editTournamentSelected = true;
                     _editTournamentName = item.name;
 
                     this.tbEditTName.Text = editFilteredTournaments.Tables[0].Rows[index][1].ToString();
@@ -3585,6 +3588,7 @@ namespace KarateGeek.guis
         private void initializeEditEvent()
         {
             _editEventId = -1;
+            _editEventSelected = false;
             editEventName.Text = null;
             editEventDate.SelectedDate = null;
             editEventLocation.Text = null;
@@ -3651,6 +3655,7 @@ namespace KarateGeek.guis
             _editTournamentTeamId = 0;
             editSelectedParticipants = new List<List<AthleteData>>();
             editSelectedParticipants.Add(new List<AthleteData>());
+            _editTournamentSelected = false;
             if(clearAll)
                 editEventInfo.Text = null;
             //events
@@ -3897,8 +3902,6 @@ namespace KarateGeek.guis
 
 
         #endregion
-
-        
 
     }
 }

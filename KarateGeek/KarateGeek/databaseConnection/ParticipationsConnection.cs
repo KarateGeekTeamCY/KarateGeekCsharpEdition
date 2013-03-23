@@ -161,12 +161,12 @@ namespace KarateGeek.databaseConnection
                 }
             }
 
-            if (levelFrom >= 0 && levelTo >= 0)
+            if ((levelFrom >= 0 && levelTo >= 0 ))
             {
                 if (num == 0)
                 {
 
-                    for (int i = levelFrom; i < levelTo; i++)
+                    for (int i = levelFrom; i <= levelTo; i++)
                     {
                         if (i == levelFrom)
                         {
@@ -185,7 +185,7 @@ namespace KarateGeek.databaseConnection
                 {
                     for (int i = levelFrom; i <= levelTo; i++)
                     {
-                        if (levelFrom == levelTo && levelFrom > 0)
+                        if (levelFrom == levelTo && levelFrom >= 0)
                             filter = filter + " and rank = '" + KarateGeek.Strings.rank[levelFrom] + "'";
                         else if (i == levelFrom)
                             filter = filter + " and (rank = '" + KarateGeek.Strings.rank[i] + "'";
