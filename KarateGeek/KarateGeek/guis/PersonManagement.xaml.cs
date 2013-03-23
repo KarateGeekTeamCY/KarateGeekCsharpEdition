@@ -51,6 +51,7 @@ namespace KarateGeek.guis
         //New athlete variables
         private AthleteConnection athleteConnection = new AthleteConnection();
         private int _newPersonId = -1;
+        private bool _newAthleteSelected = false;
         private string _newAthleteFirstName = null;
         private string _newAthleteLastName = null;
         private string _newAthleteFathersName = null;
@@ -70,6 +71,7 @@ namespace KarateGeek.guis
         //Edit athlete variables
 
         private int _editPersonId = -1;
+        private bool _editAthleteSelected = false;
         private string _editAthleteFirstName = null;
         private string _editAthleteLastName = null;
         private string _editAthleteFathersName = null;
@@ -96,6 +98,7 @@ namespace KarateGeek.guis
         //new judge variables
         private JudgeConnection judgeConnection = new JudgeConnection();
         private int _newJudgeId = -1;
+        private bool _newJudgeSelected = false;
         private string _newJudgeFirstName = null;
         private string _newJudgeLastName = null;
         private string _newJudgeFathersName = null;
@@ -114,6 +117,7 @@ namespace KarateGeek.guis
 
         //edit judge variables
         private int _editJudgeId = -1;
+        private bool _editJudgeSelected = false;
         private string _editJudgeFirstName = null;
         private string _editJudgeLastName = null;
         private string _editJudgeFathersName = null;
@@ -286,6 +290,7 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)NewASuggestionList.SelectedItem;
                     _newPersonId = item.id;
+                    _newAthleteSelected = true;
                     ds2 = athleteConnection.findAthlete(_newPersonId);
                     ds3 = athleteConnection.findAthleteClub(_newPersonId);
 
@@ -436,7 +441,7 @@ namespace KarateGeek.guis
         {
             string name = NewAthleteFirstName.Text;
 
-            if (name == "")
+            if (name == "" && !_newAthleteSelected)
             {
                 initializeNewAthlete();
             }
@@ -658,6 +663,7 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)EditASuggestionList.SelectedItem;
                     _editPersonId = item.id;
+                    _editAthleteSelected = true;
                     ds2 = athleteConnection.findAthlete(_editPersonId);
                     ds3 = athleteConnection.findAthleteClub(_editPersonId);
 
@@ -806,7 +812,7 @@ namespace KarateGeek.guis
         private void EditAthleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string name = EditAthleteFirstName.Text;
-            if (name == "")
+            if (name == "" && !_editAthleteSelected)
             {
                 initializeEditAthlete();
             }
@@ -1043,6 +1049,7 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)newJSuggestionList.SelectedItem;
                     _newJudgeId = item.id;
+                    _newJudgeSelected = true;
                     ds2 = judgeConnection.findJudge(_newJudgeId);
                     ds3 = athleteConnection.findAthlete(_newJudgeId);
 
@@ -1211,7 +1218,7 @@ namespace KarateGeek.guis
         {
             string name = newJudgeFirstName.Text;
 
-            if (name == "")
+            if (name == "" && !_newJudgeSelected)
             {
                 initializeNewJudge();
             }
@@ -1430,6 +1437,7 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)editJSuggestionList.SelectedItem;
                     _editJudgeId = item.id;
+                    _editJudgeSelected = true;
                     ds2 = judgeConnection.findJudge(_editJudgeId);
                     ds3 = athleteConnection.findAthlete(_editJudgeId);
 
@@ -1599,7 +1607,7 @@ namespace KarateGeek.guis
         private void editJudgeFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string name = editJudgeFirstName.Text;
-            if (name == "")
+            if (name == "" && !_editJudgeSelected)
             {
                 initializeEditJudge();
             }
@@ -2193,6 +2201,7 @@ namespace KarateGeek.guis
         private void initializeNewAthlete()
         {
             _newPersonId = -1;              //gia na min menei to id apo to autocomplete mpike argotera mporei an dimiourgisei provlima
+            _newAthleteSelected = true;
             NewAthleteFirstName.Text = null;
             NewAthleteLastName.Text = null;
             NewAthleteFatherName.Text = null;
@@ -2214,6 +2223,7 @@ namespace KarateGeek.guis
         private void initializeEditAthlete()
         {
             _editPersonId = -1;
+            _editAthleteSelected = false;
             EditAthleteFirstName.Text = null;
             EditAthleteLastName.Text = null;
             EditAthleteFatherName.Text = null;
@@ -2235,6 +2245,7 @@ namespace KarateGeek.guis
         private void initializeNewJudge()
         {
             _newJudgeId = -1;
+            _newJudgeSelected = false;
             newJudgeFirstName.Text = null;
             newJudgeLastName.Text = null;
             newJudgeFatherName.Text = null;
@@ -2256,6 +2267,7 @@ namespace KarateGeek.guis
         private void initializeEditJudge()
         {
             _editJudgeId = -1;
+            _editJudgeSelected = false;
             editJudgeFirstName.Text = null;
             editJudgeLastName.Text = null;
             editJudgeFatherName.Text = null;
