@@ -77,9 +77,11 @@ CREATE TABLE countries (
 
 CREATE TABLE cities (
   id                SERIAL,       -- "SERIAL" as a data type means an auto-incrementing integer
-  name              VARCHAR(80)     NOT NULL UNIQUE,
+  name              VARCHAR(80)     NOT NULL,
   country_code      VARCHAR(2)      REFERENCES countries(code),
-  PRIMARY KEY(id)
+  PRIMARY KEY(id),
+
+  UNIQUE(name, country_code)
 );
 
 
