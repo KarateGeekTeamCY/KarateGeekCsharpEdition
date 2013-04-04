@@ -1,10 +1,10 @@
 1) na kleinei to parathiro tou progress meta to telos tou tournament
 2) na thimatai tous 5 diaitites
 3) Kumite support: (a) sto next phase stn teliko na leei "final" (b) Onoma athliti anti gia "Comp A/B" (c) ORDER BY stin SQL gia seira
-4) Onomata pano sta buttons tou choose winner
+4) Onomata pano sta buttons tou choose winner kai  diorthwsi tipografikwn
 5) Sto choose winner Activate
-6) Sto choose winner na 3anaginetai aspro apo kokkino
-7) Sto Event Support na 3exorizoun to olokliromena tournaments tou Event
+6) Sto kumite support na kokkinizei otan ginei ippon
+7) Sto Event Support na 3exorizoun to olokliromena tournaments tou Event kai otan teleiwnei ena tournament kanto finished
 8) Counter (?) posa tournaments sto Event
 9) Sto "Tournament Progress" titlos pou na exei kai to onoma tou tournament
 -------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 15) Otan den exoun simplirwthei ta aparaitita pedia gia na ginei save na fainetai
     apenergopoiimeno to koumpi
 16) Backup basis (Na mpei service pou tha kanei automata se kathe boot)
-17) Na diorthwthei to crystal report me to graph
+17) Na ftiaksoume to crystal report me to progress graph (fyllo agwnos)
 18) Na megalwsoun ta koumpia sto event support
 19) Na epalitheusoume oti leitourgei to team kumite. 
     Edit: to lottery printer den leitougei gia 4 athlites.
@@ -27,21 +27,48 @@
     Edit: oxi stin vasi alla na iparxei gui gia tis parametrous. 
 23) Na ginei to name apo to clubManagement Club/Association.
 24) Na vgei to * apo to eventTournamentManagement.xaml sto official
-25) Na min afinei na ginetai edit/delete ena event an exei oloklirwthei na min iparxei stin lista toy autocomplete.
+25) Na min afinei na ginetai edit/delete ena event KAI tournament an exei oloklirwthei na min iparxei stin lista toy autocomplete.
 26) Na mpainei confirmation se ola ta delete(event, tournament , athlete, judge, club , user) kai proidoipiisi gia to cascade.
-
-
-
-
-
-
-
-
-
-
-
-
-
+27) Na einai proepilegmeno to mixed sto tournament management.
+28) Na ginontai order by ta onomata me to epitheto prwta kai meta to onoma sto tournament management kai order by first name, last name sto autocomplete
+29) Na afinei xwirs periorismo to age kai level kai na theorountai proepilegmena sto megalitero euros.
+30) Na prosthethei sto strings.cs ta dan kai na ginei update stin vasi
+31) Na allazei to scoring System se select scoring system(oxi judging system) otan ginetai allagi toy game type.
+32) Na ginei allagi sta onomata toy tournament me tin seira Game -> Game Type -> Scoring System.
+33) Prepei sta team kai sync na min stelnontai omades diaforetikou arithmou atomwn.
+    teamKata: 3 || 4
+    teamKumite: 3 || 4	
+34) Na diorthwthei sto sex apo to tournament otan pataei cancel o xristis stin prodopoiisi na girnaei stin proigoumeni epilogi
+35) Otan pigainei apo mixed se opoiodipote allo na min afairei tous editParticipants.
+36) Na min einai ipoxrewtiko to club stous athletes
+37) Na mporei na afisei kena ta age kai level kai na min exoun asteraki    
+38) Na ftiaxtei to ipsos twn koumpiwn
+39) Sto club na einai ipoxrewtika to onoma, i xwra kai i poli
+40) Na ginoun not null ta pedia toy address stin vasi
+41) Na min pernaei by default ton red sto kata 
+42) Na iparxoun elegxoi gia oles tis vathmologies an einai ola simplirwmena kai na elegxetai ti pernietai
+43) Na megalwsoun ta plaisia apo to kumiteSystem kai na mpei panw katw onoma
+44) Na mikrinei to megethos toy parathirou apo to kumiteteamMaker
+45) Otan kaneis edit/delete ena lotterised tournament na vgazei minima prin (mesw autocomplete) oti exei ginei idi klirwsi kai sto telos an o xristis patisei save na kanei delete kai meta insert gia 
+	na leitourgisei to cascade kai idanika na ton petaei gia lottery. 
+46) Na balw * sto userName kai password
+47) Se Ola ta parathira na ginei epivevaiwsi twn titlwn (pantou o titlos toy programmatos?)
+48) Epivevaiwsi sto tournament progress exoume tin swsti seira(vlepe 3C, alla isws ilopoiithei mesa sto lottery generator (transaction))
+49) Na baloume crystal report gia graph kai na mikrinoun ta grammata apo ola ta crystal
+50) Autoscale sto font gia crystal report analoga me to sigekrimeno megethos kai na kentraroume ton titlo kai to graph
+51) Na baloume pedia gia autocomplete kai dropdown gia crystal report gia na epilegoume auta pou theloume
+52) Na kanei print xwris kena mesa stis grammes
+53) Sto athlete na vazei sta places ta onomata apo ta tournament poy vgike prwtos,2os, 3os
+54) Na mpei to class toy kriti sta crystal reports
+55) To Rank PANTOU na ginei belt color i level i to level belt color
+56) Na min fainontai ta kena pedia sta crystal reports?????????
+57) Den vazoume true sta crystal kai vazoume official dipla apo to name tou tournament mesw allagwn sta datasets
+58) Na eleksoume sta views ti epistrefei to ranking mesa giati vgazei oti nane noumera(na mpoun ranking se osou pernoun by default kai to 4 4 na ginei 3 3)
+59) Na allaksei apo to crystal tournaments to scroring type 
+60) Na mporei na kanei edit ena match pou exei ginei prin teleiwsei i fasi
+61) Certificate of participation
+62) Na allaxthei pantou to sex se gender kai crystal
+63) Na valoume statistics gia tous judges sta crystal reports
 
 
 
