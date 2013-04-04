@@ -1,0 +1,56 @@
+1) na kleinei to parathiro tou progress meta to telos tou tournament
+2) na thimatai tous 5 diaitites
+3) Kumite support: (a) sto next phase stn teliko na leei "final" (b) Onoma athliti anti gia "Comp A/B" (c) ORDER BY stin SQL gia seira
+4) Onomata pano sta buttons tou choose winner
+5) Sto choose winner Activate
+6) Sto choose winner na 3anaginetai aspro apo kokkino
+7) Sto Event Support na 3exorizoun to olokliromena tournaments tou Event
+8) Counter (?) posa tournaments sto Event
+9) Sto "Tournament Progress" titlos pou na exei kai to onoma tou tournament
+-------------------------------------------------------------------------------------
+10) Na emfanizei parathiro me dropdown gia ta event tis imeras otan einai panw apo ena (event support)
+11) Na emfanizei minima oti simera iparxei kapoio event
+12) Na allazei to ' se apostrofo
+13) Na kanei autocomplete kai sto last name
+14) Kaliteris poiotitas eikona sto kentriko menu (na mpei i megali xwris to founded kai xwris to gyrogyro). Na mpei i eikona pantou kai i lezanta sto strings.cs diorthwmeni
+15) Otan den exoun simplirwthei ta aparaitita pedia gia na ginei save na fainetai
+    apenergopoiimeno to koumpi
+16) Backup basis (Na mpei service pou tha kanei automata se kathe boot)
+17) Na diorthwthei to crystal report me to graph
+18) Na megalwsoun ta koumpia sto event support
+19) Na epalitheusoume oti leitourgei to team kumite. 
+    Edit: to lottery printer den leitougei gia 4 athlites.
+	 otan leitourgei den emfanizei ton swsto anaplirwmatiko stin omada twn nikitwn?
+20) Buttons me eikonidia(vlepe 18)
+21) Pws ginetai i apoxwrisi se periptwsi travmatismou
+22) Vari klirwsewn stin vasi. 
+    Edit: oxi stin vasi alla na iparxei gui gia tis parametrous. 
+23) Na ginei to name apo to clubManagement Club/Association.
+24) Na vgei to * apo to eventTournamentManagement.xaml sto official
+25) Na min afinei na ginetai edit/delete ena event an exei oloklirwthei na min iparxei stin lista toy autocomplete.
+26) Na mpainei confirmation se ola ta delete(event, tournament , athlete, judge, club , user) kai proidoipiisi gia to cascade.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kata male 1999 SEMI-FINAL papakonstantinou
