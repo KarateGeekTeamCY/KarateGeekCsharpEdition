@@ -301,6 +301,11 @@ namespace KarateGeek.guis
 
                     this.NewAthleteFirstName.Text = newFilteredAthletes.Tables[0].Rows[index][1].ToString();
                     this._newAthleteFirstName = this.NewAthleteFirstName.Text;
+                    if (setNewAthleteSaveEnable())
+                        btnNewASave.IsEnabled = true;
+                    else
+                        btnNewASave.IsEnabled = false;
+
                     this.NewAthleteLastName.Text = newFilteredAthletes.Tables[0].Rows[index][2].ToString();
                     this.NewAthleteFatherName.Text = newFilteredAthletes.Tables[0].Rows[index][3].ToString();
 
@@ -410,6 +415,12 @@ namespace KarateGeek.guis
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
+            if (setNewAthleteSaveEnable())
+                btnNewASave.IsEnabled = true;
+            else
+                btnNewASave.IsEnabled = false;
+
+
             newAthleteNameListForAutoComplete = this.newAthletesfilterNames();
 
             foreach (ListData item in newAthleteNameListForAutoComplete)
@@ -445,14 +456,18 @@ namespace KarateGeek.guis
             {
                 initializeNewAthlete();
             }
-
+            
             newAthleteList();
+            //o elegxos mpike sto athletelist
         }
 
         private void NewAthleteLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newAthleteLastName = NewAthleteLastName.Text;
-
+            if (setNewAthleteSaveEnable())
+                btnNewASave.IsEnabled = true;
+            else
+                btnNewASave.IsEnabled = false;
         }
 
         private void NewAthleteFathersName_TextChanged(object sender, TextChangedEventArgs e)
@@ -468,6 +483,10 @@ namespace KarateGeek.guis
                 _newAthleteDateOfBirth = selectedDate.Value.ToShortDateString();
             else
                 _newAthleteDateOfBirth = string.Empty;
+            if (setNewAthleteSaveEnable())
+                btnNewASave.IsEnabled = true;
+            else
+                btnNewASave.IsEnabled = false;
         }
 
         private void NewAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -546,7 +565,12 @@ namespace KarateGeek.guis
             {
                 if (index < cmbNewAthleteRankChooses.Items.Count && index != -1)
                     _newAthleteRank = cmbNewAthleteRankChooses.Items[index].ToString();
+                
             }
+            if (setNewAthleteSaveEnable())
+                btnNewASave.IsEnabled = true;
+            else
+                btnNewASave.IsEnabled = false;
         }
 
         private void cmbNewAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -556,17 +580,34 @@ namespace KarateGeek.guis
             {
                 if (index < cmbNewAClubChooses.Items.Count && index != -1)
                     _newAthleteClubId = clubs.Tables[0].Rows[index - 1][0].ToString();
+
             }
+            else
+            {
+                _newAthleteClubId = null;
+            }
+            if (setNewAthleteSaveEnable())
+                btnNewASave.IsEnabled = true;
+            else
+                btnNewASave.IsEnabled = false;
         }
 
         private void NewArdButton1_Checked(object sender, RoutedEventArgs e)
         {
             _newAthleteSex = Strings.male;
+            if (setNewAthleteSaveEnable())
+                btnNewASave.IsEnabled = true;
+            else
+                btnNewASave.IsEnabled = false;
         }
 
         private void NewArdButton2_Checked(object sender, RoutedEventArgs e)
         {
             _newAthleteSex = Strings.female;
+            if (setNewAthleteSaveEnable())
+                btnNewASave.IsEnabled = true;
+            else
+                btnNewASave.IsEnabled = false;
         }
 
         #region other listeners
@@ -674,6 +715,14 @@ namespace KarateGeek.guis
 
                     this.EditAthleteFirstName.Text = editFilteredAthletes.Tables[0].Rows[index][1].ToString();
                     this._editAthleteFirstName = this.EditAthleteFirstName.Text;
+                    if (setEditAthleteSaveEnable())
+                    {
+                        btnEditASave.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnEditASave.IsEnabled = false;
+                    }
                     this.EditAthleteLastName.Text = editFilteredAthletes.Tables[0].Rows[index][2].ToString();
                     this.EditAthleteFatherName.Text = editFilteredAthletes.Tables[0].Rows[index][3].ToString();
 
@@ -783,6 +832,15 @@ namespace KarateGeek.guis
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
+            if (setEditAthleteSaveEnable())
+            {
+                btnEditASave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditASave.IsEnabled = false;
+            }
+
             editAthleteNameListForAutoComplete = this.editAthletesfilterNames();
 
             foreach (ListData item in editAthleteNameListForAutoComplete)
@@ -822,6 +880,15 @@ namespace KarateGeek.guis
         private void EditAthleteLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _editAthleteLastName = EditAthleteLastName.Text;
+            if (setEditAthleteSaveEnable())
+            {
+                btnEditASave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditASave.IsEnabled = false;
+            }
+
 
         }
 
@@ -838,6 +905,16 @@ namespace KarateGeek.guis
                 _editAthleteDateOfBirth = selectedDate.Value.ToShortDateString();
             else
                 _editAthleteDateOfBirth = string.Empty;
+
+            if (setEditAthleteSaveEnable())
+            {
+                btnEditASave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditASave.IsEnabled = false;
+            }
+
         }
 
         private void EditAthleteFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -922,6 +999,14 @@ namespace KarateGeek.guis
                 if (index < cmbEditAthleteRankChooses.Items.Count && index != -1)
                     _editAthleteRank = cmbEditAthleteRankChooses.Items[index].ToString();
             }
+            if (setEditAthleteSaveEnable())
+            {
+                btnEditASave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditASave.IsEnabled = false;
+            }
         }
 
         private void cmbEditAClubChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -932,16 +1017,46 @@ namespace KarateGeek.guis
                 if (index < cmbEditAClubChooses.Items.Count && index != -1)
                     _editAthleteClubId = clubs.Tables[0].Rows[index - 1][0].ToString();
             }
+            else
+            {
+                _editAthleteClubId = null;
+            }
+            if (setEditAthleteSaveEnable())
+            {
+                btnEditASave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditASave.IsEnabled = false;
+            }
         }
 
         private void EditArdButton1_Checked(object sender, RoutedEventArgs e)
         {
             _editAthleteSex = Strings.male;
+            if (setEditAthleteSaveEnable())
+            {
+                btnEditASave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditASave.IsEnabled = false;
+            }
+
         }
 
         private void EditArdButton2_Checked(object sender, RoutedEventArgs e)
         {
             _editAthleteSex = Strings.female;
+            if (setEditAthleteSaveEnable())
+            {
+                btnEditASave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditASave.IsEnabled = false;
+            }
+
         }
 
         #region other listeners
@@ -1060,6 +1175,14 @@ namespace KarateGeek.guis
 
                     this.newJudgeFirstName.Text = newFilteredJudges.Tables[0].Rows[index][1].ToString();
                     this._newJudgeFirstName = this.newJudgeFirstName.Text;
+                    if (setNewJudgeSaveEnable())
+                    {
+                        btnNewJSave.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnNewJSave.IsEnabled = false;
+                    }
                     this.newJudgeLastName.Text = newFilteredJudges.Tables[0].Rows[index][2].ToString();
                     this.newJudgeFatherName.Text = newFilteredJudges.Tables[0].Rows[index][3].ToString();
 
@@ -1184,6 +1307,15 @@ namespace KarateGeek.guis
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
+            if (setNewJudgeSaveEnable())
+            {
+                btnNewJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewJSave.IsEnabled = false;
+            }
+
             newJudgeNameListForAutoComplete = this.newJudgefiltersNames();
 
             foreach (ListData item in newJudgeNameListForAutoComplete)
@@ -1228,6 +1360,14 @@ namespace KarateGeek.guis
         private void newJudgeLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newJudgeLastName = newJudgeLastName.Text;
+            if (setNewJudgeSaveEnable())
+            {
+                btnNewJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewJSave.IsEnabled = false;
+            }
         }
 
         private void newJudgeFatherName_TextChanged(object sender, TextChangedEventArgs e)
@@ -1242,6 +1382,14 @@ namespace KarateGeek.guis
                 _newJudgeDateOfBirth = selectedDate.Value.ToShortDateString();
             else
                 _newJudgeDateOfBirth = string.Empty;
+            if (setNewJudgeSaveEnable())
+            {
+                btnNewJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewJSave.IsEnabled = false;
+            }
         }
 
         private void newJudgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -1315,11 +1463,27 @@ namespace KarateGeek.guis
         private void newJrdButton1_Checked(object sender, RoutedEventArgs e)
         {
             _newJudgeSex = Strings.male;
+            if (setNewJudgeSaveEnable())
+            {
+                btnNewJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewJSave.IsEnabled = false;
+            }
         }
 
         private void newJrdButton2_Checked(object sender, RoutedEventArgs e)
         {
             _newJudgeSex = Strings.female;
+            if (setNewJudgeSaveEnable())
+            {
+                btnNewJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewJSave.IsEnabled = false;
+            }
         }
 
         private void cmbNewJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1331,6 +1495,14 @@ namespace KarateGeek.guis
                 if (index < cmbNewJudgeRankChooses.Items.Count && index != -1)
                     _newJudgeRank = cmbNewJudgeRankChooses.Items[index].ToString();
             }
+            if (setNewJudgeSaveEnable())
+            {
+                btnNewJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewJSave.IsEnabled = false;
+            }
         }
 
         private void cmbNewJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1340,6 +1512,14 @@ namespace KarateGeek.guis
             {
                 if (index < cmbNewJClassChooses.Items.Count && index != -1)
                     _newJudgeClass = cmbNewJClassChooses.Items[index].ToString();
+            }
+            if (setNewJudgeSaveEnable())
+            {
+                btnNewJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewJSave.IsEnabled = false;
             }
         }
 
@@ -1448,6 +1628,14 @@ namespace KarateGeek.guis
 
                     this.editJudgeFirstName.Text = editFilteredJudges.Tables[0].Rows[index][1].ToString();
                     this._editJudgeFirstName = this.editJudgeFirstName.Text;
+                    if (setEditJudgeSaveEnable())
+                    {
+                        btnEditJSave.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnEditJSave.IsEnabled = false;
+                    }
                     this.editJudgeLastName.Text = editFilteredJudges.Tables[0].Rows[index][2].ToString();
                     this.editJudgeFatherName.Text = editFilteredJudges.Tables[0].Rows[index][3].ToString();
 
@@ -1574,6 +1762,15 @@ namespace KarateGeek.guis
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
+            if (setEditJudgeSaveEnable())
+            {
+                btnEditJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditJSave.IsEnabled = false;
+            }
+
             editJudgeNameListForAutoComplete = this.editJudgefiltersNames();
 
             foreach (ListData item in editJudgeNameListForAutoComplete)
@@ -1617,6 +1814,14 @@ namespace KarateGeek.guis
         private void editJudgeLastName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _editJudgeLastName = editJudgeLastName.Text;
+            if (setEditJudgeSaveEnable())
+            {
+                btnEditJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditJSave.IsEnabled = false;
+            }
         }
 
         private void editJudgeFatherName_TextChanged(object sender, TextChangedEventArgs e)
@@ -1631,6 +1836,14 @@ namespace KarateGeek.guis
                 _editJudgeDateOfBirth = selectedDate.Value.ToShortDateString();
             else
                 _editJudgeDateOfBirth = string.Empty;
+            if (setEditJudgeSaveEnable())
+            {
+                btnEditJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditJSave.IsEnabled = false;
+            }
         }
 
         private void editJudgeFirstPhone_TextChanged(object sender, TextChangedEventArgs e)
@@ -1704,11 +1917,27 @@ namespace KarateGeek.guis
         private void editJrdButton1_Checked(object sender, RoutedEventArgs e)
         {
             _editJudgeSex = Strings.male;
+            if (setEditJudgeSaveEnable())
+            {
+                btnEditJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditJSave.IsEnabled = false;
+            }
         }
 
         private void editJrdButton2_Checked(object sender, RoutedEventArgs e)
         {
             _editJudgeSex = Strings.female;
+            if (setEditJudgeSaveEnable())
+            {
+                btnEditJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditJSave.IsEnabled = false;
+            }
         }
 
         private void cmbEditJRankChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1719,6 +1948,14 @@ namespace KarateGeek.guis
                 if (index < cmbEditJudgeRankChooses.Items.Count && index != -1)
                     _editJudgeRank = cmbEditJudgeRankChooses.Items[index].ToString();
             }
+            if (setEditJudgeSaveEnable())
+            {
+                btnEditJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditJSave.IsEnabled = false;
+            }
         }
 
         private void cmbEditJClassChooses_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1728,6 +1965,14 @@ namespace KarateGeek.guis
             {
                 if (index < cmbEditJudgeRankChooses.Items.Count && index != -1)
                     _editJudgeClass = cmbEditJClassChooses.Items[index].ToString();
+            }
+            if (setEditJudgeSaveEnable())
+            {
+                btnEditJSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditJSave.IsEnabled = false;
             }
         }
 
@@ -1821,10 +2066,6 @@ namespace KarateGeek.guis
                         em.errorMessage("Rank");
                         return false;
                     }
-                    else if(cmbNewAClubChooses.SelectedIndex == 0){
-                        em.errorMessage("Club");
-                        return false;
-                    }
                     else
                     {
                         return true;
@@ -1855,11 +2096,6 @@ namespace KarateGeek.guis
                     else if (cmbEditAthleteRankChooses.SelectedIndex == 0)
                     {
                         em.errorMessage("Rank");
-                        return false;
-                    }
-                    else if (cmbEditAClubChooses.SelectedIndex == 0)
-                    {
-                        em.errorMessage("Club");
                         return false;
                     }
                     else
@@ -2193,8 +2429,59 @@ namespace KarateGeek.guis
             }
         }
 
+        private bool setNewAthleteSaveEnable()
+        {
+            if (cmbNewAthleteRankChooses.SelectedIndex == 0 || string.IsNullOrEmpty(_newAthleteDateOfBirth) ||
+                string.IsNullOrEmpty(_newAthleteSex) || string.IsNullOrEmpty(_newAthleteLastName) || string.IsNullOrEmpty(_newAthleteFirstName))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
+        private bool setEditAthleteSaveEnable()
+        {
+            if (cmbEditAthleteRankChooses.SelectedIndex == 0 || string.IsNullOrEmpty(_editAthleteDateOfBirth) ||
+                string.IsNullOrEmpty(_editAthleteSex) || string.IsNullOrEmpty(_editAthleteLastName) || string.IsNullOrEmpty(_editAthleteFirstName))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        
+        private bool setNewJudgeSaveEnable()
+        {
+            if (string.IsNullOrEmpty(_newJudgeFirstName) || string.IsNullOrEmpty(_newJudgeLastName) || string.IsNullOrEmpty(_newJudgeSex) || string.IsNullOrEmpty(_newJudgeDateOfBirth)
+                 || cmbNewJudgeRankChooses.SelectedIndex == 0 || cmbNewJClassChooses.SelectedIndex == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
 
+        }
+
+        private bool setEditJudgeSaveEnable()
+        {
+            if (string.IsNullOrEmpty(_editJudgeFirstName) || string.IsNullOrEmpty(_editJudgeLastName) || string.IsNullOrEmpty(_editJudgeSex) || string.IsNullOrEmpty(_editJudgeDateOfBirth)
+                 || cmbEditJudgeRankChooses.SelectedIndex == 0 || cmbEditJClassChooses.SelectedIndex == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        
         #endregion
 
         #region initialize methods

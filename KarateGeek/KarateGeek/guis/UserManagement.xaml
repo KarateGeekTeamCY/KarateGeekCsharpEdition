@@ -39,6 +39,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="9*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="7*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -46,23 +47,41 @@
             <Label Content="User name"
                    Grid.Column="1"
                    Grid.Row="0"/>
+            <Label Content="*"
+                               Grid.Row="0"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
             <TextBox Name="txtUserName"
-                     Grid.Column="2"
+                     Grid.Column="3"
                      VerticalAlignment="Center" TextChanged="txtUserName_TextChanged" />
             
             <Label Content="Password"
                    Grid.Column="1"
                    Grid.Row="1"/>
+            <Label Content="*"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
             <PasswordBox Name="txtPasswordOne" 
-                         Grid.Column="2"
+                         Grid.Column="3"
                          Grid.Row="1"
                          VerticalAlignment="Center" PasswordChanged="txtPasswordOne_PasswordChanged" />
             
             <Label Content="Repeat password"
                    Grid.Column="1"
                    Grid.Row="2"/>
+            <Label Content="*"
+                               Grid.Row="2"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
             <PasswordBox Name="txtPasswordTwo" 
-                         Grid.Column="2"
+                         Grid.Column="3"
                          Grid.Row="2"
                          VerticalAlignment="Center" PasswordChanged="txtPasswordTwo_PasswordChanged" />
             
@@ -70,7 +89,7 @@
 
             <Label Content="Rights"
                    Grid.Column="1"
-                   Grid.ColumnSpan="2"
+                   Grid.ColumnSpan="3"
                    HorizontalContentAlignment="Center"
                    FontSize="16"
                    Grid.Row="3"/>
@@ -80,7 +99,7 @@
                    Grid.Column="1"
                    Grid.Row="4"/>
             <CheckBox Name="chbPersonMan"
-                      Grid.Column="2"
+                      Grid.Column="3"
                       Grid.Row="4"
                       VerticalAlignment="Center" 
                       Checked="chbPersonMan_Checked" 
@@ -89,7 +108,7 @@
                    Grid.Column="1"
                    Grid.Row="5"/>
             <CheckBox Name="chbEventMan"
-                      Grid.Column="2"
+                      Grid.Column="3"
                       Grid.Row="5"
                       VerticalAlignment="Center"
                       Checked="chbEventMan_Checked"
@@ -99,7 +118,7 @@
                    Grid.Column="1"
                    Grid.Row="7"/>
             <CheckBox Name="chbLoteryMan"
-                      Grid.Column="2"
+                      Grid.Column="3"
                       Grid.Row="7"
                       VerticalAlignment="Center" 
                       Checked="chbLoteryMan_Checked"
@@ -109,7 +128,7 @@
                    Grid.Column="1"
                    Grid.Row="8"/>
             <CheckBox Name="chbEventSup"
-                      Grid.Column="2"
+                      Grid.Column="3"
                       Grid.Row="8"
                       VerticalAlignment="Center" 
                       Checked="chbEventSup_Checked" 
@@ -121,7 +140,7 @@
                    Grid.Column="1"
                    Grid.Row="9"/>
             <CheckBox Name="chbClubMan"
-                      Grid.Column="2"
+                      Grid.Column="3"
                       Grid.Row="9"
                       VerticalAlignment="Center"
                       Checked="chbClubMan_Checked"
@@ -130,7 +149,7 @@
                    Grid.Column="1"
                    Grid.Row="10"/>
             <CheckBox Name="chbUserMan"
-                      Grid.Column="2"
+                      Grid.Column="3"
                       Grid.Row="10"
                       VerticalAlignment="Center" 
                       Checked="chbUserMan_Checked"
@@ -139,13 +158,13 @@
                    Grid.Column="1"
                    Grid.Row="11"/>
             <CheckBox Name="chbReportsMan"
-                      Grid.Column="2"
+                      Grid.Column="3"
                       Grid.Row="11"
                       VerticalAlignment="Center"
                       Checked="chbReportsMan_Checked"
                       Unchecked="chbReportsMan_Checked"/>
             <ListBox Name="uSuggestionList"
-                     Grid.Column="2" 
+                     Grid.Column="3" 
                      Grid.Row="0" 
                      Grid.RowSpan="3" 
                      VerticalAlignment="Top" 

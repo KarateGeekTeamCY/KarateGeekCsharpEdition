@@ -41,6 +41,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="6*"/>
                         <ColumnDefinition Width="*"/>
 
@@ -50,9 +51,15 @@
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                    <TextBox Name="newClubName" 
+                        <Label Content="*"
                                Grid.Row="1"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="newClubName" 
+                               Grid.Row="1"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newClubName_TextChanged" />
 
@@ -62,7 +69,7 @@
                                VerticalAlignment="Center"/>
                     <TextBox Name="newClubPhone" 
                                Grid.Row="2"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newClubPhone_TextChanged" />
                     <Label Content="Email"
@@ -71,7 +78,7 @@
                                VerticalAlignment="Center"/>
                     <TextBox Name="newClubEmail" 
                                Grid.Row="3"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newClubEmail_TextChanged" />
                     <Label Content="Address"
@@ -80,11 +87,11 @@
                                VerticalAlignment="Center"/>
                     <TextBox Name="newClubAddress" 
                                Grid.Row="4"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="newClubAddress_TextChanged" />
 
-                    <Grid Grid.Column="2"
+                    <Grid Grid.Column="3"
                               Grid.Row="5">
 
                         <Grid.ColumnDefinitions>
@@ -117,9 +124,15 @@
                                Grid.Row="6"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                    <ComboBox Name="cmbNewCCountryChooses"
+                        <Label Content="*"
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <ComboBox Name="cmbNewCCountryChooses"
                                   Grid.Row="6"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   VerticalAlignment="Center"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbNewCCountryChooses_SelectionChanged">
@@ -130,9 +143,15 @@
                                Grid.Row="7"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                    <ComboBox Name="cmbNewCCityChooses"
+                        <Label Content="*"
+                               Grid.Row="7"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <ComboBox Name="cmbNewCCityChooses"
                                   Grid.Row="7"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   VerticalAlignment="Center" 
                                   SelectionChanged="cmbNewCCityChooses_SelectionChanged">
@@ -161,7 +180,7 @@
                                 Content="Save"
                                 Grid.Column="3"
                     VerticalAlignment="Center"
-                                Margin="10" Click="btnNewCSave_Click" />
+                                Margin="10" Click="btnNewCSave_Click" IsEnabled="False" />
                     
 
                 </Grid>
@@ -190,6 +209,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="6*"/>
                             <ColumnDefinition Width="*"/>
 
@@ -199,9 +219,15 @@
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <TextBox Name="editClubName" 
+                        <Label Content="*"
                                Grid.Row="1"
                                Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                        <TextBox Name="editClubName" 
+                               Grid.Row="1"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editClubName_TextChanged" PreviewMouseLeftButtonDown="editClubName_PreviewMouseLeftButtonDown" LostFocus="editClubName_LostFocus" />
 
@@ -211,7 +237,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="editClubPhone" 
                                Grid.Row="2"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editClubPhone_TextChanged" />
                         <Label Content="Email"
@@ -220,7 +246,7 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="editClubEmail" 
                                Grid.Row="3"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editClubEmail_TextChanged" />
                         <Label Content="Address"
@@ -229,11 +255,11 @@
                                VerticalAlignment="Center"/>
                         <TextBox Name="editClubAddress" 
                                Grid.Row="4"
-                               Grid.Column="2"
+                               Grid.Column="3"
                                VerticalAlignment="Center" 
                                TextChanged="editClubAddress_TextChanged" />
 
-                        <Grid Grid.Column="2"
+                        <Grid Grid.Column="3"
                               Grid.Row="5">
 
                             <Grid.ColumnDefinitions>
@@ -266,9 +292,15 @@
                                Grid.Row="6"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
+                        <Label Content="*"
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                         <ComboBox Name="cmbEditCCountryChooses"
                                   Grid.Row="6"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   VerticalAlignment="Center"
                                   Margin="0,3,0,3" 
                                   SelectionChanged="cmbEditCCountryChooses_SelectionChanged">
@@ -279,9 +311,15 @@
                                Grid.Row="7"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
+                        <Label Content="*"
+                               Grid.Row="7"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                         <ComboBox Name="cmbEditCCityChooses"
                                   Grid.Row="7"
-                                  Grid.Column="2"
+                                  Grid.Column="3"
                                   Margin="0,3,0,3" 
                                   VerticalAlignment="Center" 
                                   SelectionChanged="cmbEditCCityChooses_SelectionChanged">
@@ -289,7 +327,7 @@
                         </ComboBox>
 
                         <ListBox Name="cSuggestionList" 
-                                 Grid.Column="2" 
+                                 Grid.Column="3" 
                                  Grid.Row="1" 
                                  Grid.RowSpan="3" 
                                  VerticalAlignment="Top" 
@@ -317,7 +355,7 @@
                                 Content="Save"
                     VerticalAlignment="Center"
                                 Grid.Column="2"
-                                Margin="10" Click="btnEditCSave_Click" />
+                                Margin="10" Click="btnEditCSave_Click" IsEnabled="False" />
                         <Button Name="btnEditCDelete"
                                Content="Delete"
                     VerticalAlignment="Center"

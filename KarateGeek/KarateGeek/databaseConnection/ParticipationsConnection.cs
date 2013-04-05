@@ -161,10 +161,12 @@ namespace KarateGeek.databaseConnection
                 }
             }
 
-            if ((levelFrom >= 0 && levelTo >= 0 ))
+            if ((levelFrom >= 0 && levelTo >= 0))
             {
                 if (num == 0)
                 {
+                    if(levelFrom > levelTo)
+                        filter = filter + " rank = 'none'";
 
                     for (int i = levelFrom; i <= levelTo; i++)
                     {
@@ -183,6 +185,8 @@ namespace KarateGeek.databaseConnection
                 }
                 else
                 {
+                    if (levelFrom > levelTo)
+                        filter = filter + " and rank = 'none'";
                     for (int i = levelFrom; i <= levelTo; i++)
                     {
                         if (levelFrom == levelTo && levelFrom >= 0)

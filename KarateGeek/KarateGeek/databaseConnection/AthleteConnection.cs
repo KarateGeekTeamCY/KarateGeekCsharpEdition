@@ -111,12 +111,18 @@ namespace KarateGeek.databaseConnection
 
         private string _InsertAthlete(string PersonId, string rank, string localClubId)
         {
-
-            string sql = "insert into athletes ( id, rank, club_id) values ( '"
+            string sql;
+            
+            if(string.IsNullOrEmpty(localClubId)){
+                 sql = "insert into athletes ( id, rank) values ( '"
+                + PersonId + "', '"
+                + rank + "');"; //edw egine allagi gia na fanei oti xreiazetai to id apo to athlete_club pou tha einai eidi perasmeno
+            }else{
+                sql = "insert into athletes ( id, rank, club_id) values ( '"
                 + PersonId + "', '"
                 + rank + "', '"
                 + localClubId + "' );"; //edw egine allagi gia na fanei oti xreiazetai to id apo to athlete_club pou tha einai eidi perasmeno
-
+            }
             this.NonQuery(sql);
 
 
@@ -125,11 +131,21 @@ namespace KarateGeek.databaseConnection
 
         private string _UpdatetAthlete(int PersonId, string rank, string localClubId)
         {
-            string sql = "update athletes set " +
+            string sql;
+
+            if (string.IsNullOrEmpty(localClubId))
+            {
+                sql = "update athletes set " +
+
+               "rank = '" + rank + "' where id = '" + PersonId + "' ;";
+            }
+            else
+            {
+                sql = "update athletes set " +
 
                 "rank = '" + rank + "', " +
                 "club_id = '" + localClubId + "' where id = '" + PersonId + "' ;";
-
+            }
             this.NonQuery(sql);
 
             return "";
