@@ -113,6 +113,18 @@ namespace KarateGeek.guis
 
             loadGames();
 
+            if (this.graph != null)
+            {
+                graph.Close();
+                graph = null;
+           
+            }
+                
+            if (this.graph == null)
+            {
+                this.graph = new LotteryGraph(long.Parse(this.tournament.id));  
+            }
+
         }
 
 
@@ -145,10 +157,11 @@ namespace KarateGeek.guis
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             _sender.Show();
-            this.Close();
-
+            
             /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
             if (this.graph != null) this.graph.Close();
+
+            this.Close();
         }
 
         #endregion
@@ -244,19 +257,22 @@ namespace KarateGeek.guis
                 //
             }
 
-            /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
-            if (this.graph == null)
+
+            if (this.graph != null)
             {
-                /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
-                this.graph = new LotteryGraph(long.Parse(this.tournament.id));      // predictably, this could crash for Team Kumite because it needs at least 1 record in the table (tournaments JOIN games ON tournaments.id = games.tournament_id)
-                // solution: we used the hasEnoughElementsToPrint() method in the LotteryGraph GUI, especially for team kumite.
+                this.graph.updateGraph(); 
             }
-            else { this.graph.updateGraph(); }
 
 
+
+            //
+            // this i thing need to be commented out
+            //
             try { this.graph.Show(); }
             catch (InvalidOperationException e)
-            { this.graph = new LotteryGraph(long.Parse(this.tournament.id)); }
+            { 
+                this.graph = new LotteryGraph(long.Parse(this.tournament.id)); 
+            }
 
 
             this.Activate();
@@ -879,12 +895,8 @@ namespace KarateGeek.guis
 
                 if (nextPhase == -1)
                 {
-                    //
-                    // TO-DO
-                    //
-                    // its the winner there is no more rounds
-                    // do something about that
-                    //
+
+                    // if (this.graph != null) this.graph.Close();
 
                     if (this.tournament.gameType == Strings.teamKumite)
                     {

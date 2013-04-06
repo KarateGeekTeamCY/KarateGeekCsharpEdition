@@ -32,6 +32,11 @@ namespace KarateGeek.guis
         private string _judgeDId = "";
         private string _judgeEId = "";
 
+
+        KarateGeek.helpers.JudgeMem memory = new helpers.JudgeMem();
+
+
+
         private double _scoreA = 0;
         private double _scoreB = 0;
         private double _scoreC = 0;
@@ -90,11 +95,27 @@ namespace KarateGeek.guis
             }
             //string runka = Strings.rank1;
 
-            this.eventJudgePickerA.SelectedIndex = 0;
-            this.eventJudgePickerB.SelectedIndex = 0;
-            this.eventJudgePickerC.SelectedIndex = 0;
-            this.eventJudgePickerD.SelectedIndex = 0;
-            this.eventJudgePickerE.SelectedIndex = 0;
+            string ids = this.memory.load(@"kumitemem.mem");
+            
+            if (ids != null)
+            {
+                string[] idsArray = ids.Split('|');
+
+                this.eventJudgePickerA.SelectedIndex = int.Parse(idsArray[0]);
+                this.eventJudgePickerB.SelectedIndex = int.Parse(idsArray[1]);
+                this.eventJudgePickerC.SelectedIndex = int.Parse(idsArray[2]);
+                this.eventJudgePickerD.SelectedIndex = int.Parse(idsArray[3]);
+                this.eventJudgePickerE.SelectedIndex = int.Parse(idsArray[4]);
+            }
+            else
+            {
+                this.eventJudgePickerA.SelectedIndex = 0;
+                this.eventJudgePickerB.SelectedIndex = 0;
+                this.eventJudgePickerC.SelectedIndex = 0;
+                this.eventJudgePickerD.SelectedIndex = 0;
+                this.eventJudgePickerE.SelectedIndex = 0;
+            }
+
 
             string gametype = this._DTgame.Rows[0][4].ToString();
 
@@ -359,8 +380,8 @@ namespace KarateGeek.guis
             this._sender.tournament.load();
             this._sender.advanceAthletes();
             this._sender.tournament.load();
-            
-            
+
+
             _sender.Visibility = System.Windows.Visibility.Visible;
             this.Close();
 
