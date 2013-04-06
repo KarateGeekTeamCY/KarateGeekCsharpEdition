@@ -79,13 +79,13 @@ namespace KarateGeek.databaseConnection
 
         public DataSet getParticipantsI(int tournamentId)
         {
-            string sql = "select * from tournament_participations inner join persons on athlete_id=id where tournament_id= '" + tournamentId + "';";
+            string sql = "select * from tournament_participations inner join persons on athlete_id=id where tournament_id= '" + tournamentId + "' order by last_name, first_name;";
             return this.Query(sql);
         }
 
         public DataSet getParticipantsT(int tournamentId)
         {
-            string sql = "select * from(select athlete_id,team from team_tournament_participations inner join tournament_participations on id=team_id and tournament_participations.tournament_id= '" + tournamentId + "' ) as t1 inner join persons on id=athlete_id;";
+            string sql = "select * from(select athlete_id,team from team_tournament_participations inner join tournament_participations on id=team_id and tournament_participations.tournament_id= '" + tournamentId + "' ) as t1 inner join persons on id=athlete_id order by last_name, first_name;";
             return this.Query(sql);
         }
 
@@ -204,11 +204,11 @@ namespace KarateGeek.databaseConnection
 
             if (num > 0)
             {
-                sql = "select * from (select persons.id as persons_id,first_name,last_name,sex , extract(year from age(date_of_birth)) as age, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank, club_id from persons inner join athletes on (persons.id = athletes.id)) as t1 " + filter + " and persons_id not in(select athlete_id from tournament_participations where tournament_id='" + tournamentId + "');";
+                sql = "select * from (select persons.id as persons_id,last_name,first_name,sex , extract(year from age(date_of_birth)) as age, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank, club_id from persons inner join athletes on (persons.id = athletes.id)) as t1 " + filter + " and persons_id not in(select athlete_id from tournament_participations where tournament_id='" + tournamentId + "') order by last_name, first_name;";
             }
             else
             {
-                sql = "select * from (select persons.id as persons_id,first_name,last_name,sex , extract(year from age(date_of_birth)) as age, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank, club_id from persons inner join athletes on (persons.id = athletes.id)) as t1 where persons_id not in(select athlete_id from tournament_participations where tournament_id='" + tournamentId + "');";
+                sql = "select * from (select persons.id as persons_id,last_name,first_name,sex , extract(year from age(date_of_birth)) as age, persons.phone as persons_phone,secondary_phone,persons.email as persons_email,rank, club_id from persons inner join athletes on (persons.id = athletes.id)) as t1 where persons_id not in(select athlete_id from tournament_participations where tournament_id='" + tournamentId + "') order by last_name, first_name;";
             }
 
            

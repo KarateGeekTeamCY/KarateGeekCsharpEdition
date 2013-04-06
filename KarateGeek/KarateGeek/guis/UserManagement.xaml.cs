@@ -60,7 +60,7 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (userName.Equals(""))
+            if (string.IsNullOrEmpty(userName))
             {
                 string result = MessageBox.Show("You didn't choose any valid user name, please try again.", "No user name!",
                     MessageBoxButton.OK,
@@ -72,12 +72,13 @@ namespace KarateGeek.guis
                 this.clubMan, this.userMan, this.reports);
 
                 MessageBox.Show("Succesfully updated!");
+                initializeForm();
             }
         }
 
         private void btnSaveAsNew_Click(object sender, RoutedEventArgs e)
         {
-            if (userName.Equals(""))
+            if (string.IsNullOrEmpty(userName))
             {
                 string result = MessageBox.Show("You didn't choose any valid user name, please try again.", "No user name!",
                     MessageBoxButton.OK,
@@ -85,7 +86,7 @@ namespace KarateGeek.guis
                 return;
             }
 
-            if (pass1.Equals("") || pass2.Equals(""))
+            if (string.IsNullOrEmpty(pass1) || string.IsNullOrEmpty(pass2))
             {
                 string result = MessageBox.Show("You didn't choose any valid password, please try again.", "No password!",
                     MessageBoxButton.OK,
@@ -105,6 +106,7 @@ namespace KarateGeek.guis
                 this.personMan, this.eventMan, this.lottery, this.eventSup,
                 this.clubMan , this.userMan , this.reports);
                 MessageBox.Show("Succesfully saved!");
+                initializeForm();
             }
         }
 
@@ -112,8 +114,14 @@ namespace KarateGeek.guis
         {
             if (userId != -1)
             {
-                userConnection.deleteUser(userId);
-                MessageBox.Show("Succesfully deleted!");
+                switch (warningDeletionMessage(userName))
+                {
+                    case "OK":
+                        userConnection.deleteUser(userId);
+                        MessageBox.Show("Succesfully deleted!");
+                        initializeForm();
+                        break;
+                }
             }
             else
             {
@@ -172,6 +180,16 @@ namespace KarateGeek.guis
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
+            if (setSaveEnable())
+            {
+                btnSave.IsEnabled = true;
+                btnSaveAsNew.IsEnabled = true;
+            }
+            else
+            {
+                btnSave.IsEnabled = false;
+                btnSaveAsNew.IsEnabled = false;
+            }
             userNameListForAutoComplete = this.UserfilterNames();
 
             foreach (ListData item in userNameListForAutoComplete)
@@ -218,11 +236,32 @@ namespace KarateGeek.guis
         private void txtPasswordOne_PasswordChanged(object sender, RoutedEventArgs e)
         {
             this.pass1 = this.txtPasswordOne.Password;
+            if (setSaveEnable())
+            {
+                btnSave.IsEnabled = true;
+                btnSaveAsNew.IsEnabled = true;
+            }
+            else
+            {
+                btnSave.IsEnabled = false;
+                btnSaveAsNew.IsEnabled = false;
+            }
+
         }
 
         private void txtPasswordTwo_PasswordChanged(object sender, RoutedEventArgs e)
         {
             this.pass2 = this.txtPasswordTwo.Password;
+            if (setSaveEnable())
+            {
+                btnSave.IsEnabled = true;
+                btnSaveAsNew.IsEnabled = true;
+            }
+            else
+            {
+                btnSave.IsEnabled = false;
+                btnSaveAsNew.IsEnabled = false;
+            }
         }
 
         #endregion
@@ -244,6 +283,17 @@ namespace KarateGeek.guis
                     userName = item.name;
                     
                     this.txtUserName.Text = filteredUsers.Rows[index][1].ToString();
+
+                    if (setUpdateEnable())
+                    {
+                        btnSave.IsEnabled = true;
+                        btnSaveAsNew.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnSave.IsEnabled = false;
+                        btnSaveAsNew.IsEnabled = false;
+                    }
 
                     this.chbPersonMan.IsChecked = (bool)filteredUsers.Rows[index][3];
                     this.chbEventMan.IsChecked = (bool)filteredUsers.Rows[index][4];
@@ -280,7 +330,49 @@ namespace KarateGeek.guis
             this.sender.Show();
         }
 
-       
-        
+        #region helpers
+        private bool setSaveEnable()
+        {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass1) || string.IsNullOrEmpty(pass2))
+                return false;
+            else
+                return true;
+        }
+
+        private bool setUpdateEnable()
+        {
+            if (string.IsNullOrEmpty(userName) )
+                return false;
+            else
+                return true;
+        }
+
+        private void initializeForm(){
+            userId=-1;
+      userName = "";
+        pass1 = "";
+        pass2 = "";
+         txtUserName.Text = null;
+        txtPasswordOne.Password = null;
+        txtPasswordTwo.Password = null;
+
+        chbPersonMan.IsChecked = false;
+            chbEventMan.IsChecked = false;
+            chbLoteryMan.IsChecked = false;
+            chbEventSup.IsChecked = false;
+            chbClubMan.IsChecked = false;
+            chbUserMan.IsChecked = false;
+            chbReportsMan.IsChecked = false;
+
+        }
+
+        private string warningDeletionMessage(string name)
+        {
+            return MessageBox.Show("Are you sure you want to delete " + name + "? \nPress OK to continue.", "Message",
+               MessageBoxButton.OKCancel,
+               MessageBoxImage.Information).ToString();
+        }
+
+        #endregion
     }
 }

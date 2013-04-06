@@ -207,7 +207,7 @@ namespace KarateGeek.guis
             {
                 cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
             }
-            
+
             cmbEditJudgeRankChooses.SelectedIndex = 0;
 
             //prosthetoume clubs gia new athlete
@@ -456,7 +456,7 @@ namespace KarateGeek.guis
             {
                 initializeNewAthlete();
             }
-            
+
             newAthleteList();
             //o elegxos mpike sto athletelist
         }
@@ -565,7 +565,7 @@ namespace KarateGeek.guis
             {
                 if (index < cmbNewAthleteRankChooses.Items.Count && index != -1)
                     _newAthleteRank = cmbNewAthleteRankChooses.Items[index].ToString();
-                
+
             }
             if (setNewAthleteSaveEnable())
                 btnNewASave.IsEnabled = true;
@@ -645,7 +645,7 @@ namespace KarateGeek.guis
                 }
                 else
                 {
-                    MessageBox.Show("Error. Athlete not succesfully saved!", "Athlete add", MessageBoxButton.OK , MessageBoxImage.Error);
+                    MessageBox.Show("Error. Athlete not succesfully saved!", "Athlete add", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
@@ -1086,28 +1086,34 @@ namespace KarateGeek.guis
             if (checkNullOrEmptyFields("athlete", false) && checkWrongFields("athlete", false) && _editPersonId != -1)
             {
                 athleteConnection.UpdateAthlete(_editPersonId, _editAthleteFirstName, _editAthleteLastName, _editAthleteFathersName, _editAthleteSex, _editAthleteDateOfBirth, _editAthleteFirstPhone, _editAthleteSecondPhone, _editAthleteEmail, _editAthleteAddress, _editAthleteAddressNum, _editAthleteTK, _editAthleteCountryCode, _editAthleteCity, _editAthleteRank, _editAthleteClubId);
-                MessageBox.Show("Succesfully saved!", "Athlete Edit" , MessageBoxButton.OK );
+                MessageBox.Show("Succesfully saved!", "Athlete Edit", MessageBoxButton.OK);
                 initializeEditAthlete();
             }
         }
 
         private void btnEditADelete_Click(object sender, RoutedEventArgs e)
         {
+
             if (_editPersonId != -1)
             {
-                if (athleteConnection.deleteAthlete(_editPersonId))
+                switch (warningDeletionMessage(_editAthleteFirstName + " " + _editAthleteLastName))
                 {
-                    MessageBox.Show("Succesfully deleted!", "Athlete Delete" , MessageBoxButton.OK);
-                    initializeEditAthlete();
-                }
-                else
-                {
-                    MessageBox.Show("Cannot be deleted because of tournament participation!", "Athlete Delete", MessageBoxButton.OK , MessageBoxImage.Information);
+                    case "OK":
+                        if (athleteConnection.deleteAthlete(_editPersonId))
+                        {
+                            MessageBox.Show("Succesfully deleted!", "Athlete Delete", MessageBoxButton.OK);
+                            initializeEditAthlete();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cannot be deleted because of tournament participation!", "Athlete Delete", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        break;
                 }
             }
             else
             {
-                MessageBox.Show("Please select one athlete to delete.", "Athlete Delete" , MessageBoxButton.OK , MessageBoxImage.Information);
+                MessageBox.Show("Please select one athlete to delete.", "Athlete Delete", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
         }
@@ -1553,12 +1559,12 @@ namespace KarateGeek.guis
                 judgeInsert = judgeConnection.InsertNewJudge(_newJudgeId, _newJudgeFirstName, _newJudgeLastName, _newJudgeFathersName, _newJudgeSex, _newJudgeDateOfBirth, _newJudgeFirstPhone, _newJudgeSecondPhone, _newJudgeEmail, _newJudgeAddress, _newJudgeAddressNum, _newJudgeTK, _newJudgeCountryCode, _newJudgeCity, _newJudgeRank, _newJudgeClass);
                 if (judgeInsert)
                 {
-                    MessageBox.Show("Succesfully saved!","Judge Add",MessageBoxButton.OK);
+                    MessageBox.Show("Succesfully saved!", "Judge Add", MessageBoxButton.OK);
                     initializeNewJudge();
                 }
                 else
                 {
-                    MessageBox.Show("Error. Judge not succesfully inserted","Judge Add", MessageBoxButton.OK , MessageBoxImage.Error);
+                    MessageBox.Show("Error. Judge not succesfully inserted", "Judge Add", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
             }
@@ -2003,7 +2009,7 @@ namespace KarateGeek.guis
             if (checkNullOrEmptyFields("judge", false) && checkWrongFields("judge", false) && _editJudgeId != -1)
             {
                 judgeConnection.UpdateJudge(_editJudgeId, _editJudgeFirstName, _editJudgeLastName, _editJudgeFathersName, _editJudgeSex, _editJudgeDateOfBirth, _editJudgeFirstPhone, _editJudgeSecondPhone, _editJudgeEmail, _editJudgeAddress, _editJudgeAddressNum, _editJudgeTK, _editJudgeCountryCode, _editJudgeCity, _editJudgeRank, _editJudgeClass);
-                MessageBox.Show("Succesfully saved!","Judge Edit", MessageBoxButton.OK);
+                MessageBox.Show("Succesfully saved!", "Judge Edit", MessageBoxButton.OK);
                 initializeEditJudge();
             }
 
@@ -2014,19 +2020,24 @@ namespace KarateGeek.guis
         {
             if (_editJudgeId != -1)
             {
-                if (judgeConnection.deleteJudge(_editJudgeId))
+                switch (warningDeletionMessage(_editJudgeFirstName + " " + _editJudgeLastName))
                 {
-                    MessageBox.Show("Succesfully deleted!","Judge Delete",MessageBoxButton.OK);
-                    initializeEditJudge();
-                }
-                else
-                {
-                    MessageBox.Show("Cannot be deleted because of tournament participation!","Judge Delete",MessageBoxButton.OK,MessageBoxImage.Information);
+                    case "OK":
+                        if (judgeConnection.deleteJudge(_editJudgeId))
+                        {
+                            MessageBox.Show("Succesfully deleted!", "Judge Delete", MessageBoxButton.OK);
+                            initializeEditJudge();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cannot be deleted because of tournament participation!", "Judge Delete", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        break;
                 }
             }
             else
             {
-                MessageBox.Show("Please select one judge to delete.","Judge Delete",MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show("Please select one judge to delete.", "Judge Delete", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
 
@@ -2058,11 +2069,13 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Sex");
                         return false;
                     }
-                    else if(string.IsNullOrEmpty(_newAthleteDateOfBirth)){
+                    else if (string.IsNullOrEmpty(_newAthleteDateOfBirth))
+                    {
                         em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
-                    else if(cmbNewAthleteRankChooses.SelectedIndex == 0){
+                    else if (cmbNewAthleteRankChooses.SelectedIndex == 0)
+                    {
                         em.errorMessage("Rank");
                         return false;
                     }
@@ -2128,11 +2141,13 @@ namespace KarateGeek.guis
                         em.nullErrorMessage("Date Of Birth");
                         return false;
                     }
-                    else if(cmbNewJudgeRankChooses.SelectedIndex == 0){
+                    else if (cmbNewJudgeRankChooses.SelectedIndex == 0)
+                    {
                         em.errorMessage("Rank");
                         return false;
                     }
-                    else if(cmbNewJClassChooses.SelectedIndex == 0){
+                    else if (cmbNewJClassChooses.SelectedIndex == 0)
+                    {
                         em.errorMessage("Class");
                         return false;
                     }
@@ -2454,7 +2469,7 @@ namespace KarateGeek.guis
                 return true;
             }
         }
-        
+
         private bool setNewJudgeSaveEnable()
         {
             if (string.IsNullOrEmpty(_newJudgeFirstName) || string.IsNullOrEmpty(_newJudgeLastName) || string.IsNullOrEmpty(_newJudgeSex) || string.IsNullOrEmpty(_newJudgeDateOfBirth)
@@ -2481,7 +2496,7 @@ namespace KarateGeek.guis
                 return true;
             }
         }
-        
+
         #endregion
 
         #region initialize methods
@@ -2574,6 +2589,15 @@ namespace KarateGeek.guis
         }
 
 
+        #endregion
+
+        #region helpers
+        private string warningDeletionMessage(string name)
+        {
+            return MessageBox.Show("Are you sure you want to delete " + name + "? \nPress OK to continue.", "Message",
+               MessageBoxButton.OKCancel,
+               MessageBoxImage.Information).ToString();
+        }
         #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -81,6 +81,10 @@ namespace KarateGeek.guis
             {
                 cboTournamentCombo.Items.Add(dr[1].ToString());
             }
+            if (setSaveEnable())
+                btnSave.IsEnabled = true;
+            else
+                btnSave.IsEnabled = false;
         }
 
         private void cboTournamentCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -95,6 +99,10 @@ namespace KarateGeek.guis
             // Prepending "_\n" is a workaround for a .NET bug (see the comment in the class
             // LotteryPrinter). The newline char ensures that, if it ever gets fixed, our code won't break:
             terminal.Content = "_\n" + new LotteryPrinter(lg.getPrintableLotterySets(), tournamentId).ToString();
+            if (setSaveEnable())
+                btnSave.IsEnabled = true;
+            else
+                btnSave.IsEnabled = false;
         }
 
         private void btnShuffle_Click(object sender, RoutedEventArgs e)
@@ -190,6 +198,14 @@ namespace KarateGeek.guis
 
                 this.treeView.ScrollToVerticalOffset(temp);
             }
+        }
+
+
+        private bool setSaveEnable(){
+            if (cboEventCombo.SelectedIndex == -1 || cboTournamentCombo.SelectedIndex == -1)
+                return false;
+            else
+                return true;
         }
 
         private void Window_close(object sender, EventArgs e)

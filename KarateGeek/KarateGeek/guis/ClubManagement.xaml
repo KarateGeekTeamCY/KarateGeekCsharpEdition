@@ -329,7 +329,7 @@
                         <ListBox Name="cSuggestionList" 
                                  Grid.Column="3" 
                                  Grid.Row="1" 
-                                 Grid.RowSpan="3" 
+                                 Grid.RowSpan="5" 
                                  VerticalAlignment="Top" 
                                  SelectionChanged="cSuggestionList_SelectionChanged" 
                                  Visibility="Collapsed" 

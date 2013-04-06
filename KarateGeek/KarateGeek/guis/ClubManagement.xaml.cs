@@ -465,15 +465,20 @@ namespace KarateGeek.guis
         private void btnEditCDelete_Click(object sender, RoutedEventArgs e)
         {
             bool deleteClub;
-            deleteClub = clubConnection.deleteClub(_editClubId);
-            if (deleteClub)
+            switch (warningDeletionMessage(_editClubName))
             {
-                MessageBox.Show("Succesfully deleted", "Club Edit", MessageBoxButton.OK);
-                initializeEditClub();
-            }
-            else
-            {
-                MessageBox.Show("Error. Club not succesfully deleted! There are athletes on this club!", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                case "OK":
+                    deleteClub = clubConnection.deleteClub(_editClubId);
+                    if (deleteClub)
+                    {
+                        MessageBox.Show("Succesfully deleted", "Club Edit", MessageBoxButton.OK);
+                        initializeEditClub();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error. Club not succesfully deleted! There are athletes on this club!", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    break;
             }
         }
 
@@ -634,6 +639,17 @@ namespace KarateGeek.guis
                 return false;
             else
                 return true;
+        }
+
+        #endregion
+
+        #region helpers
+        
+        private string warningDeletionMessage(string name)
+        {
+            return MessageBox.Show("Are you sure you want to delete " + name + "? \nPress OK to continue.", "Message",
+               MessageBoxButton.OKCancel,
+               MessageBoxImage.Information).ToString();
         }
 
         #endregion
