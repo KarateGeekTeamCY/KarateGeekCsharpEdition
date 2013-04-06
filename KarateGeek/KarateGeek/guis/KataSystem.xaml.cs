@@ -95,8 +95,8 @@ namespace KarateGeek.guis
             }
             //string runka = Strings.rank1;
 
-            string ids = this.memory.load(@"kumitemem.mem");
-            
+            string ids = this.memory.load(@"kumite.mem");
+
             if (ids != null)
             {
                 string[] idsArray = ids.Split('|');
@@ -294,26 +294,44 @@ namespace KarateGeek.guis
         private void eventJudgePickerA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeAId = this._DTjudges.Rows[this.eventJudgePickerA.SelectedIndex][0].ToString();
+            
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeBId = this._DTjudges.Rows[this.eventJudgePickerB.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerC_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeCId = this._DTjudges.Rows[this.eventJudgePickerC.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerD_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeDId = this._DTjudges.Rows[this.eventJudgePickerD.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerE_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeEId = this._DTjudges.Rows[this.eventJudgePickerE.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
+        }
+
+
+        private void updatejudgemem()
+        {
+            string ids;
+            ids = this.eventJudgePickerA.SelectedIndex + "|" + this.eventJudgePickerB.SelectedIndex + "|" + this.eventJudgePickerC.SelectedIndex + "|" + this.eventJudgePickerD.SelectedIndex + "|" + this.eventJudgePickerE.SelectedIndex;
+            this.memory.save(@"kumite.mem", ids);
         }
 
         #endregion

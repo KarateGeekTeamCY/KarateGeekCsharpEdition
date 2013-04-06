@@ -117,12 +117,12 @@ namespace KarateGeek.guis
             {
                 graph.Close();
                 graph = null;
-           
+
             }
-                
+
             if (this.graph == null)
             {
-                this.graph = new LotteryGraph(long.Parse(this.tournament.id));  
+                this.graph = new LotteryGraph(long.Parse(this.tournament.id));
             }
 
         }
@@ -157,7 +157,7 @@ namespace KarateGeek.guis
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             _sender.Show();
-            
+
             /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
             if (this.graph != null) this.graph.Close();
 
@@ -260,20 +260,17 @@ namespace KarateGeek.guis
 
             if (this.graph != null)
             {
-                this.graph.updateGraph(); 
+                this.graph.updateGraph();
+
+                //
+                // this i thing need to be commented out
+                //
+                try { this.graph.Show(); }
+                catch (InvalidOperationException e)
+                {
+                    this.graph = new LotteryGraph(long.Parse(this.tournament.id));
+                }
             }
-
-
-
-            //
-            // this i thing need to be commented out
-            //
-            try { this.graph.Show(); }
-            catch (InvalidOperationException e)
-            { 
-                this.graph = new LotteryGraph(long.Parse(this.tournament.id)); 
-            }
-
 
             this.Activate();
 
