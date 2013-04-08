@@ -182,6 +182,11 @@ namespace KarateGeek.guis
                 this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
 
+
+                this.lblCurentPhase.Content = "ROUND OF 128";
+                this.lblNextPhase.Content = "ROUND OF 64";
+
+
                 curentGames = this.tournament.games128;
                 futureGames = this.tournament.games64;
             }
@@ -190,6 +195,11 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
+
+
+                this.lblCurentPhase.Content = "ROUND OF 62";
+                this.lblNextPhase.Content = "ROUND OF 32";
+               
 
                 curentGames = this.tournament.games64;
                 futureGames = this.tournament.games32;
@@ -200,6 +210,11 @@ namespace KarateGeek.guis
                 this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
 
+
+                this.lblCurentPhase.Content = "ROUND OF 32";
+                this.lblNextPhase.Content = "ROUND OF 16";
+
+
                 curentGames = this.tournament.games32;
                 futureGames = this.tournament.games16;
             }
@@ -208,6 +223,11 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
+
+
+                this.lblCurentPhase.Content = "ROUND OF 16";
+                this.lblNextPhase.Content = "ROUND OF 8";
+
 
                 curentGames = this.tournament.games16;
                 futureGames = this.tournament.games8;
@@ -218,6 +238,12 @@ namespace KarateGeek.guis
                 this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
 
+
+                this.lblCurentPhase.Content = "ROUND OF 8";
+                this.lblNextPhase.Content = "SEMIFINAL";
+
+
+
                 curentGames = this.tournament.games8;
                 futureGames = this.tournament.games4;
             }
@@ -226,6 +252,11 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 1;
                 this._indexNextPhase = 0;
+
+
+                this.lblCurentPhase.Content = "SEMIFINAL";
+                this.lblNextPhase.Content = "FINAL";
+
 
                 curentGames = this.tournament.games4;
                 futureGames = this.tournament.games2;
@@ -236,6 +267,13 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 0;
                 this._indexNextPhase = -1;
+
+
+               
+                    this.lblCurentPhase.Content = "FINAL";
+                    this.lblNextPhase.Content = "";
+                
+
 
                 curentGames = this.tournament.games2;
                 futureGames = null;

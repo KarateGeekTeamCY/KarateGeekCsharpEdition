@@ -32,10 +32,7 @@ namespace KarateGeek.guis
         private string _judgeDId = "";
         private string _judgeEId = "";
 
-
         KarateGeek.helpers.JudgeMem memory = new helpers.JudgeMem();
-
-
 
         private double _scoreA = 0;
         private double _scoreB = 0;

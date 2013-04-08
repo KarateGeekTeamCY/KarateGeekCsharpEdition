@@ -32,6 +32,8 @@ namespace KarateGeek.guis
         private string _judgeDId = "";
         private string _judgeEId = "";
 
+        KarateGeek.helpers.JudgeMem memory = new helpers.JudgeMem();
+
         private Boolean _judgeAchooseWhite;
         private Boolean _judgeBchooseWhite;
         private Boolean _judgeCchooseWhite;
@@ -126,11 +128,26 @@ namespace KarateGeek.guis
             }
 
 
-            this.eventJudgePickerA.SelectedIndex = 1;
-            this.eventJudgePickerB.SelectedIndex = 1;
-            this.eventJudgePickerC.SelectedIndex = 1;
-            this.eventJudgePickerD.SelectedIndex = 1;
-            this.eventJudgePickerE.SelectedIndex = 1;
+            string ids = this.memory.load(@"flag.mem");
+
+            if (ids != null)
+            {
+                string[] idsArray = ids.Split('|');
+
+                this.eventJudgePickerA.SelectedIndex = int.Parse(idsArray[0]);
+                this.eventJudgePickerB.SelectedIndex = int.Parse(idsArray[1]);
+                this.eventJudgePickerC.SelectedIndex = int.Parse(idsArray[2]);
+                this.eventJudgePickerD.SelectedIndex = int.Parse(idsArray[3]);
+                this.eventJudgePickerE.SelectedIndex = int.Parse(idsArray[4]);
+            }
+            else
+            {
+                this.eventJudgePickerA.SelectedIndex = 0;
+                this.eventJudgePickerB.SelectedIndex = 0;
+                this.eventJudgePickerC.SelectedIndex = 0;
+                this.eventJudgePickerD.SelectedIndex = 0;
+                this.eventJudgePickerE.SelectedIndex = 0;
+            }
 
 
             TournamentGameParticipationsConnection tourparconn = new TournamentGameParticipationsConnection();
@@ -325,26 +342,43 @@ namespace KarateGeek.guis
         private void eventJudgePickerA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeAId = this._DTjudges.Rows[this.eventJudgePickerA.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeBId = this._DTjudges.Rows[this.eventJudgePickerB.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerC_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeCId = this._DTjudges.Rows[this.eventJudgePickerC.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerD_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeDId = this._DTjudges.Rows[this.eventJudgePickerD.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
         }
 
         private void eventJudgePickerE_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeEId = this._DTjudges.Rows[this.eventJudgePickerE.SelectedIndex][0].ToString();
+
+            this.updatejudgemem();
+        }
+
+        private void updatejudgemem()
+        {
+            string ids;
+            ids = this.eventJudgePickerA.SelectedIndex + "|" + this.eventJudgePickerB.SelectedIndex + "|" + this.eventJudgePickerC.SelectedIndex + "|" + this.eventJudgePickerD.SelectedIndex + "|" + this.eventJudgePickerE.SelectedIndex;
+            this.memory.save(@"flag.mem", ids);
         }
 
         #endregion

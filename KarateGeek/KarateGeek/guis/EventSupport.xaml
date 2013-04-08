@@ -67,11 +67,13 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Current phase"
+                <Label Name="lblCurentPhase"
+                       Content="Current phase"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Padding="5"/>
-                <Label Content="Next phase" 
+                <Label Name="lblNextPhase"
+                       Content="Next phase" 
                        Grid.Column="1"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
