@@ -806,7 +806,7 @@ namespace KarateGeek.guis
             //  checks if the tournament type is versus or presentation
             //  and then does the apropriate preparetion for the winner advancement
             //
-
+            
             Game gm = null;
             bool ready = false;
             int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
@@ -876,6 +876,8 @@ namespace KarateGeek.guis
                     this.advancePresentationWinners();
             }
 
+
+            
             //
             // i don't now if thats necessary here but will live it
             // as a note in case of something go wrong

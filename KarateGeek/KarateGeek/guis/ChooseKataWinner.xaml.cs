@@ -40,6 +40,7 @@ namespace KarateGeek.guis
         {
             InitializeComponent();
 
+            this.Topmost = true;
 
             this._sender = sender;
             this._tournament = tournament;
@@ -113,6 +114,8 @@ namespace KarateGeek.guis
 
             this.Close();
         }
+
+        
     }
 }
 

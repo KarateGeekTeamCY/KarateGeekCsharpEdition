@@ -40,6 +40,7 @@ namespace KarateGeek.guis
             this._game = game;
             this._tournament = tournament;
 
+            this.Topmost = true;
 
             this._isTeam = this._tournament.isTeam;
 
@@ -134,7 +135,6 @@ namespace KarateGeek.guis
 
             this.Close();
         }
-
 
     }
 }
