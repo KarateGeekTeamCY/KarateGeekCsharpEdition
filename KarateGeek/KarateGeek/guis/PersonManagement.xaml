@@ -279,12 +279,7 @@
                                Grid.Row="14"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Label Content="*"
-                               Grid.Row="14"
-                               Grid.Column="2"
-                               FontSize="15"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Foreground="Red" />
+                
                         <ComboBox Name="cmbNewAClubChooses"
                                   Grid.Row="14"
                                   Grid.Column="3"
@@ -327,7 +322,7 @@
                                 Content="Save"
                                 Grid.Column="2"
                                 Margin="10" 
-                                Click="btnNewASave_Click"/>
+                                Click="btnNewASave_Click" IsEnabled="False" />
 
 
 
@@ -598,12 +593,7 @@
                                Grid.Row="14"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
-                        <Label Content="*"
-                               Grid.Row="14"
-                               Grid.Column="2"
-                               FontSize="15"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Foreground="Red" />
+                       
                         <ComboBox Name="cmbEditAClubChooses"
                                   Grid.Row="14"
                                   Grid.Column="3"
@@ -647,7 +637,7 @@
                                 Content="Save"
                                 Grid.Column="2"
                                 Margin="10" 
-                                Click="btnEditASave_Click"/>
+                                Click="btnEditASave_Click" IsEnabled="False" />
                         <Button Name="btnEditADelete"
                                 Content="Delete"
                                 Grid.Column="3"
@@ -665,7 +655,7 @@
             </TabItem>
 
             <TabItem Name="NewJudgeTap" 
-                     Header="New Judge">
+                     Header="New Judge" IsEnabled="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -963,7 +953,7 @@
                         <Button Name="btnNewJSave"
                                 Content="Save"
                                 Grid.Column="2"
-                                Margin="10" Click="btnNewJSave_Click"/>
+                                Margin="10" Click="btnNewJSave_Click" IsEnabled="False" />
 
 
 
@@ -1279,7 +1269,7 @@
                         <Button Name="btnEditJSave"
                                 Content="Save"
                                 Grid.Column="2"
-                                Margin="10" Click="btnEditJSave_Click"/>
+                                Margin="10" Click="btnEditJSave_Click" IsEnabled="False" />
                         <Button Name="btnEditJDelete"
                                 Content="Delete"
                                 Grid.Column="3"

@@ -90,45 +90,51 @@ namespace KarateGeek.guis
         //tournament variables
         //
         //new tournament variables
+        private static int MIN_AGE = 5;
+        private static int MAX_AGE = 99;
+
         private int _newTournamentEventId;
         private string _newTournamentEvent;
         private string _newTournamentName = null;
         private string _newTournamentSex = null;
-        private int _newTournamentAgeFrom = 0;
-        private int _newTournamentAgeTo = 0;
-        private string _newTournamentLevelFrom = null;
-        private string _newTournamentLevelTo = null;
+        private int _newTournamentAgeFrom = MIN_AGE;
+        private int _newTournamentAgeTo = MAX_AGE;
+        private string _newTournamentLevelFrom = KarateGeek.Strings.rank[0];
+        private string _newTournamentLevelTo = KarateGeek.Strings.rank[KarateGeek.Strings.rank.Length - 1];
         private string _newTournamentGameType = null;
         private string _newTournamentCatType = null;  //individual or team
         private string _newTournamentScoringType = null;
         private int _newTournamentTeamId = 0;
         private string _newEventInfo = null;
         private int _newTournamentTeam = 0;
-        private int _newLevelFrom = 0;
-        private int _newLevelTo = 0;
+        private int _newLevelFrom = 1;
+        private int _newLevelTo = KarateGeek.Strings.rank.Length;
         private int _newTournamentId = 0;
         private int newTeamsNum = 0;
+        private bool newInitializationFinished = false;
 
 
         //edit tournament variables
         private int _editTournamentEventId;
+        private bool _editTournamentSelected = false;
         private string _editTournamentEvent;
         private string _editTournamentName = null;
         private string _editTournamentSex = null;
-        private int _editTournamentAgeFrom = 0;
-        private int _editTournamentAgeTo = 0;
-        private string _editTournamentLevelFrom = null;
-        private string _editTournamentLevelTo = null;
+        private int _editTournamentAgeFrom = MIN_AGE;
+        private int _editTournamentAgeTo = MAX_AGE;
+        private string _editTournamentLevelFrom = KarateGeek.Strings.rank[0];
+        private string _editTournamentLevelTo = KarateGeek.Strings.rank[KarateGeek.Strings.rank.Length - 1];
         private string _editTournamentGameType = null;
         private string _editTournamentCatType = null;  //individual or team
         private string _editTournamentScoringType = null;
         private int _editTournamentTeamId = 0;
         private string _editEventInfo = null;
         private int _editTournamentTeam = 0;
-        private int _editLevelFrom = 0;
-        private int _editLevelTo = 0;
+        private int _editLevelFrom = 1;
+        private int _editLevelTo = KarateGeek.Strings.rank.Length;
         private int _editTournamentId = 0;
         private int editTeamsNum = 0;
+        private bool editInitializationFinished = false;
 
 
         public EventTournamentManagement(Window sender)
@@ -137,7 +143,7 @@ namespace KarateGeek.guis
             InitializeComponent();
 
             initialize();   //initialize gui and others
-            
+
             this.sender = sender;
         }
 
@@ -205,7 +211,7 @@ namespace KarateGeek.guis
             cmbEditTAgeTo.Items.Add("To");
             cmbNewTAgeFrom.Items.Add("From");
             cmbNewTAgeTo.Items.Add("To");
-            for (int i = 5; i <= 80; i++)
+            for (int i = MIN_AGE; i <= MAX_AGE; i++)
             {
                 cmbEditTAgeFrom.Items.Add(i.ToString());
                 cmbEditTAgeTo.Items.Add(i.ToString());
@@ -242,9 +248,10 @@ namespace KarateGeek.guis
             cmbNewTGame.Items.Add("Select game type");
             cmbNewTGame.SelectedIndex = 0;
 
-            //judging type
-            cmbEditTJudging.Items.Add("Select judging type");
-            cmbNewTJudging.Items.Add("Select judging type");
+            //judging type to allaksame se scoring alla den egine 
+            //allagi se listener giati den exei refactor
+            cmbEditTJudging.Items.Add("Select scoring type");
+            cmbNewTJudging.Items.Add("Select scoring type");
             cmbNewTJudging.SelectedIndex = 0;
             cmbEditTJudging.SelectedIndex = 0;
 
@@ -274,6 +281,8 @@ namespace KarateGeek.guis
             cmbNewTteamsNumber.Items.Add("10");
 
             cmbNewTteamsNumber.SelectedIndex = 0;
+            newInitializationFinished = true;
+            editInitializationFinished = true;
         }
         #endregion
 
@@ -281,6 +290,14 @@ namespace KarateGeek.guis
         private void newEventName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newEventName = newEventName.Text;
+            if (setNewEventSaveEnable())
+            {
+                btnNewESave.IsEnabled = true;
+            }
+            else
+            {
+                btnNewESave.IsEnabled = false;
+            }
         }
 
         private void newEventDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -413,10 +430,19 @@ namespace KarateGeek.guis
                 {
                     ListData item = (ListData)editESuggestionList.SelectedItem;
                     _editEventId = item.id;
+                    _editEventSelected = true;
                     location_id = int.Parse(editFilteredEvents.Tables[0].Rows[index][4].ToString());
 
                     this.editEventName.Text = editFilteredEvents.Tables[0].Rows[index][1].ToString();
                     _editEventName = editFilteredEvents.Tables[0].Rows[index][1].ToString();  //to vazw etsi giati exei apenergopithei o listener
+                    if (setEditEventSaveEnable())
+                    {
+                        btnEditESave.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnEditESave.IsEnabled = false;
+                    }
                     string selectedDate = editFilteredEvents.Tables[0].Rows[index][2].ToString();
                     if (string.IsNullOrEmpty(selectedDate))
                     {
@@ -487,7 +513,7 @@ namespace KarateGeek.guis
         private void editEventName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string name = editEventName.Text;
-            if (name == "")
+            if (name == "" && !_editEventSelected)
             {
                 initializeEditEvent();
             }
@@ -593,58 +619,63 @@ namespace KarateGeek.guis
 
         private void btnEditEDelete_Click(object sender, RoutedEventArgs e)
         {
-            if ((_newTournamentEventId == _editEventId) && (_editTournamentEventId == _editEventId))
+            switch (warningEventDeletionMessage(_editEventName))
             {
-                switch (warningNewEditTournamentDeletion())
-                {
-                    case "OK":
+                case "OK":
+                    if ((_newTournamentEventId == _editEventId) && (_editTournamentEventId == _editEventId))
+                    {
+                        switch (warningNewEditTournamentDeletion())
+                        {
+                            case "OK":
+                                eventConnection.deleteEvent(_editEventId);
+                                MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
+                                initializeEditEvent();
+                                initializeNewTournament(true);
+                                initializeEditTournament(true);
+                                break;
+                            case "Cancel":
+                                break;
+                        }
+                    }
+                    else if ((_newTournamentEventId == _editEventId))
+                    {
+                        switch (warningEventNewTournamentDeletion())
+                        {
+                            case "OK":
+                                eventConnection.deleteEvent(_editEventId);
+                                MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
+                                initializeEditEvent();
+                                initializeNewTournament(true);
+                                initializeEditTournament(true);
+                                break;
+                            case "Cancel":
+                                break;
+                        }
+                    }
+                    else if (_editTournamentEventId == _editEventId)
+                    {
+                        switch (warningEventEditTournamentDeletion())
+                        {
+                            case "OK":
+                                eventConnection.deleteEvent(_editEventId);
+                                MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
+                                initializeEditEvent();
+                                initializeNewTournament(true);
+                                initializeEditTournament(true);
+                                break;
+                            case "Cancel":
+                                break;
+                        }
+                    }
+                    else
+                    {
                         eventConnection.deleteEvent(_editEventId);
                         MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
                         initializeEditEvent();
                         initializeNewTournament(true);
                         initializeEditTournament(true);
-                        break;
-                    case "Cancel":
-                        break;
-                }
-            }
-            else if ((_newTournamentEventId == _editEventId))
-            {
-                switch (warningEventNewTournamentDeletion())
-                {
-                    case "OK":
-                        eventConnection.deleteEvent(_editEventId);
-                        MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
-                        initializeEditEvent();
-                        initializeNewTournament(true);
-                        initializeEditTournament(true);
-                        break;
-                    case "Cancel":
-                        break;
-                }
-            }
-            else if (_editTournamentEventId == _editEventId)
-            {
-                switch (warningEventEditTournamentDeletion())
-                {
-                    case "OK":
-                        eventConnection.deleteEvent(_editEventId);
-                        MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
-                        initializeEditEvent();
-                        initializeNewTournament(true);
-                        initializeEditTournament(true);
-                        break;
-                    case "Cancel":
-                        break;
-                }
-            }
-            else
-            {
-                eventConnection.deleteEvent(_editEventId);
-                MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
-                initializeEditEvent();
-                initializeNewTournament(true);
-                initializeEditTournament(true);
+                    }
+                    break;
             }
 
         }
@@ -672,11 +703,16 @@ namespace KarateGeek.guis
                                     _newTournamentEvent = cmbNewTEventChooser.Items[index].ToString();
                                     newEventAutocomplete(_newTournamentEvent);
                                 }
-                                cmbNewTEventChooser.SelectionChanged -= new SelectionChangedEventHandler(cmbNewTEventChooser_SelectionChanged);
+                               
+
+
+                            }
+                             cmbNewTEventChooser.SelectionChanged -= new SelectionChangedEventHandler(cmbNewTEventChooser_SelectionChanged);
                                 initializeNewTournament(false);
                                 cmbNewTEventChooser.SelectedIndex = index;
                                 cmbNewTEventChooser.SelectionChanged += new SelectionChangedEventHandler(cmbNewTEventChooser_SelectionChanged);
-                            }
+                            NewTrdButtonMixed.IsChecked = false;
+                            NewTrdButtonMixed.IsChecked = true;
                             break;
                         case "Cancel":
                             for (int i = 1; i < cmbNewTEventChooser.Items.Count; i++)
@@ -707,8 +743,14 @@ namespace KarateGeek.guis
                         cmbNewTEventChooser.SelectedIndex = index;
                         cmbNewTEventChooser.SelectionChanged += new SelectionChangedEventHandler(cmbNewTEventChooser_SelectionChanged);
                     }
+                    NewTrdButtonMixed.IsChecked = false;
+                    NewTrdButtonMixed.IsChecked = true;
                 }
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
 
         }
 
@@ -748,12 +790,25 @@ namespace KarateGeek.guis
 
         private void tbNewTName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _newTournamentName = tbNewTName.Text;
+            if (isEventSelected(true))
+            {
+                _newTournamentName = tbNewTName.Text;
+                if (setNewTournamentSaveEnable())
+                    btnNewTSave.IsEnabled = true;
+                else
+                    btnNewTSave.IsEnabled = false;
+            }
+            else
+            {
+                tbNewTName.TextChanged -= new TextChangedEventHandler(tbNewTName_TextChanged);
+                tbNewTName.Text = null;
+                tbNewTName.TextChanged += new TextChangedEventHandler(tbNewTName_TextChanged);
+            }
         }
 
         private void NewTrdButtonMixed_Checked(object sender, RoutedEventArgs e)
         {
-            if (newAreParticipantsForDeletion())
+            if (cmbNewTEventChooser.SelectedIndex > 0 && newAreParticipantsForDeletion())
             {
                 switch (warningParticipantsDeletionMessage())
                 {
@@ -776,20 +831,32 @@ namespace KarateGeek.guis
                         break;
                     case "Cancel":
                         //disables the female radio button listener in order to restore female checked. after that it enables it again
-                        NewTrdButtonMale.Checked -= new RoutedEventHandler(NewTrdButtonMale_Checked);
-                        NewTrdButtonMale.IsChecked = true;
-                        NewTrdButtonMale.Checked += new RoutedEventHandler(NewTrdButtonMale_Checked);
-                        NewTrdButtonFemale.Checked -= new RoutedEventHandler(NewTrdButtonFemale_Checked);
-                        NewTrdButtonFemale.IsChecked = true;
-                        NewTrdButtonFemale.Checked += new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                        switch (_newTournamentSex)
+                        {
+                            case KarateGeek.Strings.male:
+                                NewTrdButtonMale.Checked -= new RoutedEventHandler(NewTrdButtonMale_Checked);
+                                NewTrdButtonMale.IsChecked = true;
+                                NewTrdButtonMale.Checked += new RoutedEventHandler(NewTrdButtonMale_Checked);
+                                break;
+                            case KarateGeek.Strings.female:
+                                NewTrdButtonFemale.Checked -= new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                                NewTrdButtonFemale.IsChecked = true;
+                                NewTrdButtonFemale.Checked += new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                                break;
+                        }
                         break;
                 }
             }
             else
             {
                 _newTournamentSex = KarateGeek.Strings.mixed;
-                newShowPossibleParticipantsByDB();
+                
+                    newShowPossibleParticipantsByDB();
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
         }
 
         private void NewTrdButtonMale_Checked(object sender, RoutedEventArgs e)
@@ -817,12 +884,19 @@ namespace KarateGeek.guis
                         break;
                     case "Cancel":
                         //disables the female radio button listener in order to restore female checked. after that it enables it again
-                        NewTrdButtonMixed.Checked -= new RoutedEventHandler(NewTrdButtonMixed_Checked);
-                        NewTrdButtonMixed.IsChecked = true;
-                        NewTrdButtonMixed.Checked += new RoutedEventHandler(NewTrdButtonMixed_Checked);
-                        NewTrdButtonFemale.Checked -= new RoutedEventHandler(NewTrdButtonFemale_Checked);
-                        NewTrdButtonFemale.IsChecked = true;
-                        NewTrdButtonFemale.Checked += new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                        switch (_newTournamentSex)
+                        {
+                            case KarateGeek.Strings.mixed:
+                                NewTrdButtonMixed.Checked -= new RoutedEventHandler(NewTrdButtonMixed_Checked);
+                                NewTrdButtonMixed.IsChecked = true;
+                                NewTrdButtonMixed.Checked += new RoutedEventHandler(NewTrdButtonMixed_Checked);
+                                break;
+                            case KarateGeek.Strings.female:
+                                NewTrdButtonFemale.Checked -= new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                                NewTrdButtonFemale.IsChecked = true;
+                                NewTrdButtonFemale.Checked += new RoutedEventHandler(NewTrdButtonFemale_Checked);
+                                break;
+                        }
                         break;
                 }
             }
@@ -831,6 +905,10 @@ namespace KarateGeek.guis
                 _newTournamentSex = KarateGeek.Strings.male;
                 newShowPossibleParticipantsByDB();
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
 
         }
 
@@ -858,12 +936,19 @@ namespace KarateGeek.guis
                         }
                         break;
                     case "Cancel":
-                        NewTrdButtonMixed.Checked -= new RoutedEventHandler(NewTrdButtonMixed_Checked);
-                        NewTrdButtonMixed.IsChecked = true;
-                        NewTrdButtonMixed.Checked += new RoutedEventHandler(NewTrdButtonMixed_Checked);
-                        NewTrdButtonMale.Checked -= new RoutedEventHandler(NewTrdButtonMale_Checked);
-                        NewTrdButtonMale.IsChecked = true;
-                        NewTrdButtonMale.Checked += new RoutedEventHandler(NewTrdButtonMale_Checked);
+                        switch (_newTournamentSex)
+                        {
+                            case KarateGeek.Strings.mixed:
+                                NewTrdButtonMixed.Checked -= new RoutedEventHandler(NewTrdButtonMixed_Checked);
+                                NewTrdButtonMixed.IsChecked = true;
+                                NewTrdButtonMixed.Checked += new RoutedEventHandler(NewTrdButtonMixed_Checked);
+                                break;
+                            case KarateGeek.Strings.male:
+                                NewTrdButtonMale.Checked -= new RoutedEventHandler(NewTrdButtonMale_Checked);
+                                NewTrdButtonMale.IsChecked = true;
+                                NewTrdButtonMale.Checked += new RoutedEventHandler(NewTrdButtonMale_Checked);
+                                break;
+                        }
                         break;
                 }
             }
@@ -872,6 +957,10 @@ namespace KarateGeek.guis
                 _newTournamentSex = KarateGeek.Strings.female;
                 newShowPossibleParticipantsByDB();
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
         }
 
         private void cmbNewTAgeFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -888,20 +977,24 @@ namespace KarateGeek.guis
                         {
                             if (index < cmbNewTAgeFrom.Items.Count && index != -1)
                                 _newTournamentAgeFrom = int.Parse(cmbNewTAgeFrom.Items[index].ToString());
-
-                            newSelectedParticipants = new List<List<AthleteData>>();
-                            newSelectedParticipants.Add(new List<AthleteData>());
-                            newShowPossibleParticipantsByDB();
-                            if (_newTournamentCatType == Strings.individual)
-                            {
-                                newShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                newInitializeTeams();
-                                newShowSelectedParticipantsT(0);
-                            }
                         }
+                        else
+                        {
+                            _newTournamentAgeFrom = MIN_AGE;
+                        }
+                        newSelectedParticipants = new List<List<AthleteData>>();
+                        newSelectedParticipants.Add(new List<AthleteData>());
+                        newShowPossibleParticipantsByDB();
+                        if (_newTournamentCatType == Strings.individual)
+                        {
+                            newShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            newInitializeTeams();
+                            newShowSelectedParticipantsT(0);
+                        }
+
                         break;
                     case "Cancel":
                         for (int i = 1; i < cmbNewTAgeFrom.Items.Count; i++)
@@ -912,6 +1005,9 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _newTournamentAgeFrom = MIN_AGE;
+
                         cmbNewTAgeFrom.SelectionChanged -= new SelectionChangedEventHandler(cmbNewTAgeFrom_SelectionChanged);
                         cmbNewTAgeFrom.SelectedIndex = previousIndex;
                         cmbNewTAgeFrom.SelectionChanged += new SelectionChangedEventHandler(cmbNewTAgeFrom_SelectionChanged);
@@ -924,8 +1020,12 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbNewTAgeFrom.Items.Count && index != -1)
                         _newTournamentAgeFrom = int.Parse(cmbNewTAgeFrom.Items[index].ToString());
-                    newShowPossibleParticipantsByDB();
                 }
+                else
+                {
+                    _newTournamentAgeFrom = MIN_AGE;
+                }
+                newShowPossibleParticipantsByDB();
             }
 
         }
@@ -943,20 +1043,24 @@ namespace KarateGeek.guis
                         {
                             if (index < cmbNewTAgeTo.Items.Count && index != -1)
                                 _newTournamentAgeTo = int.Parse(cmbNewTAgeTo.Items[index].ToString());
-
-                            newSelectedParticipants = new List<List<AthleteData>>();
-                            newSelectedParticipants.Add(new List<AthleteData>());
-                            newShowPossibleParticipantsByDB();
-                            if (_newTournamentCatType == Strings.individual)
-                            {
-                                newShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                newInitializeTeams();
-                                newShowSelectedParticipantsT(0);
-                            }
                         }
+                        else
+                        {
+                            _newTournamentAgeTo = MAX_AGE;
+                        }
+                        newSelectedParticipants = new List<List<AthleteData>>();
+                        newSelectedParticipants.Add(new List<AthleteData>());
+                        newShowPossibleParticipantsByDB();
+                        if (_newTournamentCatType == Strings.individual)
+                        {
+                            newShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            newInitializeTeams();
+                            newShowSelectedParticipantsT(0);
+                        }
+
                         break;
                     case "Cancel":
                         int previousIndex = 0;
@@ -968,6 +1072,8 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _newTournamentAgeTo = MAX_AGE;
                         cmbNewTAgeTo.SelectionChanged -= new SelectionChangedEventHandler(cmbNewTAgeTo_SelectionChanged);
                         cmbNewTAgeTo.SelectedIndex = previousIndex;
                         cmbNewTAgeTo.SelectionChanged += new SelectionChangedEventHandler(cmbNewTAgeTo_SelectionChanged);
@@ -981,15 +1087,20 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbNewTAgeTo.Items.Count && index != -1)
                         _newTournamentAgeTo = int.Parse(cmbNewTAgeTo.Items[index].ToString());
-                    newShowPossibleParticipantsByDB();
+
                 }
+                else
+                {
+                    _newTournamentAgeTo = MAX_AGE;
+                }
+                newShowPossibleParticipantsByDB();
             }
         }
 
         private void cmbNewTLevelFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbNewTLevelFrom.SelectedIndex;
-            _newLevelFrom = index;
+
 
             if (newAreParticipantsForDeletion())
             {
@@ -1000,19 +1111,24 @@ namespace KarateGeek.guis
                         {
                             if (index < cmbNewTLevelFrom.Items.Count && index != -1)
                                 _newTournamentLevelFrom = cmbNewTLevelFrom.Items[index].ToString();
-
-                            newSelectedParticipants = new List<List<AthleteData>>();
-                            newSelectedParticipants.Add(new List<AthleteData>());
-                            newShowPossibleParticipantsByDB();
-                            if (_newTournamentCatType == Strings.individual)
-                            {
-                                newShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                newInitializeTeams();
-                                newShowSelectedParticipantsT(0);
-                            }
+                            _newLevelFrom = index;
+                        }
+                        else
+                        {
+                            _newLevelFrom = 1;
+                            _newTournamentLevelFrom = cmbNewTLevelFrom.Items[_newLevelFrom].ToString();
+                        }
+                        newSelectedParticipants = new List<List<AthleteData>>();
+                        newSelectedParticipants.Add(new List<AthleteData>());
+                        newShowPossibleParticipantsByDB();
+                        if (_newTournamentCatType == Strings.individual)
+                        {
+                            newShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            newInitializeTeams();
+                            newShowSelectedParticipantsT(0);
                         }
                         break;
                     case "Cancel":
@@ -1025,6 +1141,11 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _newLevelFrom = 1;
+                        else
+                            _newLevelFrom = previousIndex;
+                        _newTournamentLevelFrom = cmbNewTLevelFrom.Items[_newLevelFrom].ToString();
                         cmbNewTLevelFrom.SelectionChanged -= new SelectionChangedEventHandler(cmbNewTLevelFrom_SelectionChanged);
                         cmbNewTLevelFrom.SelectedIndex = previousIndex;
                         cmbNewTLevelFrom.SelectionChanged += new SelectionChangedEventHandler(cmbNewTLevelFrom_SelectionChanged);
@@ -1037,16 +1158,23 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbNewTLevelFrom.Items.Count && index != -1)
                         _newTournamentLevelFrom = cmbNewTLevelFrom.Items[index].ToString();
+                    _newLevelFrom = index;
 
-                    newShowPossibleParticipantsByDB();
+
                 }
+                else
+                {
+                    _newLevelFrom = 1;
+                    _newTournamentLevelFrom = cmbNewTLevelFrom.Items[_newLevelFrom].ToString();
+                }
+                newShowPossibleParticipantsByDB();
             }
         }
 
         private void cmbNewTLevelTo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbNewTLevelTo.SelectedIndex;
-            _newLevelTo = index;
+
 
             if (newAreParticipantsForDeletion())
             {
@@ -1058,18 +1186,24 @@ namespace KarateGeek.guis
                             if (index < cmbNewTLevelTo.Items.Count && index != -1)
                                 _newTournamentLevelTo = cmbNewTLevelTo.Items[index].ToString();
 
-                            newSelectedParticipants = new List<List<AthleteData>>();
-                            newSelectedParticipants.Add(new List<AthleteData>());
-                            newShowPossibleParticipantsByDB();
-                            if (_newTournamentCatType == Strings.individual)
-                            {
-                                newShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                newInitializeTeams();
-                                newShowSelectedParticipantsT(0);
-                            }
+                            _newLevelTo = index;
+                        }
+                        else
+                        {
+                            _newLevelTo = KarateGeek.Strings.rank.Length;
+                            _newTournamentLevelTo = cmbNewTLevelTo.Items[_newLevelTo].ToString();
+                        }
+                        newSelectedParticipants = new List<List<AthleteData>>();
+                        newSelectedParticipants.Add(new List<AthleteData>());
+                        newShowPossibleParticipantsByDB();
+                        if (_newTournamentCatType == Strings.individual)
+                        {
+                            newShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            newInitializeTeams();
+                            newShowSelectedParticipantsT(0);
                         }
                         break;
                     case "Cancel":
@@ -1082,6 +1216,11 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _newLevelTo = KarateGeek.Strings.rank.Length;
+                        else
+                            _newLevelTo = previousIndex;
+                        _newTournamentLevelTo = cmbNewTLevelTo.Items[_newLevelTo].ToString();
                         cmbNewTLevelTo.SelectionChanged -= new SelectionChangedEventHandler(cmbNewTLevelTo_SelectionChanged);
                         cmbNewTLevelTo.SelectedIndex = previousIndex;
                         cmbNewTLevelTo.SelectionChanged += new SelectionChangedEventHandler(cmbNewTLevelTo_SelectionChanged);
@@ -1094,8 +1233,15 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbNewTLevelTo.Items.Count && index != -1)
                         _newTournamentLevelTo = cmbNewTLevelTo.Items[index].ToString();
-                    newShowPossibleParticipantsByDB();
+                    _newLevelTo = index;
+
                 }
+                else
+                {
+                    _newLevelTo = KarateGeek.Strings.rank.Length;
+                    _newTournamentLevelTo = cmbNewTLevelTo.Items[_newLevelTo].ToString();
+                }
+                newShowPossibleParticipantsByDB();
             }
         }
 
@@ -1167,6 +1313,10 @@ namespace KarateGeek.guis
                 newTeamGrid.Visibility = System.Windows.Visibility.Hidden;
                 newShowPossibleParticipantsByDB();
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
 
         }
 
@@ -1231,6 +1381,10 @@ namespace KarateGeek.guis
                 newIndividualGrid.Visibility = System.Windows.Visibility.Hidden;
 
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
         }
 
         private void NewTrdButtonSync_Checked(object sender, RoutedEventArgs e)
@@ -1291,6 +1445,10 @@ namespace KarateGeek.guis
                 newTeamGrid.Visibility = System.Windows.Visibility.Visible;
                 newIndividualGrid.Visibility = System.Windows.Visibility.Hidden;
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
         }
 
         private void cmbNewTGame_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1361,6 +1519,12 @@ namespace KarateGeek.guis
                                 }
                                 cmbNewTJudging.SelectedIndex = 0;
                             }
+                            else
+                            {
+                                cmbNewTJudging.Items.Clear();
+                                cmbNewTJudging.Items.Add("Select scoring type");
+                                cmbNewTJudging.SelectedIndex = 0;
+                            }
 
 
                         }
@@ -1395,7 +1559,7 @@ namespace KarateGeek.guis
                         if (_newTournamentGameType.Equals(Strings.indKata))
                         {
                             cmbNewTJudging.Items.Clear();
-                            cmbNewTJudging.Items.Add("Select judging type");
+                            cmbNewTJudging.Items.Add("Select scoring type");
                             cmbNewTJudging.Items.Add(Strings.score);
                             cmbNewTJudging.Items.Add(Strings.flag);
                         }
@@ -1431,9 +1595,19 @@ namespace KarateGeek.guis
                         }
                         cmbNewTJudging.SelectedIndex = 0;
                     }
+                    else
+                    {
+                        cmbNewTJudging.Items.Clear();
+                        cmbNewTJudging.Items.Add("Select scoring type");
+                        cmbNewTJudging.SelectedIndex = 0;
+                    }
                 }
 
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
         }
 
         private void cmbNewTJudging_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1457,7 +1631,7 @@ namespace KarateGeek.guis
                             newInitializeTeams();
                             newShowSelectedParticipantsT(0);
                         }
-                        if (index < cmbNewTJudging.Items.Count && index != -1 && !cmbNewTJudging.Items[index].ToString().Equals("Select judging type"))
+                        if (index < cmbNewTJudging.Items.Count && index != -1 && !cmbNewTJudging.Items[index].ToString().Equals("Select scoring type"))
                             _newTournamentScoringType = cmbNewTJudging.Items[index].ToString();
                         break;
                     case "Cancel":
@@ -1479,9 +1653,13 @@ namespace KarateGeek.guis
             }
             else
             {
-                if (index < cmbNewTJudging.Items.Count && index != -1 && !cmbNewTJudging.Items[index].ToString().Equals("Select judging type"))
+                if (index < cmbNewTJudging.Items.Count && index != -1 && !cmbNewTJudging.Items[index].ToString().Equals("Select scoring type"))
                     _newTournamentScoringType = cmbNewTJudging.Items[index].ToString();
             }
+            if (setNewTournamentSaveEnable())
+                btnNewTSave.IsEnabled = true;
+            else
+                btnNewTSave.IsEnabled = false;
         }
 
         private void cmbNewTteamsNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1583,7 +1761,10 @@ namespace KarateGeek.guis
                 }
             }
 
-
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
 
         }
 
@@ -1620,12 +1801,21 @@ namespace KarateGeek.guis
 
         private void tbEditTName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            string name = tbEditTName.Text;
-            if (name == "")
+            if (editInitializationFinished && isEventSelected(false))
             {
-                initializeEditTournament(false);
+                string name = tbEditTName.Text;
+                if (name == "" && !_editTournamentSelected)
+                {
+                    initializeEditTournament(false);
+                }
+                editTournamentList();
             }
-            editTournamentList();
+            else
+            {
+                tbEditTName.TextChanged -= new TextChangedEventHandler(tbEditTName_TextChanged);
+                tbEditTName.Text = null;
+                tbEditTName.TextChanged += new TextChangedEventHandler(tbEditTName_TextChanged);
+            }
         }
 
         private void editTSuggestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1658,7 +1848,13 @@ namespace KarateGeek.guis
                     editSuggestionChange = true;  //dixnei oti ginetai allagi twn listeners mesa apo suggestion change
                     ListData item = (ListData)editTSuggestionList.SelectedItem;
                     _editTournamentId = item.id;
+                    _editTournamentSelected = true;
                     _editTournamentName = item.name;
+
+                    if (setEditTournamentSaveEnable())
+                        btnEditTSave.IsEnabled = true;
+                    else
+                        btnEditTSave.IsEnabled = false;
 
                     this.tbEditTName.Text = editFilteredTournaments.Tables[0].Rows[index][1].ToString();
                     sex = editFilteredTournaments.Tables[0].Rows[index][2].ToString();
@@ -1819,12 +2015,19 @@ namespace KarateGeek.guis
                         }
                         break;
                     case "Cancel":
-                        EditTrdButtonMale.Checked -= new RoutedEventHandler(EditTrdButtonMale_Checked);
-                        EditTrdButtonMale.IsChecked = true;
-                        EditTrdButtonMale.Checked += new RoutedEventHandler(EditTrdButtonMale_Checked);
-                        EditTrdButtonFemale.Checked -= new RoutedEventHandler(EditTrdButtonFemale_Checked);
-                        EditTrdButtonFemale.IsChecked = true;
-                        EditTrdButtonFemale.Checked += new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                        switch (_editTournamentSex)
+                        {
+                            case KarateGeek.Strings.male:
+                                EditTrdButtonMale.Checked -= new RoutedEventHandler(EditTrdButtonMale_Checked);
+                                EditTrdButtonMale.IsChecked = true;
+                                EditTrdButtonMale.Checked += new RoutedEventHandler(EditTrdButtonMale_Checked);
+                                break;
+                            case KarateGeek.Strings.female:
+                                EditTrdButtonFemale.Checked -= new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                                EditTrdButtonFemale.IsChecked = true;
+                                EditTrdButtonFemale.Checked += new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                                break;
+                        }
                         break;
                 }
             }
@@ -1833,6 +2036,10 @@ namespace KarateGeek.guis
                 _editTournamentSex = KarateGeek.Strings.mixed;
                 editShowPossibleParticipantsByDB();
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
         }
 
         private void EditTrdButtonMale_Checked(object sender, RoutedEventArgs e)
@@ -1860,12 +2067,19 @@ namespace KarateGeek.guis
                         }
                         break;
                     case "Cancel":
-                        EditTrdButtonMixed.Checked -= new RoutedEventHandler(EditTrdButtonMixed_Checked);
-                        EditTrdButtonMixed.IsChecked = true;
-                        EditTrdButtonMixed.Checked += new RoutedEventHandler(EditTrdButtonMixed_Checked);
-                        EditTrdButtonFemale.Checked -= new RoutedEventHandler(EditTrdButtonFemale_Checked);
-                        EditTrdButtonFemale.IsChecked = true;
-                        EditTrdButtonFemale.Checked += new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                        switch (_editTournamentSex)
+                        {
+                            case KarateGeek.Strings.mixed:
+                                EditTrdButtonMixed.Checked -= new RoutedEventHandler(EditTrdButtonMixed_Checked);
+                                EditTrdButtonMixed.IsChecked = true;
+                                EditTrdButtonMixed.Checked += new RoutedEventHandler(EditTrdButtonMixed_Checked);
+                                break;
+                            case KarateGeek.Strings.female:
+                                EditTrdButtonFemale.Checked -= new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                                EditTrdButtonFemale.IsChecked = true;
+                                EditTrdButtonFemale.Checked += new RoutedEventHandler(EditTrdButtonFemale_Checked);
+                                break;
+                        }
                         break;
                 }
             }
@@ -1874,6 +2088,10 @@ namespace KarateGeek.guis
                 _editTournamentSex = KarateGeek.Strings.male;
                 editShowPossibleParticipantsByDB();
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
 
         }
 
@@ -1902,12 +2120,19 @@ namespace KarateGeek.guis
                         }
                         break;
                     case "Cancel":
-                        EditTrdButtonMixed.Checked -= new RoutedEventHandler(EditTrdButtonMixed_Checked);
-                        EditTrdButtonMixed.IsChecked = true;
-                        EditTrdButtonMixed.Checked += new RoutedEventHandler(EditTrdButtonMixed_Checked);
-                        EditTrdButtonMale.Checked -= new RoutedEventHandler(EditTrdButtonMale_Checked);
-                        EditTrdButtonMale.IsChecked = true;
-                        EditTrdButtonMale.Checked += new RoutedEventHandler(EditTrdButtonMale_Checked);
+                        switch (_editTournamentSex)
+                        {
+                            case KarateGeek.Strings.mixed:
+                                EditTrdButtonMixed.Checked -= new RoutedEventHandler(EditTrdButtonMixed_Checked);
+                                EditTrdButtonMixed.IsChecked = true;
+                                EditTrdButtonMixed.Checked += new RoutedEventHandler(EditTrdButtonMixed_Checked);
+                                break;
+                            case KarateGeek.Strings.male:
+                                EditTrdButtonMale.Checked -= new RoutedEventHandler(EditTrdButtonMale_Checked);
+                                EditTrdButtonMale.IsChecked = true;
+                                EditTrdButtonMale.Checked += new RoutedEventHandler(EditTrdButtonMale_Checked);
+                                break;
+                        }
                         break;
                 }
             }
@@ -1916,6 +2141,10 @@ namespace KarateGeek.guis
                 _editTournamentSex = KarateGeek.Strings.female;
                 editShowPossibleParticipantsByDB();
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
         }
 
         private void cmbEditTAgeFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1930,20 +2159,25 @@ namespace KarateGeek.guis
                         {
                             if (index < cmbEditTAgeFrom.Items.Count && index != -1)
                                 _editTournamentAgeFrom = int.Parse(cmbEditTAgeFrom.Items[index].ToString());
-                            editParticpantsDeletionDB();
-                            editSelectedParticipants = new List<List<AthleteData>>();
-                            editSelectedParticipants.Add(new List<AthleteData>());
-                            editShowPossibleParticipantsByDB();
-                            if (_editTournamentCatType == Strings.individual)
-                            {
-                                editShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                editInitializeTeams();
-                                editShowSelectedParticipantsT(0);
-                            }
                         }
+                        else
+                        {
+                            _editTournamentAgeFrom = MIN_AGE;
+                        }
+                        editParticpantsDeletionDB();
+                        editSelectedParticipants = new List<List<AthleteData>>();
+                        editSelectedParticipants.Add(new List<AthleteData>());
+                        editShowPossibleParticipantsByDB();
+                        if (_editTournamentCatType == Strings.individual)
+                        {
+                            editShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            editInitializeTeams();
+                            editShowSelectedParticipantsT(0);
+                        }
+
                         break;
                     case "Cancel":
                         int previousIndex = 0;
@@ -1955,6 +2189,8 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _editTournamentAgeFrom = MIN_AGE;
                         cmbEditTAgeFrom.SelectionChanged -= new SelectionChangedEventHandler(cmbEditTAgeFrom_SelectionChanged);
                         cmbEditTAgeFrom.SelectedIndex = previousIndex;
                         cmbEditTAgeFrom.SelectionChanged += new SelectionChangedEventHandler(cmbEditTAgeFrom_SelectionChanged);
@@ -1967,8 +2203,13 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbEditTAgeFrom.Items.Count && index != -1)
                         _editTournamentAgeFrom = int.Parse(cmbEditTAgeFrom.Items[index].ToString());
-                    editShowPossibleParticipantsByDB();
+
                 }
+                else
+                {
+                    _editTournamentAgeFrom = MIN_AGE;
+                }
+                editShowPossibleParticipantsByDB();
             }
 
         }
@@ -1986,21 +2227,25 @@ namespace KarateGeek.guis
                         {
                             if (index < cmbEditTAgeTo.Items.Count && index != -1)
                                 _editTournamentAgeTo = int.Parse(cmbEditTAgeTo.Items[index].ToString());
-
-                            editParticpantsDeletionDB();
-                            editSelectedParticipants = new List<List<AthleteData>>();
-                            editSelectedParticipants.Add(new List<AthleteData>());
-                            editShowPossibleParticipantsByDB();
-                            if (_editTournamentCatType == Strings.individual)
-                            {
-                                editShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                editInitializeTeams();
-                                editShowSelectedParticipantsT(0);
-                            }
                         }
+                        else
+                        {
+                            _editTournamentAgeTo = MAX_AGE;
+                        }
+                        editParticpantsDeletionDB();
+                        editSelectedParticipants = new List<List<AthleteData>>();
+                        editSelectedParticipants.Add(new List<AthleteData>());
+                        editShowPossibleParticipantsByDB();
+                        if (_editTournamentCatType == Strings.individual)
+                        {
+                            editShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            editInitializeTeams();
+                            editShowSelectedParticipantsT(0);
+                        }
+
                         break;
                     case "Cancel":
                         int previousIndex = 0;
@@ -2012,6 +2257,8 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _editTournamentAgeTo = MAX_AGE;
                         cmbEditTAgeTo.SelectionChanged -= new SelectionChangedEventHandler(cmbEditTAgeTo_SelectionChanged);
                         cmbEditTAgeTo.SelectedIndex = previousIndex;
                         cmbEditTAgeTo.SelectionChanged += new SelectionChangedEventHandler(cmbEditTAgeTo_SelectionChanged);
@@ -2025,15 +2272,20 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbEditTAgeTo.Items.Count && index != -1)
                         _editTournamentAgeTo = int.Parse(cmbEditTAgeTo.Items[index].ToString());
-                    editShowPossibleParticipantsByDB();
+
                 }
+                else
+                {
+                    _editTournamentAgeTo = MAX_AGE;
+                }
+                editShowPossibleParticipantsByDB();
             }
         }
 
         private void cmbEditTLevelFrom_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbEditTLevelFrom.SelectedIndex;
-            _editLevelFrom = index;
+
 
             if (editAreParticipantsForDeletion() && !editSuggestionChange)
             {
@@ -2045,19 +2297,25 @@ namespace KarateGeek.guis
                             if (index < cmbEditTLevelFrom.Items.Count && index != -1)
                                 _editTournamentLevelFrom = cmbEditTLevelFrom.Items[index].ToString();
 
-                            editParticpantsDeletionDB();
-                            editSelectedParticipants = new List<List<AthleteData>>();
-                            editSelectedParticipants.Add(new List<AthleteData>());
-                            editShowPossibleParticipantsByDB();
-                            if (_editTournamentCatType == Strings.individual)
-                            {
-                                editShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                editInitializeTeams();
-                                editShowSelectedParticipantsT(0);
-                            }
+                            _editLevelFrom = index;
+                        }
+                        else
+                        {
+                            _editLevelFrom = 1;
+                            _editTournamentLevelFrom = cmbEditTLevelFrom.Items[_editLevelFrom].ToString();
+                        }
+                        editParticpantsDeletionDB();
+                        editSelectedParticipants = new List<List<AthleteData>>();
+                        editSelectedParticipants.Add(new List<AthleteData>());
+                        editShowPossibleParticipantsByDB();
+                        if (_editTournamentCatType == Strings.individual)
+                        {
+                            editShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            editInitializeTeams();
+                            editShowSelectedParticipantsT(0);
                         }
                         break;
                     case "Cancel":
@@ -2070,6 +2328,11 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _editLevelFrom = 1;
+                        else
+                            _editLevelFrom = previousIndex;
+                        _editTournamentLevelFrom = cmbEditTLevelFrom.Items[_editLevelFrom].ToString();
                         cmbEditTLevelFrom.SelectionChanged -= new SelectionChangedEventHandler(cmbEditTLevelFrom_SelectionChanged);
                         cmbEditTLevelFrom.SelectedIndex = previousIndex;
                         cmbEditTLevelFrom.SelectionChanged += new SelectionChangedEventHandler(cmbEditTLevelFrom_SelectionChanged);
@@ -2082,16 +2345,22 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbEditTLevelFrom.Items.Count && index != -1)
                         _editTournamentLevelFrom = cmbEditTLevelFrom.Items[index].ToString();
+                    _editLevelFrom = index;
 
-                    editShowPossibleParticipantsByDB();
                 }
+                else
+                {
+                    _editLevelFrom = 1;
+                    _editTournamentLevelFrom = cmbEditTLevelFrom.Items[_editLevelFrom].ToString();
+                }
+                editShowPossibleParticipantsByDB();
             }
         }
 
         private void cmbEditTLevelTo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = cmbEditTLevelTo.SelectedIndex;
-            _editLevelTo = index;
+
 
             if (editAreParticipantsForDeletion() && !editSuggestionChange)
             {
@@ -2102,19 +2371,25 @@ namespace KarateGeek.guis
                         {
                             if (index < cmbEditTLevelTo.Items.Count && index != -1)
                                 _editTournamentLevelTo = cmbEditTLevelTo.Items[index].ToString();
-                            editParticpantsDeletionDB();
-                            editSelectedParticipants = new List<List<AthleteData>>();
-                            editSelectedParticipants.Add(new List<AthleteData>());
-                            editShowPossibleParticipantsByDB();
-                            if (_editTournamentCatType == Strings.individual)
-                            {
-                                editShowSelectedParticipantsI();
-                            }
-                            else
-                            {
-                                editInitializeTeams();
-                                editShowSelectedParticipantsT(0);
-                            }
+                            _editLevelTo = index;
+                        }
+                        else
+                        {
+                            _editLevelTo = KarateGeek.Strings.rank.Length;
+                            _editTournamentLevelTo = cmbEditTLevelTo.Items[_editLevelTo].ToString();
+                        }
+                        editParticpantsDeletionDB();
+                        editSelectedParticipants = new List<List<AthleteData>>();
+                        editSelectedParticipants.Add(new List<AthleteData>());
+                        editShowPossibleParticipantsByDB();
+                        if (_editTournamentCatType == Strings.individual)
+                        {
+                            editShowSelectedParticipantsI();
+                        }
+                        else
+                        {
+                            editInitializeTeams();
+                            editShowSelectedParticipantsT(0);
                         }
                         break;
                     case "Cancel":
@@ -2127,6 +2402,11 @@ namespace KarateGeek.guis
                                 break;
                             }
                         }
+                        if (previousIndex == 0)
+                            _editLevelTo = KarateGeek.Strings.rank.Length;
+                        else
+                            _editLevelTo = previousIndex;
+                        _editTournamentLevelTo = cmbEditTLevelTo.Items[_editLevelTo].ToString();
                         cmbEditTLevelTo.SelectionChanged -= new SelectionChangedEventHandler(cmbEditTLevelTo_SelectionChanged);
                         cmbEditTLevelTo.SelectedIndex = previousIndex;
                         cmbEditTLevelTo.SelectionChanged += new SelectionChangedEventHandler(cmbEditTLevelTo_SelectionChanged);
@@ -2139,8 +2419,15 @@ namespace KarateGeek.guis
                 {
                     if (index < cmbEditTLevelTo.Items.Count && index != -1)
                         _editTournamentLevelTo = cmbEditTLevelTo.Items[index].ToString();
-                    editShowPossibleParticipantsByDB();
+                    _editLevelTo = index;
+
                 }
+                else
+                {
+                    _editLevelTo = KarateGeek.Strings.rank.Length;
+                    _editTournamentLevelTo = cmbEditTLevelTo.Items[_editLevelTo].ToString();
+                }
+                editShowPossibleParticipantsByDB();
             }
         }
 
@@ -2213,6 +2500,10 @@ namespace KarateGeek.guis
                 editTeamGrid.Visibility = System.Windows.Visibility.Hidden;
                 editShowPossibleParticipantsByDB();
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
 
         }
 
@@ -2278,6 +2569,10 @@ namespace KarateGeek.guis
                 editIndividualGrid.Visibility = System.Windows.Visibility.Hidden;
 
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
         }
 
         private void EditTrdButtonSync_Checked(object sender, RoutedEventArgs e)
@@ -2339,6 +2634,10 @@ namespace KarateGeek.guis
                 editTeamGrid.Visibility = System.Windows.Visibility.Visible;
                 editIndividualGrid.Visibility = System.Windows.Visibility.Hidden;
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
         }
 
         private void cmbEditTGame_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2409,7 +2708,12 @@ namespace KarateGeek.guis
                                 }
                                 cmbEditTJudging.SelectedIndex = 0;
                             }
-
+                            else
+                            {
+                                cmbEditTJudging.Items.Clear();
+                                cmbEditTJudging.Items.Add("Select scoring type");
+                                cmbEditTJudging.SelectedIndex = 0;
+                            }
 
                         }
                         break;
@@ -2479,9 +2783,19 @@ namespace KarateGeek.guis
                         }
                         cmbEditTJudging.SelectedIndex = 0;
                     }
+                    else
+                    {
+                        cmbEditTJudging.Items.Clear();
+                        cmbEditTJudging.Items.Add("Select scoring type");
+                        cmbEditTJudging.SelectedIndex = 0;
+                    }
                 }
 
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
         }
 
         private void cmbEditTJudging_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2531,6 +2845,10 @@ namespace KarateGeek.guis
                 if (index < cmbEditTJudging.Items.Count && index != -1 && !cmbEditTJudging.Items[index].ToString().Equals("Select game type"))
                     _editTournamentScoringType = cmbEditTJudging.Items[index].ToString();
             }
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
         }
 
         private void cmbEditTteamsNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -2626,11 +2944,16 @@ namespace KarateGeek.guis
 
         private void btnEditTDelete_Click(object sender, RoutedEventArgs e)
         {
-            editParticpantsDeletionDB();
-            tournamentConnection.deleteTournament(_editTournamentId);
+            switch (warningTournamentDeletionMessage(_editTournamentName))
+            {
+                case "OK":
+                    editParticpantsDeletionDB();
+                    tournamentConnection.deleteTournament(_editTournamentId);
 
-            MessageBox.Show("Succesfully deleted!", "Tournament Delete",MessageBoxButton.OK);
-            initializeEditTournament(true);
+                    MessageBox.Show("Succesfully deleted!", "Tournament Delete", MessageBoxButton.OK);
+                    initializeEditTournament(true);
+                    break;
+            }
         }
 
         #endregion
@@ -2639,71 +2962,79 @@ namespace KarateGeek.guis
         //find possible participants for selection
         public void editShowPossibleParticipantsByDB()
         {
-            editPossibleParticipants = this.editAthletesFilter();
-            lbEditTparticipants.ItemsSource = null;
-
-            if (editPossibleParticipants.Count > 0)
+            if (editInitializationFinished && cmbEditTEventChooser.SelectedIndex > 0 && isEventSelected(false))
             {
-                lbEditTparticipants.ItemsSource = editPossibleParticipants;
-            }
-            else
-            {
+                editPossibleParticipants = this.editAthletesFilter();
                 lbEditTparticipants.ItemsSource = null;
+
+                if (editPossibleParticipants.Count > 0)
+                {
+                    lbEditTparticipants.ItemsSource = editPossibleParticipants;
+                }
+                else
+                {
+                    lbEditTparticipants.ItemsSource = null;
+                }
             }
         }
 
         public void newShowPossibleParticipantsByDB()
         {
-            newPossibleParticipants = this.newAthletesFilter();
-            lbNewTparticipants.ItemsSource = null;
-
-            if (newPossibleParticipants.Count > 0)
+            if (newInitializationFinished && cmbNewTEventChooser.SelectedIndex > 0 && isEventSelected(true))
             {
-                lbNewTparticipants.ItemsSource = newPossibleParticipants;
-            }
-            else
-            {
+                newPossibleParticipants = this.newAthletesFilter();
                 lbNewTparticipants.ItemsSource = null;
+
+                if (newPossibleParticipants.Count > 0)
+                {
+                    lbNewTparticipants.ItemsSource = newPossibleParticipants;
+                }
+                else
+                {
+                    lbNewTparticipants.ItemsSource = null;
+                }
             }
         }
 
         public void editShowSelectedParticipantsByDB(int selectedTeam)
         {
             DataSet ds;
-
-            if ((bool)EditTrdButtonIndiv.IsChecked)
+            if (editInitializationFinished && cmbEditTEventChooser.SelectedIndex > 0 && isEventSelected(false))
             {
-                editSelectedParticipants = new List<List<AthleteData>>();
-                editSelectedParticipants.Add(new List<AthleteData>());
-                tempEditSelectedParticipants = new List<List<AthleteData>>();
-                tempEditSelectedParticipants.Add(new List<AthleteData>());
-
-                ds = participantConnection.getParticipantsI(_editTournamentId);
-                foreach (DataRow dr in ds.Tables[0].Rows)
+                if ((bool)EditTrdButtonIndiv.IsChecked)
                 {
-                    AthleteData participant = new AthleteData();
-                    participant.id = int.Parse(dr[0].ToString());
-                    participant.athlete_name = dr[6].ToString() + " " + dr[7].ToString();
-                    editSelectedParticipants.ElementAt(0).Add(participant);
-                    tempEditSelectedParticipants.ElementAt(0).Add(participant);
-                }
-                editShowSelectedParticipantsI();
-            }
-            else
-            {
-                int team = 0;
-                ds = participantConnection.getParticipantsT(_editTournamentId);
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    AthleteData participant = new AthleteData();
-                    participant.id = int.Parse(dr[0].ToString());
-                    participant.athlete_name = dr[3].ToString() + " " + dr[4].ToString();
+                    editSelectedParticipants = new List<List<AthleteData>>();
+                    editSelectedParticipants.Add(new List<AthleteData>());
+                    tempEditSelectedParticipants = new List<List<AthleteData>>();
+                    tempEditSelectedParticipants.Add(new List<AthleteData>());
 
-                    team = int.Parse(dr[1].ToString());
-                    editSelectedParticipants.ElementAt(team).Add(participant);
-                    tempEditSelectedParticipants.ElementAt(team).Add(participant);
+                    ds = participantConnection.getParticipantsI(_editTournamentId);
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        AthleteData participant = new AthleteData();
+                        participant.id = int.Parse(dr[0].ToString());
+                        participant.athlete_name = dr[7].ToString() + " " + dr[6].ToString();
+                        editSelectedParticipants.ElementAt(0).Add(participant);
+                        tempEditSelectedParticipants.ElementAt(0).Add(participant);
+                    }
+                    editShowSelectedParticipantsI();
                 }
-                editShowSelectedParticipantsT(0);
+                else
+                {
+                    int team = 0;
+                    ds = participantConnection.getParticipantsT(_editTournamentId);
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                        AthleteData participant = new AthleteData();
+                        participant.id = int.Parse(dr[0].ToString());
+                        participant.athlete_name = dr[4].ToString() + " " + dr[3].ToString();
+
+                        team = int.Parse(dr[1].ToString());
+                        editSelectedParticipants.ElementAt(team).Add(participant);
+                        tempEditSelectedParticipants.ElementAt(team).Add(participant);
+                    }
+                    editShowSelectedParticipantsT(0);
+                }
             }
         }
 
@@ -2946,83 +3277,89 @@ namespace KarateGeek.guis
 
         private void bteditAddParticipant_Click(object sender, RoutedEventArgs e)
         {
-            if ((bool)EditTrdButtonIndiv.IsChecked)
+            if (isEventSelected(false))
             {
-                List<AthleteData> list = new List<AthleteData>();
-
-                foreach (Object item in lbEditTparticipants.SelectedItems)
-                {
-                    editSelectedParticipants.ElementAt(0).Add((AthleteData)item);
-
-                    editPossibleParticipants.RemoveAt(lbEditTparticipants.Items.IndexOf(item));
-                }
-                editShowSelectedParticipantsI();
-                editShowPossibleParticipants();
-            }
-            else if ((bool)EditTrdButtonTeam.IsChecked || (bool)EditTrdButtonSync.IsChecked)
-            {
-                if (editTeamsNum >= 2)
+                if ((bool)EditTrdButtonIndiv.IsChecked)
                 {
                     List<AthleteData> list = new List<AthleteData>();
 
                     foreach (Object item in lbEditTparticipants.SelectedItems)
                     {
-                        editSelectedParticipants.ElementAt(_editTournamentTeam).Add((AthleteData)item);
+                        editSelectedParticipants.ElementAt(0).Add((AthleteData)item);
 
                         editPossibleParticipants.RemoveAt(lbEditTparticipants.Items.IndexOf(item));
                     }
-                    editShowSelectedParticipantsT(_editTournamentTeam);
+                    editShowSelectedParticipantsI();
                     editShowPossibleParticipants();
+                }
+                else if ((bool)EditTrdButtonTeam.IsChecked || (bool)EditTrdButtonSync.IsChecked)
+                {
+                    if (editTeamsNum >= 2)
+                    {
+                        List<AthleteData> list = new List<AthleteData>();
+
+                        foreach (Object item in lbEditTparticipants.SelectedItems)
+                        {
+                            editSelectedParticipants.ElementAt(_editTournamentTeam).Add((AthleteData)item);
+
+                            editPossibleParticipants.RemoveAt(lbEditTparticipants.Items.IndexOf(item));
+                        }
+                        editShowSelectedParticipantsT(_editTournamentTeam);
+                        editShowPossibleParticipants();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Select Number of Teams first!");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Select Number of Teams first!");
+                    MessageBox.Show("Please select Game Type!");
                 }
-            }
-            else
-            {
-                MessageBox.Show("Please select Game Type!");
             }
         }
 
         private void btnewAddParticipant_Click(object sender, RoutedEventArgs e)
         {
-            if ((bool)NewTrdButtonIndiv.IsChecked)
+            if (isEventSelected(true) )
             {
-                List<AthleteData> list = new List<AthleteData>();
-
-                foreach (Object item in lbNewTparticipants.SelectedItems)
-                {
-                    newSelectedParticipants.ElementAt(0).Add((AthleteData)item);
-
-                    newPossibleParticipants.RemoveAt(lbNewTparticipants.Items.IndexOf(item));
-                }
-                newShowSelectedParticipantsI();
-                newShowPossibleParticipants();
-            }
-            else if ((bool)NewTrdButtonTeam.IsChecked || (bool)NewTrdButtonSync.IsChecked)
-            {
-                if (newTeamsNum >= 2)
+                if ((bool)NewTrdButtonIndiv.IsChecked)
                 {
                     List<AthleteData> list = new List<AthleteData>();
 
                     foreach (Object item in lbNewTparticipants.SelectedItems)
                     {
-                        newSelectedParticipants.ElementAt(_newTournamentTeam).Add((AthleteData)item);
+                        newSelectedParticipants.ElementAt(0).Add((AthleteData)item);
 
                         newPossibleParticipants.RemoveAt(lbNewTparticipants.Items.IndexOf(item));
                     }
-                    newShowSelectedParticipantsT(_newTournamentTeam);
+                    newShowSelectedParticipantsI();
                     newShowPossibleParticipants();
+                }
+                else if ((bool)NewTrdButtonTeam.IsChecked || (bool)NewTrdButtonSync.IsChecked)
+                {
+                    if (newTeamsNum >= 2)
+                    {
+                        List<AthleteData> list = new List<AthleteData>();
+
+                        foreach (Object item in lbNewTparticipants.SelectedItems)
+                        {
+                            newSelectedParticipants.ElementAt(_newTournamentTeam).Add((AthleteData)item);
+
+                            newPossibleParticipants.RemoveAt(lbNewTparticipants.Items.IndexOf(item));
+                        }
+                        newShowSelectedParticipantsT(_newTournamentTeam);
+                        newShowPossibleParticipants();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Select Number of Teams first!");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Select Number of Teams first!");
+                    MessageBox.Show("Please select Game Type!");
                 }
-            }
-            else
-            {
-                MessageBox.Show("Please select Game Type!");
             }
         }
 
@@ -3199,7 +3536,7 @@ namespace KarateGeek.guis
                         em.errorMessage("Sex");
                         return false;
                     }
-                    else if (cmbNewTAgeFrom.SelectedIndex == 0)
+                    /*else if (cmbNewTAgeFrom.SelectedIndex == 0)
                     {
                         em.errorMessage("Age From");
                         return false;
@@ -3218,7 +3555,7 @@ namespace KarateGeek.guis
                     {
                         em.errorMessage("Level To");
                         return false;
-                    }
+                    }*/
                     else if (string.IsNullOrEmpty(_newTournamentCatType))
                     {
                         em.errorMessage("Game Type");
@@ -3231,7 +3568,7 @@ namespace KarateGeek.guis
                     }
                     else if ((cmbNewTJudging.SelectedIndex == 0) && (cmbNewTJudging.Items.Count > 1))
                     {
-                        em.errorMessage("Judging type");
+                        em.errorMessage("Scoring type");
                         return false;
                     }
                     else
@@ -3256,7 +3593,7 @@ namespace KarateGeek.guis
                         em.errorMessage("Sex");
                         return false;
                     }
-                    else if (cmbEditTAgeFrom.SelectedIndex == 0)
+                    /*else if (cmbEditTAgeFrom.SelectedIndex == 0)
                     {
                         em.errorMessage("Age From");
                         return false;
@@ -3275,7 +3612,7 @@ namespace KarateGeek.guis
                     {
                         em.errorMessage("Level To");
                         return false;
-                    }
+                    }*/
                     else if (string.IsNullOrEmpty(_editTournamentCatType))
                     {
                         em.errorMessage("Game Type");
@@ -3288,7 +3625,7 @@ namespace KarateGeek.guis
                     }
                     else if ((cmbEditTJudging.SelectedIndex == 0) && (cmbEditTJudging.Items.Count > 1))
                     {
-                        em.errorMessage("Judging type");
+                        em.errorMessage("Scoring type");
                         return false;
                     }
                     else
@@ -3418,9 +3755,9 @@ namespace KarateGeek.guis
                         case Strings.teamKata:
                             foreach (List<AthleteData> list in newSelectedParticipants)
                             {
-                                if (list.Count != 3)
+                                if (list.Count < 3 || list.Count > 4)
                                 {
-                                    errorTeamMessage(i, 1);
+                                    errorTeamMessage(i, 2);
                                     return false;
                                 }
                                 i++;
@@ -3458,7 +3795,7 @@ namespace KarateGeek.guis
                             {
                                 if (list.Count != 3)
                                 {
-                                    errorTeamMessage(i, 4);
+                                    errorTeamMessage(i, 1);
                                     return false;
                                 }
                                 i++;
@@ -3483,7 +3820,7 @@ namespace KarateGeek.guis
                         case Strings.teamKata:
                             foreach (List<AthleteData> list in editSelectedParticipants)
                             {
-                                if (list.Count != 3)
+                                if (list.Count < 3 || list.Count > 4)
                                 {
                                     errorTeamMessage(i, 1);
                                     return false;
@@ -3523,7 +3860,7 @@ namespace KarateGeek.guis
                             {
                                 if (list.Count != 3)
                                 {
-                                    errorTeamMessage(i, 4);
+                                    errorTeamMessage(i, 1);
                                     return false;
                                 }
                                 i++;
@@ -3551,9 +3888,6 @@ namespace KarateGeek.guis
                 case 3:
                     message = message + "2 athletes!";
                     break;
-                case 4:
-                    message = message + "3 athletes!";
-                    break;
 
             }
 
@@ -3561,6 +3895,100 @@ namespace KarateGeek.guis
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
             cmbEditTteamSelection.SelectedIndex = team;
+        }
+
+        private bool setNewEventSaveEnable()
+        {
+            if (string.IsNullOrEmpty(_newEventName))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool setEditEventSaveEnable()
+        {
+            if (string.IsNullOrEmpty(_editEventName))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool setNewTournamentSaveEnable()
+        {
+            if (cmbNewTEventChooser.SelectedIndex == 0)
+            {
+                return false;
+            }
+            else if (string.IsNullOrEmpty(_newTournamentName))
+            {
+                return false;
+            }
+            else if (string.IsNullOrEmpty(_newTournamentSex))
+            {
+                return false;
+            }
+            else if (string.IsNullOrEmpty(_newTournamentCatType))
+            {
+                return false;
+            }
+            else if (cmbNewTGame.SelectedIndex == 0)
+            {
+                return false;
+            }
+            else if ((cmbNewTJudging.SelectedIndex == 0) && (cmbNewTJudging.Items.Count > 1))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool setEditTournamentSaveEnable()
+        {
+            if (cmbEditTEventChooser.SelectedIndex == 0)
+            {
+
+                return false;
+            }
+            else if (string.IsNullOrEmpty(_editTournamentName))
+            {
+
+                return false;
+            }
+            else if (string.IsNullOrEmpty(_editTournamentSex))
+            {
+
+                return false;
+            }
+            else if (string.IsNullOrEmpty(_editTournamentCatType))
+            {
+
+                return false;
+            }
+            else if (cmbEditTGame.SelectedIndex == 0)
+            {
+
+                return false;
+            }
+            else if ((cmbEditTJudging.SelectedIndex == 0) && (cmbEditTJudging.Items.Count > 1))
+            {
+
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         #endregion
@@ -3585,6 +4013,7 @@ namespace KarateGeek.guis
         private void initializeEditEvent()
         {
             _editEventId = -1;
+            _editEventSelected = false;
             editEventName.Text = null;
             editEventDate.SelectedDate = null;
             editEventLocation.Text = null;
@@ -3600,7 +4029,7 @@ namespace KarateGeek.guis
 
         private void initializeNewTournament(Boolean clearAll)
         {
-
+            newInitializationFinished = false;
             _newTournamentId = 0;
             _newTournamentTeamId = 0;
             newSelectedParticipants = new List<List<AthleteData>>();
@@ -3630,7 +4059,7 @@ namespace KarateGeek.guis
             cmbNewTGame.Items.Add("Select game type");
             cmbNewTGame.SelectedIndex = 0;
             cmbNewTJudging.Items.Clear();
-            cmbNewTJudging.Items.Add("Select judging type");
+            cmbNewTJudging.Items.Add("Select scoring type");
             cmbNewTJudging.SelectedIndex = 0;
             cmbNewTteamsNumber.SelectedIndex = 0;
             cmbNewTteamSelection.Items.Clear();
@@ -3640,18 +4069,20 @@ namespace KarateGeek.guis
             lbNewTparticipants.ItemsSource = null;
             newShowSelectedParticipantsI();
             Dispatcher.BeginInvoke(new Action(() => { tbNewTName.Focus(); }));
+            newInitializationFinished = true;
 
 
         }
 
         private void initializeEditTournament(Boolean clearAll)
         {
-            
+            editInitializationFinished = false;
             _editTournamentId = 0;
             _editTournamentTeamId = 0;
             editSelectedParticipants = new List<List<AthleteData>>();
             editSelectedParticipants.Add(new List<AthleteData>());
-            if(clearAll)
+            _editTournamentSelected = false;
+            if (clearAll)
                 editEventInfo.Text = null;
             //events
             cmbEditTEventChooser.Items.Clear();
@@ -3676,7 +4107,7 @@ namespace KarateGeek.guis
             cmbEditTGame.Items.Add("Select game type");
             cmbEditTGame.SelectedIndex = 0;
             cmbEditTJudging.Items.Clear();
-            cmbEditTJudging.Items.Add("Select judging type");
+            cmbEditTJudging.Items.Add("Select scoring type");
             cmbEditTJudging.SelectedIndex = 0;
             cmbEditTteamsNumber.SelectedIndex = 0;
             cmbEditTteamSelection.Items.Clear();
@@ -3686,6 +4117,7 @@ namespace KarateGeek.guis
             lbEditTparticipants.ItemsSource = null;
             editShowSelectedParticipantsI();
             Dispatcher.BeginInvoke(new Action(() => { tbEditTName.Focus(); }));
+            editInitializationFinished = true;
         }
 
         private void editInitializeTeams()
@@ -3741,6 +4173,15 @@ namespace KarateGeek.guis
             _editEventName = editEventName.Text;
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
+
+            if (setEditEventSaveEnable())
+            {
+                btnEditESave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditESave.IsEnabled = false;
+            }
 
             eventNameListForAutoComplete = this.editEventsfilterNames();
 
@@ -3840,6 +4281,11 @@ namespace KarateGeek.guis
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
+            if (setEditTournamentSaveEnable())
+                btnEditTSave.IsEnabled = true;
+            else
+                btnEditTSave.IsEnabled = false;
+
             tournamentNameListForAutoComplete = this.editTournamentsfilterNames();
 
             foreach (ListData item in tournamentNameListForAutoComplete)
@@ -3883,22 +4329,60 @@ namespace KarateGeek.guis
 
         #endregion
 
+        private string warningEventDeletionMessage(string name)
+        {
+            return MessageBox.Show("Are you sure you want to delete " + name + "? This will also delete the " + name + " tournaments! \nPress OK to continue.", "Message",
+               MessageBoxButton.OKCancel,
+               MessageBoxImage.Information).ToString();
+        }
+
+        private string warningTournamentDeletionMessage(string name)
+        {
+            return MessageBox.Show("Are you sure you want to delete " + name + "? This will also delete the " + name + " participations and its lottery! \nPress OK to continue.", "Message",
+               MessageBoxButton.OKCancel,
+               MessageBoxImage.Information).ToString();
+        }
+
+        
+        private bool isEventSelected(bool newMode){
+            if (newMode)
+            {
+                if (cmbNewTEventChooser.SelectedIndex == 0)
+                {
+                    MessageBox.Show("Please select an Event.", "Message",
+                  MessageBoxButton.OK,
+                  MessageBoxImage.Information).ToString();
+                    return false;
+                }
+            }
+            else
+            {
+                if (cmbEditTEventChooser.SelectedIndex == 0)
+                {
+                    MessageBox.Show("Please select an Event.", "Message",
+                  MessageBoxButton.OK,
+                  MessageBoxImage.Information).ToString();
+                    return false;
+                }
+            }
+            return true;
+
+        }
+
         private void Window_closed(object sender, EventArgs e)
         {
             MainMenu menu = (MainMenu)this.sender;
             menu.reloadCalendarEvents();
             this.Close();
             this.sender.Show();
-            
+
         }
 
-      
+
 
 
 
         #endregion
-
-        
 
     }
 }

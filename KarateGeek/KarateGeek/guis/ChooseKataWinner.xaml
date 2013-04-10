@@ -27,14 +27,14 @@
         <ComboBox Name="tieList" 
                   Grid.Column="1" 
                   Grid.Row="1" 
-                  VerticalAlignment="Top"/>
+                  VerticalAlignment="Top" SelectionChanged="tieList_SelectionChanged" />
         
         <Button Name="saveWinner" 
                 Grid.Column="1"
                 Grid.Row="2" 
                 Width="80"
                 Content="save" 
-                VerticalAlignment="Center" Click="saveWinner_Click" />
+                VerticalAlignment="Center" Click="saveWinner_Click" IsEnabled="False" />
         
     </Grid>
 </Window>

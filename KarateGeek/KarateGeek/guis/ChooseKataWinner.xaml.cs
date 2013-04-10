@@ -115,7 +115,23 @@ namespace KarateGeek.guis
             this.Close();
         }
 
-        
+
+        private bool setSaveEnable()
+        {
+            if (tieList.SelectedIndex == -1)
+                return false;
+            else
+                return true;
+        }
+
+        private void tieList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (setSaveEnable())
+                saveWinner.IsEnabled = true;
+            else
+                saveWinner.IsEnabled = false;
+        }
+
     }
 }
 

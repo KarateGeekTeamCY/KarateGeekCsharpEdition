@@ -66,25 +66,25 @@ namespace KarateGeek.databaseConnection
 
         public DataSet similarPersonsNotInAthletes(string filter)
         {
-            string sql = "select * from persons where (lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%')) and id not in (select id from athletes);";
+            string sql = "select * from persons where (lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%')) and id not in (select id from athletes) order by first_name, last_name;";
             return this.Query(sql);
         }
 
         public DataSet similarAthletes(string filter)
         {
-            string sql = "select * from persons natural join athletes where lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%');";
+            string sql = "select * from persons natural join athletes where lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%') order by first_name, last_name;";
             return this.Query(sql);
         }
 
         public DataSet similarPersonsNotInJudges(string filter)
         {
-            string sql = "select * from persons where (lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%')) and id not in (select id from judges);";
+            string sql = "select * from persons where (lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%')) and id not in (select id from judges) order by first_name, last_name;";
             return this.Query(sql);
         }
 
         public DataSet similarJudges(string filter)
         {
-            string sql = "select * from persons natural join judges where lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%');";
+            string sql = "select * from persons natural join judges where lower(first_name) like lower('" + filter + "%') or lower(last_name) like lower('" + filter + "%') order by first_name, last_name;";
             return this.Query(sql);
         }
     }

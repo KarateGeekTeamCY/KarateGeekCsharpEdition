@@ -69,7 +69,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet findSimilar(string filter)
         {
-            string sql = "select * from events where lower(name) like lower('" + filter + "%');";
+            string sql = "select * from events where lower(name) like lower('" + filter + "%') and is_finished = 'false' order by name;";
             return this.Query(sql);
         }
 
@@ -128,7 +128,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet getEvents()
         {
-            string sql = "select * from events;";
+            string sql = "select * from events where is_finished = 'false' order by name;";
             return this.Query(sql);
         }
 

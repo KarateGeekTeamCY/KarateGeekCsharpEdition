@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using KarateGeek.databaseConnection;
 using System.Data;
+using KarateGeek.helpers;
 
 namespace KarateGeek.guis
 {
@@ -29,6 +30,8 @@ namespace KarateGeek.guis
         private DataSet clubCities;
         private static string defaultCountry = "CY";
         private int countryIndex;
+        ErrorMessages em = new ErrorMessages();
+        RegularExpressions regex = new RegularExpressions();
 
 
         #region new Club Definitions
@@ -102,6 +105,10 @@ namespace KarateGeek.guis
         private void newClubName_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newClubName = newClubName.Text;
+            if (setNewClubSaveEnable())
+                btnNewCSave.IsEnabled = true;
+            else
+                btnNewCSave.IsEnabled = false;
         }
 
         private void newClubUpdateCities(string countryCode)
@@ -171,17 +178,19 @@ namespace KarateGeek.guis
         private void btnNewCSave_Click(object sender, RoutedEventArgs e)
         {
             bool insertClub;
-            insertClub = clubConnection.insertNewCLub(_newClubName, _newClubPhone , _newClubEmail , _newClubAddress , _newClubAddressNum , _newClubTK , _newClubCountryCode , _newClubCity);
-            if (insertClub)
+            if (checkNullOrEmptyFields(true) && checkWrongFields(true))
             {
-                MessageBox.Show("Succesfully saved!","Club Add",MessageBoxButton.OK);
-                initializeNewClub();
+                insertClub = clubConnection.insertNewCLub(_newClubName, _newClubPhone, _newClubEmail, _newClubAddress, _newClubAddressNum, _newClubTK, _newClubCountryCode, _newClubCity);
+                if (insertClub)
+                {
+                    MessageBox.Show("Succesfully saved!", "Club Add", MessageBoxButton.OK);
+                    initializeNewClub();
+                }
+                else
+                {
+                    MessageBox.Show("Error. Club not succesfully saved!", "Club add", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            else
-            {
-                MessageBox.Show("Error. Club not succesfully saved!", "Club add", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
         }
 
         private void btnNewCBack_Click(object sender, RoutedEventArgs e)
@@ -203,6 +212,15 @@ namespace KarateGeek.guis
             _editClubName = editClubName.Text;
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
+
+            if (setEditClubSaveEnable())
+            {
+                btnEditCSave.IsEnabled = true;
+            }
+            else
+            {
+                btnEditCSave.IsEnabled = false;
+            }
 
             editClubNameListForAutoComplete = this.ClubfilterNames();
 
@@ -271,6 +289,15 @@ namespace KarateGeek.guis
                     address_id = int.Parse(filteredEditClubs.Tables[0].Rows[index][4].ToString());
 
                     this.editClubName.Text = filteredEditClubs.Tables[0].Rows[index][1].ToString();
+                    _editClubName = this.editClubName.Text;
+                    if (setEditClubSaveEnable())
+                    {
+                        btnEditCSave.IsEnabled = true;
+                    }
+                    else
+                    {
+                        btnEditCSave.IsEnabled = false;
+                    }
                     this.editClubPhone.Text = filteredEditClubs.Tables[0].Rows[index][2].ToString();
                     this.editClubEmail.Text = filteredEditClubs.Tables[0].Rows[index][3].ToString();
                   
@@ -420,30 +447,38 @@ namespace KarateGeek.guis
         private void btnEditCSave_Click(object sender, RoutedEventArgs e)
         {
             bool saveClub;
-            saveClub = clubConnection.updateClub(_editClubId, _editClubName, _editClubPhone, _editClubEmail, _editClubAddress, _editClubAddressNum, _editClubTK, _editClubCountryCode, _editClubCity);
-            if (saveClub)
+            if (checkNullOrEmptyFields(false) && checkWrongFields(false) && _editClubId != -1)
             {
-                MessageBox.Show("Succesfully updated!", "Club Edit", MessageBoxButton.OK);
-                initializeEditClub();
-            }
-            else
-            {
-                MessageBox.Show("Error. Club not succesfully updated!", "Club edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                saveClub = clubConnection.updateClub(_editClubId, _editClubName, _editClubPhone, _editClubEmail, _editClubAddress, _editClubAddressNum, _editClubTK, _editClubCountryCode, _editClubCity);
+                if (saveClub)
+                {
+                    MessageBox.Show("Succesfully updated!", "Club Edit", MessageBoxButton.OK);
+                    initializeEditClub();
+                }
+                else
+                {
+                    MessageBox.Show("Error. Club not succesfully updated!", "Club edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
         private void btnEditCDelete_Click(object sender, RoutedEventArgs e)
         {
             bool deleteClub;
-            deleteClub = clubConnection.deleteClub(_editClubId);
-            if (deleteClub)
+            switch (warningDeletionMessage(_editClubName))
             {
-                MessageBox.Show("Succesfully deleted", "Club Edit", MessageBoxButton.OK);
-                initializeEditClub();
-            }
-            else
-            {
-                MessageBox.Show("Error. Club not succesfully deleted! There are athletes on this club!", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                case "OK":
+                    deleteClub = clubConnection.deleteClub(_editClubId);
+                    if (deleteClub)
+                    {
+                        MessageBox.Show("Succesfully deleted", "Club Edit", MessageBoxButton.OK);
+                        initializeEditClub();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error. Club not succesfully deleted! There are athletes on this club!", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    break;
             }
         }
 
@@ -473,6 +508,150 @@ namespace KarateGeek.guis
             cmbEditCCountryChooses.SelectedIndex = countryIndex;
             Dispatcher.BeginInvoke(new Action(() => { editClubName.Focus(); }));
         }
+        #endregion
+
+        #region checkMethods
+        private bool checkNullOrEmptyFields(bool newMode)
+        {
+            if (newMode)
+            {
+                if (string.IsNullOrEmpty(_newClubName))
+                {
+                    em.errorMessage("Club/Association");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(_editClubName))
+                {
+                    em.errorMessage("Club/Association");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        private bool checkWrongFields(bool newMode)
+        {
+            if (newMode)
+            {
+                if (!regex.isSqlSpecialChar(_newClubName))
+                {
+                    em.sqlSpecialChar("Club/Association");
+                    return false;
+                }
+                 else if (!string.IsNullOrEmpty(_newClubPhone) && !regex.isDigitsOnly(_newClubPhone))
+                    {
+                        em.digitsErrorMessage("Phone Num.");
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newClubEmail) && !regex.isEmailValid(_newClubEmail))
+                    {
+                        return false;
+                    }
+                    else if (!string.IsNullOrEmpty(_newClubAddress) && !regex.isCharsSpaceOrDots(_newClubAddress))
+                    {
+                        em.charsSpaceDotsErrorMessage("Address");
+                        return false;
+
+                    }
+                    else if (!string.IsNullOrEmpty(_newClubAddressNum) && !regex.isCharsOrDigits(_newClubAddressNum))
+                    {
+
+                        em.charsDigitsErrorMessage("Address Num.");
+                        return false;
+
+                    }
+                else if (!string.IsNullOrEmpty(_newClubTK) && !regex.isDigitsOnly(_newClubTK))
+                {
+
+                    em.digitsErrorMessage("Postal Code");
+                    return false;
+
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (!regex.isSqlSpecialChar(_editClubName))
+                {
+                    em.sqlSpecialChar("Club/Association");
+                    return false;
+                }
+                else if (!string.IsNullOrEmpty(_editClubPhone) && !regex.isDigitsOnly(_editClubPhone))
+                {
+                    em.digitsErrorMessage("Phone Num.");
+                    return false;
+                }
+                else if (!string.IsNullOrEmpty(_editClubEmail) && !regex.isEmailValid(_editClubEmail))
+                {
+                    return false;
+                }
+                else if (!string.IsNullOrEmpty(_editClubAddress) && !regex.isCharsSpaceOrDots(_editClubAddress))
+                {
+                    em.charsSpaceDotsErrorMessage("Address");
+                    return false;
+
+                }
+                else if (!string.IsNullOrEmpty(_editClubAddressNum) && !regex.isCharsOrDigits(_editClubAddressNum))
+                {
+
+                    em.charsDigitsErrorMessage("Address Num.");
+                    return false;
+
+                }
+                else if (!string.IsNullOrEmpty(_editClubTK) && !regex.isDigitsOnly(_editClubTK))
+                {
+
+                    em.digitsErrorMessage("Postal Code");
+                    return false;
+
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        private bool setNewClubSaveEnable()
+        {
+            if (string.IsNullOrEmpty(_newClubName))
+                return false;
+            else
+                return true;
+        }
+
+        private bool setEditClubSaveEnable()
+        {
+            if (string.IsNullOrEmpty(_editClubName))
+                return false;
+            else
+                return true;
+        }
+
+        #endregion
+
+        #region helpers
+        
+        private string warningDeletionMessage(string name)
+        {
+            return MessageBox.Show("Are you sure you want to delete " + name + "? \nPress OK to continue.", "Message",
+               MessageBoxButton.OKCancel,
+               MessageBoxImage.Information).ToString();
+        }
+
         #endregion
 
         private void Window_close(object sender, EventArgs e)

@@ -28,7 +28,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet findSimilar(string filter)
         {
-            string sql = "select * from clubs where name like lower('" + filter + "%');";
+            string sql = "select * from clubs where name like lower('" + filter + "%') order by name;";
             return this.Query(sql);
         }
 
@@ -69,7 +69,7 @@ namespace KarateGeek.databaseConnection
 
         public DataSet getClubs()
         {
-            string sql = "select * from clubs ;";
+            string sql = "select * from clubs order by name;";
             return this.Query(sql);
         }
     }

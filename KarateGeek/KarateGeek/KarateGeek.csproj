@@ -441,10 +441,7 @@
     <Resource Include="karate_logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\karate_respect.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\karate_slogan2.png" />
+    <Resource Include="Images\fudokan-logo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

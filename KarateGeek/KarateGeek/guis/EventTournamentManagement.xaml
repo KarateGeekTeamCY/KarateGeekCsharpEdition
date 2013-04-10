@@ -10,7 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
-            
+
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0,10,0,10">
@@ -22,7 +22,7 @@
                VerticalAlignment="Center" 
                HorizontalContentAlignment="Center" Margin="121,24,123,24" />
         </Grid>
-       
+
 
         <TabControl Name="eventManagemntTabs" Grid.Row="1">
 
@@ -60,7 +60,7 @@
                                 <ColumnDefinition Width="10*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            
+
                             <Label Content="Name" 
                                        Grid.Row="1"
                                        Grid.Column="1"
@@ -97,7 +97,7 @@
                                          Grid.Column="3"
                                          Margin="0,3,0,3" 
                                          TextChanged="newEventLocation_TextChanged" />
-                            
+
                             <Label Content="Phone num."
                                Grid.Row="4"
                                Grid.Column="1"
@@ -190,12 +190,7 @@
                                Grid.Column="4"
                                VerticalAlignment="Center"
                                Margin="15,0,0,0"    />
-                            <Label Content="*"
-                               Grid.Row="5"
-                               Grid.Column="5"
-                               FontSize="15"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Foreground="Red" />
+
                             <CheckBox Name="newEventOfficial"
                                       Grid.Row="5"
                                       Grid.Column="6"
@@ -203,7 +198,7 @@
                                       IsChecked="True" 
                                       Checked="newEventOfficial_Checked" 
                                       Unchecked="newEventOfficial_Checked"/>
-                            </Grid>
+                        </Grid>
 
 
 
@@ -217,9 +212,9 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="50" />
                         </Grid.RowDefinitions>
-                         <Border BorderBrush="Gray" BorderThickness="1">
+                        <Border BorderBrush="Gray" BorderThickness="1">
                             <Grid Grid.Row="0" Background="White">
-                                <Image Source="/KarateGeek;component/Images/karate_respect.jpg" ></Image>
+                                <Image Source="/KarateGeek;component/Images/fudokan-logo.jpg" Margin="30"></Image>
                             </Grid>
                         </Border>
                         <Grid Grid.Row="1">
@@ -231,20 +226,23 @@
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+
+
                             <Button Name="btnNewEBack"
                                         Content="Back"
                                         Grid.Column="2"
                                         Margin="5"
                                         VerticalAlignment="Center" 
                                         Click="btnNewEBack_Click" />
+
                             <Button Name="btnNewESave"
                                         Content="Save"
                                         Grid.Column="3"
                                         Margin="5"
                                         VerticalAlignment="Center" 
-                                        Click="btnNewESave_Click" />
+                                        Click="btnNewESave_Click" IsEnabled="False" />
                         </Grid>
-                        
+
                     </Grid>
 
                 </Grid>
@@ -321,7 +319,7 @@
                                          Grid.Column="3"
                                          Margin="0,3,0,3" 
                                          TextChanged="editEventLocation_TextChanged" />
-                            
+
                             <Label Content="Phone num."
                                Grid.Row="4"
                                Grid.Column="1"
@@ -411,18 +409,13 @@
                                                   Content="Nicosia"
                                                   IsSelected="True"/>
                             </ComboBox>
-                           
+
                             <Label Content="Official"
                                Grid.Row="5"
                                Grid.Column="4"
                                VerticalAlignment="Center"
                                Margin="15,0,0,0"    />
-                            <Label Content="*"
-                               Grid.Row="5"
-                               Grid.Column="5"
-                               FontSize="15"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Right" Foreground="Red" />
+
                             <CheckBox Name="editEventOfficial"
                                       Grid.Row="5"
                                       Grid.Column="6"
@@ -433,7 +426,7 @@
                             <ListBox Name="editESuggestionList" 
                                      Grid.Column="3" 
                                      Grid.Row="1" 
-                                     Grid.RowSpan="3" 
+                                     Grid.RowSpan="5" 
                                      VerticalAlignment="Top" 
                                      Margin="0,25,0,0" 
                                      Visibility="Collapsed" 
@@ -457,7 +450,7 @@
                         </Grid.RowDefinitions >
                         <Border BorderBrush="Gray" BorderThickness="1">
                             <Grid Grid.Row="0" Background="White">
-                                <Image Source="/KarateGeek;component/Images/karate_respect.jpg" ></Image>
+                                <Image Source="/KarateGeek;component/Images/fudokan-logo.jpg" Margin="30"></Image>
                             </Grid>
                         </Border>
                         <Grid Grid.Row="1">
@@ -479,8 +472,8 @@
                                         Grid.Column="2"
                                         Margin="5"
                                         VerticalAlignment="Center"
-                                        Click="btnEditESave_Click" />
-                           
+                                        Click="btnEditESave_Click" IsEnabled="False" />
+
                             <Button Name="btnEditEDelete"
                                         Content="Delete"
                                         Grid.Column="3"
@@ -516,14 +509,21 @@
                             </Grid.RowDefinitions>
                             <Grid >
                                 <Grid.ColumnDefinitions >
-                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Event"
                                        VerticalAlignment="Center"
                                        Margin="5"/>
+                                <Label Content="*"
+                               Grid.Row="0"
+                               Grid.Column="1"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <ComboBox Name="cmbNewTEventChooser"
-                                          Grid.Column="1"
+                                          Grid.Column="2"
                                           Margin="5"
                                           VerticalAlignment="Center" 
                                           SelectionChanged="cmbNewTEventChooser_SelectionChanged" />
@@ -543,11 +543,12 @@
 
                             <Grid  Grid.Row="0">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="3.5*"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="4*"/>
                                     <ColumnDefinition Width="4*"/>
-                                    <ColumnDefinition Width="4*"/>
-                                    <ColumnDefinition Width="0.6*"/>
+                                    <ColumnDefinition Width="0.2*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -563,9 +564,15 @@
                                        Grid.Row="0"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
+                                <Label Content="*"
+                               Grid.Row="0"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <TextBox Name="tbNewTName"
                                          Grid.Row="0"
-                                         Grid.Column="2"
+                                         Grid.Column="3"
                                          Margin="0,5,0,5"
                                          VerticalAlignment="Center"
                                          Grid.ColumnSpan="2" 
@@ -575,8 +582,13 @@
                                        Grid.Column="1"
                                        Grid.Row="1"
                                        VerticalAlignment="Center"/>
-
-                                <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                                <Label Content="*"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                                <Grid Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -588,7 +600,7 @@
                                              Grid.Column="0"
                                              VerticalAlignment="Center"   
                                              Margin="5" 
-                                             Checked="NewTrdButtonMixed_Checked" />
+                                             Checked="NewTrdButtonMixed_Checked" IsChecked="False" IsEnabled="True" />
                                     <RadioButton Name="NewTrdButtonMale"
                                              Content="Male"
                                              Grid.Row="1"
@@ -613,7 +625,7 @@
 
                                 <ComboBox Name="cmbNewTAgeFrom"
                                           
-                                           Grid.Column="2"
+                                           Grid.Column="3"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"
                                        Margin="5,0,5,0" 
@@ -623,7 +635,7 @@
                                 </ComboBox>
 
                                 <ComboBox Name="cmbNewTAgeTo"
-                                           Grid.Column="3"
+                                           Grid.Column="4"
                                             Grid.Row="2"
                                             VerticalAlignment="Center"
                                             Margin="5,0,5,0" 
@@ -642,7 +654,7 @@
                                        VerticalAlignment="Center"/>
 
                                 <ComboBox Name="cmbNewTLevelFrom"
-                                           Grid.Column="2"
+                                           Grid.Column="3"
                                             Grid.Row="3"
                                             VerticalAlignment="Center"
                                             Margin="5,0,5,0" 
@@ -652,7 +664,7 @@
                                 </ComboBox>
 
                                 <ComboBox Name="cmbNewTLevelTo"
-                                           Grid.Column="3"
+                                           Grid.Column="4"
                                            Grid.Row="3"
                                            VerticalAlignment="Center"
                                            Margin="5,0,5,0" 
@@ -664,11 +676,17 @@
 
 
 
-                                <Label Content="Game type"
+                                <Label Content="Game"
                                        Grid.Column="1"
                                        Grid.Row="4"
                                        VerticalAlignment="Center"/>
-                                <Grid Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2">
+                                <Label Content="*"
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                                <Grid Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -698,13 +716,18 @@
                                 </Grid>
 
                                 <Label 
-                                    Content="Game"
+                                    Content="Game Type"
                                        Grid.Column="1"
                                        Grid.Row="5"
                                        VerticalAlignment="Center"/>
-
+                                <Label Content="*"
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <ComboBox Name="cmbNewTGame"
-                                           Grid.Column="2"
+                                           Grid.Column="3"
                                            Grid.Row="5"
                                            VerticalAlignment="Center"
                                            Margin="5,0,5,0"
@@ -715,9 +738,14 @@
                                        Grid.Column="1"
                                        Grid.Row="6"
                                        VerticalAlignment="Center"/>
-
+                                <Label Content="*"
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <ComboBox Name="cmbNewTJudging"
-                                       Grid.Column="2"
+                                       Grid.Column="3"
                                        Grid.Row="6"
                                        VerticalAlignment="Center"
                                        Margin="5,0,5,0"
@@ -873,8 +901,8 @@
                                         Grid.Column="3"
                                         Margin="5"
                                         VerticalAlignment="Center" 
-                                        Click="btnNewTSave_Click" />
-                            
+                                        Click="btnNewTSave_Click" IsEnabled="False" />
+
                         </Grid>
 
                     </Grid>
@@ -905,7 +933,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="40"/>
@@ -913,43 +941,51 @@
                             </Grid.RowDefinitions>
                             <Grid >
                                 <Grid.ColumnDefinitions >
-                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="8*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Content="Event"
                                        VerticalAlignment="Center"
                                        Margin="5"/>
+                                <Label Content="*"
+                               Grid.Row="0"
+                               Grid.Column="1"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <ComboBox Name="cmbEditTEventChooser"
-                                          Grid.Column="1"
+                                          Grid.Column="2"
                                           Margin="5"
                                           VerticalAlignment="Center" 
                                           SelectionChanged="cmbEditTEventChooser_SelectionChanged" />
                             </Grid>
-                            
-                            
+
+
                             <TextBox Name="editEventInfo"
                                      Grid.Row="1" 
                                      Height="Auto"
                                      Margin="5" 
                                      IsEnabled="True" 
                                      IsReadOnly="True" />
-                            
+
                         </Grid>
                         <Grid Grid.Column="1">
-                           
 
-                                <Grid  Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="0.6*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
+
+                            <Grid  Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.5*"/>
+                                    <ColumnDefinition Width="3.5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="0.2*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
@@ -960,9 +996,15 @@
                                        Grid.Row="0"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"/>
+                                <Label Content="*"
+                               Grid.Row="0"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <TextBox Name="tbEditTName"
                                          Grid.Row="0"
-                                         Grid.Column="2"
+                                         Grid.Column="3"
                                          Margin="0,5,0,5"
                                          VerticalAlignment="Center"
                                          Grid.ColumnSpan="2" 
@@ -972,7 +1014,13 @@
                                        Grid.Column="1"
                                        Grid.Row="1"
                                        VerticalAlignment="Center"/>
-                                <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                                <Label Content="*"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                                <Grid Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -1007,26 +1055,26 @@
                                        Grid.Column="1"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"/>
-
+            
                                 <ComboBox Name="cmbEditTAgeFrom"
                                           
-                                           Grid.Column="2"
+                                           Grid.Column="3"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"
                                        Margin="5,0,5,0" 
                                        SelectionChanged="cmbEditTAgeFrom_SelectionChanged" 
                                        MaxDropDownHeight="128">
-                                   
+
                                 </ComboBox>
 
                                 <ComboBox Name="cmbEditTAgeTo"
-                                           Grid.Column="3"
+                                           Grid.Column="4"
                                             Grid.Row="2"
                                             VerticalAlignment="Center"
                                             Margin="5,0,5,0" 
                                             SelectionChanged="cmbEditTAgeTo_SelectionChanged" 
                                             MaxDropDownHeight="128">
-                                    
+
                                 </ComboBox>
 
 
@@ -1039,33 +1087,39 @@
                                        VerticalAlignment="Center"/>
 
                                 <ComboBox Name="cmbEditTLevelFrom"
-                                           Grid.Column="2"
+                                           Grid.Column="3"
                                             Grid.Row="3"
                                             VerticalAlignment="Center"
                                             Margin="5,0,5,0" 
                                           SelectionChanged="cmbEditTLevelFrom_SelectionChanged" 
                                           MaxDropDownHeight="128">
-                                    
+
                                 </ComboBox>
 
                                 <ComboBox Name="cmbEditTLevelTo"
-                                           Grid.Column="3"
+                                           Grid.Column="4"
                                            Grid.Row="3"
                                            VerticalAlignment="Center"
                                            Margin="5,0,5,0" 
                                            SelectionChanged="cmbEditTLevelTo_SelectionChanged" 
                                            MaxDropDownHeight="128">
-                                    
+
                                 </ComboBox>
 
 
 
 
-                                <Label Content="Game type"
+                                <Label Content="Game"
                                        Grid.Column="1"
                                        Grid.Row="4"
                                        VerticalAlignment="Center"/>
-                                <Grid Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2">
+                                <Label Content="*"
+                               Grid.Row="4"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
+                                <Grid Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -1093,15 +1147,20 @@
                                              Margin="5" 
                                              Checked="EditTrdButtonSync_Checked" />
                                 </Grid>
-                                   
+
                                 <Label 
-                                    Content="Game"
+                                    Content="Game Type"
                                        Grid.Column="1"
                                        Grid.Row="5"
                                        VerticalAlignment="Center"/>
-
+                                <Label Content="*"
+                               Grid.Row="5"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <ComboBox Name="cmbEditTGame"
-                                           Grid.Column="2"
+                                           Grid.Column="3"
                                            Grid.Row="5"
                                            VerticalAlignment="Center"
                                            Margin="5,0,5,0"
@@ -1112,16 +1171,21 @@
                                        Grid.Column="1"
                                        Grid.Row="6"
                                        VerticalAlignment="Center"/>
-
+                                <Label Content="*"
+                               Grid.Row="6"
+                               Grid.Column="2"
+                               FontSize="15"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right" Foreground="Red" />
                                 <ComboBox Name="cmbEditTJudging"
-                                       Grid.Column="2"
+                                       Grid.Column="3"
                                        Grid.Row="6"
                                        VerticalAlignment="Center"
                                        Margin="5,0,5,0"
                                        Grid.ColumnSpan="2" 
                                        SelectionChanged="cmbEditTJudging_SelectionChanged" />
                                 <ListBox Name="editTSuggestionList" 
-                                         Grid.Column="2" 
+                                         Grid.Column="3" 
                                          Grid.Row="0" 
                                          Grid.RowSpan="6" 
                                          Grid.ColumnSpan="2" 
@@ -1132,12 +1196,12 @@
                                          DisplayMemberPath="name" 
                                          SelectedValuePath="id" 
                                          ItemsSource="{Binding}"/>
-                                
-                            </Grid>
-                            
-                           
 
-                    </Grid>
+                            </Grid>
+
+
+
+                        </Grid>
 
 
 
@@ -1149,22 +1213,22 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="50" />
                         </Grid.RowDefinitions>
-                       
+
                         <Grid Grid.Row="0">
-                          
-                       
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="20*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="20*"/>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Name="ParticipantsSelection"
+
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="20*"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Name="ParticipantsSelection"
                                        Content="Participant Selection"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
@@ -1179,7 +1243,7 @@
                                          SelectedValuePath="id" 
                                          ItemsSource="{Binding}"  
                                          SelectionMode="Multiple"  />
-                                <Label Name="AddParticipant"
+                            <Label Name="AddParticipant"
                                        Grid.Row="0"
                                        Grid.Column="3"
                                        VerticalAlignment="Center"
@@ -1192,7 +1256,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="2*" />
                                     <RowDefinition Height="2*"/>
-                                    
+
                                     <RowDefinition Height="2*"/>
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
@@ -1212,7 +1276,7 @@
                                         Click="bteditDeleteParticipant_Click" />
 
                             </Grid>
-                            
+
                             <Grid Grid.Row="1" Grid.Column="3"  
                                   Name="editTeamGrid" 
                                   Margin="5,0,0,0" 
@@ -1244,9 +1308,9 @@
                                          SelectedValuePath="id" 
                                          ItemsSource="{Binding}" 
                                          SelectionMode="Multiple"/>
-                                
+
                             </Grid>
-                            
+
                             <Grid Grid.Row="1" Grid.Column="3" 
                                   Name="editIndividualGrid" Margin="5,0,0,0" Visibility="Visible">
 
@@ -1282,7 +1346,7 @@
                                         Grid.Column="2"
                                         Margin="5"
                                         VerticalAlignment="Center" 
-                                        Click="btnEditTSave_Click" />
+                                        Click="btnEditTSave_Click" IsEnabled="False" />
                             <Button Name="btnEditTDelete"
                                         Content="Delete"
                                         Grid.Column="3"
@@ -1293,7 +1357,7 @@
 
                     </Grid>
 
-                    
+
 
 
                 </Grid>
@@ -1305,7 +1369,7 @@
 
 
         </TabControl>
-        
+
     </Grid>
 </Window>
 

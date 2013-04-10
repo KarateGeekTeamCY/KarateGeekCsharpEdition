@@ -116,7 +116,7 @@
                     Grid.Column="5"
                     Margin="5"
                     Padding="5"
-                    VerticalAlignment="Center" Click="btnSave_Click" />
+                    VerticalAlignment="Center" Click="btnSave_Click" IsEnabled="False" />
 
             <Button Name="btnBack" 
                     Content="Back" 
