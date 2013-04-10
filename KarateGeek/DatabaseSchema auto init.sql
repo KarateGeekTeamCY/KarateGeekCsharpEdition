@@ -249,7 +249,7 @@ CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio
 
 CREATE TABLE game_points(
     id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
+    game_id         INTEGER         REFERENCES games(id) ON DELETE CASCADE,
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
@@ -262,7 +262,7 @@ CREATE TABLE game_points(
 
 CREATE TABLE game_score (
     id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
+    game_id         INTEGER         REFERENCES games(id) ON DELETE CASCADE,
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
@@ -285,7 +285,7 @@ CREATE TABLE game_score (
 
 create table game_flag (
     id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
+    game_id         INTEGER         REFERENCES games(id) ON DELETE CASCADE,
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
@@ -308,6 +308,12 @@ create table game_flag (
 --
 -- VIEW creation:
 --
+CREATE OR REPLACE VIEW athlete_tournaments_first_places AS
+select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
+(select athlete_id, ranking , tournaments_name , name from tournament_participations 
+inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '1') 
+as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
+
 
 
 CREATE OR REPLACE VIEW athlete_first_places_ind AS
@@ -316,6 +322,11 @@ FROM tournament_participations
 WHERE ranking = '1'
 GROUP BY athlete_id;
 
+CREATE OR REPLACE VIEW athlete_tournaments_second_places AS
+select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
+(select athlete_id, ranking , tournaments_name , name from tournament_participations 
+inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '2') 
+as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
 CREATE OR REPLACE VIEW athlete_second_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
@@ -323,6 +334,12 @@ FROM tournament_participations
 WHERE ranking = '2'
 GROUP BY athlete_id;
 
+
+CREATE OR REPLACE VIEW athlete_tournaments_third_places AS
+select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
+(select athlete_id, ranking , tournaments_name , name from tournament_participations 
+inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '3') 
+as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
 CREATE OR REPLACE VIEW athlete_third_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
@@ -335,9 +352,12 @@ CREATE OR REPLACE VIEW athletes_total_details AS
     SELECT athletes.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth,
         persons.phone, secondary_phone, persons.email, rank, clubs.name AS club_name, street,
         addresses.number, addresses.postal_code, cities.name as city, countries.name as country,
-        athlete_first_places_ind.count AS first_places,
-        athlete_second_places_ind.count AS second_places,
-        athlete_third_places_ind.count AS third_places
+        athlete_tournaments_first_places.ranking as first_ranking, athlete_tournaments_first_places.tournaments_name as first_tournament, 
+        athlete_tournaments_first_places.events_name as first_event, athlete_tournaments_first_places.count as first_count,
+        athlete_tournaments_second_places.ranking as second_ranking, athlete_tournaments_second_places.tournaments_name as second_tournament, 
+        athlete_tournaments_second_places.events_name as second_event, athlete_tournaments_second_places.count as second_count,
+        athlete_tournaments_third_places.ranking as third_ranking, athlete_tournaments_third_places.tournaments_name as third_tournament, 
+        athlete_tournaments_third_places.events_name as third_event, athlete_tournaments_third_places.count as third_count
 FROM persons
 JOIN athletes
     ON athletes.id = persons.id
@@ -349,17 +369,17 @@ LEFT JOIN cities
     ON cities.id = addresses.city_id
 LEFT JOIN countries
     ON countries.code = cities.country_code
-LEFT JOIN athlete_first_places_ind
-    ON athlete_first_places_ind.athlete_id = athletes.id
-LEFT JOIN athlete_second_places_ind
-    ON athlete_second_places_ind.athlete_id = athletes.id
-LEFT JOIN athlete_third_places_ind
-    ON athlete_third_places_ind.athlete_id = athletes.id;
+LEFT JOIN athlete_tournaments_first_places
+    ON athlete_tournaments_first_places.athlete_id = athletes.id
+LEFT JOIN athlete_tournaments_second_places
+    ON athlete_tournaments_second_places.athlete_id = athletes.id
+LEFT JOIN athlete_tournaments_third_places
+    ON athlete_tournaments_third_places.athlete_id = athletes.id;
 
 
 CREATE OR REPLACE VIEW judges_total_details AS
     SELECT judges.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth, persons.phone, persons.email,
-        rank, street, addresses.number, addresses.postal_code, cities.name AS city, countries.name AS country
+        rank, class, street, addresses.number, addresses.postal_code, cities.name AS city, countries.name AS country
 FROM persons
 JOIN judges
     ON judges.id = persons.id
@@ -386,6 +406,9 @@ LEFT JOIN cities
 LEFT JOIN countries
     ON countries.code = cities.country_code;
 
+CREATE or REPLACE VIEW tournaments_events_names AS
+	SELECT tournaments.id as tournaments_id, tournaments.name as tournaments_name , events.name from tournaments 
+	inner join events on event_id = events.id;
 
 CREATE or REPLACE VIEW events_total_details AS
     SELECT events.name AS event, events.date,official,locations.name AS location,

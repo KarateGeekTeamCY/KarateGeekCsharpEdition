@@ -135,6 +135,7 @@ namespace KarateGeek.guis
         private int _editTournamentId = 0;
         private int editTeamsNum = 0;
         private bool editInitializationFinished = false;
+        private bool editTournamentLotterised = false;
 
 
         public EventTournamentManagement(Window sender)
@@ -1845,6 +1846,14 @@ namespace KarateGeek.guis
 
                 if (editTSuggestionList.SelectedIndex != -1)
                 {
+                    if(Boolean.Parse(editFilteredTournaments.Tables[0].Rows[index][10].ToString())){
+                        MessageBox.Show("Update or delete of these tournament will also delete tournament participants and lottery!", "Message!",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                        editTournamentLotterised = true;
+                    }else{
+                        editTournamentLotterised = false;
+                    }
                     editSuggestionChange = true;  //dixnei oti ginetai allagi twn listeners mesa apo suggestion change
                     ListData item = (ListData)editTSuggestionList.SelectedItem;
                     _editTournamentId = item.id;
@@ -1856,6 +1865,7 @@ namespace KarateGeek.guis
                     else
                         btnEditTSave.IsEnabled = false;
 
+                    
                     this.tbEditTName.Text = editFilteredTournaments.Tables[0].Rows[index][1].ToString();
                     sex = editFilteredTournaments.Tables[0].Rows[index][2].ToString();
                     ageFrom = editFilteredTournaments.Tables[0].Rows[index][3].ToString();
@@ -2934,11 +2944,23 @@ namespace KarateGeek.guis
         {
             if (checkNullOrEmptyFields("tournament", false) && checkWrongFields("tournament", false) && editCheckTeams())
             {
-                tournamentConnection.UpdateTournament(_editTournamentId, _editTournamentName, _editTournamentSex, _editTournamentAgeFrom, _editTournamentAgeTo, _editTournamentLevelFrom, _editTournamentLevelTo, _editTournamentGameType, _editTournamentScoringType, _editTournamentEventId);
-                editParticpantsDeletionDB();
-                editParticipantsInsertionDB();
-                MessageBox.Show("Succesfully saved!", "Tournament Edit", MessageBoxButton.OK);
-                initializeEditTournament(true);
+                if (!editTournamentLotterised)
+                {
+                    tournamentConnection.UpdateTournament(_editTournamentId, _editTournamentName, _editTournamentSex, _editTournamentAgeFrom, _editTournamentAgeTo, _editTournamentLevelFrom, _editTournamentLevelTo, _editTournamentGameType, _editTournamentScoringType, _editTournamentEventId);
+                    editParticpantsDeletionDB();
+                    editParticipantsInsertionDB();
+                    MessageBox.Show("Succesfully saved!", "Tournament Edit", MessageBoxButton.OK);
+                    initializeEditTournament(true);
+                }
+                else
+                {
+                    tournamentConnection.deleteTournament(_editTournamentId);
+                    _editTournamentId = tournamentConnection.InsertNewTournament(_editTournamentName, _editTournamentSex, _editTournamentAgeFrom, _editTournamentAgeTo, _editTournamentLevelFrom, _editTournamentLevelTo, _editTournamentGameType, _editTournamentScoringType, _editTournamentEventId);
+                    
+                    editParticipantsInsertionDB();
+                    MessageBox.Show("Succesfully saved!Old participants and lottery have been deleted", "Tournament Edit", MessageBoxButton.OK);
+                    initializeEditTournament(true);
+                }
             }
         }
 
@@ -2947,11 +2969,14 @@ namespace KarateGeek.guis
             switch (warningTournamentDeletionMessage(_editTournamentName))
             {
                 case "OK":
-                    editParticpantsDeletionDB();
-                    tournamentConnection.deleteTournament(_editTournamentId);
+                   
+                        editParticpantsDeletionDB();
+                        tournamentConnection.deleteTournament(_editTournamentId);
 
-                    MessageBox.Show("Succesfully deleted!", "Tournament Delete", MessageBoxButton.OK);
-                    initializeEditTournament(true);
+                        MessageBox.Show("Succesfully deleted!", "Tournament Delete", MessageBoxButton.OK);
+                        initializeEditTournament(true);
+                    
+   
                     break;
             }
         }
@@ -3207,6 +3232,7 @@ namespace KarateGeek.guis
                     break;
             }
         }
+
 
         public void editParticpantsDeletionDB()
         {
@@ -4077,6 +4103,7 @@ namespace KarateGeek.guis
         private void initializeEditTournament(Boolean clearAll)
         {
             editInitializationFinished = false;
+            editTournamentLotterised = false;
             _editTournamentId = 0;
             _editTournamentTeamId = 0;
             editSelectedParticipants = new List<List<AthleteData>>();
@@ -4347,7 +4374,7 @@ namespace KarateGeek.guis
         private bool isEventSelected(bool newMode){
             if (newMode)
             {
-                if (cmbNewTEventChooser.SelectedIndex == 0)
+                if (newInitializationFinished && cmbNewTEventChooser.SelectedIndex == 0)
                 {
                     MessageBox.Show("Please select an Event.", "Message",
                   MessageBoxButton.OK,
@@ -4357,7 +4384,7 @@ namespace KarateGeek.guis
             }
             else
             {
-                if (cmbEditTEventChooser.SelectedIndex == 0)
+                if (editInitializationFinished && cmbEditTEventChooser.SelectedIndex == 0)
                 {
                     MessageBox.Show("Please select an Event.", "Message",
                   MessageBoxButton.OK,
