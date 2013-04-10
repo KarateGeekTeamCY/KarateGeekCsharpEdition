@@ -42,6 +42,13 @@ namespace KarateGeek.guis
         private double _treamdMean = 0;
 
 
+        private Boolean aFlag = false;
+        private Boolean bFlag = false;
+        private Boolean cFlag = false;
+        private Boolean dFlag = false;
+        private Boolean eFlag = false;
+
+
 
 
         private Game _game;
@@ -208,11 +215,22 @@ namespace KarateGeek.guis
             try
             {
                 this._scoreA = double.Parse(this.scoreA.Text);
-                this._computeMean();
+
+                if (_scoreA > 0 && _scoreA <= 10)
+                {
+                    this._computeMean();
+                    aFlag = true;
+                }
+                else
+                {
+                    this.scoreA.Text = "";
+                    aFlag = false;
+                }
+
             }
             catch (Exception ex)
             {
-
+                this.scoreA.Text = "";
             }
         }
 
@@ -221,11 +239,22 @@ namespace KarateGeek.guis
             try
             {
                 this._scoreB = double.Parse(this.scoreB.Text);
-                this._computeMean();
+
+                if (_scoreB > 0 && _scoreB <= 10)
+                {
+                    this._computeMean();
+                    bFlag = true;
+                }
+                else
+                {
+                    this.scoreB.Text = "";
+                    bFlag = false;
+                }
+
             }
             catch (Exception ex)
             {
-
+                this.scoreB.Text = "";
             }
 
 
@@ -237,14 +266,23 @@ namespace KarateGeek.guis
 
             try
             {
-
-
                 this._scoreC = double.Parse(this.scoreC.Text);
-                this._computeMean();
+
+                if (_scoreC > 0 && _scoreC <= 10)
+                {
+                    this._computeMean();
+                    cFlag = true;
+                }
+                else
+                {
+                    this.scoreC.Text = "";
+                    cFlag = false;
+                }
+
             }
             catch (Exception ex)
             {
-
+                this.scoreA.Text = "";
             }
 
         }
@@ -255,11 +293,22 @@ namespace KarateGeek.guis
             try
             {
                 this._scoreD = double.Parse(this.scoreD.Text);
-                this._computeMean();
+
+                if (_scoreD > 0 && _scoreD <= 10)
+                {
+                    this._computeMean();
+                    dFlag = true;
+                }
+                else
+                {
+                    this.scoreD.Text = "";
+                    dFlag = false;
+                }
+
             }
             catch (Exception ex)
             {
-
+                this.scoreD.Text = "";
             }
 
 
@@ -271,11 +320,22 @@ namespace KarateGeek.guis
             try
             {
                 this._scoreE = double.Parse(this.scoreE.Text);
-                this._computeMean();
+
+                if (_scoreE > 0 && _scoreE <= 10)
+                {
+                    this._computeMean();
+                    eFlag = true;
+                }
+                else
+                {
+                    this.scoreE.Text = "";
+                    eFlag = false;
+                }
+
             }
             catch (Exception ex)
             {
-
+                this.scoreE.Text = "";
             }
 
 
@@ -291,7 +351,7 @@ namespace KarateGeek.guis
         private void eventJudgePickerA_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._judgeAId = this._DTjudges.Rows[this.eventJudgePickerA.SelectedIndex][0].ToString();
-            
+
             this.updatejudgemem();
         }
 
@@ -354,51 +414,64 @@ namespace KarateGeek.guis
         {
             //EveSupScoreConnection scoreconn = new EveSupScoreConnection();
 
-            int _scoreAts = 0;
-            int _scoreBts = 0;
-            int _scoreCts = 0;
-            int _scoreDts = 0;
-            int _scoreEts = 0;
-            int _treamdMeants = 0;
-
-            _scoreAts = (int)(_scoreA * 10);
-            _scoreBts = (int)(_scoreB * 10);
-            _scoreCts = (int)(_scoreC * 10);
-            _scoreDts = (int)(_scoreD * 10);
-            _scoreEts = (int)(_scoreE * 10);
-            _treamdMeants = (int)(_treamdMean * 10);
-
-
-            if (_isTeam)
+            if (aFlag && bFlag && cFlag && dFlag && eFlag)
             {
-                this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
-            }
-            else if (_isSync)
-            {
-                this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+
+                int _scoreAts = 0;
+                int _scoreBts = 0;
+                int _scoreCts = 0;
+                int _scoreDts = 0;
+                int _scoreEts = 0;
+                int _treamdMeants = 0;
+
+                _scoreAts = (int)(_scoreA * 10);
+                _scoreBts = (int)(_scoreB * 10);
+                _scoreCts = (int)(_scoreC * 10);
+                _scoreDts = (int)(_scoreD * 10);
+                _scoreEts = (int)(_scoreE * 10);
+                _treamdMeants = (int)(_treamdMean * 10);
+
+
+                if (_isTeam)
+                {
+                    this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
                     _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
+                }
+                else if (_isSync)
+                {
+                    this.InsertNewScoreTeam(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                        _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
+                }
+                else
+                {
+                    this.InsertNewScoreInd(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                    _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
+                }
+
+
+                CoreDatabaseConnection conn = new CoreDatabaseConnection();
+                string sql = "update games set is_finished = 'true' where id = '" + this._game.gameId + "'; ";
+                conn.NonQuery(sql);
+
+                //this._sender.update();
+
+                this._sender.tournament.load();
+                this._sender.advanceAthletes();
+                this._sender.tournament.load();
+
+
+                _sender.Visibility = System.Windows.Visibility.Visible;
+                this.Close();
+
             }
-            else
+            else 
             {
-                this.InsertNewScoreInd(_game.gameId, _participationId, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                _scoreAts, _scoreBts, _scoreCts, _scoreDts, _scoreEts, _treamdMeants);
+
+                string result = MessageBox.Show("Please insert correct scores for all the judges. Ranging 0-10", "Message!",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information).ToString();
+            
             }
-
-
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            string sql = "update games set is_finished = 'true' where id = '" + this._game.gameId + "'; ";
-            conn.NonQuery(sql);
-
-            //this._sender.update();
-
-            this._sender.tournament.load();
-            this._sender.advanceAthletes();
-            this._sender.tournament.load();
-
-
-            _sender.Visibility = System.Windows.Visibility.Visible;
-            this.Close();
 
         }
 

@@ -40,6 +40,13 @@ namespace KarateGeek.guis
         private Boolean _judgeDchooseWhite;
         private Boolean _judgeEchooseWhite;
 
+        private Boolean _aClicked = false;
+        private Boolean _bClicked = false;
+        private Boolean _cClicked = false;
+        private Boolean _dClicked = false;
+        private Boolean _eClicked = false;
+
+
         private Game _game;
         private Tournament _tournament;
 
@@ -80,7 +87,7 @@ namespace KarateGeek.guis
 
             //this.darkGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Gray));
             //this.lightGray.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.LightGray));
-            
+
 
 
             //this.reda.Style = lightGray;
@@ -194,6 +201,7 @@ namespace KarateGeek.guis
         private void reda_Click(object sender, RoutedEventArgs e)
         {
             this._judgeAchooseWhite = false;
+            this._aClicked = true;
 
             this.reda.Background = Brushes.Red;
             this.whitea.Background = Brushes.DarkGray;
@@ -203,7 +211,8 @@ namespace KarateGeek.guis
         private void whitea_Click(object sender, RoutedEventArgs e)
         {
             this._judgeAchooseWhite = true;
-            
+            this._aClicked = true;
+
             this.reda.Background = Brushes.DarkGray;
             this.whitea.Background = Brushes.White;
         }
@@ -212,6 +221,7 @@ namespace KarateGeek.guis
         {
 
             this._judgeBchooseWhite = false;
+            this._bClicked = true;
 
             this.redb.Background = Brushes.Red;
             this.whiteb.Background = Brushes.DarkGray;
@@ -221,6 +231,7 @@ namespace KarateGeek.guis
         private void whiteb_Click(object sender, RoutedEventArgs e)
         {
             this._judgeBchooseWhite = true;
+            this._bClicked = true;
 
             this.redb.Background = Brushes.DarkGray;
             this.whiteb.Background = Brushes.White;
@@ -229,6 +240,7 @@ namespace KarateGeek.guis
         private void redc_Click(object sender, RoutedEventArgs e)
         {
             this._judgeCchooseWhite = false;
+            this._cClicked = true;
 
             this.redc.Background = Brushes.Red;
             this.whitec.Background = Brushes.DarkGray;
@@ -237,6 +249,7 @@ namespace KarateGeek.guis
         private void whitec_Click(object sender, RoutedEventArgs e)
         {
             this._judgeCchooseWhite = true;
+            this._cClicked = true;
 
             this.redc.Background = Brushes.DarkGray;
             this.whitec.Background = Brushes.White;
@@ -245,6 +258,7 @@ namespace KarateGeek.guis
         private void redd_Click(object sender, RoutedEventArgs e)
         {
             this._judgeDchooseWhite = false;
+            this._dClicked = true;
 
             this.redd.Background = Brushes.Red;
             this.whited.Background = Brushes.DarkGray;
@@ -253,6 +267,7 @@ namespace KarateGeek.guis
         private void whited_Click(object sender, RoutedEventArgs e)
         {
             this._judgeDchooseWhite = true;
+            this._dClicked = true;
 
             this.redd.Background = Brushes.DarkGray;
             this.whited.Background = Brushes.White;
@@ -261,6 +276,7 @@ namespace KarateGeek.guis
         private void rede_Click(object sender, RoutedEventArgs e)
         {
             this._judgeEchooseWhite = false;
+            this._eClicked = true;
 
             this.rede.Background = Brushes.Red;
             this.whitee.Background = Brushes.DarkGray;
@@ -269,6 +285,7 @@ namespace KarateGeek.guis
         private void whitee_Click(object sender, RoutedEventArgs e)
         {
             this._judgeEchooseWhite = true;
+            this._eClicked = true;
 
             this.rede.Background = Brushes.DarkGray;
             this.whitee.Background = Brushes.White;
@@ -285,46 +302,55 @@ namespace KarateGeek.guis
             //
             //  this need testing
             //
-            int whitecount = 0;
-
-            if (_judgeAchooseWhite)
-                whitecount++;
-
-            if (_judgeBchooseWhite)
-                whitecount++;
-
-            if (_judgeCchooseWhite)
-                whitecount++;
-
-            if (_judgeDchooseWhite)
-                whitecount++;
-
-            if (_judgeEchooseWhite)
-                whitecount++;
-
-
-            EveSupFlagConnection econn = new EveSupFlagConnection();
-            if (whitecount > 2)
+            if (_aClicked && _bClicked && _cClicked && _dClicked && _eClicked)
             {
-                econn.InsertNewflagInd(_gameId, _participantB, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                    _judgeAchooseWhite, _judgeBchooseWhite, _judgeCchooseWhite, _judgeDchooseWhite, _judgeEchooseWhite);
+                int whitecount = 0;
+
+                if (_judgeAchooseWhite)
+                    whitecount++;
+
+                if (_judgeBchooseWhite)
+                    whitecount++;
+
+                if (_judgeCchooseWhite)
+                    whitecount++;
+
+                if (_judgeDchooseWhite)
+                    whitecount++;
+
+                if (_judgeEchooseWhite)
+                    whitecount++;
+
+
+                EveSupFlagConnection econn = new EveSupFlagConnection();
+                if (whitecount > 2)
+                {
+                    econn.InsertNewflagInd(_gameId, _participantB, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                        _judgeAchooseWhite, _judgeBchooseWhite, _judgeCchooseWhite, _judgeDchooseWhite, _judgeEchooseWhite);
+                }
+                else
+                {
+                    // NOTE the _judgeAchooseWhite are with !(NOT) that means that if the judge dind't choose the white
+                    // site then he automaticaly choose red site
+                    econn.InsertNewflagInd(_gameId, _participantA, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
+                        !_judgeAchooseWhite, !_judgeBchooseWhite, !_judgeCchooseWhite, !_judgeDchooseWhite, !_judgeEchooseWhite);
+                }
+
+                CoreDatabaseConnection conn = new CoreDatabaseConnection();
+                string sql = "update games set is_finished = 'true' where id = '" + this._game.gameId + "'; ";
+                conn.NonQuery(sql);
+
+
+                this._sender.update();
+                _sender.Visibility = System.Windows.Visibility.Visible;
+                this.Close();
             }
             else
             {
-                // NOTE the _judgeAchooseWhite are with !(NOT) that means that if the judge dind't choose the white
-                // site then he automaticaly choose red site
-                econn.InsertNewflagInd(_gameId, _participantA, _judgeAId, _judgeBId, _judgeCId, _judgeDId, _judgeEId,
-                    !_judgeAchooseWhite, !_judgeBchooseWhite, !_judgeCchooseWhite, !_judgeDchooseWhite, !_judgeEchooseWhite);
+                string result = MessageBox.Show("Please insert the choise of all 5 judges.", "Message!",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information).ToString();
             }
-
-            CoreDatabaseConnection conn = new CoreDatabaseConnection();
-            string sql = "update games set is_finished = 'true' where id = '" + this._game.gameId + "'; ";
-            conn.NonQuery(sql);
-
-
-            this._sender.update();
-            _sender.Visibility = System.Windows.Visibility.Visible;
-            this.Close();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
