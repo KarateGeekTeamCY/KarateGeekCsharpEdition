@@ -308,6 +308,10 @@ create table game_flag (
 --
 -- VIEW creation:
 --
+CREATE or REPLACE VIEW tournaments_events_names AS
+	SELECT tournaments.id as tournaments_id, tournaments.name as tournaments_name , events.name from tournaments 
+	inner join events on event_id = events.id;
+
 CREATE OR REPLACE VIEW athlete_tournaments_first_places AS
 select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
 (select athlete_id, ranking , tournaments_name , name from tournament_participations 
@@ -347,7 +351,6 @@ FROM tournament_participations
 WHERE ranking = '3'
 GROUP BY athlete_id;
 
-
 CREATE OR REPLACE VIEW athletes_total_details AS
     SELECT athletes.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth,
         persons.phone, secondary_phone, persons.email, rank, clubs.name AS club_name, street,
@@ -375,7 +378,6 @@ LEFT JOIN athlete_tournaments_second_places
     ON athlete_tournaments_second_places.athlete_id = athletes.id
 LEFT JOIN athlete_tournaments_third_places
     ON athlete_tournaments_third_places.athlete_id = athletes.id;
-
 
 CREATE OR REPLACE VIEW judges_total_details AS
     SELECT judges.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth, persons.phone, persons.email,
@@ -406,9 +408,6 @@ LEFT JOIN cities
 LEFT JOIN countries
     ON countries.code = cities.country_code;
 
-CREATE or REPLACE VIEW tournaments_events_names AS
-	SELECT tournaments.id as tournaments_id, tournaments.name as tournaments_name , events.name from tournaments 
-	inner join events on event_id = events.id;
 
 CREATE or REPLACE VIEW events_total_details AS
     SELECT events.name AS event, events.date,official,locations.name AS location,
