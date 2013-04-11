@@ -700,11 +700,23 @@ namespace KarateGeek.guis
 
 
             if (this.listBoxCurrentGameList.SelectedIndex != -1)
+            {
+                bool play;
+
                 if (gm.isFinished)
                 {
-                    MessageBox.Show("This game have already played!", "Already played", MessageBoxButton.OK, MessageBoxImage.Information);
+                    string res = MessageBox.Show("This game have already played. Do you wont to replay it?", "Already played", MessageBoxButton.YesNo, MessageBoxImage.Information).ToString();
+                    
+                    if (res == "Yes")
+                    {play = true;}
+                    else
+                    {play = false; }
+
                 }
                 else
+                { play = true;}
+
+                if (play)
                     switch (tournament.gameType)
                     {
                         case Strings.indKata:
@@ -769,6 +781,7 @@ namespace KarateGeek.guis
 
                             break;
                     }
+            }
 
         }
 

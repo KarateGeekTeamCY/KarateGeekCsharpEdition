@@ -147,8 +147,30 @@ namespace KarateGeek.guis
 
 
             this._sender.Hide();
+            this.cleanupdb();
             this.Show();
         }
+
+
+        private void cleanupdb()
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+            int nextp = int.Parse(this._game.phase) - 1;
+            //DataTable dt;
+            string sql;
+
+            
+
+            foreach (Athlete ath in this._game.participants)
+            {
+                 sql = "DELETE FROM game_score WHERE game_id = '" + this._game.gameId
+                + "' AND athlete_id = '" + ath.id + "';";
+                
+                conn.NonQuery(sql);
+
+            }
+        }
+
 
 
         #region private functions

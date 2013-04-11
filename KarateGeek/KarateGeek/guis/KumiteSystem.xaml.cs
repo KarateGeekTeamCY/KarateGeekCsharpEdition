@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Collections;
+using System.Data;
 //using System.Windows.Forms;
 
 
@@ -59,6 +60,9 @@ namespace KarateGeek.guis
             this._sender = sender;
             //this._gameId = gameId;
             this._LoadData();
+
+            cleanupdb();
+
             this.Show();
         }
 
@@ -74,6 +78,68 @@ namespace KarateGeek.guis
             this._leftAthleteTeamId = this.game.participants.ElementAt(0).teamId;
             this._rightAthleteTeamId = this.game.participants.ElementAt(1).teamId;
         }
+
+
+        private void cleanupdb()
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+            int nextp = int.Parse(this.game.phase) - 1;
+            DataTable dt;
+
+            //
+            // checked
+            //
+            string sql = "DELETE FROM game_points WHERE game_id = '" + this._gameId
+                + "' AND (athlete_id = '" + this.game.participants.ElementAt(0).id
+                + "' OR athlete_id = '" + this.game.participants.ElementAt(1).id + "');";
+
+            conn.NonQuery(sql);
+
+
+            if (this._sender.tournament.isInd)
+            {
+
+                sql = "SELECT gp.id FROM game_participations gp JOIN games g ON gp.game_id = g.id WHERE g.phase = '" + nextp
+                   + "' AND (athlete_id = '" + this.game.participants.ElementAt(0).id
+                   + "' OR athlete_id = '" + this.game.participants.ElementAt(1).id + "');";
+
+                dt = conn.Query(sql).Tables[0];
+
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    sql = "DELETE FROM game_participations WHERE id = '" + dr[0].ToString() + "';";
+                    conn.NonQuery(sql);
+                }
+
+            }
+            else
+            {
+
+                sql = "SELECT ttp.id FROM team_tournament_participations ttp JOIN tournament_participations tp ON ttp.id = tp.team_id WHERE tp.tournament_id = '" + this._sender.tournament.id
+                    + "'  AND (athlete_id = '" + this.game.participants.ElementAt(0).id
+                    + "' OR athlete_id = '" + this.game.participants.ElementAt(1).id + "');";
+
+                dt = conn.Query(sql).Tables[0];
+
+                sql = "SELECT gp.id FROM game_participations gp JOIN games g ON gp.game_id = g.id WHERE g.phase = '" + nextp
+                   + "' AND (team_id = '" + dt.Rows[0][0].ToString()
+                   + "' OR team_id = '" + dt.Rows[1][0].ToString() + "');";
+
+                dt = conn.Query(sql).Tables[0];
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    sql = "DELETE FROM game_participations WHERE id = '" + dr[0].ToString() + "';";
+                    conn.NonQuery(sql);
+                }
+
+            }
+
+
+        }
+
+
 
 
         private void switchSides_Click(object sender, RoutedEventArgs e)
@@ -227,12 +293,12 @@ namespace KarateGeek.guis
                     sb.Append(this.competitorB.Text).Append(" -> ");
                 }
 
-                if (scoreLeft >= 8 )
+                if (scoreLeft >= 8)
                 {
-                    Style red =  new Style { TargetType = typeof(TextBox) };
+                    Style red = new Style { TargetType = typeof(TextBox) };
                     red.Setters.Add(new Setter(TextBox.BackgroundProperty, Brushes.Red));
 
-                    scoreA.Style = red;              
+                    scoreA.Style = red;
                 }
 
                 if (scoreRight >= 8)
@@ -241,7 +307,7 @@ namespace KarateGeek.guis
                     red.Setters.Add(new Setter(TextBox.BackgroundProperty, Brushes.Red));
 
                     scoreB.Style = red;
-                
+
                 }
 
 
@@ -298,7 +364,7 @@ namespace KarateGeek.guis
             this._sender.Show();
             this.Close();
         }
-        
+
 
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -315,7 +381,7 @@ namespace KarateGeek.guis
             {
                 insertPointToDB(_leftAthleteId, new Point("init", 0, pointsIndex, Strings.left));
                 insertPointToDB(_rightAthleteId, new Point("init", 0, pointsIndex, Strings.right));
-            
+
             }
 
             foreach (Point p in _pointsHistory)
@@ -387,9 +453,9 @@ namespace KarateGeek.guis
             this._sender.Show();
         }
 
-        
 
-        
+
+
     }
 
 

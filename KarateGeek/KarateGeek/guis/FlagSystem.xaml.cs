@@ -170,10 +170,29 @@ namespace KarateGeek.guis
             this.RedCompetitor.Content = athA.lastName + " " + athA.firstName;
             this.WhiteCompetitor.Content = athB.lastName + " " + athB.firstName;
 
-
+            this.cleanupdb();
             //this._sender.Hide();
             this.Show();
 
+        }
+
+
+        private void cleanupdb()
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+            int nextp = int.Parse(this._game.phase) - 1;
+            //DataTable dt;
+            string sql;
+
+            
+            foreach (Athlete ath in this._game.participants)
+            {
+                sql = "DELETE FROM game_flag WHERE game_id = '" + this._game.gameId
+               + "' AND athlete_id = '" + ath.id + "';";
+
+                conn.NonQuery(sql);
+
+            }
         }
 
 
