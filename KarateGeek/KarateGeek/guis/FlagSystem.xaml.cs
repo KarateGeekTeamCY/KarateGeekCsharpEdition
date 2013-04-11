@@ -171,7 +171,7 @@ namespace KarateGeek.guis
             this.WhiteCompetitor.Content = athB.lastName + " " + athB.firstName;
 
             this.cleanupdb();
-            //this._sender.Hide();
+
             this.Show();
 
         }

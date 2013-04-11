@@ -58,7 +58,7 @@ namespace KarateGeek.guis
             InitializeComponent();
             this.game = game;
             this._sender = sender;
-            //this._gameId = gameId;
+
             this._LoadData();
 
             cleanupdb();
