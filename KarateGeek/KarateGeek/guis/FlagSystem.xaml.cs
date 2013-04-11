@@ -366,7 +366,7 @@ namespace KarateGeek.guis
             }
             else
             {
-                string result = MessageBox.Show("Please insert the choise of all 5 judges.", "Message!",
+                string result = MessageBox.Show("Please choose all flag colors.", "Message!",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information).ToString();
             }
