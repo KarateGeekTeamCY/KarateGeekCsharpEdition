@@ -40,6 +40,7 @@ namespace KarateGeek.guis
         {
             InitializeComponent();
 
+            this.Topmost = true;
 
             this._sender = sender;
             this._tournament = tournament;
@@ -114,6 +115,7 @@ namespace KarateGeek.guis
             this.Close();
         }
 
+
         private bool setSaveEnable()
         {
             if (tieList.SelectedIndex == -1)
@@ -129,6 +131,7 @@ namespace KarateGeek.guis
             else
                 saveWinner.IsEnabled = false;
         }
+
     }
 }
 

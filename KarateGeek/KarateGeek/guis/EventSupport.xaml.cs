@@ -113,6 +113,18 @@ namespace KarateGeek.guis
 
             loadGames();
 
+            if (this.graph != null)
+            {
+                graph.Close();
+                graph = null;
+
+            }
+
+            if (this.graph == null)
+            {
+                this.graph = new LotteryGraph(long.Parse(this.tournament.id));
+            }
+
         }
 
 
@@ -145,10 +157,11 @@ namespace KarateGeek.guis
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             _sender.Show();
-            this.Close();
 
             /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
             if (this.graph != null) this.graph.Close();
+
+            this.Close();
         }
 
         #endregion
@@ -169,6 +182,11 @@ namespace KarateGeek.guis
                 this._indexCurrentphase = 6;
                 this._indexNextPhase = 5;
 
+
+                this.lblCurentPhase.Content = "ROUND OF 128";
+                this.lblNextPhase.Content = "ROUND OF 64";
+
+
                 curentGames = this.tournament.games128;
                 futureGames = this.tournament.games64;
             }
@@ -177,6 +195,11 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 5;
                 this._indexNextPhase = 4;
+
+
+                this.lblCurentPhase.Content = "ROUND OF 62";
+                this.lblNextPhase.Content = "ROUND OF 32";
+               
 
                 curentGames = this.tournament.games64;
                 futureGames = this.tournament.games32;
@@ -187,6 +210,11 @@ namespace KarateGeek.guis
                 this._indexCurrentphase = 4;
                 this._indexNextPhase = 3;
 
+
+                this.lblCurentPhase.Content = "ROUND OF 32";
+                this.lblNextPhase.Content = "ROUND OF 16";
+
+
                 curentGames = this.tournament.games32;
                 futureGames = this.tournament.games16;
             }
@@ -195,6 +223,11 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 3;
                 this._indexNextPhase = 2;
+
+
+                this.lblCurentPhase.Content = "ROUND OF 16";
+                this.lblNextPhase.Content = "ROUND OF 8";
+
 
                 curentGames = this.tournament.games16;
                 futureGames = this.tournament.games8;
@@ -205,6 +238,12 @@ namespace KarateGeek.guis
                 this._indexCurrentphase = 2;
                 this._indexNextPhase = 1;
 
+
+                this.lblCurentPhase.Content = "ROUND OF 8";
+                this.lblNextPhase.Content = "SEMIFINAL";
+
+
+
                 curentGames = this.tournament.games8;
                 futureGames = this.tournament.games4;
             }
@@ -213,6 +252,11 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 1;
                 this._indexNextPhase = 0;
+
+
+                this.lblCurentPhase.Content = "SEMIFINAL";
+                this.lblNextPhase.Content = "FINAL";
+
 
                 curentGames = this.tournament.games4;
                 futureGames = this.tournament.games2;
@@ -223,6 +267,13 @@ namespace KarateGeek.guis
             {
                 this._indexCurrentphase = 0;
                 this._indexNextPhase = -1;
+
+
+               
+                    this.lblCurentPhase.Content = "FINAL";
+                    this.lblNextPhase.Content = "";
+                
+
 
                 curentGames = this.tournament.games2;
                 futureGames = null;
@@ -244,20 +295,20 @@ namespace KarateGeek.guis
                 //
             }
 
-            /** EXPERIMENTAL (ugly) code, for testing purposes (added by Nicholas): */
-            if (this.graph == null)
+
+            if (this.graph != null)
             {
-                /** EXPERIMENTAL code, for testing purposes (added by Nicholas): */
-                this.graph = new LotteryGraph(long.Parse(this.tournament.id));      // predictably, this could crash for Team Kumite because it needs at least 1 record in the table (tournaments JOIN games ON tournaments.id = games.tournament_id)
-                // solution: we used the hasEnoughElementsToPrint() method in the LotteryGraph GUI, especially for team kumite.
+                this.graph.updateGraph();
+
+                //
+                // this i thing need to be commented out
+                //
+                try { this.graph.Show(); }
+                catch (InvalidOperationException e)
+                {
+                    this.graph = new LotteryGraph(long.Parse(this.tournament.id));
+                }
             }
-            else { this.graph.updateGraph(); }
-
-
-            try { this.graph.Show(); }
-            catch (InvalidOperationException e)
-            { this.graph = new LotteryGraph(long.Parse(this.tournament.id)); }
-
 
             this.Activate();
 
@@ -341,7 +392,7 @@ namespace KarateGeek.guis
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
                         //VV           Click to add game members
-                        temp.Append("Click to add game members.");
+                        temp.Append("\nClick to add game members.\n");
                     }
                     else
                     {
@@ -707,7 +758,7 @@ namespace KarateGeek.guis
                             break;
                         case Strings.teamKumite:
 
-                            if (this.listBoxCurrentGameList.SelectedItem.ToString() == "Click to add game members.")
+                            if (this.listBoxCurrentGameList.SelectedItem.ToString() == "\nClick to add game members.\n")
                             {
                                 KumiteTeamMaker choser = new KumiteTeamMaker(gm, this);
                             }
@@ -755,7 +806,7 @@ namespace KarateGeek.guis
             //  checks if the tournament type is versus or presentation
             //  and then does the apropriate preparetion for the winner advancement
             //
-
+            
             Game gm = null;
             bool ready = false;
             int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
@@ -825,6 +876,8 @@ namespace KarateGeek.guis
                     this.advancePresentationWinners();
             }
 
+
+            
             //
             // i don't now if thats necessary here but will live it
             // as a note in case of something go wrong
@@ -879,12 +932,8 @@ namespace KarateGeek.guis
 
                 if (nextPhase == -1)
                 {
-                    //
-                    // TO-DO
-                    //
-                    // its the winner there is no more rounds
-                    // do something about that
-                    //
+
+                    // if (this.graph != null) this.graph.Close();
 
                     if (this.tournament.gameType == Strings.teamKumite)
                     {

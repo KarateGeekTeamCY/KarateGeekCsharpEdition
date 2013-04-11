@@ -34,10 +34,22 @@ namespace KarateGeek.lottery
         //private readonly char spaceChar = '□';
         private readonly char spaceChar = ' ';
 
-        //private const int defaultMaxNameLength = 18;    // default 18, same as the "defaultWidth" for the LotteryBox class
-        private int maxNameLength;
+        private int mNL = 18;                       // any initial value is OK
+        private int maxNameLength {                 // within permitted range 
+            get {
+                  return (mNL < maxNameLengthLowerBound) ? maxNameLengthLowerBound :
+                         (mNL > maxNameLengthUpperBound) ? maxNameLengthUpperBound :
+                         mNL;
+                }
+            set {
+                  mNL = (value < maxNameLengthLowerBound) ? maxNameLengthLowerBound :
+                        (value > maxNameLengthUpperBound) ? maxNameLengthUpperBound :
+                        value;
+                }
+        }
         private int maxNameLengthUpperBound = 38;
-        private int maxNameLengthLowerBound =  8;
+        private int maxNameLengthLowerBound = Strings.phase.Max(str => str.Length) + 2; // Phase labels must fit, to prevent crashes
+        private const int defaultMaxNameLengthUpperBound = 38;
 
 
         /** Class methods: **/
@@ -71,17 +83,20 @@ namespace KarateGeek.lottery
         }
 
         // overloaded constructor (useful for the lotteries of "unlotterised" tournaments)
-        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId)
+        public LotteryPrinter(List<Tuple<List<long>, bool, int, int>> lotterySets, long tournamentId, int maxLength = defaultMaxNameLengthUpperBound)
             : this(tournamentId)
         {
+            this.maxNameLengthUpperBound = maxLength;
+
             bigBox = makeBigBox(lotterySets);
         }
 
 
         // overloaded constructor (useful for "lotterised" tournaments)
-        public LotteryPrinter(long tournamentId, bool dummyParameter = true)    // dummyParameter is a quick hack!
+        public LotteryPrinter(long tournamentId, bool dummyParameter = true, int maxLength = defaultMaxNameLengthUpperBound)
             : this(tournamentId)
         {
+            this.maxNameLengthUpperBound = maxLength;
 
             /** Now get the "lotterySets" by querying the database: */
 

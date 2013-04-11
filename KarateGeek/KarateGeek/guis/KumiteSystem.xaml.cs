@@ -219,12 +219,12 @@ namespace KarateGeek.guis
                 if (p.side == Strings.right)
                 {
                     scoreRight += p.points;
-                    sb.Append("Comp. B -> ");
+                    sb.Append(this.competitorA.Text).Append(" -> ");
                 }
                 else // if (p.side == Strings.left)
                 {
                     scoreLeft += p.points;
-                    sb.Append("Comp. A -> ");
+                    sb.Append(this.competitorB.Text).Append(" -> ");
                 }
 
                 if (scoreLeft >= 8 )
