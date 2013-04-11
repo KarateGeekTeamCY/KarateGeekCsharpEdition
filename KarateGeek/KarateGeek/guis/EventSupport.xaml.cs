@@ -128,14 +128,6 @@ namespace KarateGeek.guis
         }
 
 
-        private void cleanTeamKumite()
-        {
-            CoreDatabaseConnection con = new CoreDatabaseConnection();
-            string sql = "";
-
-
-
-        }
 
 
 
@@ -199,7 +191,7 @@ namespace KarateGeek.guis
 
                 this.lblCurentPhase.Content = "ROUND OF 62";
                 this.lblNextPhase.Content = "ROUND OF 32";
-               
+
 
                 curentGames = this.tournament.games64;
                 futureGames = this.tournament.games32;
@@ -269,10 +261,10 @@ namespace KarateGeek.guis
                 this._indexNextPhase = -1;
 
 
-               
-                    this.lblCurentPhase.Content = "FINAL";
-                    this.lblNextPhase.Content = "";
-                
+
+                this.lblCurentPhase.Content = "FINAL";
+                this.lblNextPhase.Content = "";
+
 
 
                 curentGames = this.tournament.games2;
@@ -290,6 +282,7 @@ namespace KarateGeek.guis
             { this.listBoxNextGameList.ItemsSource = this.loadStrings(futureGames); }
             else
             {
+                this.listBoxNextGameList.ItemsSource = "";
                 //
                 // final game msg
                 //
@@ -474,9 +467,6 @@ namespace KarateGeek.guis
 
             return aths;
         }
-
-
-
 
 
 
@@ -806,7 +796,7 @@ namespace KarateGeek.guis
             //  checks if the tournament type is versus or presentation
             //  and then does the apropriate preparetion for the winner advancement
             //
-            
+
             Game gm = null;
             bool ready = false;
             int gameIndex = this.listBoxCurrentGameList.SelectedIndex;
@@ -877,7 +867,7 @@ namespace KarateGeek.guis
             }
 
 
-            
+
             //
             // i don't now if thats necessary here but will live it
             // as a note in case of something go wrong
@@ -930,22 +920,44 @@ namespace KarateGeek.guis
                 currentPhase = int.Parse(gm.phase);
                 nextPhase = currentPhase - 1;
 
+                string loser;
+
+                if (this.tournament.gameType == Strings.teamKumite)
+                {
+                    if (gm.participants.ElementAt(0).teamId != winner)
+                    {
+                        loser = gm.participants.ElementAt(0).teamId;
+                    }
+                    else
+                    {
+                        loser = gm.participants.ElementAt(1).teamId;
+                    }
+                }
+                else
+                {
+                    if (gm.participants.ElementAt(0).id != winner)
+                    {
+                        loser = gm.participants.ElementAt(0).id;
+                    }
+                    else
+                    {
+                        loser = gm.participants.ElementAt(1).id;
+                    }
+                }
+
+
                 if (nextPhase == -1)
                 {
-
-                    // if (this.graph != null) this.graph.Close();
-
                     if (this.tournament.gameType == Strings.teamKumite)
                     {
                         setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
-
+                        setRankingByPhase(new Team(loser), _indexCurrentphase.ToString());
 
                     }
                     else
                     {
                         setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
-
-
+                        setRankingByPhase(new Athlete(loser, tournament.id), _indexCurrentphase.ToString());
                     }
                 }
                 else
@@ -975,8 +987,8 @@ namespace KarateGeek.guis
 
                             conn.NonQuery(sql);
                         }
-
                         setRankingByPhase(new Team(winner), _indexNextPhase.ToString());
+                        setRankingByPhase(new Team(loser), _indexCurrentphase.ToString());
                     }
                     else
                     {
@@ -987,6 +999,7 @@ namespace KarateGeek.guis
                         conn.NonQuery(sql);
 
                         setRankingByPhase(new Athlete(winner, tournament.id), _indexNextPhase.ToString());
+                        setRankingByPhase(new Athlete(loser, tournament.id), _indexCurrentphase.ToString());
                     }
 
                 }
@@ -1225,6 +1238,9 @@ namespace KarateGeek.guis
         {
             string ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
 
+            if (ranking.Equals("4"))
+                ranking = "3";
+
             insertRank(athlete, ranking);
         }
 
@@ -1232,6 +1248,9 @@ namespace KarateGeek.guis
         private void setRankingByPhase(Team team, string phase)
         {
             string ranking = Math.Pow(2, int.Parse(phase) + 1).ToString();
+
+            if (ranking.Equals("4"))
+                ranking = "3";
 
             insertRank(team, ranking);
         }
