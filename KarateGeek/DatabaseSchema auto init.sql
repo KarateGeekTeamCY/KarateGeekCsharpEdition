@@ -330,7 +330,7 @@ CREATE OR REPLACE VIEW athlete_tournaments_second_places AS
 select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
 (select athlete_id, ranking , tournaments_name , name from tournament_participations 
 inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '2') 
-as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
+as t1 inner join athlete_second_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
 CREATE OR REPLACE VIEW athlete_second_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
@@ -343,7 +343,7 @@ CREATE OR REPLACE VIEW athlete_tournaments_third_places AS
 select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
 (select athlete_id, ranking , tournaments_name , name from tournament_participations 
 inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '3') 
-as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
+as t1 inner join athlete_third_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
 CREATE OR REPLACE VIEW athlete_third_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
