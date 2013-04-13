@@ -486,23 +486,17 @@ namespace KarateGeek.ReportDatasets {
             
             private global::System.Data.DataColumn columncountry;
             
-            private global::System.Data.DataColumn columnfirst_ranking;
-            
             private global::System.Data.DataColumn columnfirst_tournament;
             
             private global::System.Data.DataColumn columnfirst_event;
             
             private global::System.Data.DataColumn columnfirst_count;
             
-            private global::System.Data.DataColumn columnsecond_ranking;
-            
             private global::System.Data.DataColumn columnsecond_tournament;
             
             private global::System.Data.DataColumn columnsecond_event;
             
             private global::System.Data.DataColumn columnsecond_count;
-            
-            private global::System.Data.DataColumn columnthird_ranking;
             
             private global::System.Data.DataColumn columnthird_tournament;
             
@@ -673,14 +667,6 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn first_rankingColumn {
-                get {
-                    return this.columnfirst_ranking;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn first_tournamentColumn {
                 get {
                     return this.columnfirst_tournament;
@@ -705,14 +691,6 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn second_rankingColumn {
-                get {
-                    return this.columnsecond_ranking;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn second_tournamentColumn {
                 get {
                     return this.columnsecond_tournament;
@@ -732,14 +710,6 @@ namespace KarateGeek.ReportDatasets {
             public global::System.Data.DataColumn second_countColumn {
                 get {
                     return this.columnsecond_count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn third_rankingColumn {
-                get {
-                    return this.columnthird_ranking;
                 }
             }
             
@@ -821,18 +791,15 @@ namespace KarateGeek.ReportDatasets {
                         string postal_code, 
                         string city, 
                         string country, 
-                        long first_ranking, 
                         string first_tournament, 
                         string first_event, 
-                        short first_count, 
-                        string second_ranking, 
+                        int first_count, 
                         string second_tournament, 
                         string second_event, 
-                        short second_count, 
-                        string third_ranking, 
+                        int second_count, 
                         string third_tournament, 
                         string third_event, 
-                        short third_count) {
+                        int third_count) {
                 athlete_dtRow rowathlete_dtRow = ((athlete_dtRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -851,15 +818,12 @@ namespace KarateGeek.ReportDatasets {
                         postal_code,
                         city,
                         country,
-                        first_ranking,
                         first_tournament,
                         first_event,
                         first_count,
-                        second_ranking,
                         second_tournament,
                         second_event,
                         second_count,
-                        third_ranking,
                         third_tournament,
                         third_event,
                         third_count};
@@ -901,15 +865,12 @@ namespace KarateGeek.ReportDatasets {
                 this.columnpostal_code = base.Columns["postal_code"];
                 this.columncity = base.Columns["city"];
                 this.columncountry = base.Columns["country"];
-                this.columnfirst_ranking = base.Columns["first_ranking"];
                 this.columnfirst_tournament = base.Columns["first_tournament"];
                 this.columnfirst_event = base.Columns["first_event"];
                 this.columnfirst_count = base.Columns["first_count"];
-                this.columnsecond_ranking = base.Columns["second_ranking"];
                 this.columnsecond_tournament = base.Columns["second_tournament"];
                 this.columnsecond_event = base.Columns["second_event"];
                 this.columnsecond_count = base.Columns["second_count"];
-                this.columnthird_ranking = base.Columns["third_ranking"];
                 this.columnthird_tournament = base.Columns["third_tournament"];
                 this.columnthird_event = base.Columns["third_event"];
                 this.columnthird_count = base.Columns["third_count"];
@@ -950,29 +911,23 @@ namespace KarateGeek.ReportDatasets {
                 base.Columns.Add(this.columncity);
                 this.columncountry = new global::System.Data.DataColumn("country", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncountry);
-                this.columnfirst_ranking = new global::System.Data.DataColumn("first_ranking", typeof(long), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnfirst_ranking);
                 this.columnfirst_tournament = new global::System.Data.DataColumn("first_tournament", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfirst_tournament);
                 this.columnfirst_event = new global::System.Data.DataColumn("first_event", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfirst_event);
-                this.columnfirst_count = new global::System.Data.DataColumn("first_count", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnfirst_count = new global::System.Data.DataColumn("first_count", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnfirst_count);
-                this.columnsecond_ranking = new global::System.Data.DataColumn("second_ranking", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnsecond_ranking);
                 this.columnsecond_tournament = new global::System.Data.DataColumn("second_tournament", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnsecond_tournament);
                 this.columnsecond_event = new global::System.Data.DataColumn("second_event", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnsecond_event);
-                this.columnsecond_count = new global::System.Data.DataColumn("second_count", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnsecond_count = new global::System.Data.DataColumn("second_count", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnsecond_count);
-                this.columnthird_ranking = new global::System.Data.DataColumn("third_ranking", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnthird_ranking);
                 this.columnthird_tournament = new global::System.Data.DataColumn("third_tournament", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnthird_tournament);
                 this.columnthird_event = new global::System.Data.DataColumn("third_event", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnthird_event);
-                this.columnthird_count = new global::System.Data.DataColumn("third_count", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnthird_count = new global::System.Data.DataColumn("third_count", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnthird_count);
             }
             
@@ -3446,22 +3401,6 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public long first_ranking {
-                get {
-                    try {
-                        return ((long)(this[this.tableathlete_dt.first_rankingColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'first_ranking\' in table \'athlete_dt\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableathlete_dt.first_rankingColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string first_tournament {
                 get {
                     try {
@@ -3494,10 +3433,10 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short first_count {
+            public int first_count {
                 get {
                     try {
-                        return ((short)(this[this.tableathlete_dt.first_countColumn]));
+                        return ((int)(this[this.tableathlete_dt.first_countColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'first_count\' in table \'athlete_dt\' is DBNull.", e);
@@ -3505,22 +3444,6 @@ namespace KarateGeek.ReportDatasets {
                 }
                 set {
                     this[this.tableathlete_dt.first_countColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string second_ranking {
-                get {
-                    try {
-                        return ((string)(this[this.tableathlete_dt.second_rankingColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'second_ranking\' in table \'athlete_dt\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableathlete_dt.second_rankingColumn] = value;
                 }
             }
             
@@ -3558,10 +3481,10 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short second_count {
+            public int second_count {
                 get {
                     try {
-                        return ((short)(this[this.tableathlete_dt.second_countColumn]));
+                        return ((int)(this[this.tableathlete_dt.second_countColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'second_count\' in table \'athlete_dt\' is DBNull.", e);
@@ -3569,22 +3492,6 @@ namespace KarateGeek.ReportDatasets {
                 }
                 set {
                     this[this.tableathlete_dt.second_countColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string third_ranking {
-                get {
-                    try {
-                        return ((string)(this[this.tableathlete_dt.third_rankingColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'third_ranking\' in table \'athlete_dt\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableathlete_dt.third_rankingColumn] = value;
                 }
             }
             
@@ -3622,10 +3529,10 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short third_count {
+            public int third_count {
                 get {
                     try {
-                        return ((short)(this[this.tableathlete_dt.third_countColumn]));
+                        return ((int)(this[this.tableathlete_dt.third_countColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'third_count\' in table \'athlete_dt\' is DBNull.", e);
@@ -3830,18 +3737,6 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Isfirst_rankingNull() {
-                return this.IsNull(this.tableathlete_dt.first_rankingColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setfirst_rankingNull() {
-                this[this.tableathlete_dt.first_rankingColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Isfirst_tournamentNull() {
                 return this.IsNull(this.tableathlete_dt.first_tournamentColumn);
             }
@@ -3878,18 +3773,6 @@ namespace KarateGeek.ReportDatasets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Issecond_rankingNull() {
-                return this.IsNull(this.tableathlete_dt.second_rankingColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setsecond_rankingNull() {
-                this[this.tableathlete_dt.second_rankingColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool Issecond_tournamentNull() {
                 return this.IsNull(this.tableathlete_dt.second_tournamentColumn);
             }
@@ -3922,18 +3805,6 @@ namespace KarateGeek.ReportDatasets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void Setsecond_countNull() {
                 this[this.tableathlete_dt.second_countColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Isthird_rankingNull() {
-                return this.IsNull(this.tableathlete_dt.third_rankingColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Setthird_rankingNull() {
-                this[this.tableathlete_dt.third_rankingColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

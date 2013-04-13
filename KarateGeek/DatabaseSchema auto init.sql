@@ -304,7 +304,6 @@ create table game_flag (
     PRIMARY KEY (id)
 );
 
-
 --
 -- VIEW creation:
 --
@@ -351,16 +350,72 @@ FROM tournament_participations
 WHERE ranking = '3'
 GROUP BY athlete_id;
 
+drop type rtype cascade;
+
+create type rtype as (rn_first bigint, id_first integer, first_ranking integer, first_tournament varchar, first_event varchar, first_count bigint,
+		       rn_second bigint, id_second integer, second_ranking integer, second_tournament varchar, second_event varchar, second_count bigint,
+		       rn_third bigint, id_third integer, third_ranking integer, third_tournament varchar, third_event varchar, third_count bigint);
+
+--drop function rewards();
+create or replace function rewards () returns setof rtype as
+$$
+DECLARE
+ i integer;
+ result rtype;
+BEGIN
+FOR i IN SELECT id FROM athletes 
+ LOOP
+   return query
+
+select t1.rn, t1.id, t1.first_ranking, t1.first_tournament, t1.first_event, t1.first_count,
+       t2.rn, t2.id, t2.second_ranking, t2.second_tournament, t2.second_event, t2.second_count,
+       t3.rn, t3.id, t3.third_ranking, t3.third_tournament, t3.third_event, t3.third_count
+
+ from (select row_number() over (order by athletes.id) as rn, athletes.id, athlete_tournaments_first_places.ranking as first_ranking, athlete_tournaments_first_places.tournaments_name as first_tournament, 
+        athlete_tournaments_first_places.events_name as first_event, athlete_tournaments_first_places.count as first_count
+        FROM persons
+JOIN athletes
+    ON athletes.id = persons.id
+    JOIN athlete_tournaments_first_places
+    ON athlete_tournaments_first_places.athlete_id = athletes.id 
+    where athletes.id = i) as t1
+
+   full outer join (
+
+    select row_number() over (order by athletes.id) as rn, athletes.id, athlete_tournaments_second_places.ranking as second_ranking, athlete_tournaments_second_places.tournaments_name as second_tournament, 
+        athlete_tournaments_second_places.events_name as second_event, athlete_tournaments_second_places.count as second_count
+        FROM persons
+JOIN athletes
+    ON athletes.id = persons.id
+    JOIN athlete_tournaments_second_places
+    ON athlete_tournaments_second_places.athlete_id = athletes.id
+    where athletes.id = i
+)as t2 on t1.rn = t2.rn
+full outer join (select row_number() over (order by athletes.id) as rn, athletes.id, athlete_tournaments_third_places.ranking as third_ranking, athlete_tournaments_third_places.tournaments_name as third_tournament, 
+        athlete_tournaments_third_places.events_name as third_event, athlete_tournaments_third_places.count as third_count
+        FROM persons
+JOIN athletes
+    ON athletes.id = persons.id
+    JOIN athlete_tournaments_third_places
+    ON athlete_tournaments_third_places.athlete_id = athletes.id
+    where athletes.id = i)
+as t3 on t1.rn = t3.rn;
+
+   
+ END LOOP;
+END
+$$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE VIEW athletes_rewards AS 
+SELECT coalesce(id_first, id_second, id_third) as athlete_id, first_tournament, first_event , first_count ,
+		second_tournament , second_event , second_count , third_tournament, third_event FROM rewards();
+
+
 CREATE OR REPLACE VIEW athletes_total_details AS
     SELECT athletes.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth,
         persons.phone, secondary_phone, persons.email, rank, clubs.name AS club_name, street,
         addresses.number, addresses.postal_code, cities.name as city, countries.name as country,
-        athlete_tournaments_first_places.ranking as first_ranking, athlete_tournaments_first_places.tournaments_name as first_tournament, 
-        athlete_tournaments_first_places.events_name as first_event, athlete_tournaments_first_places.count as first_count,
-        athlete_tournaments_second_places.ranking as second_ranking, athlete_tournaments_second_places.tournaments_name as second_tournament, 
-        athlete_tournaments_second_places.events_name as second_event, athlete_tournaments_second_places.count as second_count,
-        athlete_tournaments_third_places.ranking as third_ranking, athlete_tournaments_third_places.tournaments_name as third_tournament, 
-        athlete_tournaments_third_places.events_name as third_event, athlete_tournaments_third_places.count as third_count
+        first_tournament, first_event , first_count , second_tournament , second_event , second_count , third_tournament, third_event
 FROM persons
 JOIN athletes
     ON athletes.id = persons.id
@@ -372,12 +427,8 @@ LEFT JOIN cities
     ON cities.id = addresses.city_id
 LEFT JOIN countries
     ON countries.code = cities.country_code
-LEFT JOIN athlete_tournaments_first_places
-    ON athlete_tournaments_first_places.athlete_id = athletes.id
-LEFT JOIN athlete_tournaments_second_places
-    ON athlete_tournaments_second_places.athlete_id = athletes.id
-LEFT JOIN athlete_tournaments_third_places
-    ON athlete_tournaments_third_places.athlete_id = athletes.id;
+JOIN athletes_rewards
+    ON athletes.id = athletes_rewards.athlete_id;
 
 CREATE OR REPLACE VIEW judges_total_details AS
     SELECT judges.id, first_name, last_name, fathers_name, initcap(sex) as sex, date_of_birth, persons.phone, persons.email,
