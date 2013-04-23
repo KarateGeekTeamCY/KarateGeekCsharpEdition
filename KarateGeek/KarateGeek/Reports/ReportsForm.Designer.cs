@@ -47,6 +47,9 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.crystalReportViewer6 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.GraphCrystalReport1 = new KarateGeek.Reports.GraphCrystalReport();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.crystalReportViewer7 = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.ScoreSheetCrystalReport1 = new KarateGeek.Reports.ScoreSheetCrystalReport();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -54,6 +57,7 @@
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage1
@@ -87,6 +91,7 @@
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -209,6 +214,29 @@
             this.crystalReportViewer6.Size = new System.Drawing.Size(1171, 669);
             this.crystalReportViewer6.TabIndex = 0;
             // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.crystalReportViewer7);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(1177, 675);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "tabPage7";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // crystalReportViewer7
+            // 
+            this.crystalReportViewer7.ActiveViewIndex = 0;
+            this.crystalReportViewer7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.crystalReportViewer7.Cursor = System.Windows.Forms.Cursors.Default;
+            this.crystalReportViewer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.crystalReportViewer7.Location = new System.Drawing.Point(3, 3);
+            this.crystalReportViewer7.Name = "crystalReportViewer7";
+            this.crystalReportViewer7.ReportSource = this.ScoreSheetCrystalReport1;
+            this.crystalReportViewer7.Size = new System.Drawing.Size(1171, 669);
+            this.crystalReportViewer7.TabIndex = 0;
+            // 
             // ReportsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -224,6 +252,7 @@
             this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -249,6 +278,9 @@
         private System.Windows.Forms.TabPage tabPage6;
         private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer6;
         private GraphCrystalReport GraphCrystalReport1;
+        private System.Windows.Forms.TabPage tabPage7;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crystalReportViewer7;
+        private ScoreSheetCrystalReport ScoreSheetCrystalReport1;
 
     }
 }
