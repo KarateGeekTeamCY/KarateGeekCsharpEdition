@@ -202,7 +202,11 @@ CREATE TABLE lottery_graph (
     PRIMARY KEY(id)
 );
 
-
+CREATE TABLE progress_graph (
+    id              INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
+    graph           TEXT,
+    PRIMARY KEY(id)
+);
 CREATE TABLE games (
     id              SERIAL,
     phase           INTEGER         NOT NULL,
@@ -350,7 +354,7 @@ FROM tournament_participations
 WHERE ranking = '3'
 GROUP BY athlete_id;
 
-drop type rtype cascade;
+drop type if exists rtype cascade;
 
 create type rtype as (rn_first bigint, id_first integer, first_ranking integer, first_tournament varchar, first_event varchar, first_count bigint,
 		       rn_second bigint, id_second integer, second_ranking integer, second_tournament varchar, second_event varchar, second_count bigint,

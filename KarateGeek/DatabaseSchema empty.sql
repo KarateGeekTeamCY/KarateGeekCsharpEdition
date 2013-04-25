@@ -202,6 +202,12 @@ CREATE TABLE lottery_graph (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE progress_graph (
+    id              INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
+    graph           TEXT,
+    PRIMARY KEY(id)
+);
+
 
 CREATE TABLE games (
     id              SERIAL,
@@ -249,7 +255,7 @@ CREATE TABLE game_participations (      -- gia atomika (versus) tha mpainoun dio
 
 CREATE TABLE game_points(
     id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
+    game_id         INTEGER         REFERENCES games(id) ON DELETE CASCADE,
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
@@ -262,7 +268,7 @@ CREATE TABLE game_points(
 
 CREATE TABLE game_score (
     id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
+    game_id         INTEGER         REFERENCES games(id) ON DELETE CASCADE,
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
@@ -285,7 +291,7 @@ CREATE TABLE game_score (
 
 create table game_flag (
     id              SERIAL,
-    game_id         INTEGER         REFERENCES games(id),
+    game_id         INTEGER         REFERENCES games(id) ON DELETE CASCADE,
     athlete_id      INTEGER         REFERENCES athletes(id),
     team_id         INTEGER         REFERENCES team_tournament_participations(id), --breaks naming conventions for brevity
 
@@ -312,13 +318,6 @@ CREATE or REPLACE VIEW tournaments_events_names AS
 	SELECT tournaments.id as tournaments_id, tournaments.name as tournaments_name , events.name from tournaments 
 	inner join events on event_id = events.id;
 
-CREATE OR REPLACE VIEW athlete_tournaments_first_places AS
-select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
-(select athlete_id, ranking , tournaments_name , name from tournament_participations 
-inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '1') 
-as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
-
-
 
 CREATE OR REPLACE VIEW athlete_first_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
@@ -326,16 +325,30 @@ FROM tournament_participations
 WHERE ranking = '1'
 GROUP BY athlete_id;
 
+
+CREATE OR REPLACE VIEW athlete_tournaments_first_places AS
+select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
+(select athlete_id, ranking , tournaments_name , name from tournament_participations 
+inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '1') 
+as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
+
+CREATE OR REPLACE VIEW athlete_second_places_ind AS
+SELECT athlete_id, COUNT(athlete_id)
+FROM tournament_participations
+WHERE ranking = '2'
+GROUP BY athlete_id;
+
+
 CREATE OR REPLACE VIEW athlete_tournaments_second_places AS
 select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
 (select athlete_id, ranking , tournaments_name , name from tournament_participations 
 inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '2') 
 as t1 inner join athlete_second_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
-CREATE OR REPLACE VIEW athlete_second_places_ind AS
+CREATE OR REPLACE VIEW athlete_third_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
 FROM tournament_participations
-WHERE ranking = '2'
+WHERE ranking = '3'
 GROUP BY athlete_id;
 
 
@@ -345,13 +358,8 @@ select t1.athlete_id, ranking, tournaments_name, name as events_name, count from
 inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '3') 
 as t1 inner join athlete_third_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
-CREATE OR REPLACE VIEW athlete_third_places_ind AS
-SELECT athlete_id, COUNT(athlete_id)
-FROM tournament_participations
-WHERE ranking = '3'
-GROUP BY athlete_id;
 
-drop type rtype cascade;
+drop type if exists rtype cascade;
 
 create type rtype as (rn_first bigint, id_first integer, first_ranking integer, first_tournament varchar, first_event varchar, first_count bigint,
 		       rn_second bigint, id_second integer, second_ranking integer, second_tournament varchar, second_event varchar, second_count bigint,

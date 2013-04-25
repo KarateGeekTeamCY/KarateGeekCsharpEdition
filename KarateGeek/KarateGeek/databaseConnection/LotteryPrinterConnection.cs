@@ -185,9 +185,11 @@ namespace KarateGeek.databaseConnection
 
         public void savePrintableLotteryString(long tournamentId, string graph)
         {
-            string sql = "INSERT INTO lottery_graph VALUES ('" + tournamentId + "', '" + graph + "');";
+            string sql1 = "INSERT INTO lottery_graph  VALUES ('" + tournamentId + "', '" + graph + "');";
 
-            this.NonQuery(sql);
+            string sql2 = "INSERT INTO progress_graph VALUES ('" + tournamentId + "', '" + graph + "');";
+
+            this.NonQuery(sql1 + sql2);
         }
 
 
