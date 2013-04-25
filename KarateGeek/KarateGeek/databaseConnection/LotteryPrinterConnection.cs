@@ -195,7 +195,7 @@ namespace KarateGeek.databaseConnection
 
         public void updatePrintableLotteryString(long tournamentId, string graph)
         {
-            string sql = "UPDATE lottery_graph SET graph = '" + graph + "' "
+            string sql = "UPDATE progress_graph SET graph = '" + graph + "' "
                        +" WHERE id = '" + tournamentId + "';";
 
             this.NonQuery(sql);
