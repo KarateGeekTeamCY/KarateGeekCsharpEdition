@@ -23,6 +23,7 @@ namespace KarateGeek.Reports
             loadTournamentForm();
             loadClubForm();
             loadLotteryForm();
+            loadScoreSheetForm();
         }
 
         private void loadAthleteForm()
@@ -37,7 +38,7 @@ namespace KarateGeek.Reports
 
             if (ds.Tables[0].Rows.Count == 0)
             {
-                MessageBox.Show("No data Found", "Athletes Forms");
+                //MessageBox.Show("No data Found", "Athletes Forms");
                 return;
             }
 
@@ -59,7 +60,7 @@ namespace KarateGeek.Reports
 
             if (ds.Tables[0].Rows.Count == 0)
             {
-                MessageBox.Show("No data Found", "Judges Forms");
+                //MessageBox.Show("No data Found", "Judges Forms");
                 return;
             }
 
@@ -81,7 +82,7 @@ private void loadEventForm()
 
     if (ds.Tables[0].Rows.Count == 0)
     {
-        MessageBox.Show("No data Found", "Events Forms");
+        //MessageBox.Show("No data Found", "Events Forms");
         return;
     }
 
@@ -138,7 +139,7 @@ private void loadTournamentForm()
 
     if (ds.Tables[0].Rows.Count == 0)
     {
-        MessageBox.Show("No data Found", "Events Forms");
+        //MessageBox.Show("No data Found", "Events Forms");
         return;
     }
 
@@ -197,7 +198,7 @@ private void loadClubForm()
 
     if (ds.Tables[0].Rows.Count == 0)
     {
-        MessageBox.Show("No data Found", "Clubs Forms");
+        //MessageBox.Show("No data Found", "Clubs Forms");
         return;
     }
     // Setting data source of our report object
@@ -218,7 +219,7 @@ private void loadLotteryForm()
 
     if (ds.Tables[0].Rows.Count == 0)
     {
-        MessageBox.Show("No data Found", "Lottery Forms");
+        //MessageBox.Show("No data Found", "Lottery Forms");
         return;
     }
     //apo edw pernei to string apo to graph
@@ -252,9 +253,50 @@ private void loadLotteryForm()
     crystalReportViewer6.ReportSource = objRpt;
 }
 
-private void loadScoreSheet()
+private void loadScoreSheetForm()
 {
+    ScoreSheetCrystalReport objRpt = new ScoreSheetCrystalReport();
+    DataSet ds = new DataSet();
+    string sql = "SELECT * FROM progress_graph_view";
 
+    Npgsql.NpgsqlDataAdapter adapter = new CoreDatabaseConnection().AdapterForQuery(sql);
+
+    adapter.Fill(ds, "scoresheet_dt");
+
+    if (ds.Tables[0].Rows.Count == 0)
+    {
+        //MessageBox.Show("No data Found", "Lottery Forms");
+        return;
+    }
+    //apo edw pernei to string apo to graph
+    string graph;
+    int i = 0;
+    int maxLines = 0;
+    int lines;
+    int maxLineChars = 0;
+    int lineChars;
+    foreach (DataRow row in ds.Tables[0].Rows)
+    {
+        graph = ds.Tables[0].Rows[i][0].ToString();
+        lines = graph.Count(f => f == '\n');
+        if (lines > maxLines)
+            maxLines = lines;
+        lineChars = graph.IndexOf('\n');
+        if (lineChars > maxLineChars)
+            maxLineChars = lineChars;
+
+    }
+    FieldObject fo = (FieldObject)objRpt.ReportDefinition.ReportObjects["graph1"];
+    //edw kanei diaforous elegxous gia na dei poio einai to katalilo megethos
+    //to default apo to crystal einai 10
+    if (maxLines > 64)
+        fo.ApplyFont(new Font("consolas", 7F));
+
+
+    // Setting data source of our report object
+    objRpt.SetDataSource(ds);
+    // Binding the crystalReportViewer with our report object. 
+    crystalReportViewer7.ReportSource = objRpt;
 }
     }
 }

@@ -573,6 +573,11 @@ CREATE OR REPLACE VIEW graph_view AS
 FROM lottery_graph NATURAL JOIN tournaments;
 
 
+CREATE OR REPLACE VIEW progress_graph_view AS
+    SELECT graph, name
+FROM progress_graph NATURAL JOIN tournaments;
+
+
 -- rollback transaction (useful for checking syntax):
 --ROLLBACK;
 
