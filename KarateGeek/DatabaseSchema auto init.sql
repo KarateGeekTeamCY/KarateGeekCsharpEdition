@@ -202,6 +202,12 @@ CREATE TABLE lottery_graph (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE progress_graph (
+    id              INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
+    graph           TEXT,
+    PRIMARY KEY(id)
+);
+
 
 CREATE TABLE games (
     id              SERIAL,
@@ -304,6 +310,7 @@ create table game_flag (
     PRIMARY KEY (id)
 );
 
+
 --
 -- VIEW creation:
 --
@@ -318,11 +325,20 @@ CREATE or REPLACE VIEW tournaments_events_names AS
 	SELECT tournaments.id as tournaments_id, tournaments.name as tournaments_name , events.name from tournaments 
 	inner join events on event_id = events.id;
 
+
+CREATE OR REPLACE VIEW athlete_first_places_ind AS
+SELECT athlete_id, COUNT(athlete_id)
+FROM tournament_participations
+WHERE ranking = '1'
+GROUP BY athlete_id;
+
+
 CREATE OR REPLACE VIEW athlete_tournaments_first_places AS
 select t1.athlete_id, ranking, tournaments_name, name as events_name, count from 
 (select athlete_id, ranking , tournaments_name , name from tournament_participations 
 inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '1') 
 as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
+
 
 
 
@@ -354,14 +370,14 @@ inner join tournaments_events_names on tournament_id = tournaments_id where rank
 as t1 inner join athlete_third_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
 
-
---drop type rtype cascade;
+drop type if exists rtype cascade;
 
 create type rtype as (rn_first bigint, id_first integer, first_ranking integer, first_tournament varchar, first_event varchar, first_count bigint,
 		       rn_second bigint, id_second integer, second_ranking integer, second_tournament varchar, second_event varchar, second_count bigint,
 		       rn_third bigint, id_third integer, third_ranking integer, third_tournament varchar, third_event varchar, third_count bigint);
 
---drop function rewards();
+
+
 create or replace function rewards () returns setof rtype as
 $$
 DECLARE
@@ -432,7 +448,7 @@ LEFT JOIN cities
     ON cities.id = addresses.city_id
 LEFT JOIN countries
     ON countries.code = cities.country_code
-JOIN athletes_rewards
+LEFT JOIN athletes_rewards
     ON athletes.id = athletes_rewards.athlete_id;
 
 CREATE OR REPLACE VIEW judges_total_details AS
@@ -567,6 +583,11 @@ JOIN cities
 CREATE OR REPLACE VIEW graph_view AS
     SELECT graph, name
 FROM lottery_graph NATURAL JOIN tournaments;
+
+
+CREATE OR REPLACE VIEW progress_graph_view AS
+    SELECT graph, name
+FROM progress_graph NATURAL JOIN tournaments;
 
 
 -- rollback transaction (useful for checking syntax):

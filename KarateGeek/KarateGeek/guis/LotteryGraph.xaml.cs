@@ -86,9 +86,15 @@ namespace KarateGeek.guis
 
 
         /** TODO: Remove this overload, it's here only for testing/comparison purposes... */
-        public void updateGraph(string content, string title = "Displaying externally provided content (for comparison)")   // overloaded
+        //public void updateGraph(string content, string title = "Displaying externally provided content (for comparison)")   // overloaded
+        //{
+        //    this.Title = title;
+        //    terminal.Content = content;
+        //    this.Activate();
+        //}
+
+        public void updateGraph(string content)     // overloaded
         {
-            this.Title = title;
             terminal.Content = content;
             this.Activate();
         }

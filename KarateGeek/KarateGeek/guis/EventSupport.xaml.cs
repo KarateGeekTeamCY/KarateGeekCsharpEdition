@@ -14,6 +14,8 @@ using System.Diagnostics;
 using KarateGeek.databaseConnection;
 using System.Data;
 
+using KarateGeek.lottery;
+
 namespace KarateGeek.guis
 {
     /// <summary>
@@ -289,9 +291,13 @@ namespace KarateGeek.guis
             }
 
 
+            string progressGraphString = new LotteryPrinter(long.Parse(this.tournament.id)).ToString();
+
+            new LotteryPrinterConnection().updatePrintableLotteryString(long.Parse(this.tournament.id), progressGraphString);
+
             if (this.graph != null)
             {
-                this.graph.updateGraph();
+                this.graph.updateGraph(progressGraphString);
 
                 //
                 // this i thing need to be commented out
