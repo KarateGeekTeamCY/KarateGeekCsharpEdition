@@ -40,6 +40,7 @@ namespace KarateGeek
          *  6th kyu             –  White (at least 5 Month of traning or more)
          */
 
+        /*
         public const string rank01 = "White";
         public const string rank02 = "Yellow";
         public const string rank03 = "Orange";
@@ -63,6 +64,34 @@ namespace KarateGeek
                                                  rank09, rank10
                                                };
 
+        */
+
+        public const string rank01 = "White (9th kyū)";
+        public const string rank02 = "Yellow (8th kyū)";
+        public const string rank03 = "Orange (7th kyū)";
+        public const string rank04 = "Green (6th kyū)";
+        public const string rank05 = "Blue (5th kyū)";
+        public const string rank06 = "Purple (4th kyū)";
+        public const string rank07 = "Brown I (3rd kyū)";
+        public const string rank08 = "Brown II (2nd kyū)";
+        public const string rank09 = "Brown III (1st kyū)";
+        public const string rank10 = "Black (1st dan)";
+        public const string rank11 = "Black (2nd dan)";
+        public const string rank12 = "Black (3rd dan)";
+        public const string rank13 = "BLack (4th dan)";
+        public const string rank14 = "BLack (5th dan)";
+        public const string rank15 = "BLack (6th dan)";
+        public const string rank16 = "BLack (7th dan)";
+        public const string rank17 = "BLack (8th dan)";
+        public const string rank18 = "BLack (9th dan)";
+        public const string rank19 = "BLack (10th dan)";
+
+        public static readonly string[] rank = { rank01, rank02, rank03, rank04,
+                                                 rank05, rank06, rank07, rank08,
+                                                 rank09, rank10, rank11, rank12,
+                                                 rank13, rank14, rank15, rank16,
+                                                 rank17, rank18, rank19
+                                               };
 
         //
         // game types (tournament types)
