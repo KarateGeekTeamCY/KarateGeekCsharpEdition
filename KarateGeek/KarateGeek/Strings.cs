@@ -78,13 +78,13 @@ namespace KarateGeek
         public const string rank10 = "Black (1st dan)";
         public const string rank11 = "Black (2nd dan)";
         public const string rank12 = "Black (3rd dan)";
-        public const string rank13 = "BLack (4th dan)";
-        public const string rank14 = "BLack (5th dan)";
-        public const string rank15 = "BLack (6th dan)";
-        public const string rank16 = "BLack (7th dan)";
-        public const string rank17 = "BLack (8th dan)";
-        public const string rank18 = "BLack (9th dan)";
-        public const string rank19 = "BLack (10th dan)";
+        public const string rank13 = "Black (4th dan)";
+        public const string rank14 = "Black (5th dan)";
+        public const string rank15 = "Black (6th dan)";
+        public const string rank16 = "Black (7th dan)";
+        public const string rank17 = "Black (8th dan)";
+        public const string rank18 = "Black (9th dan)";
+        public const string rank19 = "Black (10th dan)";
 
         public static readonly string[] rank = { rank01, rank02, rank03, rank04,
                                                  rank05, rank06, rank07, rank08,
