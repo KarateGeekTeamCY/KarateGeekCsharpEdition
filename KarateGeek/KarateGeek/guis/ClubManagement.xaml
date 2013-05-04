@@ -47,7 +47,7 @@
 
 
                     </Grid.ColumnDefinitions>
-                    <Label Content="Name"
+                    <Label Content="Club/Association"
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
@@ -215,7 +215,7 @@
 
 
                         </Grid.ColumnDefinitions>
-                        <Label Content="Name"
+                        <Label Content="Club/Association"
                                Grid.Row="1"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>

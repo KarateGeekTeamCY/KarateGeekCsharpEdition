@@ -60,19 +60,29 @@ namespace KarateGeek.guis
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(userName))
+            if (userId != -1)
             {
-                string result = MessageBox.Show("You didn't choose any valid user name, please try again.", "No user name!",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information).ToString();
-                return;
-            }else{
-                userConnection.updateUser(userId, this.userName, this.pass1,
-                this.personMan, this.eventMan, this.lottery, this.eventSup,
-                this.clubMan, this.userMan, this.reports);
+                if (string.IsNullOrEmpty(userName))
+                {
+                    string result = MessageBox.Show("You didn't choose any valid user name, please try again.", "No user name!",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information).ToString();
+                    return;
+                }
+                else
+                {
+                    userName = userName.Replace('\'', '’');
+                    userConnection.updateUser(userId, this.userName, this.pass1,
+                    this.personMan, this.eventMan, this.lottery, this.eventSup,
+                    this.clubMan, this.userMan, this.reports);
 
-                MessageBox.Show("Succesfully updated!");
-                initializeForm();
+                    MessageBox.Show("Succesfully updated!");
+                    initializeForm();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select one user to edit.", "User Edit", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -102,6 +112,7 @@ namespace KarateGeek.guis
                 return;
             }
             else {
+                userName = userName.Replace('\'', '’');
                 userConnection.insertNewUser(this.userName, this.pass1,
                 this.personMan, this.eventMan, this.lottery, this.eventSup,
                 this.clubMan , this.userMan , this.reports);
@@ -218,7 +229,7 @@ namespace KarateGeek.guis
         {
             List<ListData> list = new List<ListData>();
      
-            this.filteredUsers = userConnection.findSimilar(this.txtUserName.Text);
+            this.filteredUsers = userConnection.findSimilar(this.txtUserName.Text.Replace('\'', '’'));
 
             foreach (DataRow dr in filteredUsers.Rows)
             {

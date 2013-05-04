@@ -180,6 +180,8 @@ namespace KarateGeek.guis
             bool insertClub;
             if (checkNullOrEmptyFields(true) && checkWrongFields(true))
             {
+                _newClubName = _newClubName.Replace('\'', '’');
+                _newClubEmail = _newClubEmail.Replace('\'', '’');
                 insertClub = clubConnection.insertNewCLub(_newClubName, _newClubPhone, _newClubEmail, _newClubAddress, _newClubAddressNum, _newClubTK, _newClubCountryCode, _newClubCity);
                 if (insertClub)
                 {
@@ -251,8 +253,8 @@ namespace KarateGeek.guis
         private List<ListData> ClubfilterNames()
         {
             List<ListData> list = new List<ListData>();
-     
-            this.filteredEditClubs = clubConnection.findSimilar(this.editClubName.Text);
+
+            this.filteredEditClubs = clubConnection.findSimilar(this.editClubName.Text.Replace('\'', '’'));
 
             foreach (DataRow dr in filteredEditClubs.Tables[0].Rows)
             {
@@ -447,38 +449,54 @@ namespace KarateGeek.guis
         private void btnEditCSave_Click(object sender, RoutedEventArgs e)
         {
             bool saveClub;
-            if (checkNullOrEmptyFields(false) && checkWrongFields(false) && _editClubId != -1)
+            if (_editClubId != -1)
             {
-                saveClub = clubConnection.updateClub(_editClubId, _editClubName, _editClubPhone, _editClubEmail, _editClubAddress, _editClubAddressNum, _editClubTK, _editClubCountryCode, _editClubCity);
-                if (saveClub)
+                if (checkNullOrEmptyFields(false) && checkWrongFields(false))
                 {
-                    MessageBox.Show("Succesfully updated!", "Club Edit", MessageBoxButton.OK);
-                    initializeEditClub();
+                    _editClubName = _editClubName.Replace('\'', '’');
+                    _editClubEmail = _editClubEmail.Replace('\'', '’');
+                    saveClub = clubConnection.updateClub(_editClubId, _editClubName, _editClubPhone, _editClubEmail, _editClubAddress, _editClubAddressNum, _editClubTK, _editClubCountryCode, _editClubCity);
+                    if (saveClub)
+                    {
+                        MessageBox.Show("Succesfully updated!", "Club Edit", MessageBoxButton.OK);
+                        initializeEditClub();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error. Club not succesfully updated!", "Club edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Error. Club not succesfully updated!", "Club edit", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+            }
+            else
+            {
+                MessageBox.Show("Please select one club to edit.", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
         private void btnEditCDelete_Click(object sender, RoutedEventArgs e)
         {
             bool deleteClub;
-            switch (warningDeletionMessage(_editClubName))
+            if (_editClubId != -1)
             {
-                case "OK":
-                    deleteClub = clubConnection.deleteClub(_editClubId);
-                    if (deleteClub)
-                    {
-                        MessageBox.Show("Succesfully deleted", "Club Edit", MessageBoxButton.OK);
-                        initializeEditClub();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error. Club not succesfully deleted! There are athletes on this club!", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    break;
+                switch (warningDeletionMessage(_editClubName))
+                {
+                    case "OK":
+                        deleteClub = clubConnection.deleteClub(_editClubId);
+                        if (deleteClub)
+                        {
+                            MessageBox.Show("Succesfully deleted", "Club Edit", MessageBoxButton.OK);
+                            initializeEditClub();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error. Club not succesfully deleted! There are athletes on this club!", "Club Edit", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        break;
+                }
+            }
+            else
+            {    
+                MessageBox.Show("Please select one club to delete.", "Club Delete", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
