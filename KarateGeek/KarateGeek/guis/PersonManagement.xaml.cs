@@ -67,7 +67,7 @@ namespace KarateGeek.guis
         private string _newAthleteRank = null;
         private string _newAthleteClubId = null;
         private string _newAthleteDateOfBirth;
-
+        
         //Edit athlete variables
 
         private int _editPersonId = -1;
@@ -250,7 +250,7 @@ namespace KarateGeek.guis
         {
             List<ListData> list = new List<ListData>();
 
-            this.newFilteredAthletes = personsConnection.similarPersonsNotInAthletes(this.NewAthleteFirstName.Text);
+            this.newFilteredAthletes = personsConnection.similarPersonsNotInAthletes(this.NewAthleteFirstName.Text.Replace('\'','’'));
 
             foreach (DataRow dr in newFilteredAthletes.Tables[0].Rows)
             {
@@ -451,6 +451,7 @@ namespace KarateGeek.guis
         private void NewAthleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string name = NewAthleteFirstName.Text;
+            name = name.Replace('7', '8');
 
             if (name == "" && !_newAthleteSelected)
             {
@@ -637,6 +638,7 @@ namespace KarateGeek.guis
             bool insertAthlete;
             if (checkNullOrEmptyFields("athlete", true) && checkWrongFields("athlete", true))
             {
+                _newAthleteEmail = _newAthleteEmail.Replace('\'', '’');
                 insertAthlete = athleteConnection.InsertNewAthlete(_newPersonId, _newAthleteFirstName, _newAthleteLastName, _newAthleteFathersName, _newAthleteSex, _newAthleteDateOfBirth, _newAthleteFirstPhone, _newAthleteSecondPhone, _newAthleteEmail, _newAthleteAddress, _newAthleteAddressNum, _newAthleteTK, _newAthleteCountryCode, _newAthleteCity, _newAthleteRank, _newAthleteClubId);
                 if (insertAthlete)
                 {
@@ -664,7 +666,7 @@ namespace KarateGeek.guis
         {
             List<ListData> list = new List<ListData>();
 
-            this.editFilteredAthletes = personsConnection.similarAthletes(this.EditAthleteFirstName.Text);
+            this.editFilteredAthletes = personsConnection.similarAthletes(this.EditAthleteFirstName.Text.Replace('\'', '’'));
 
             foreach (DataRow dr in editFilteredAthletes.Tables[0].Rows)
             {
@@ -1083,11 +1085,19 @@ namespace KarateGeek.guis
 
         private void btnEditASave_Click(object sender, RoutedEventArgs e)
         {
-            if (checkNullOrEmptyFields("athlete", false) && checkWrongFields("athlete", false) && _editPersonId != -1)
+            if (_editPersonId != -1)
             {
-                athleteConnection.UpdateAthlete(_editPersonId, _editAthleteFirstName, _editAthleteLastName, _editAthleteFathersName, _editAthleteSex, _editAthleteDateOfBirth, _editAthleteFirstPhone, _editAthleteSecondPhone, _editAthleteEmail, _editAthleteAddress, _editAthleteAddressNum, _editAthleteTK, _editAthleteCountryCode, _editAthleteCity, _editAthleteRank, _editAthleteClubId);
-                MessageBox.Show("Succesfully saved!", "Athlete Edit", MessageBoxButton.OK);
-                initializeEditAthlete();
+                if (checkNullOrEmptyFields("athlete", false) && checkWrongFields("athlete", false) && _editPersonId != -1)
+                {
+                    _editAthleteEmail = _editAthleteEmail.Replace('\'', '’');
+                    athleteConnection.UpdateAthlete(_editPersonId, _editAthleteFirstName, _editAthleteLastName, _editAthleteFathersName, _editAthleteSex, _editAthleteDateOfBirth, _editAthleteFirstPhone, _editAthleteSecondPhone, _editAthleteEmail, _editAthleteAddress, _editAthleteAddressNum, _editAthleteTK, _editAthleteCountryCode, _editAthleteCity, _editAthleteRank, _editAthleteClubId);
+                    MessageBox.Show("Succesfully saved!", "Athlete Edit", MessageBoxButton.OK);
+                    initializeEditAthlete();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select one athlete to edit.", "Athlete Edit", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -1128,7 +1138,7 @@ namespace KarateGeek.guis
         {
             List<ListData> list = new List<ListData>();
 
-            this.newFilteredJudges = personsConnection.similarPersonsNotInJudges(this.newJudgeFirstName.Text);
+            this.newFilteredJudges = personsConnection.similarPersonsNotInJudges(this.newJudgeFirstName.Text.Replace('\'', '’'));
 
             foreach (DataRow dr in newFilteredJudges.Tables[0].Rows)
             {
@@ -1556,6 +1566,7 @@ namespace KarateGeek.guis
             bool judgeInsert;
             if (checkNullOrEmptyFields("judge", true) && checkWrongFields("judge", true))
             {
+                _newJudgeEmail = _newJudgeEmail.Replace('\'', '’');
                 judgeInsert = judgeConnection.InsertNewJudge(_newJudgeId, _newJudgeFirstName, _newJudgeLastName, _newJudgeFathersName, _newJudgeSex, _newJudgeDateOfBirth, _newJudgeFirstPhone, _newJudgeSecondPhone, _newJudgeEmail, _newJudgeAddress, _newJudgeAddressNum, _newJudgeTK, _newJudgeCountryCode, _newJudgeCity, _newJudgeRank, _newJudgeClass);
                 if (judgeInsert)
                 {
@@ -1581,7 +1592,7 @@ namespace KarateGeek.guis
         {
             List<ListData> list = new List<ListData>();
 
-            this.editFilteredJudges = personsConnection.similarJudges(this.editJudgeFirstName.Text);
+            this.editFilteredJudges = personsConnection.similarJudges(this.editJudgeFirstName.Text.Replace('\'', '’'));
 
             foreach (DataRow dr in editFilteredJudges.Tables[0].Rows)
             {
@@ -2006,11 +2017,19 @@ namespace KarateGeek.guis
 
         private void btnEditJSave_Click(object sender, RoutedEventArgs e)
         {
-            if (checkNullOrEmptyFields("judge", false) && checkWrongFields("judge", false) && _editJudgeId != -1)
+            if (_editJudgeId != -1)
             {
-                judgeConnection.UpdateJudge(_editJudgeId, _editJudgeFirstName, _editJudgeLastName, _editJudgeFathersName, _editJudgeSex, _editJudgeDateOfBirth, _editJudgeFirstPhone, _editJudgeSecondPhone, _editJudgeEmail, _editJudgeAddress, _editJudgeAddressNum, _editJudgeTK, _editJudgeCountryCode, _editJudgeCity, _editJudgeRank, _editJudgeClass);
-                MessageBox.Show("Succesfully saved!", "Judge Edit", MessageBoxButton.OK);
-                initializeEditJudge();
+                if (checkNullOrEmptyFields("judge", false) && checkWrongFields("judge", false) && _editJudgeId != -1)
+                {
+                    _editJudgeEmail = _editJudgeEmail.Replace('\'', '’');
+                    judgeConnection.UpdateJudge(_editJudgeId, _editJudgeFirstName, _editJudgeLastName, _editJudgeFathersName, _editJudgeSex, _editJudgeDateOfBirth, _editJudgeFirstPhone, _editJudgeSecondPhone, _editJudgeEmail, _editJudgeAddress, _editJudgeAddressNum, _editJudgeTK, _editJudgeCountryCode, _editJudgeCity, _editJudgeRank, _editJudgeClass);
+                    MessageBox.Show("Succesfully saved!", "Judge Edit", MessageBoxButton.OK);
+                    initializeEditJudge();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select one judge to edit.", "Judge Edit", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
 
@@ -2592,6 +2611,7 @@ namespace KarateGeek.guis
         #endregion
 
         #region helpers
+
         private string warningDeletionMessage(string name)
         {
             return MessageBox.Show("Are you sure you want to delete " + name + "? \nPress OK to continue.", "Message",
