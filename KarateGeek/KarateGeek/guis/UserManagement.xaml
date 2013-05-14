@@ -197,29 +197,32 @@
                 </StackPanel>
             </Button>
             <Button Name="btnSave" 
-                    Content="Update"
                     Grid.Column="2"
                     VerticalAlignment="Center"
                     Margin="5,10" 
-                    Click="btnSave_Click" IsEnabled="False" />
+                    Click="btnSave_Click" IsEnabled="False" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Update" VerticalAlignment="Center" />
+                    <Image Source="/KarateGeek;component/icons/user_edit.png" Stretch="None" Margin="4,0,0,0" />
+                </StackPanel>
+            </Button>
             <Button Name="btnSaveAsNew" 
                     Grid.Column="3"
                     VerticalAlignment="Center"
                     Margin="5,10" Click="btnSaveAsNew_Click" IsEnabled="False" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Save New" VerticalAlignment="Center" />
-                    <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="4,0,0,0" />
+                    <Image Source="/KarateGeek;component/icons/user_add.png" Stretch="None" Margin="4,0,0,0" />
                 </StackPanel>
             </Button>
             <Button Name="btnDelete" 
- 
                     Grid.Column="4"
                     VerticalAlignment="Center"
                     Margin="5,10" 
                     Click="btnDelete_Click" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Delete" VerticalAlignment="Center" />
-                    <Image Source="/KarateGeek;component/icons/delete.png" Stretch="None" Margin="8,0,0,0" />
+                    <Image Source="/KarateGeek;component/icons/user_delete.png" Stretch="None" Margin="8,0,0,0" />
                 </StackPanel>
             </Button>
 

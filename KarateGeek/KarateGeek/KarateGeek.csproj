@@ -249,9 +249,6 @@
     <Compile Include="guis\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="guis\NewCity.xaml.cs">
-      <DependentUpon>NewCity.xaml</DependentUpon>
-    </Compile>
     <Compile Include="guis\PersonManagement.xaml.cs">
       <DependentUpon>PersonManagement.xaml</DependentUpon>
     </Compile>
@@ -365,10 +362,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="guis\NewCity.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="guis\LogIn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -457,19 +450,29 @@
     <Resource Include="icons\accept.png" />
     <Resource Include="icons\add.png" />
     <Resource Include="icons\arrow_left.png" />
+    <Resource Include="icons\arrow_redo.png" />
+    <Resource Include="icons\arrow_refresh.png" />
+    <Resource Include="icons\arrow_refresh_small.png" />
     <Resource Include="icons\arrow_right.png" />
+    <Resource Include="icons\arrow_switch.png" />
     <Resource Include="icons\arrow_undo.png" />
     <Resource Include="icons\cancel.png" />
+    <Resource Include="icons\cog.png" />
+    <Resource Include="icons\cross.png" />
     <Resource Include="icons\database_go.png" />
     <Resource Include="icons\delete.png" />
-    <Resource Include="icons\arrow_switch.png" />
-    <Resource Include="icons\tick.png" />
     <Resource Include="icons\disk.png" />
     <Resource Include="icons\disk_multiple.png" />
+    <Resource Include="icons\error.png" />
+    <Resource Include="icons\exclamation.png" />
     <Resource Include="icons\female.png" />
     <Resource Include="icons\male.png" />
-    <Resource Include="icons\cross.png" />
+    <Resource Include="icons\tick.png" />
     <Resource Include="icons\tux.png" />
+    <Resource Include="icons\user.png" />
+    <Resource Include="icons\user_add.png" />
+    <Resource Include="icons\user_delete.png" />
+    <Resource Include="icons\user_edit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
