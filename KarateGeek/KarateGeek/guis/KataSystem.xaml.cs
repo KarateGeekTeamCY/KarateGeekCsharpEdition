@@ -147,8 +147,32 @@ namespace KarateGeek.guis
 
 
             this._sender.Hide();
+
+            this.cleanupdb();
+
             this.Show();
         }
+
+
+        private void cleanupdb()
+        {
+            databaseConnection.CoreDatabaseConnection conn = new databaseConnection.CoreDatabaseConnection();
+            int nextp = int.Parse(this._game.phase) - 1;
+            //DataTable dt;
+            string sql;
+
+            
+
+            foreach (Athlete ath in this._game.participants)
+            {
+                 sql = "DELETE FROM game_score WHERE game_id = '" + this._game.gameId
+                + "' AND athlete_id = '" + ath.id + "';";
+                
+                conn.NonQuery(sql);
+
+            }
+        }
+
 
 
         #region private functions
@@ -216,7 +240,7 @@ namespace KarateGeek.guis
             {
                 this._scoreA = double.Parse(this.scoreA.Text);
 
-                if (_scoreA > 0 && _scoreA <= 10)
+                if (_scoreA >= 0 && _scoreA <= 10)
                 {
                     this._computeMean();
                     aFlag = true;
@@ -240,7 +264,7 @@ namespace KarateGeek.guis
             {
                 this._scoreB = double.Parse(this.scoreB.Text);
 
-                if (_scoreB > 0 && _scoreB <= 10)
+                if (_scoreB >= 0 && _scoreB <= 10)
                 {
                     this._computeMean();
                     bFlag = true;
@@ -268,7 +292,7 @@ namespace KarateGeek.guis
             {
                 this._scoreC = double.Parse(this.scoreC.Text);
 
-                if (_scoreC > 0 && _scoreC <= 10)
+                if (_scoreC >= 0 && _scoreC <= 10)
                 {
                     this._computeMean();
                     cFlag = true;
@@ -294,7 +318,7 @@ namespace KarateGeek.guis
             {
                 this._scoreD = double.Parse(this.scoreD.Text);
 
-                if (_scoreD > 0 && _scoreD <= 10)
+                if (_scoreD >= 0 && _scoreD <= 10)
                 {
                     this._computeMean();
                     dFlag = true;
@@ -321,7 +345,7 @@ namespace KarateGeek.guis
             {
                 this._scoreE = double.Parse(this.scoreE.Text);
 
-                if (_scoreE > 0 && _scoreE <= 10)
+                if (_scoreE >= 0 && _scoreE <= 10)
                 {
                     this._computeMean();
                     eFlag = true;

@@ -104,26 +104,41 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Name="btnShuffle" 
-                    Content="Re-shuffle" 
+            <Button Name="btnShuffle"
                     Grid.Column="3"
                     Margin="5"
-                    Padding="5"
-                    VerticalAlignment="Center" Click="btnShuffle_Click" />
+                    Padding="auto"
+                    Height="32"
+                    VerticalAlignment="Center" Click="btnShuffle_Click">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Re-shuffle" VerticalAlignment="Center" />
+                    <Image Source="/KarateGeek;component/icons/arrow_switch.png" Stretch="None" Margin="8,0,0,0" />
+                </StackPanel>
+            </Button>
 
             <Button Name="btnSave" 
-                    Content="Save" 
                     Grid.Column="5"
                     Margin="5"
-                    Padding="5"
-                    VerticalAlignment="Center" Click="btnSave_Click" IsEnabled="False" />
+                    Padding="auto"
+                    Height="32"
+                    VerticalAlignment="Center" Click="btnSave_Click" IsEnabled="False">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock Text="Save" VerticalAlignment="Center" />
+                    <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="8,0,0,0" />
+                </StackPanel>
+            </Button>
 
-            <Button Name="btnBack" 
-                    Content="Back" 
+            <Button Name="btnBack"
                     Grid.Column="1"
                     Margin="5"
-                    Padding="5"
-                    VerticalAlignment="Center" Click="btnBack_Click" />
+                    Padding="auto"
+                    Height="32"
+                    VerticalAlignment="Center" Click="btnBack_Click" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/KarateGeek;component/icons/arrow_undo.png" Stretch="None" Margin="0,0,8,0" />
+                    <TextBlock Text="Back" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
         </Grid>
         

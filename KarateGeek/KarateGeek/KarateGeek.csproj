@@ -453,8 +453,26 @@
   <ItemGroup>
     <Resource Include="Images\fudokan-logo.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\accept.png" />
+    <Resource Include="icons\add.png" />
+    <Resource Include="icons\arrow_left.png" />
+    <Resource Include="icons\arrow_right.png" />
+    <Resource Include="icons\arrow_undo.png" />
+    <Resource Include="icons\cancel.png" />
+    <Resource Include="icons\database_go.png" />
+    <Resource Include="icons\delete.png" />
+    <Resource Include="icons\arrow_switch.png" />
+    <Resource Include="icons\tick.png" />
+    <Resource Include="icons\disk.png" />
+    <Resource Include="icons\disk_multiple.png" />
+    <Resource Include="icons\female.png" />
+    <Resource Include="icons\male.png" />
+    <Resource Include="icons\cross.png" />
+    <Resource Include="icons\tux.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

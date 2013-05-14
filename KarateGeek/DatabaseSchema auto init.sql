@@ -314,6 +314,13 @@ create table game_flag (
 --
 -- VIEW creation:
 --
+
+CREATE OR REPLACE VIEW athlete_first_places_ind AS
+SELECT athlete_id, COUNT(athlete_id)
+FROM tournament_participations
+WHERE ranking = '1'
+GROUP BY athlete_id;
+
 CREATE or REPLACE VIEW tournaments_events_names AS
 	SELECT tournaments.id as tournaments_id, tournaments.name as tournaments_name , events.name from tournaments 
 	inner join events on event_id = events.id;
@@ -332,6 +339,9 @@ select t1.athlete_id, ranking, tournaments_name, name as events_name, count from
 inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '1') 
 as t1 inner join athlete_first_places_ind as t2 on t1.athlete_id = t2.athlete_id;
 
+
+
+
 CREATE OR REPLACE VIEW athlete_second_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
 FROM tournament_participations
@@ -344,6 +354,7 @@ select t1.athlete_id, ranking, tournaments_name, name as events_name, count from
 (select athlete_id, ranking , tournaments_name , name from tournament_participations 
 inner join tournaments_events_names on tournament_id = tournaments_id where ranking = '2') 
 as t1 inner join athlete_second_places_ind as t2 on t1.athlete_id = t2.athlete_id;
+
 
 CREATE OR REPLACE VIEW athlete_third_places_ind AS
 SELECT athlete_id, COUNT(athlete_id)
@@ -365,7 +376,8 @@ create type rtype as (rn_first bigint, id_first integer, first_ranking integer, 
 		       rn_second bigint, id_second integer, second_ranking integer, second_tournament varchar, second_event varchar, second_count bigint,
 		       rn_third bigint, id_third integer, third_ranking integer, third_tournament varchar, third_event varchar, third_count bigint);
 
---drop function rewards();
+
+
 create or replace function rewards () returns setof rtype as
 $$
 DECLARE
