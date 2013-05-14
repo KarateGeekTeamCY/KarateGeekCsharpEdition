@@ -79,29 +79,29 @@
                  TextChanged="host_TextChanged" 
                  />
 
-        
-        
         <Button Name="exit"
-                Content="Exit"
                 Grid.Row="4"
                 Grid.Column="1"
                 Margin="10,10,25,10"
                 Click="exit_Click" 
-                IsCancel="True" 
-                />
+                IsCancel="True" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Exit" VerticalAlignment="Center" />
+                <Image Source="/KarateGeek;component/icons/cross.png" Stretch="None" Margin="8,0,0,0" />
+            </StackPanel>
+        </Button>
+
         <Button Name="login"
-                Content="Log in"
                 Grid.Row="4"
                 Grid.Column="2"
                 Margin="25,10,0,10" 
                 Click="login_Click" 
-                IsDefault="True" 
-                />        
-        
-        
-        
-        
-        
-        
+                IsDefault="True" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Log in" VerticalAlignment="Center" />
+                <Image Source="/KarateGeek;component/icons/tick.png" Stretch="None" Margin="8,0,0,0" />
+            </StackPanel>
+        </Button>
+
     </Grid>
 </Window>
