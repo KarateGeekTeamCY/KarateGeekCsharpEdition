@@ -170,20 +170,30 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="2*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="btnNewCBack"
-                                Content="Back"
+                        <Button Name="btnNewCBack"
+                              
                                 Grid.Column="2"
                     VerticalAlignment="Center"
-                                Margin="10" Click="btnNewCBack_Click" />
-                    
-                    <Button Name="btnNewCSave"
-                                Content="Save"
+                                Margin="10" Click="btnNewCBack_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Back" VerticalAlignment="Center" />
+                                <Image Source="/KarateGeek;component/icons/arrow_undo.png" Stretch="None" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Name="btnNewCSave"
+                             
                                 Grid.Column="3"
                     VerticalAlignment="Center"
-                                Margin="10" Click="btnNewCSave_Click" IsEnabled="False" />
-                    
+                                Margin="10" Click="btnNewCSave_Click" IsEnabled="False" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Save" VerticalAlignment="Center" />
+                                <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </Button>
 
-                </Grid>
+
+                    </Grid>
             </Grid>
             </TabItem>
             <TabItem Name="editClubTab"
@@ -347,20 +357,35 @@
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <Button Name="btnEditCBack"
-                                Content="Back"
+                          
                                 Grid.Column="1"
                     VerticalAlignment="Center"
-                                Margin="10" Click="btnEditCBack_Click" />
+                                Margin="10" Click="btnEditCBack_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Back" VerticalAlignment="Center" />
+                                <Image Source="/KarateGeek;component/icons/arrow_undo.png" Stretch="None" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </Button>
                         <Button Name="btnEditCSave"
-                                Content="Save"
+                           
                     VerticalAlignment="Center"
                                 Grid.Column="2"
-                                Margin="10" Click="btnEditCSave_Click" IsEnabled="False" />
+                                Margin="10" Click="btnEditCSave_Click" IsEnabled="False" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Save" VerticalAlignment="Center" />
+                                <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </Button>
                         <Button Name="btnEditCDelete"
-                               Content="Delete"
+                              
                     VerticalAlignment="Center"
                                 Grid.Column="3"
-                                Margin="10" Click="btnEditCDelete_Click" />
+                                Margin="10" Click="btnEditCDelete_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Delete" VerticalAlignment="Center" />
+                                <Image Source="/KarateGeek;component/icons/delete.png" Stretch="None" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </Button>
                     </Grid>
                 </Grid>
             </TabItem>

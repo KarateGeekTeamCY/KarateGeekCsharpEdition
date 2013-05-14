@@ -119,11 +119,16 @@
 
 
             <Button Name="btnBack"
-                    Content="Back"
+                   
                     VerticalAlignment="Center"
                     Grid.Column="1"
                     Margin="5"
-                    Padding="20,5" Click="btnBack_Click" />
+                    Padding="20,5" Click="btnBack_Click" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Back" VerticalAlignment="Center" />
+                    <Image Source="/KarateGeek;component/icons/arrow_undo.png" Stretch="None" Margin="8,0,0,0" />
+                </StackPanel>
+            </Button>
 
 
             <Button Name="btnRefreshe"

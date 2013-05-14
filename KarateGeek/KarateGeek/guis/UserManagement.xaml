@@ -185,13 +185,17 @@
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Button Name="btnBack" 
-                    Content="Back"
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     Margin="5,10" 
-                    Click="btnBack_Click" />
+                    Click="btnBack_Click" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Back" VerticalAlignment="Center" />
+                    <Image Source="/KarateGeek;component/icons/arrow_undo.png" Stretch="None" Margin="8,0,0,0" />
+                </StackPanel>
+            </Button>
             <Button Name="btnSave" 
                     Content="Update"
                     Grid.Column="2"
@@ -199,18 +203,27 @@
                     Margin="5,10" 
                     Click="btnSave_Click" IsEnabled="False" />
             <Button Name="btnSaveAsNew" 
-                    Content="Save as new"
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    Margin="5,10" Click="btnSaveAsNew_Click" IsEnabled="False" />
+                    Margin="5,10" Click="btnSaveAsNew_Click" IsEnabled="False" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Save New" VerticalAlignment="Center" />
+                    <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="4,0,0,0" />
+                </StackPanel>
+            </Button>
             <Button Name="btnDelete" 
-                    Content="Delete"
+ 
                     Grid.Column="4"
                     VerticalAlignment="Center"
                     Margin="5,10" 
-                    Click="btnDelete_Click" />
-            
-            
+                    Click="btnDelete_Click" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Delete" VerticalAlignment="Center" />
+                    <Image Source="/KarateGeek;component/icons/delete.png" Stretch="None" Margin="8,0,0,0" />
+                </StackPanel>
+            </Button>
+
+
         </Grid>
         
         

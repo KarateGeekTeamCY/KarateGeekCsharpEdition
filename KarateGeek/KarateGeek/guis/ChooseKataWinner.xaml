@@ -33,8 +33,12 @@
                 Grid.Column="1"
                 Grid.Row="2" 
                 Width="80"
-                Content="save" 
-                VerticalAlignment="Center" Click="saveWinner_Click" IsEnabled="False" />
+                VerticalAlignment="Center" Click="saveWinner_Click" IsEnabled="False" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Save" VerticalAlignment="Center" />
+                <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="8,0,0,0" />
+            </StackPanel>
+        </Button>
         
     </Grid>
 </Window>
