@@ -232,6 +232,8 @@
           
                                         Grid.Column="2"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnNewEBack_Click" >
                                 <StackPanel Orientation="Horizontal">
@@ -243,6 +245,8 @@
                             <Button Name="btnNewESave"
                                         Grid.Column="3"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnNewESave_Click" IsEnabled="False" >
                                 <StackPanel Orientation="Horizontal">
@@ -473,6 +477,8 @@
                             <Button Name="btnEditEBack"
                                         Grid.Column="1"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnEditEBack_Click" >
                                 <StackPanel Orientation="Horizontal">
@@ -483,6 +489,8 @@
                             <Button Name="btnEditESave"
                                         Grid.Column="2"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center"
                                         Click="btnEditESave_Click" IsEnabled="False" >
                                 <StackPanel Orientation="Horizontal">
@@ -494,6 +502,8 @@
                             <Button Name="btnEditEDelete"
                                         Grid.Column="3"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" Click="btnEditEDelete_Click" >
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Delete" VerticalAlignment="Center" />
@@ -914,6 +924,8 @@
                             <Button Name="btnNewTBack"
                                         Grid.Column="2"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnNewTBack_Click" >
                                 <StackPanel Orientation="Horizontal">
@@ -923,7 +935,9 @@
                             </Button>
                             <Button Name="btnNewTSave"
                                         Grid.Column="3"
-                                        Margin="5"
+                                       Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnNewTSave_Click" IsEnabled="False" >
                                 <StackPanel Orientation="Horizontal">

@@ -83,6 +83,9 @@
                 Grid.Row="4"
                 Grid.Column="1"
                 Margin="10,10,25,10"
+                
+                    Padding="auto"
+                    Height="32"
                 Click="exit_Click" 
                 IsCancel="True" >
             <StackPanel Orientation="Horizontal">
@@ -95,6 +98,9 @@
                 Grid.Row="4"
                 Grid.Column="2"
                 Margin="25,10,0,10" 
+            
+                    Padding="auto"
+                    Height="32"
                 Click="login_Click" 
                 IsDefault="True" >
             <StackPanel Orientation="Horizontal">

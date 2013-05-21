@@ -10,7 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         
         <Label Name="lblInfo"
@@ -189,7 +189,9 @@
             <Button Name="btnBack" 
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    Margin="5,10" 
+                    Margin="5"
+                    Padding="auto"
+                    Height="28" 
                     Click="btnBack_Click" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Back" VerticalAlignment="Center" />
@@ -199,7 +201,9 @@
             <Button Name="btnSave" 
                     Grid.Column="2"
                     VerticalAlignment="Center"
-                    Margin="5,10" 
+                    Margin="5"
+                    Padding="auto"
+                    Height="28" 
                     Click="btnSave_Click" IsEnabled="False" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Update" VerticalAlignment="Center" />
@@ -209,7 +213,9 @@
             <Button Name="btnSaveAsNew" 
                     Grid.Column="3"
                     VerticalAlignment="Center"
-                    Margin="5,10" Click="btnSaveAsNew_Click" IsEnabled="False" >
+                   Margin="5"
+                    Padding="auto"
+                    Height="28" Click="btnSaveAsNew_Click" IsEnabled="False" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Save New" VerticalAlignment="Center" />
                     <Image Source="/KarateGeek;component/icons/user_add.png" Stretch="None" Margin="4,0,0,0" />
@@ -218,7 +224,9 @@
             <Button Name="btnDelete" 
                     Grid.Column="4"
                     VerticalAlignment="Center"
-                    Margin="5,10" 
+                    Margin="5"
+                    Padding="auto"
+                    Height="28"
                     Click="btnDelete_Click" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Delete" VerticalAlignment="Center" />

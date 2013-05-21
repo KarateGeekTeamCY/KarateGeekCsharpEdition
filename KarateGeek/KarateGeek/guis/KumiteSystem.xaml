@@ -209,6 +209,9 @@
                     Grid.Row="0" 
                     VerticalAlignment="Center" 
                     Margin="0,0,10,0" 
+                    
+                    Padding="auto"
+                    Height="32"
                     Click="btnBack_Click" >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Back" VerticalAlignment="Center" />
@@ -221,6 +224,9 @@
                     Grid.Row="0" 
                     VerticalAlignment="Center" 
                     Margin="10,0,0,0" 
+                    
+                    Padding="auto"
+                    Height="32"
                     Click="btnSave_Click" 
                     >
                 <StackPanel Orientation="Horizontal">

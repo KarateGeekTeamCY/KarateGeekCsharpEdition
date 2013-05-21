@@ -315,7 +315,9 @@
                         </Grid.ColumnDefinitions>
                         <Button Name="btnNewABack"
                                 Grid.Column="1"
-                                Margin="10" 
+                                Margin="5"
+                    Padding="auto"
+                    Height="32"
                                 Click="btnNewABack_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Back" VerticalAlignment="Center" />
@@ -324,7 +326,9 @@
                         </Button>
                         <Button Name="btnNewASave"
                                 Grid.Column="2"
-                                Margin="10" 
+                                Margin="5"
+                    Padding="auto"
+                    Height="32"
                                 Click="btnNewASave_Click" IsEnabled="False" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Save" VerticalAlignment="Center" />
@@ -638,7 +642,9 @@
                         </Grid.ColumnDefinitions>
                         <Button Name="btnEditABack"
                                 Grid.Column="1"
-                                Margin="10" 
+                              Margin="5"
+                    Padding="auto"
+                    Height="32"
                                 Click="btnEditABack_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Back" VerticalAlignment="Center" />
@@ -647,7 +653,9 @@
                         </Button>
                         <Button Name="btnEditASave"
                                 Grid.Column="2"
-                                Margin="10" 
+                                Margin="5"
+                    Padding="auto"
+                    Height="32"
                                 Click="btnEditASave_Click" IsEnabled="False" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Save" VerticalAlignment="Center" />
@@ -657,7 +665,9 @@
                         <Button Name="btnEditADelete"
 
                                 Grid.Column="3"
-                                Margin="10" 
+                                Margin="5"
+                    Padding="auto"
+                    Height="32"
                                 Click="btnEditADelete_Click">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Delete" VerticalAlignment="Center" />
@@ -968,7 +978,9 @@
                         </Grid.ColumnDefinitions>
                         <Button Name="btnNewJBack"
                                 Grid.Column="1"
-                                Margin="10" 
+                                Margin="5"
+                    Padding="auto"
+                    Height="32"
                                 Click="btnNewJBack_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Back" VerticalAlignment="Center" />
@@ -977,7 +989,9 @@
                         </Button>
                         <Button Name="btnNewJSave"
                                 Grid.Column="2"
-                                Margin="10" Click="btnNewJSave_Click" IsEnabled="False" >
+                                Margin="5"
+                    Padding="auto"
+                    Height="32" Click="btnNewJSave_Click" IsEnabled="False" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Save" VerticalAlignment="Center" />
                                 <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="8,0,0,0" />
@@ -1292,7 +1306,9 @@
                         </Grid.ColumnDefinitions>
                         <Button Name="btnEditJBack"
                                 Grid.Column="1"
-                                Margin="10" 
+                                Margin="5"
+                    Padding="auto"
+                    Height="32"
                                 Click="btnNewJBack_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Back" VerticalAlignment="Center" />
@@ -1301,7 +1317,9 @@
                         </Button>
                         <Button Name="btnEditJSave"
                                 Grid.Column="2"
-                                Margin="10" Click="btnEditJSave_Click" IsEnabled="False" >
+                               Margin="5"
+                    Padding="auto"
+                    Height="32" Click="btnEditJSave_Click" IsEnabled="False" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Save" VerticalAlignment="Center" />
                                 <Image Source="/KarateGeek;component/icons/disk.png" Stretch="None" Margin="8,0,0,0" />
@@ -1310,7 +1328,9 @@
                         <Button Name="btnEditJDelete"
  
                                 Grid.Column="3"
-                                Margin="10" Click="btnEditJDelete_Click">
+                               Margin="5"
+                    Padding="auto"
+                    Height="32" Click="btnEditJDelete_Click">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Delete" VerticalAlignment="Center" />
                                 <Image Source="/KarateGeek;component/icons/delete.png" Stretch="None" Margin="8,0,0,0" />

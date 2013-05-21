@@ -50,16 +50,21 @@
         <Button Name="btnAthleteAisWinner"
                 Grid.Row="3"
                 Grid.Column="1"
+
                 VerticalAlignment="Center"
                 Content="The winner"
-                Margin="5" Click="btnAthleteAisWinner_Click" />
+                Margin="5"
+                    Padding="auto"
+                    Height="32" Click="btnAthleteAisWinner_Click" />
 
         <Button Name="btnAthleteBisWinner"
                 Grid.Row="3"
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Content="The winner"
-                Margin="5" Click="btnAthleteBisWinner_Click" />
+                Margin="5"
+                    Padding="auto"
+                    Height="32" Click="btnAthleteBisWinner_Click" />
 
 
 

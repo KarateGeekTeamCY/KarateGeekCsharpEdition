@@ -10,7 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -32,6 +32,9 @@
         <Button Name="saveWinner" 
                 Grid.Column="1"
                 Grid.Row="2" 
+                Margin="5"
+                    Padding="auto"
+                    Height="32"
                 Width="80"
                 VerticalAlignment="Center" Click="saveWinner_Click" IsEnabled="False" >
             <StackPanel Orientation="Horizontal">
