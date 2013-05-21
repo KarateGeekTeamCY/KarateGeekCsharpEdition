@@ -151,16 +151,16 @@ CREATE TABLE judges (
 
 
 CREATE TABLE users (
-    id              SERIAL,
-    username        VARCHAR(255)    NOT NULL UNIQUE,
-    password        CHAR(32)        NOT NULL, --md5 is 16 bytes, sha1 is 20 bytes (40 hex chars)
-    person_management   BOOLEAN     NOT NULL DEFAULT false,
-    event_management    BOOLEAN     NOT NULL DEFAULT false,
-    lottery         BOOLEAN         NOT NULL DEFAULT false,
-    event_support   BOOLEAN         NOT NULL DEFAULT false,
-    club_management BOOLEAN         NOT NULL DEFAULT false,
-    user_management BOOLEAN         NOT NULL DEFAULT false,
-    reports         BOOLEAN         NOT NULL DEFAULT false,
+    id              	SERIAL,
+    username            VARCHAR(255)    NOT NULL UNIQUE,
+    password            CHAR(32)        NOT NULL, --md5 is 16 bytes, sha1 is 20 bytes (40 hex chars)
+    person_management   BOOLEAN         NOT NULL DEFAULT false,
+    event_management    BOOLEAN         NOT NULL DEFAULT false,
+    lottery             BOOLEAN         NOT NULL DEFAULT false,
+    event_support       BOOLEAN         NOT NULL DEFAULT false,
+    club_management     BOOLEAN         NOT NULL DEFAULT false,
+    user_management     BOOLEAN         NOT NULL DEFAULT false,
+    reports             BOOLEAN         NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
 
@@ -236,6 +236,7 @@ CREATE TABLE tournament_participations (
     tournament_id   INTEGER         REFERENCES tournaments(id) ON DELETE CASCADE,
     rank_at_time    VARCHAR(50)     NOT NULL,
     ranking         INTEGER,
+
     PRIMARY KEY (athlete_id, tournament_id)
 );
 
