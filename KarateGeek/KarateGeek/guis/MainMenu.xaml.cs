@@ -22,11 +22,14 @@ namespace KarateGeek.guis
     /// </summary>
     public partial class MainMenu : Window
     {
+
         public MainMenu()
         {
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             InitializeComponent();
 
+            //this.ContextMenu.Items.Add(new MenuItem("AboutTheTeam", new System.EventHandler(About_Click)));
+            //this.ContextMenu.Items.Add(new MenuItem());
 
             //myCalendar.SelectedDates.Add(CType(reader.GetDateTime(0), Date))
             EventConnection evCon = new EventConnection();
@@ -44,6 +47,7 @@ namespace KarateGeek.guis
             //this.mainCalendar.
         }
 
+
         private void btnPersonManagement_Click(object sender, RoutedEventArgs e)
         {
             PersonManagement pm = new PersonManagement(this);
@@ -54,6 +58,7 @@ namespace KarateGeek.guis
 
         }
 
+
         private void btnEventmanagement_Click(object sender, RoutedEventArgs e)
         {
             EventTournamentManagement et = new EventTournamentManagement(this);
@@ -61,6 +66,7 @@ namespace KarateGeek.guis
             this.Hide();
             et.Show();
         }
+
 
         private void btnClubmanagement_Click(object sender, RoutedEventArgs e)
         {
@@ -70,7 +76,6 @@ namespace KarateGeek.guis
             this.Hide();
             cl.Show();
         }
-
 
 
         private void mainCalendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
@@ -101,7 +106,6 @@ namespace KarateGeek.guis
         }
 
 
-
         private void btnLottery_Click(object sender, RoutedEventArgs e)
         {
             LotteryChooser lc = new LotteryChooser(this);
@@ -110,7 +114,7 @@ namespace KarateGeek.guis
             lc.Show();
 
 
-            /* Do not just remove this code; it's a usage example for the lottery class. */
+            /* Do not just remove this old piece of code; it's a usage example for the lottery class. */
 
 
             //LotteryGenerator lg = LotteryGeneratorFactory.Create(tournamentId: 1); // use 1 to test kata
@@ -142,6 +146,7 @@ namespace KarateGeek.guis
             //new LotteryGenConnection().printTournamentGameTableWithNames(tournamentId: 1);
         }
 
+
         private void btnReports_Click(object sender, RoutedEventArgs e)
         {
 
@@ -152,11 +157,13 @@ namespace KarateGeek.guis
 
         }
 
+
         private void btnEventSupport_Click(object sender, RoutedEventArgs e)
         {
             EventSupport eventSup = new EventSupport(this);
             //eventSupport calls the Show() method (and sender.Hide()) in its contructor, because it does some checks first
         }
+
 
         private void btnUserManagement_Click(object sender, RoutedEventArgs e)
         {
@@ -165,6 +172,7 @@ namespace KarateGeek.guis
             this.Hide();
             userMan.Show();
         }
+
 
         public void reloadCalendarEvents() {
             EventConnection evCon = new EventConnection();
@@ -180,6 +188,21 @@ namespace KarateGeek.guis
             }
 
             this.mainCalendar.SelectedDatesChanged += new EventHandler<SelectionChangedEventArgs>(mainCalendar_SelectedDatesChanged);
+        }
+
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            /* A small easter egg:
+             * Show CUT team credits when user clicks on the logo af the main window and then on "About": */
+
+            MessageBox.Show(  "Program made by a student team of the Cyprus University of Technology, for the Cyprus Fudokan Karate-Do Federation.\n\n"
+                            +  "Team members: Μιχάλης Αναστασίου, Αθηνά Γαβριήλ, Μιχάλης Θεοδωρίδης, Νικόλας Καρκούλιας\n\n"
+                            +  "\t©2012-2013 The KarateGeek Team"
+                            //+  "\n\n"
+                            //+  "Program extended in 2014 by (...)"
+                            +  "",
+                            "Credits");
         }
 
         
