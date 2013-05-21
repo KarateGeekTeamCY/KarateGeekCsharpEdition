@@ -124,7 +124,8 @@ namespace KarateGeek.guis
 
             if (this.graph == null)
             {
-                this.graph = new LotteryGraph(long.Parse(this.tournament.id));
+                if (this.tournament.gameType != Strings.teamKumite)
+                    this.graph = new LotteryGraph(long.Parse(this.tournament.id));
             }
 
         }
@@ -290,14 +291,19 @@ namespace KarateGeek.guis
                 //
             }
 
+            string progressGraphString = "";
 
-            string progressGraphString = new LotteryPrinter(long.Parse(this.tournament.id)).ToString();
+            if (this.tournament.gameType != Strings.teamKumite)
+                progressGraphString = new LotteryPrinter(long.Parse(this.tournament.id)).ToString();
 
-            new LotteryPrinterConnection().updatePrintableLotteryString(long.Parse(this.tournament.id), progressGraphString);
+            if (this.tournament.gameType != Strings.teamKumite)
+                new LotteryPrinterConnection().updatePrintableLotteryString(long.Parse(this.tournament.id), progressGraphString);
 
             if (this.graph != null)
             {
-                this.graph.updateGraph(progressGraphString);
+
+                if (this.tournament.gameType != Strings.teamKumite)
+                    this.graph.updateGraph(progressGraphString);
 
                 //
                 // this i thing need to be commented out
@@ -305,7 +311,8 @@ namespace KarateGeek.guis
                 try { this.graph.Show(); }
                 catch (InvalidOperationException e)
                 {
-                    this.graph = new LotteryGraph(long.Parse(this.tournament.id));
+                    if (this.tournament.gameType != Strings.teamKumite)
+                        this.graph = new LotteryGraph(long.Parse(this.tournament.id));
                 }
             }
 
@@ -712,15 +719,15 @@ namespace KarateGeek.guis
                 if (gm.isFinished)
                 {
                     string res = MessageBox.Show("This game have already played. Do you wont to replay it?", "Already played", MessageBoxButton.YesNo, MessageBoxImage.Information).ToString();
-                    
+
                     if (res == "Yes")
-                    {play = true;}
+                    { play = true; }
                     else
-                    {play = false; }
+                    { play = false; }
 
                 }
                 else
-                { play = true;}
+                { play = true; }
 
                 if (play)
                     switch (tournament.gameType)
