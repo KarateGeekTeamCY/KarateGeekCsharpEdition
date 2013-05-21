@@ -56,25 +56,40 @@ namespace KarateGeek.guis
                 teamA = new Team(partAId);
                 teamB = new Team(partBId);
 
-                this.lblAthleteAname.Content = teamA.participants.ElementAt(0).lastName + " " + teamA.participants.ElementAt(0).firstName + "\n";
-                this.lblAthleteAname.Content += teamA.participants.ElementAt(1).lastName + " " + teamA.participants.ElementAt(1).firstName + "\n";
-                this.lblAthleteAname.Content += teamA.participants.ElementAt(2).lastName + " " + teamA.participants.ElementAt(2).firstName;
+                //this.lblAthleteAname.Content = teamA.participants.ElementAt(0).lastName + " " + teamA.participants.ElementAt(0).firstName + "\n";
+                //this.lblAthleteAname.Content += teamA.participants.ElementAt(1).lastName + " " + teamA.participants.ElementAt(1).firstName + "\n";
+                //this.lblAthleteAname.Content += teamA.participants.ElementAt(2).lastName + " " + teamA.participants.ElementAt(2).firstName;
 
 
-                this.lblAthleteBname.Content = teamB.participants.ElementAt(0).lastName + " " + teamB.participants.ElementAt(0).firstName + "\n";
-                this.lblAthleteBname.Content += teamB.participants.ElementAt(1).lastName + " " + teamB.participants.ElementAt(1).firstName + "\n";
-                this.lblAthleteBname.Content += teamB.participants.ElementAt(2).lastName + " " + teamB.participants.ElementAt(2).firstName;
+                //this.lblAthleteBname.Content = teamB.participants.ElementAt(0).lastName + " " + teamB.participants.ElementAt(0).firstName + "\n";
+                //this.lblAthleteBname.Content += teamB.participants.ElementAt(1).lastName + " " + teamB.participants.ElementAt(1).firstName + "\n";
+                //this.lblAthleteBname.Content += teamB.participants.ElementAt(2).lastName + " " + teamB.participants.ElementAt(2).firstName;
 
-                this.lblInfo.Content = "Please shoose the winner";
+
+                this.btnAthleteAisWinner.Content = teamA.participants.ElementAt(0).lastName + " " + teamA.participants.ElementAt(0).firstName + "\n";
+                this.btnAthleteAisWinner.Content += teamA.participants.ElementAt(1).lastName + " " + teamA.participants.ElementAt(1).firstName + "\n";
+                this.btnAthleteAisWinner.Content += teamA.participants.ElementAt(2).lastName + " " + teamA.participants.ElementAt(2).firstName;
+
+
+                this.btnAthleteBisWinner.Content = teamB.participants.ElementAt(0).lastName + " " + teamB.participants.ElementAt(0).firstName + "\n";
+                this.btnAthleteBisWinner.Content += teamB.participants.ElementAt(1).lastName + " " + teamB.participants.ElementAt(1).firstName + "\n";
+                this.btnAthleteBisWinner.Content += teamB.participants.ElementAt(2).lastName + " " + teamB.participants.ElementAt(2).firstName;
+
+
+                this.lblInfo.Content = "Please choose the winner";
             }
             else
             {
                 this.partAId = game.participants.ElementAt(0).id;
                 this.partBId = game.participants.ElementAt(1).id;
 
-                this.lblAthleteAname.Content = game.participants.ElementAt(0).lastName + " " + game.participants.ElementAt(0).firstName;
-                this.lblAthleteBname.Content = game.participants.ElementAt(1).lastName + " " + game.participants.ElementAt(1).firstName;
-                this.lblInfo.Content = "Please shoose the winner";
+                //this.lblAthleteAname.Content = game.participants.ElementAt(0).lastName + " " + game.participants.ElementAt(0).firstName;
+                //this.lblAthleteBname.Content = game.participants.ElementAt(1).lastName + " " + game.participants.ElementAt(1).firstName;
+
+                this.btnAthleteAisWinner.Content = game.participants.ElementAt(0).lastName + " " + game.participants.ElementAt(0).firstName;
+                this.btnAthleteBisWinner.Content = game.participants.ElementAt(1).lastName + " " + game.participants.ElementAt(1).firstName;
+
+                this.lblInfo.Content = "Please choose the winner";
             }
 
         }

@@ -4,15 +4,14 @@
         WindowStartupLocation="CenterScreen" 
         Title="ChooseWinner" 
         ResizeMode="NoResize" 
-        Width="400"
-        Height="250"
+        Width="444"
+        Height="242"
         
         >
     
     <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -30,41 +29,38 @@
                Grid.Row="1"
                Grid.Column="1"
                Grid.ColumnSpan="2"
+               
+               Padding="9"
+               
                VerticalAlignment="Center"
                HorizontalContentAlignment="Center"/>
 
-        <Label Name="lblAthleteAname"
-               Content="Athlete A"
-               Grid.Row="2"
-               Grid.Column="1"
-               VerticalAlignment="Center"
-               HorizontalContentAlignment="Center"/>
+        
 
-        <Label Name="lblAthleteBname"
-               Content="Athlete B"
-               Grid.Row="2"
-               Grid.Column="2"
-               VerticalAlignment="Center"
-               HorizontalContentAlignment="Center"/>
         
         <Button Name="btnAthleteAisWinner"
-                Grid.Row="3"
+                Grid.Row="2"
                 Grid.Column="1"
 
                 VerticalAlignment="Center"
                 Content="The winner"
+                
                 Margin="5"
-                    Padding="auto"
-                    Height="32" Click="btnAthleteAisWinner_Click" />
+                Padding="7"
+                
+                
+                Click="btnAthleteAisWinner_Click" />
 
         <Button Name="btnAthleteBisWinner"
-                Grid.Row="3"
+                Grid.Row="2"
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 Content="The winner"
+                
                 Margin="5"
-                    Padding="auto"
-                    Height="32" Click="btnAthleteBisWinner_Click" />
+                Padding="7" 
+                
+                Click="btnAthleteBisWinner_Click" />
 
 
 
