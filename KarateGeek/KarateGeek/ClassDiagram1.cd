@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="KarateGeek.Athlete">
+    <Position X="11.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAACYBAQEEgAAQACkAAACAAAgACBAAACEAEA5A=</HashCode>
+      <FileName>Athlete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.Game">
+    <Position X="17.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACQAAAABAIABAAAAAIQAIEABAAAIIAAABAAEAAQAABA=</HashCode>
+      <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.Strings">
+    <Position X="27" Y="19.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IoBAAMCEEUAAASwAQYKrAAAAABQ4AAAAAAQFAFRJwAg=</HashCode>
+      <FileName>Strings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.Team">
+    <Position X="32.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAIAAAAAAAAAAAEAAAAAAIAAABAAAAAAEAoA=</HashCode>
+      <FileName>Team.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.Tournament">
+    <Position X="41.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ASICAAAQAIgECACAgQQAAEAAABAEIEAAgIAAFUQACgA=</HashCode>
+      <FileName>Tournament.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.AddressConnection">
+    <Position X="53.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAIAgAAAAA=</HashCode>
+      <FileName>databaseConnection\AddressConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.AthleteConnection">
+    <Position X="47.25" Y="47" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAQAEgAAIJAAAIAAAAAAAAAAAAABAAAAAQA=</HashCode>
+      <FileName>databaseConnection\AthleteConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.CityConnection">
+    <Position X="71.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAEABAAAEAAAAAAAAgAEAAAAAAAAAA=</HashCode>
+      <FileName>databaseConnection\CityConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.ClubConnection">
+    <Position X="5.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CAACgAAAAAAAAEAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>databaseConnection\ClubConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.CoreDatabaseConnection">
+    <Position X="39.75" Y="39.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAACAAAYIAAAAAAQAAAgAAAAAFABAAAA=</HashCode>
+      <FileName>databaseConnection\CoreDatabaseConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.CountryConnection">
+    <Position X="20.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQEAQAAAAAEAAgAAAABAAAAA=</HashCode>
+      <FileName>databaseConnection\CountryConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.EventConnection">
+    <Position X="26.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAIgAQAACAAAAAAAAAAAAACEAAAAAFAAAgQAAgAAAE=</HashCode>
+      <FileName>databaseConnection\EventConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.EveSupFlagConnection">
+    <Position X="35.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAgFAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>databaseConnection\EveSupFlagConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.EveSupPointConnection">
+    <Position X="44.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>databaseConnection\EveSupPointConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.EveSupScoreConnection">
+    <Position X="56.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEAAg=</HashCode>
+      <FileName>databaseConnection\EveSupScoreConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.GameConnection">
+    <Position X="62.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAABAAAAAAAEAAEACAAAAAAAQAAAAACAA=</HashCode>
+      <FileName>databaseConnection\GameConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.JudgeConnection">
+    <Position X="50.25" Y="47" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CgAAAAAAAAEAAAAAAAgAAAAgAAQAAAAAAIAAAACAAAA=</HashCode>
+      <FileName>databaseConnection\JudgeConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.LocationConnection">
+    <Position X="8.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>databaseConnection\LocationConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.LoginConnection">
+    <Position X="14.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAQQAKAAEAAAAAAEQAFAIAAiAAAAAgABIEQAI=</HashCode>
+      <FileName>databaseConnection\LoginConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.LotteryGenConnection">
+    <Position X="23.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QAIAAEAAAQwABCCCAIAIACAAEAAAAgAAAAEBAAMACAA=</HashCode>
+      <FileName>databaseConnection\LotteryGenConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.LotteryPrinterConnection">
+    <Position X="29.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAABAAAAAAAQACAAAEAAAAAAAQAAAAAAAEA=</HashCode>
+      <FileName>databaseConnection\LotteryPrinterConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.ParticipationsConnection">
+    <Position X="38.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAIAAAAgAAAAAAIAAAAgBAAAhAAGAAAAAIAAAAAAAA=</HashCode>
+      <FileName>databaseConnection\ParticipationsConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.PersonConnection">
+    <Position X="48.75" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAABAAAAAAIAAgAAQACAAAAA=</HashCode>
+      <FileName>databaseConnection\PersonConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.RankConnection">
+    <Position X="59.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>databaseConnection\RankConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.TournamentConnection">
+    <Position X="65.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAAAEAAAAAAgAAEAAAAAgAAAAAAAIAAAA=</HashCode>
+      <FileName>databaseConnection\TournamentConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.TournamentGameParticipationsConnection">
+    <Position X="68.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAEAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>databaseConnection\TournamentGameParticipationsConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.databaseConnection.UserConnection">
+    <Position X="74.25" Y="44.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAASAAAEAAAAAAAEAAAAIAAAAAAAgAAAAAAAQ=</HashCode>
+      <FileName>databaseConnection\UserConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.ChooseKataWinner">
+    <Position X="58.25" Y="32.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAEAEAAAgAAgAAAAAAQQAAACAAAAMQAAAggQ=</HashCode>
+      <FileName>guis\ChooseKataWinner.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.ChooseWinner">
+    <Position X="55.5" Y="32.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAEAAEAEAAAgAAgAAAIBAQQAAACAAAAAAAAgAAQ=</HashCode>
+      <FileName>guis\ChooseWinner.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.ClubManagement">
+    <Position X="75.5" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAwGAAMBJAoBANAZigQgIQKQACMUAIwGBogOAOBoIZY=</HashCode>
+      <FileName>guis\ClubManagement.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.EventSupport">
+    <Position X="46.75" Y="21.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAYABQEIAABACACAAQBUAIARDZMAFAEAIggAIZIMCAA=</HashCode>
+      <FileName>guis\EventSupport.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.EventTournamentManagement">
+    <Position X="78.5" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>7n3P/9n6Qwtw/hCJdW9dxfGqEbVtPD5VUJ/RalIjn9k=</HashCode>
+      <FileName>guis\EventTournamentManagement.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.FlagSystem">
+    <Position X="60.5" Y="20.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>JwAABAEBEBgEIACSYBIAAICRAAADABDQIwABCAIEQOQ=</HashCode>
+      <FileName>guis\FlagSystem.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.KataSystem">
+    <Position X="57.75" Y="20.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IABADAEAIAAAIAASIBAAAIARAQAxLRDQI4AoCAcEAAQ=</HashCode>
+      <FileName>guis\KataSystem.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.KumiteSystem">
+    <Position X="63.25" Y="20.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ICDABAMEAABAAABQAAIAmICCAAQECpgICAEBIBACYAA=</HashCode>
+      <FileName>guis\KumiteSystem.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.KumiteTeamMaker">
+    <Position X="55" Y="20.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAACAAAACEAAAAAAABAiAAAAIAARAAAAAAAQ=</HashCode>
+      <FileName>guis\KumiteTeamMaker.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.LogIn">
+    <Position X="41.75" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAQAAgBAAAkAAAEAAAAAAAAAQgAAAAA=</HashCode>
+      <FileName>guis\LogIn.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.LotteryChooser">
+    <Position X="32.25" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IGgACAAAACAAAAgAgAAAQIAAABAIABIgBEABQAAAAQA=</HashCode>
+      <FileName>guis\LotteryChooser.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.LotteryGraph">
+    <Position X="29" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAgAAAQAAgAAAAAAYABAABAAAAAAA=</HashCode>
+      <FileName>guis\LotteryGraph.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.MainMenu">
+    <Position X="48" Y="11.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAgAAACAAAAAAABCAEgAQgAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>guis\MainMenu.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.PersonManagement">
+    <Position X="81.5" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>Li90XTH01o/5XKZtss+Oe5zMUc/qQu6IXfy4d1hboXg=</HashCode>
+      <FileName>guis\PersonManagement.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.guis.UserManagement">
+    <Position X="72.5" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IMgAAACAABFAAAAAGFAIgICIAAkAEJBAAAGAcCEACQg=</HashCode>
+      <FileName>guis\UserManagement.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.helpers.Cryptography">
+    <Position X="37.5" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>helpers\Cryptography.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.helpers.ErrorMessages">
+    <Position X="65" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACABAEAAAAQAAAAAAIAAAAACAAMAAAAABAAAAAAAAE=</HashCode>
+      <FileName>helpers\ErrorMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.helpers.JudgeMem">
+    <Position X="63.25" Y="33" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>helpers\JudgeMem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.helpers.RegularExpressions">
+    <Position X="59.75" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAICAAAAAAAIAABAAAAAAACAAABAAAgAAAAAAAAAAg=</HashCode>
+      <FileName>helpers\RegularExpressions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryBox">
+    <Position X="25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IIgAAAAAAAABAABAAmAAQgBAAAAAAAAAAIAAAEAAAAA=</HashCode>
+      <FileName>lottery\LotteryBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGenerator">
+    <Position X="11" Y="5.25" Width="2.25" />
+    <NestedTypes>
+      <Class Name="KarateGeek.lottery.LotteryGenerator.TeamHelper" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>lottery\LotteryGeneratorBaseClasses.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>UAAQBAAIAAAAAAAACAAAgAAABEAAACAARQIAAAAIIiA=</HashCode>
+      <FileName>lottery\LotteryGeneratorBaseClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGen_Expo">
+    <Position X="8" Y="11.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>lottery\LotteryGeneratorBaseClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGen_Versus">
+    <Position X="15.5" Y="11.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>lottery\LotteryGeneratorBaseClasses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGen_Expo_Ind">
+    <Position X="11" Y="14" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIACA=</HashCode>
+      <FileName>lottery\LotteryGeneratorConcrete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGen_Versus_Ind">
+    <Position X="17" Y="14" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIICA=</HashCode>
+      <FileName>lottery\LotteryGeneratorConcrete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGen_Expo_Sync">
+    <Position X="5" Y="14" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>lottery\LotteryGeneratorConcrete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGen_Expo_Team">
+    <Position X="8" Y="14" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAQBAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAIICA=</HashCode>
+      <FileName>lottery\LotteryGeneratorConcrete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGen_Versus_Team">
+    <Position X="14" Y="14" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAQBAAIAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAIICA=</HashCode>
+      <FileName>lottery\LotteryGeneratorConcrete.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryGeneratorFactory">
+    <Position X="15.75" Y="5.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>lottery\LotteryGeneratorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryPrinter">
+    <Position X="21.5" Y="5.75" Width="2.25" />
+    <NestedTypes>
+      <Enum Name="KarateGeek.lottery.LotteryPrinter.PrinterType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>lottery\LotteryPrinter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABAAAEAACAAEEAAEAEAAwAQAAAABAAAgBAAgAMgCQAA=</HashCode>
+      <FileName>lottery\LotteryPrinter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.lottery.LotteryPrinterTransformations">
+    <Position X="15.75" Y="7.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>lottery\LotteryPrinterTransformations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KarateGeek.Reports.ReportsForm">
+    <Position X="37" Y="20" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BECwQCIAACAQQIEAAACAIEETSAAAEAACIECAgAABFAA=</HashCode>
+      <FileName>Reports\ReportsForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
