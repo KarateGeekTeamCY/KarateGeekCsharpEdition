@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KarateGeek.guis.LogIn"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="karate geek log in" 
+        Title="Login"
         Width="450" Height="340"
          WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Loaded="Window_Loaded">

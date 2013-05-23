@@ -174,7 +174,7 @@ namespace KarateGeek.guis
 
 
             //prosthetoume athlete_rank gia new athlete
-            cmbNewAthleteRankChooses.Items.Add("Select Athlete Rank");
+            cmbNewAthleteRankChooses.Items.Add("Select athlete's belt color");  // was: "Select Athlete Rank"
             for (int i = 0; i < Strings.rank.Length; i++)
             {
                 cmbNewAthleteRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
@@ -183,7 +183,7 @@ namespace KarateGeek.guis
             cmbNewAthleteRankChooses.SelectedIndex = 0;
 
             //prosthetoume athlete_rank gia edit athlete
-            cmbEditAthleteRankChooses.Items.Add("Select Athlete Rank");
+            cmbEditAthleteRankChooses.Items.Add("Select athlete's belt color"); // was: "Select Athlete Rank"
             for (int i = 0; i < Strings.rank.Length; i++)
             {
                 cmbEditAthleteRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
@@ -193,7 +193,7 @@ namespace KarateGeek.guis
 
 
             //prosthetoume judge class gia new judge
-            cmbNewJudgeRankChooses.Items.Add("Select Judge Rank");
+            cmbNewJudgeRankChooses.Items.Add("Select judge's belt color");  // was: "Select Judge Rank"
             for (int i = 0; i < Strings.rank.Length; i++)
             {
                 cmbNewJudgeRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
@@ -202,7 +202,7 @@ namespace KarateGeek.guis
             cmbNewJudgeRankChooses.SelectedIndex = 0;
 
             //prosthetoume judge class gia edit judge
-            cmbEditJudgeRankChooses.Items.Add("Select Judge Rank");
+            cmbEditJudgeRankChooses.Items.Add("Select judge's belt color"); // was: "Select Judge Rank"
             for (int i = 0; i < Strings.rank.Length; i++)
             {
                 cmbEditJudgeRankChooses.Items.Add(KarateGeek.Strings.rank[i]);
@@ -226,13 +226,13 @@ namespace KarateGeek.guis
 
 
             //prosthetoume judge classes gia new judge
-            cmbNewJClassChooses.Items.Add("Select Class");
+            cmbNewJClassChooses.Items.Add("Select judge's class");  // was: "Select Class"
             cmbNewJClassChooses.Items.Add("A");
             cmbNewJClassChooses.Items.Add("B");
             cmbNewJClassChooses.SelectedIndex = 0;
 
             //prosthetoume judge classes gia edit judge
-            cmbEditJClassChooses.Items.Add("Select Class");
+            cmbEditJClassChooses.Items.Add("Select judge's class"); // was: "Select Class"
             cmbEditJClassChooses.Items.Add("A");
             cmbEditJClassChooses.Items.Add("B");
             cmbEditJClassChooses.SelectedIndex = 0;

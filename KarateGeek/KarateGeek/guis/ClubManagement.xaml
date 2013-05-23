@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize"
-        Title="ClubManagement" Height="550" Width="500" Closed="Window_close">
+        Title="Club Management" Height="550" Width="500" Closed="Window_close">
     <Grid Width="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>

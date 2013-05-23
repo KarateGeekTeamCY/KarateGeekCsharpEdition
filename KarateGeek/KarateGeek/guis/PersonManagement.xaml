@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KarateGeek.guis.PersonManagement"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Person management" 
+        Title="Person Management" 
         WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize"
         Width="550"
@@ -257,7 +257,7 @@
 
                         </ComboBox>
 
-                        <Label Content="Rank"
+                        <Label Content="Belt color"
                                Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
@@ -583,7 +583,7 @@
 
                         </ComboBox>
 
-                        <Label Content="Rank"
+                        <Label Content="Belt color"
                                Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
@@ -917,7 +917,7 @@
 
                         </ComboBox>
 
-                        <Label Content="Rank"
+                        <Label Content="Belt color"
                                Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
@@ -1243,7 +1243,7 @@
                         </ComboBox>
 
 
-                        <Label Content="Rank"
+                        <Label Content="Belt color"
                                Grid.Row="13"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>

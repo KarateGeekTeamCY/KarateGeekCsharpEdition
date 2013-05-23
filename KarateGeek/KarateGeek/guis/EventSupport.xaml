@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KarateGeek.guis.EventSupport"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="EventSupport" 
+        Title="Event Support" 
         WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize"
         Height="600"

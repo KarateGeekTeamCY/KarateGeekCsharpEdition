@@ -193,14 +193,13 @@ namespace KarateGeek.guis
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            /* A small easter egg:
-             * Show CUT team credits when user clicks on the logo af the main window and then on "About": */
+            /* Show CUT team credits when user right-clicks on the logo of the main window and then clicks on "About": */
 
-            MessageBox.Show(  "Program made by a student team of the Cyprus University of Technology, for the Cyprus Fudokan Karate-Do Federation.\n\n"
-                            +  "Team members: Μιχάλης Αναστασίου, Αθηνά Γαβριήλ, Μιχάλης Θεοδωρίδης, Νικόλας Καρκούλιας\n\n"
-                            +  "\t©2012-2013 The KarateGeek Team"
-                            //+  "\n\n"
-                            //+  "Program extended in 2014 by (...)"
+            MessageBox.Show(  "This program was created by a student team from the Cyprus University of Technology, for the Cyprus Fudokan Karate-Do Federation. "
+                            + "Team members: Μιχάλης Αναστασίου, Αθηνά Γαβριήλ, Μιχάλης Θεοδωρίδης, Νικόλας Καρκούλιας\n\n"
+                            + "Released under the GPL (v2 or later). Source code repository: https://github.com/KarateGeekTeamCY/KarateGeekCsharpEdition.git \n\n"
+                            + "©2011-2013 The KarateGeek Team"
+                          //+  "\t©2011-2013 The KarateGeek Team"
                             +  "",
                             "Credits");
         }

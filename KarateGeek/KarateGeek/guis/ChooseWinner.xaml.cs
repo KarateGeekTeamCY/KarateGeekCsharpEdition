@@ -76,7 +76,7 @@ namespace KarateGeek.guis
                 this.btnAthleteBisWinner.Content += teamB.participants.ElementAt(2).lastName + " " + teamB.participants.ElementAt(2).firstName;
 
 
-                this.lblInfo.Content = "Please choose the winner";
+                this.lblInfo.Content = "Please choose the winner:";
             }
             else
             {
@@ -89,7 +89,7 @@ namespace KarateGeek.guis
                 this.btnAthleteAisWinner.Content = game.participants.ElementAt(0).lastName + " " + game.participants.ElementAt(0).firstName;
                 this.btnAthleteBisWinner.Content = game.participants.ElementAt(1).lastName + " " + game.participants.ElementAt(1).firstName;
 
-                this.lblInfo.Content = "Please choose the winner";
+                this.lblInfo.Content = "Please choose the winner:";
             }
 
         }

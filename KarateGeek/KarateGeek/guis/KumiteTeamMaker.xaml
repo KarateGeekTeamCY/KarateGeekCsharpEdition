@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KarateGeek.guis.KumiteTeamMaker"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KumiteTeamMaker" 
+        Title="Kumite Team Maker" 
          WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Height="400" 

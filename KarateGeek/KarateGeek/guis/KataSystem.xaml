@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KarateGeek.guis.KataSystem"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KataSystemForm" 
+        Title="Kata – Score System" 
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Width="650"

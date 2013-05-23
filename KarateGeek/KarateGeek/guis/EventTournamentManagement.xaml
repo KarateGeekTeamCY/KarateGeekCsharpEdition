@@ -679,7 +679,7 @@
 
 
 
-                                <Label Content="Level"
+                                <Label Content="Belt color"
                                        Grid.Column="1"
                                        Grid.Row="3"
                                        VerticalAlignment="Center"/>
@@ -1124,7 +1124,7 @@
 
 
 
-                                <Label Content="Level"
+                                <Label Content="Belt color"
                                        Grid.Column="1"
                                        Grid.Row="3"
                                        VerticalAlignment="Center"/>
