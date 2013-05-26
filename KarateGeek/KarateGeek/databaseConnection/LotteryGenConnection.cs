@@ -257,7 +257,7 @@ namespace KarateGeek.databaseConnection
          * passing lists of athletes instead of fake "pairs" (Especially the LotteryGen_Expo_Ind class). However, this
          * requires significant refactoring (again!) and might break code that works.
          */
-        private void writeTournamentGameSet(List<long> idList, bool isReady, int phase, int position, long tournamentId)
+        private void writeTournamentGameSet(List<long> idList, bool isReady, int phase, int position, long tournamentId, int pos_counter)
         {
             String writegame = "INSERT INTO games (phase, position, tournament_id, is_ready ) "
                              + "VALUES ( " + phase + ", " + position + ", " + tournamentId + ", " + isReady + " );";
@@ -265,11 +265,12 @@ namespace KarateGeek.databaseConnection
             this.NonQuery(writegame);
 
             foreach (var id in idList)
-                if (id >= 0) this.NonQuery(  "INSERT INTO game_participations (athlete_id, team_id, game_id ) "
+                if (id >= 0) this.NonQuery(  "INSERT INTO game_participations (athlete_id, team_id, game_id, prev_position ) "
                                            + "VALUES ( " + id + ", "
                                            +        "  ( SELECT team_id FROM tournament_participations WHERE athlete_id = " + id        // team_id might be NULL
                                            +        "                                       AND tournament_id = " + tournamentId + " ),"
-                                           +        "  ( SELECT currval('games_id_seq') )"
+                                           +        "  ( SELECT currval('games_id_seq') ), "
+                                           +           pos_counter + " "
                                            +        ");"
                                           );
         }
@@ -279,8 +280,10 @@ namespace KarateGeek.databaseConnection
         {
             this.NonQuery("BEGIN;");
 
+            int counter = 0;    // helps ORDER BY work correctly for graph generation; field prev_position in DB is only useful for graphs
+
             foreach (var set in Sets)
-                writeTournamentGameSet(set.Item1, set.Item2, set.Item3, set.Item4, tournamentId);
+                writeTournamentGameSet(set.Item1, set.Item2, set.Item3, set.Item4, tournamentId, pos_counter: counter++);
 
             if (doCommit)
             {
