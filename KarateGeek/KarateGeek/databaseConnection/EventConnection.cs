@@ -145,7 +145,7 @@ namespace KarateGeek.databaseConnection
             sb.Append("select id, name from events e1 ");
             sb.Append("where date >= '");
             sb.Append(DateTime.Today.ToString("yyyy-M-d"));
-            sb.Append("' and e1.id in (select event_id from tournaments where event_id = e1.id and lottery_ready = false)");
+            sb.Append("' and e1.id in (select event_id from tournaments where event_id = e1.id and lottery_ready = false) order by name");
 
             return this.Query(sb.ToString()).Tables[0];
         }

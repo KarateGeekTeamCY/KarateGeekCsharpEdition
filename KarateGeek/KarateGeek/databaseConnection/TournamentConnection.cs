@@ -66,7 +66,7 @@ namespace KarateGeek.databaseConnection
 
         public DataTable getUnlotterisedTournaments(int eventId)
         {
-            string sql = "select id , name from tournaments where event_id = " + eventId + " and lottery_ready = false";
+            string sql = "select id , name from tournaments where event_id = " + eventId + " and lottery_ready = false order by name";
             return this.Query(sql).Tables[0];
         }
 
