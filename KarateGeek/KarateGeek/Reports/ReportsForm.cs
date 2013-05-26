@@ -57,13 +57,13 @@ namespace KarateGeek.Reports
             Npgsql.NpgsqlDataAdapter adapter = new CoreDatabaseConnection().AdapterForQuery(sql);
 
             adapter.Fill(ds, "judge_dt");
-
+            /*
             if (ds.Tables[0].Rows.Count == 0)
             {
                 //MessageBox.Show("No data Found", "Judges Forms");
                 return;
             }
-
+            */
             // Setting data source of our report object
             objRpt.SetDataSource(ds);
             // Binding the crystalReportViewer with our report object. 
@@ -79,13 +79,13 @@ private void loadEventForm()
     Npgsql.NpgsqlDataAdapter adapter = new CoreDatabaseConnection().AdapterForQuery(sql);
 
     adapter.Fill(ds, "event_dt");
-
+    /*
     if (ds.Tables[0].Rows.Count == 0)
     {
         //MessageBox.Show("No data Found", "Events Forms");
         return;
     }
-
+    */
     int rowNum = 0;
     foreach(DataRow row in ds.Tables[0].Rows){
                 
@@ -136,13 +136,13 @@ private void loadTournamentForm()
     Npgsql.NpgsqlDataAdapter adapter = new CoreDatabaseConnection().AdapterForQuery(sql);
 
     adapter.Fill(ds, "tournament_dt");
-
+    /*
     if (ds.Tables[0].Rows.Count == 0)
     {
         //MessageBox.Show("No data Found", "Events Forms");
         return;
     }
-
+    */
     int rowNum = 0;
     foreach (DataRow row in ds.Tables[0].Rows)
     {
@@ -195,12 +195,12 @@ private void loadClubForm()
     Npgsql.NpgsqlDataAdapter adapter = new CoreDatabaseConnection().AdapterForQuery(sql);
 
     adapter.Fill(ds, "club_dt");
-
+    /*
     if (ds.Tables[0].Rows.Count == 0)
     {
         //MessageBox.Show("No data Found", "Clubs Forms");
         return;
-    }
+    }*/
     // Setting data source of our report object
     objRpt.SetDataSource(ds);
     // Binding the crystalReportViewer with our report object. 
@@ -216,35 +216,36 @@ private void loadLotteryForm()
     Npgsql.NpgsqlDataAdapter adapter = new CoreDatabaseConnection().AdapterForQuery(sql);
 
     adapter.Fill(ds, "graph_dt");
-
+    /*
     if (ds.Tables[0].Rows.Count == 0)
     {
         //MessageBox.Show("No data Found", "Lottery Forms");
         return;
-    }
+    }*/
     //apo edw pernei to string apo to graph
     string graph;
     int i = 0;
-    int maxLines = 0;
+    int maxLines = 93;
     int lines;
-    int maxLineChars = 0;
+    int maxLineChars = 132;
     int lineChars;
+    bool smallerFont = false;
     foreach (DataRow row in ds.Tables[0].Rows)
     {
         graph = ds.Tables[0].Rows[i][0].ToString();
         lines = graph.Count(f => f == '\n');
         if(lines > maxLines)
-            maxLines = lines;
+            smallerFont = true;
         lineChars = graph.IndexOf('\n');
         if (lineChars > maxLineChars)
-            maxLineChars = lineChars;
-        
+            smallerFont = true;
+        i++;
     }
     FieldObject fo = (FieldObject)objRpt.ReportDefinition.ReportObjects["graph1"];
     //edw kanei diaforous elegxous gia na dei poio einai to katalilo megethos
     //to default apo to crystal einai 10
-    if(maxLines > 64)
-        fo.ApplyFont(new Font("consolas", 7F));
+    if(smallerFont)
+        fo.ApplyFont(new Font("consolas", 10F));
     
 
     // Setting data source of our report object
@@ -262,35 +263,38 @@ private void loadScoreSheetForm()
     Npgsql.NpgsqlDataAdapter adapter = new CoreDatabaseConnection().AdapterForQuery(sql);
 
     adapter.Fill(ds, "scoresheet_dt");
-
+    /*
     if (ds.Tables[0].Rows.Count == 0)
     {
         //MessageBox.Show("No data Found", "Lottery Forms");
         return;
-    }
+    }*/
     //apo edw pernei to string apo to graph
     string graph;
     int i = 0;
-    int maxLines = 0;
+    int maxLines = 93;
     int lines;
-    int maxLineChars = 0;
+    int maxLineChars = 132;
     int lineChars;
+    bool smallerFont = false;
+
     foreach (DataRow row in ds.Tables[0].Rows)
     {
         graph = ds.Tables[0].Rows[i][0].ToString();
         lines = graph.Count(f => f == '\n');
         if (lines > maxLines)
-            maxLines = lines;
+            smallerFont = true;
         lineChars = graph.IndexOf('\n');
         if (lineChars > maxLineChars)
-            maxLineChars = lineChars;
+            smallerFont = true;
+        i++;
 
     }
     FieldObject fo = (FieldObject)objRpt.ReportDefinition.ReportObjects["graph1"];
     //edw kanei diaforous elegxous gia na dei poio einai to katalilo megethos
     //to default apo to crystal einai 10
-    if (maxLines > 64)
-        fo.ApplyFont(new Font("consolas", 7F));
+    if (smallerFont)
+        fo.ApplyFont(new Font("consolas", 10F));
 
 
     // Setting data source of our report object
