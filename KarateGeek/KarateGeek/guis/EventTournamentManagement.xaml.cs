@@ -621,63 +621,70 @@ namespace KarateGeek.guis
 
         private void btnEditEDelete_Click(object sender, RoutedEventArgs e)
         {
-            switch (warningEventDeletionMessage(_editEventName))
+            if (_editEventId != -1)
             {
-                case "OK":
-                    if ((_newTournamentEventId == _editEventId) && (_editTournamentEventId == _editEventId))
-                    {
-                        switch (warningNewEditTournamentDeletion())
+                switch (warningEventDeletionMessage(_editEventName))
+                {
+                    case "OK":
+                        if ((_newTournamentEventId == _editEventId) && (_editTournamentEventId == _editEventId))
                         {
-                            case "OK":
-                                eventConnection.deleteEvent(_editEventId);
-                                MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
-                                initializeEditEvent();
-                                initializeNewTournament(true);
-                                initializeEditTournament(true);
-                                break;
-                            case "Cancel":
-                                break;
+                            switch (warningNewEditTournamentDeletion())
+                            {
+                                case "OK":
+                                    eventConnection.deleteEvent(_editEventId);
+                                    MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
+                                    initializeEditEvent();
+                                    initializeNewTournament(true);
+                                    initializeEditTournament(true);
+                                    break;
+                                case "Cancel":
+                                    break;
+                            }
                         }
-                    }
-                    else if ((_newTournamentEventId == _editEventId))
-                    {
-                        switch (warningEventNewTournamentDeletion())
+                        else if ((_newTournamentEventId == _editEventId))
                         {
-                            case "OK":
-                                eventConnection.deleteEvent(_editEventId);
-                                MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
-                                initializeEditEvent();
-                                initializeNewTournament(true);
-                                initializeEditTournament(true);
-                                break;
-                            case "Cancel":
-                                break;
+                            switch (warningEventNewTournamentDeletion())
+                            {
+                                case "OK":
+                                    eventConnection.deleteEvent(_editEventId);
+                                    MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
+                                    initializeEditEvent();
+                                    initializeNewTournament(true);
+                                    initializeEditTournament(true);
+                                    break;
+                                case "Cancel":
+                                    break;
+                            }
                         }
-                    }
-                    else if (_editTournamentEventId == _editEventId)
-                    {
-                        switch (warningEventEditTournamentDeletion())
+                        else if (_editTournamentEventId == _editEventId)
                         {
-                            case "OK":
-                                eventConnection.deleteEvent(_editEventId);
-                                MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
-                                initializeEditEvent();
-                                initializeNewTournament(true);
-                                initializeEditTournament(true);
-                                break;
-                            case "Cancel":
-                                break;
+                            switch (warningEventEditTournamentDeletion())
+                            {
+                                case "OK":
+                                    eventConnection.deleteEvent(_editEventId);
+                                    MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
+                                    initializeEditEvent();
+                                    initializeNewTournament(true);
+                                    initializeEditTournament(true);
+                                    break;
+                                case "Cancel":
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        eventConnection.deleteEvent(_editEventId);
-                        MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
-                        initializeEditEvent();
-                        initializeNewTournament(true);
-                        initializeEditTournament(true);
-                    }
-                    break;
+                        else
+                        {
+                            eventConnection.deleteEvent(_editEventId);
+                            MessageBox.Show("Succesfully deleted!", "Event Delete", MessageBoxButton.OK);
+                            initializeEditEvent();
+                            initializeNewTournament(true);
+                            initializeEditTournament(true);
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select one event to update", "Event Edit", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
         }
@@ -4214,6 +4221,7 @@ namespace KarateGeek.guis
         private void editEventList()
         {
             _editEventName = editEventName.Text;
+            _editEventName = _editEventName.Replace('\'', '’');
             List<ListData> autoList = new List<ListData>();
             autoList.Clear();
 
@@ -4255,7 +4263,7 @@ namespace KarateGeek.guis
         {
             List<ListData> list = new List<ListData>();
 
-            this.editFilteredEvents = eventConnection.findSimilar(this.editEventName.Text);
+            this.editFilteredEvents = eventConnection.findSimilar(this.editEventName.Text.Replace('\'', '’'));
 
             foreach (DataRow dr in editFilteredEvents.Tables[0].Rows)
             {

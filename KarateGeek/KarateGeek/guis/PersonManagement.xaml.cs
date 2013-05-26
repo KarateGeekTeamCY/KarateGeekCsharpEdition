@@ -447,11 +447,9 @@ namespace KarateGeek.guis
 
         #endregion
 
-
         private void NewAthleteFirstName_TextChanged(object sender, TextChangedEventArgs e)
         {
             string name = NewAthleteFirstName.Text;
-            name = name.Replace('7', '8');
 
             if (name == "" && !_newAthleteSelected)
             {
@@ -503,7 +501,6 @@ namespace KarateGeek.guis
         private void NewAthleteEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
             _newAthleteEmail = NewAthleteEmail.Text;
-
         }
 
         private void NewAthleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
@@ -638,7 +635,7 @@ namespace KarateGeek.guis
             bool insertAthlete;
             if (checkNullOrEmptyFields("athlete", true) && checkWrongFields("athlete", true))
             {
-                _newAthleteEmail = _newAthleteEmail.Replace('\'', '’');
+                
                 insertAthlete = athleteConnection.InsertNewAthlete(_newPersonId, _newAthleteFirstName, _newAthleteLastName, _newAthleteFathersName, _newAthleteSex, _newAthleteDateOfBirth, _newAthleteFirstPhone, _newAthleteSecondPhone, _newAthleteEmail, _newAthleteAddress, _newAthleteAddressNum, _newAthleteTK, _newAthleteCountryCode, _newAthleteCity, _newAthleteRank, _newAthleteClubId);
                 if (insertAthlete)
                 {
@@ -932,7 +929,6 @@ namespace KarateGeek.guis
         private void EditAthleteEmail_TextChanged(object sender, TextChangedEventArgs e)
         {
             _editAthleteEmail = EditAthleteEmail.Text;
-
         }
 
         private void EditAthleteStreetName_TextChanged(object sender, TextChangedEventArgs e)
@@ -1089,7 +1085,7 @@ namespace KarateGeek.guis
             {
                 if (checkNullOrEmptyFields("athlete", false) && checkWrongFields("athlete", false) && _editPersonId != -1)
                 {
-                    _editAthleteEmail = _editAthleteEmail.Replace('\'', '’');
+                    
                     athleteConnection.UpdateAthlete(_editPersonId, _editAthleteFirstName, _editAthleteLastName, _editAthleteFathersName, _editAthleteSex, _editAthleteDateOfBirth, _editAthleteFirstPhone, _editAthleteSecondPhone, _editAthleteEmail, _editAthleteAddress, _editAthleteAddressNum, _editAthleteTK, _editAthleteCountryCode, _editAthleteCity, _editAthleteRank, _editAthleteClubId);
                     MessageBox.Show("Succesfully saved!", "Athlete Edit", MessageBoxButton.OK);
                     initializeEditAthlete();
@@ -1566,7 +1562,7 @@ namespace KarateGeek.guis
             bool judgeInsert;
             if (checkNullOrEmptyFields("judge", true) && checkWrongFields("judge", true))
             {
-                _newJudgeEmail = _newJudgeEmail.Replace('\'', '’');
+                
                 judgeInsert = judgeConnection.InsertNewJudge(_newJudgeId, _newJudgeFirstName, _newJudgeLastName, _newJudgeFathersName, _newJudgeSex, _newJudgeDateOfBirth, _newJudgeFirstPhone, _newJudgeSecondPhone, _newJudgeEmail, _newJudgeAddress, _newJudgeAddressNum, _newJudgeTK, _newJudgeCountryCode, _newJudgeCity, _newJudgeRank, _newJudgeClass);
                 if (judgeInsert)
                 {
@@ -2226,7 +2222,7 @@ namespace KarateGeek.guis
                         em.charsSpaceErrorMessage("First Name");
                         return false;
                     }
-                    else if (!regex.isCharsOnly(_newAthleteLastName))
+                    else if (!regex.isCharsOrSpace(_newAthleteLastName))
                     {
                         em.charsErrorMessage("Last Name");
                         return false;
@@ -2285,7 +2281,7 @@ namespace KarateGeek.guis
                         em.charsSpaceErrorMessage("First Name");
                         return false;
                     }
-                    else if (!regex.isCharsOnly(_editAthleteLastName))
+                    else if (!regex.isCharsOrSpace(_editAthleteLastName))
                     {
                         em.charsErrorMessage("Last Name");
                         return false;
@@ -2343,7 +2339,7 @@ namespace KarateGeek.guis
                         em.charsSpaceErrorMessage("First Name");
                         return false;
                     }
-                    else if (!regex.isCharsOnly(_newJudgeLastName))
+                    else if (!regex.isCharsOrSpace(_newJudgeLastName))
                     {
                         em.charsErrorMessage("Last Name");
                         return false;
@@ -2405,7 +2401,7 @@ namespace KarateGeek.guis
                         em.charsSpaceErrorMessage("First Name");
                         return false;
                     }
-                    else if (!regex.isCharsOnly(_editJudgeLastName))
+                    else if (!regex.isCharsOrSpace(_editJudgeLastName))
                     {
                         em.charsErrorMessage("Last Name");
                         return false;

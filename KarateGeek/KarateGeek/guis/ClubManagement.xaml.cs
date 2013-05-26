@@ -181,7 +181,6 @@ namespace KarateGeek.guis
             if (checkNullOrEmptyFields(true) && checkWrongFields(true))
             {
                 _newClubName = _newClubName.Replace('\'', '’');
-                _newClubEmail = _newClubEmail.Replace('\'', '’');
                 insertClub = clubConnection.insertNewCLub(_newClubName, _newClubPhone, _newClubEmail, _newClubAddress, _newClubAddressNum, _newClubTK, _newClubCountryCode, _newClubCity);
                 if (insertClub)
                 {
@@ -247,8 +246,6 @@ namespace KarateGeek.guis
                 cSuggestionList.ItemsSource = null;
             }
         }
-
-       
 
         private List<ListData> ClubfilterNames()
         {
@@ -357,9 +354,7 @@ namespace KarateGeek.guis
                 editClubName.TextChanged += new TextChangedEventHandler(editClubName_TextChanged);
             }
             //this.sugestioListScroler.Visibility = System.Windows.Visibility.Hidden;
-        }
-
-       
+        } 
 
         private void editClubName_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -454,7 +449,6 @@ namespace KarateGeek.guis
                 if (checkNullOrEmptyFields(false) && checkWrongFields(false))
                 {
                     _editClubName = _editClubName.Replace('\'', '’');
-                    _editClubEmail = _editClubEmail.Replace('\'', '’');
                     saveClub = clubConnection.updateClub(_editClubId, _editClubName, _editClubPhone, _editClubEmail, _editClubAddress, _editClubAddressNum, _editClubTK, _editClubCountryCode, _editClubCity);
                     if (saveClub)
                     {

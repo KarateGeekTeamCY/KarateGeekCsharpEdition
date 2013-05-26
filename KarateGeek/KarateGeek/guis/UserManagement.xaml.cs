@@ -69,6 +69,21 @@ namespace KarateGeek.guis
                         MessageBoxImage.Information).ToString();
                     return;
                 }
+
+                if (string.IsNullOrEmpty(pass1) || string.IsNullOrEmpty(pass2))
+                {
+                    string result = MessageBox.Show("You didn't choose any valid password, please try again.", "No password!",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information).ToString();
+                    return;
+                }
+                if (pass1 != pass2)
+                {
+                    string result = MessageBox.Show("The second password didn't much the first one, please try again.", "Password mismuch!",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information).ToString();
+                    return;
+                }
                 else
                 {
                     userName = userName.Replace('\'', '’');
