@@ -28,7 +28,7 @@
         </Grid.ColumnDefinitions>
 
         <Label
-               Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
+               Content="CYPRUS FUDOKAN KARATE-DO FEDERATION" FontWeight="DemiBold"
                FontSize="16" 
                VerticalAlignment="Center" 
                 Grid.ColumnSpan="19"

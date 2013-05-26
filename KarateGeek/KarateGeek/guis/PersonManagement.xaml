@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="0,10,0,10">
             <Label
-               Content="CYPRUS FUDOKAN KARATE - DO FEDERATION" FontWeight="DemiBold"
+               Content="CYPRUS FUDOKAN KARATE-DO FEDERATION" FontWeight="DemiBold"
                FontSize="16" 
                VerticalAlignment="Center" 
                HorizontalContentAlignment="Center" Margin="0,24,0,24" />
