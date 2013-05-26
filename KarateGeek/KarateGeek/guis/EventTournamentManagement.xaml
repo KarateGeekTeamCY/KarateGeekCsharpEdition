@@ -1098,7 +1098,7 @@
                                        Grid.Column="1"
                                        Grid.Row="2"
                                        VerticalAlignment="Center"/>
-            
+
                                 <ComboBox Name="cmbEditTAgeFrom"
                                           
                                            Grid.Column="3"
@@ -1381,6 +1381,8 @@
                             <Button Name="btnEditTBack"
                                         Grid.Column="1"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnEditTBack_Click" >
                                 <StackPanel Orientation="Horizontal">
@@ -1391,6 +1393,8 @@
                             <Button Name="btnEditTSave"
                                         Grid.Column="2"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnEditTSave_Click" IsEnabled="False" >
                                 <StackPanel Orientation="Horizontal">
@@ -1401,6 +1405,8 @@
                             <Button Name="btnEditTDelete"
                                         Grid.Column="3"
                                         Margin="5"
+                    Padding="auto"
+                    Height="32"
                                         VerticalAlignment="Center" 
                                         Click="btnEditTDelete_Click" >
                                 <StackPanel Orientation="Horizontal">
