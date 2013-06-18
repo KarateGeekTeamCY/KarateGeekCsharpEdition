@@ -44,10 +44,10 @@ namespace KarateGeek.guis
             lgConn = new LoginConnection();
 
             /* Temporarily disabling the following two lines to make our life easier during testing: */
-            //username=userNameTB.Text;
-            //password=passwordTB.Password;
-            username = "admin";
-            password=  "admin";
+            username=userNameTB.Text;
+            password=passwordTB.Password;
+            //username = "admin";
+            //password=  "admin";
             /* end of modification */
 
             loginCheck = lgConn.compare(username, password);

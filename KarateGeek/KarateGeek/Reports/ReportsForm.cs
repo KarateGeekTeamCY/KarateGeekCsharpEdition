@@ -245,7 +245,7 @@ private void loadLotteryForm()
     //edw kanei diaforous elegxous gia na dei poio einai to katalilo megethos
     //to default apo to crystal einai 10
     if(smallerFont)
-        fo.ApplyFont(new Font("consolas", 10F));
+        fo.ApplyFont(new Font("consolas", 9F));
     
 
     // Setting data source of our report object
@@ -294,7 +294,7 @@ private void loadScoreSheetForm()
     //edw kanei diaforous elegxous gia na dei poio einai to katalilo megethos
     //to default apo to crystal einai 10
     if (smallerFont)
-        fo.ApplyFont(new Font("consolas", 10F));
+        fo.ApplyFont(new Font("consolas", 9F));
 
 
     // Setting data source of our report object
